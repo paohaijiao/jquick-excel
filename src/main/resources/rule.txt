@@ -1,0 +1,9 @@
+IMPORT FROM "employees.xlsx"
+WITH SHEET=1, HEADER=YES,
+TRANSFORM = {
+    "姓名": "trim($.name)",
+    "邮箱": "toUpperCase($.email)",
+    "年龄": "addYears($.birthday, 5)",
+    "薪资": "round($.salary, 2)"
+}
+TO $.employees
