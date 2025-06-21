@@ -1,9 +1,9 @@
 package lexer.im;
 
-import com.paohaijiao.javelin.model.JExcelImportModel;
-import com.paohaijiao.javelin.parser.JQuickExcelLexer;
-import com.paohaijiao.javelin.parser.JQuickExcelParser;
-import com.paohaijiao.javelin.visitor.JQuickExcelImportVisitor;
+import com.github.paohaijiao.model.JExcelImportModel;
+import com.github.paohaijiao.parser.JQuickExcelLexer;
+import com.github.paohaijiao.parser.JQuickExcelParser;
+import com.github.paohaijiao.visitor.JQuickExcelImportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
