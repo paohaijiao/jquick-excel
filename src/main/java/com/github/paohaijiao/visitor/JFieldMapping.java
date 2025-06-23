@@ -1,9 +1,9 @@
 package com.github.paohaijiao.visitor;
 
-import com.paohaijiao.javelin.exception.JAssert;
-import com.paohaijiao.javelin.model.JKeyValueModel;
+import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.model.JKeyValueModel;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.paohaijiao.javelin.util.JStringUtils;
+import com.github.paohaijiao.util.JStringUtils;
 
 public class JFieldMapping extends JFormatSpecVisitor{
 
