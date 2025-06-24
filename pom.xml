@@ -19,9 +19,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.paohaijiao.javelin</groupId>
+            <groupId>com.github.paohaijiao</groupId>
             <artifactId>javelin-core</artifactId>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
