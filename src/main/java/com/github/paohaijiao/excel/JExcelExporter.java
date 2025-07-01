@@ -103,19 +103,19 @@ public class JExcelExporter<T> {
 
     private void createHeader(Workbook workbook, Sheet sheet) {
         Row headerRow = sheet.createRow(0);
-        CellStyle headerStyle = JCustomCellStyle.createHeaderStyle(workbook);
+       // CellStyle headerStyle = JCustomCellStyle.createHeaderStyle(workbook);
         for (int i = 0; i < fields.size(); i++) {
             Field field = fields.get(i);
             JExcelColumn column = fieldAnnotations.get(field);
             String headerName = column != null && !column.name().isEmpty() ? column.name() : field.getName();
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headerName);
-            cell.setCellStyle(headerStyle);
+            //cell.setCellStyle(headerStyle);
         }
     }
 
     private void fillData(Workbook workbook, Sheet sheet, List<T> data) {
-        CellStyle dataStyle = JCustomCellStyle.createDataStyle(workbook);
+     //   CellStyle dataStyle = JCustomCellStyle.createDataStyle(workbook);
         int startRow = headRowNumber;
         for (int i = 0; i < data.size(); i++) {
             T item = data.get(i);
@@ -126,7 +126,7 @@ public class JExcelExporter<T> {
                 try {
                     T value = (T)field.get(item);
                     Cell cell = row.createCell(j);
-                    cell.setCellStyle(dataStyle);
+             //       cell.setCellStyle(dataStyle);
                     if (value != null) {
                         String cellValue = convertValueToString(value, column);
                         cell.setCellValue(cellValue);

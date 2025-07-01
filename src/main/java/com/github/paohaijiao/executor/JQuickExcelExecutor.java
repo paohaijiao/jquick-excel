@@ -25,7 +25,7 @@ import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenStream;
 
-public class JThornRuleQuickExcelExecutor extends JAbstractAntlrExecutor<String, Object> {
+public class JQuickExcelExecutor extends JAbstractAntlrExecutor<String, Object> {
     @Override
     protected Lexer createLexer(CharStream input) {
         return new JQuickExcelLexer(input);
