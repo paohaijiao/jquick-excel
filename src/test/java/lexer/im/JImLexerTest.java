@@ -9,8 +9,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 public class JImLexerTest {
 
     private JExcelImportModel parseImportConfig(String input) {

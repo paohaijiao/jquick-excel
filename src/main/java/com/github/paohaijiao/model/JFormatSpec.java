@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.model;
 
+
 import com.github.paohaijiao.enums.JQuickExcelFormatSpecEnums;
 import lombok.Data;
 
