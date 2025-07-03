@@ -319,8 +319,25 @@ public class JExcelProcessor {
                 String formula=getFormulaValue(value,row,col);
                 c.setCellFormula(formula);
             }
-          //  cellRef.get
-
+        }
+        for (Map.Entry<String, String> keyset : colFormulas.entrySet()) {
+            String colNum=keyset.getKey();
+            CellReference cellRef = new CellReference(colNum);
+            int col=cellRef.getCol();
+            String value=keyset.getValue();
+            for (int i = 1; i <maxRow ; i++) {
+                int row =i;    // 0-based
+                Row r = currentSheet.getRow(row);
+                if (r == null) {
+                    r =currentSheet.createRow(row);
+                }
+                Cell c = r.getCell(col);
+                if (c == null) {
+                    c = r.createCell(col);
+                }
+                String formula=getFormulaValue(value,row,col);
+                c.setCellFormula(formula);
+            }
         }
     }
 }
