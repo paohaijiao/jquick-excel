@@ -21,7 +21,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.visitor.JQuickExcelExportVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -59,7 +59,7 @@ public class JDataTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data= JObjectConverter.convert(getData());
-        JQuickExcelExportVisitor visitor = new JQuickExcelExportVisitor(data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
         @SuppressWarnings("unchecked")
         JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
 
@@ -88,7 +88,7 @@ public class JDataTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data= JObjectConverter.convert(getData());
-        JQuickExcelExportVisitor visitor = new JQuickExcelExportVisitor(data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
         @SuppressWarnings("unchecked")
         JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
 
@@ -121,7 +121,7 @@ public class JDataTest {
         variable.put("2","女");
         params.put("codeTable",variable);
 
-        JQuickExcelExportVisitor visitor = new JQuickExcelExportVisitor(params,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(params,data);
         @SuppressWarnings("unchecked")
         JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
 

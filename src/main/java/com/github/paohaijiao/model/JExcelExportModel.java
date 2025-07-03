@@ -35,7 +35,11 @@ public class JExcelExportModel {
 
     Map<String, String> format = new HashMap<>();
 
-    Map<String, String> formulas = new HashMap<>();
+    Map<String, String> cellFormulas = new HashMap<>();
+
+    Map<String, String> rowFormulas = new HashMap<>();
+
+    Map<String, String> colFormulas = new HashMap<>();
 
     Map<String, String> mapping = new HashMap<>();
 

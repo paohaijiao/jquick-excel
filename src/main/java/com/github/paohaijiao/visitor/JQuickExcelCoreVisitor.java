@@ -16,17 +16,29 @@
 package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.handler.JExcelProcessor;
+import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelBaseVisitor;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 
+import java.util.List;
+import java.util.Map;
+
 public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
 
     protected JContext context;
 
     protected Cell cell;
+
+    protected  JExcelProcessor excelProcessor;
+
+    protected  List<Map<String, Object>> data;
+
+    protected JExcelExportModel config = new JExcelExportModel();
+
 
     @Override
     public String visitFileName(JQuickExcelParser.FileNameContext ctx) {
@@ -39,8 +51,8 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
     }
     @Override
     public String visitIdentifier(JQuickExcelParser.IdentifierContext ctx) {
-        if(ctx.ID() != null) {
-            String varName = JStringUtils.trim(ctx.ID().getText());
+        if(ctx.IDENTIFIER() != null) {
+            String varName = JStringUtils.trim(ctx.IDENTIFIER().getText());
             return varName;
         }
         JAssert.throwNewException("Invalid varName");

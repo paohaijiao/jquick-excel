@@ -22,20 +22,20 @@ import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelExportVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
+
 public class JExcelProcessor {
      private Workbook workbook;
      private Sheet currentSheet;
@@ -48,7 +48,7 @@ public class JExcelProcessor {
         this.contextParams=contextParams;
     }
 
-    public List<Map<String, String>> importData(JExcelImportModel config) throws IOException {
+    public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
         try (FileInputStream fis = new FileInputStream(config.getFileName())) {
             workbook = new XSSFWorkbook(fis);
             setSheet(config.getSheet());
@@ -57,7 +57,7 @@ public class JExcelProcessor {
             boolean hasHeader =config.getHeader();
             List<String> headers = new ArrayList<>();
             Map<String, String> mappings = config.getMappings();
-            List<Map<String, String>> data = new ArrayList<>();
+            List<Map<String, Object>> data = new ArrayList<>();
             int startRow = rangeBounds != null ? rangeBounds[0] : (hasHeader ? 1 : 0);
             int endRow = rangeBounds != null ? rangeBounds[1] : currentSheet.getLastRowNum();
             int startCol = rangeBounds != null ? rangeBounds[2] : 0;
@@ -77,11 +77,11 @@ public class JExcelProcessor {
             for (int rowNum = startRow; rowNum <= endRow; rowNum++) {
                 Row row = currentSheet.getRow(rowNum);
                 if (row == null) continue;
-                Map<String, String> rowData = new LinkedHashMap<>();
+                Map<String, Object> rowData = new LinkedHashMap<>();
                 for (int colNum = startCol; colNum <= endCol; colNum++) {
                     if (colNum >= headers.size()) break;
                     Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                    String value = dataFormatter.formatCellValue(cell);
+                    Object value = dataFormatter.formatCellValue(cell);
                     Map<String, String> transforms = config.getTransforms();
                     String fieldName = headers.get(colNum);
                     if (transforms.containsKey(fieldName)) {
@@ -99,6 +99,12 @@ public class JExcelProcessor {
         Object sheet = config.getSheet();
         if (null!= sheet) {
             currentSheet = workbook.createSheet((String)sheet);
+        }else{
+            currentSheet = workbook.createSheet();
+        }
+        int lastColNum = 0;
+        if(null!=data&&!data.isEmpty()){
+            lastColNum=data.get(0).size();
         }
         boolean hasHeader = config.getHeader();
         Map<String, String> mappings = config.getMapping();
@@ -117,6 +123,7 @@ public class JExcelProcessor {
                 cell.setCellStyle(headerStyle);
             }
         }
+
         for (Map<String, Object> rowData : data) {
             Row row = currentSheet.createRow(rowNum++);
             int colNum = 0;
@@ -128,33 +135,65 @@ public class JExcelProcessor {
                     applyCellFormat(cell, formats.get(entry.getKey()));
                 }
                 if (transforms.containsKey(entry.getKey())) {
-                    String value=applyTransform(entry.getKey(),entry.getValue(), transforms.get(entry.getKey()));
+                    Object value=applyTransform(entry.getKey(),entry.getValue(), transforms.get(entry.getKey()));
                     setCellValue(cell, value);
                 }else{
-                    setCellValue(cell, entry.getValue());
+                    Object value= entry.getValue() != null ? entry.getValue() : null;
+                    setCellValue(cell, value);
                 }
 
             }
         }
-        @SuppressWarnings("unchecked")
-        Map<String, String> formulas =config.getFormulas();
-        if (!formulas.isEmpty() && rowNum > 0) {
-            Row lastRow = currentSheet.getRow(rowNum - 1);
-            for (Map.Entry<String, String> entry : formulas.entrySet()) {
-                int colIndex = new ArrayList<>(data.get(0).keySet()).indexOf(entry.getKey());
-                if (colIndex >= 0) {
-                    lastRow.getCell(colIndex).setCellFormula(entry.getValue());
-                }
-            }
+        applyFormulate(config,currentSheet.getLastRowNum(),lastColNum);
+        for (int i = 0; i < data.size(); i++) {
+            autoSizeColumns(data.get(i).keySet().size());
         }
-        autoSizeColumns(data.get(0).keySet().size());
         try (FileOutputStream fos = new FileOutputStream(config.getOutputFile())) {
             workbook.write(fos);
         }
     }
+    private String getFormulaValue(String formula, int rowNum, int colNum) {
+         if(null==formula){
+            return null;
+         }
+         if(formula.contains("${rowNum}")){
+             String value=formula.replaceAll("\\$\\{rowNum\\}", rowNum+"");
+             return value;
+         }else if(formula.contains("${colNum}")){
+             String value=formula.replaceAll("\\$\\{colNum\\}", colNum+"");
+             return value;
+         }else{
+             return formula;
+        }
+    }
 
     private void setCellValue(Cell cell, Object value) {
-        cell.setCellValue(value.toString());
+         if(value!=null){
+             if(value instanceof Number){
+                 if(value instanceof Integer){
+                     Integer i=(Integer)value;
+                     cell.setCellValue(i.doubleValue());
+                 }else if(value instanceof Long){
+                     Long l=(Long)value;
+                     cell.setCellValue(l.doubleValue());
+                 }else if(value instanceof Double){
+                     Double d=(Double)value;
+                     cell.setCellValue((Double)d);
+                 }else if(value instanceof Float){
+                     Float f=(Float)value;
+                     cell.setCellValue(f.doubleValue());
+                 }else if(value instanceof BigDecimal ){
+                     BigDecimal bigDecimal=(BigDecimal)value;
+                     cell.setCellValue(bigDecimal.doubleValue());
+                 }
+             }else if(value instanceof Date){
+                 cell.setCellValue((Date)value);
+             }else if(value instanceof Boolean){
+                 cell.setCellValue((Boolean)value);
+             }else{
+                 cell.setCellValue(value.toString());
+             }
+         }
     }
 
     private void autoSizeColumns(int columnCount) {
@@ -212,29 +251,76 @@ public class JExcelProcessor {
         return maxCols;
     }
 
-    private String applyTransform(String key,Object value, String transform) {
+    private Object applyTransform(String key,Object value, String transform) {
         this.contextParams.put(key, value);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(transform));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformValue();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportVisitor visitor = new JQuickExcelExportVisitor(this.contextParams,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams,data);
         @SuppressWarnings("unchecked")
         JMethodCallModel methodCallModel = (JMethodCallModel)visitor.visit(tree);
         List<Object> list=methodCallModel.getList();
         Object object= JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(),list);
-        return null==object?"":object.toString();
+        return object;
     }
     private void applyCellFormat(Cell cell, String formatSpec) {
         CellStyle style = workbook.createCellStyle();
         if (formatSpec.startsWith("DATE")) {
             style.setDataFormat(workbook.createDataFormat().getFormat("yyyy-mm-dd"));
         } else if (formatSpec.startsWith("NUMBER")) {
-            style.setDataFormat(workbook.createDataFormat().getFormat("#,##0.00"));
+            style.setDataFormat(workbook.createDataFormat().getFormat("0"));
+            cell.setCellType(CellType.NUMERIC);
         } else if (formatSpec.startsWith("STRING")) {
             style.setDataFormat(workbook.createDataFormat().getFormat("@"));
+
         }
         cell.setCellStyle(style);
+    }
+    private void applyFormulate(JExcelExportModel config,Integer maxRow,Integer maxCol) {
+         if(null==config){
+             return;
+         }
+        Map<String, String> cellFormulas = config.getCellFormulas();
+        Map<String, String> rowFormulas = config.getRowFormulas();
+        Map<String, String> colFormulas = config.getColFormulas();
+        for (Map.Entry<String, String> keyset : cellFormulas.entrySet()) {
+            String key=keyset.getKey();
+            String value=keyset.getValue();
+            CellReference cellRef = new CellReference(key);
+            int row = cellRef.getRow();    // 0-based
+            int col = cellRef.getCol();    // 0-based
+            Row r = currentSheet.getRow(row);
+            if (r == null) {
+                currentSheet.createRow(row);
+            }
+            Cell c = r.getCell(col);
+            if (c == null) {
+                c = r.createCell(col);
+            }
+            c.setCellFormula(value);
+        }
+        for (Map.Entry<String, String> keyset : rowFormulas.entrySet()) {
+            String rowNum=keyset.getKey();
+            String value=keyset.getValue();
+            CellReference cellRef = new CellReference(rowNum);
+            for (int i = 0; i <maxCol ; i++) {
+                int row = cellRef.getRow();    // 0-based
+                int col = i;
+                Row r = currentSheet.getRow(row);
+                if (r == null) {
+                    r =currentSheet.createRow(row);
+                }
+                Cell c = r.getCell(col);
+                if (c == null) {
+                    c = r.createCell(col);
+                }
+                String formula=getFormulaValue(value,row,col);
+                c.setCellFormula(formula);
+            }
+          //  cellRef.get
+
+        }
     }
 }

@@ -36,21 +36,16 @@ import java.util.Map;
  * @date 2025/6/18
  * @description
  */
-public class JQuickExcelExportVisitor extends JFieldMapping {
-    private final JExcelProcessor excelProcessor;
+public class JQuickExcelExportComonVisitor extends JQuickExcelExportFormulateVisitor {
 
-    private final List<Map<String, Object>> data;
-
-    private JExcelExportModel config = new JExcelExportModel();
-
-    public JQuickExcelExportVisitor(List<Map<String, Object>> data) {
+    public JQuickExcelExportComonVisitor(List<Map<String, Object>> data) {
         this.context = new JContext();
         this.excelProcessor = new JExcelProcessor( this.context);
         this.data = data;
 
     }
 
-    public JQuickExcelExportVisitor(JContext context, List<Map<String, Object>> data) {
+    public JQuickExcelExportComonVisitor(JContext context, List<Map<String, Object>> data) {
         this.excelProcessor = new JExcelProcessor(context);
         this.data = data;
         this.context = context;
@@ -123,17 +118,7 @@ public class JQuickExcelExportVisitor extends JFieldMapping {
         return null;
     }
 
-    @Override
-    public Void visitFormulaOption(JQuickExcelParser.FormulaOptionContext ctx) {
-        Map<String, String> formulas = new HashMap<>();
-        for (JQuickExcelParser.ExcelFormulaContext formula : ctx.excelFormula()) {
-            String cell = formula.STRING(0).getText().replaceAll("\"", "");
-            String formulaText = formula.STRING(1).getText().replaceAll("\"", "");
-            formulas.put(cell, formulaText);
-        }
-        config.setFormulas( formulas);
-        return null;
-    }
+
     @Override
     public Object visitTransformOption(JQuickExcelParser.TransformOptionContext ctx) {
         Map<String, String> transforms = new HashMap<>();

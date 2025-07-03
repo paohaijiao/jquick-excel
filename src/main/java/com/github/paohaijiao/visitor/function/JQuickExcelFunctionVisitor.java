@@ -65,8 +65,8 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         JMethodCallModel methodCallModel = new JMethodCallModel();
         List<Object> list=new ArrayList<>();
         String functionName=null;
-        if(ctx.ID() != null) {
-            functionName= JStringUtils.trim(ctx.ID().getText());
+        if(ctx.IDENTIFIER() != null) {
+            functionName= JStringUtils.trim(ctx.IDENTIFIER().getText());
         }
         JAssert.notNull(functionName,"Invalid functionName");
         methodCallModel.setMethod(JMethodEnums.methodOf(functionName));

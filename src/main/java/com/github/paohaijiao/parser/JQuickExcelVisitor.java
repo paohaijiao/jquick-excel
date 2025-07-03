@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -94,6 +94,60 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFormulaOption(JQuickExcelParser.FormulaOptionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFormulaTarget(JQuickExcelParser.FormulaTargetContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rowFormula}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRowFormula(JQuickExcelParser.RowFormulaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#colFormula}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColFormula(JQuickExcelParser.ColFormulaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#cellFormula}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCellFormula(JQuickExcelParser.CellFormulaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#cellRef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCellRef(JQuickExcelParser.CellRefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#formulaSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFormulaSpec(JQuickExcelParser.FormulaSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rowSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRowSpec(JQuickExcelParser.RowSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#colSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColSpec(JQuickExcelParser.ColSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rangeSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRangeSpec(JQuickExcelParser.RangeSpecContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#fieldMapping}.
 	 * @param ctx the parse tree

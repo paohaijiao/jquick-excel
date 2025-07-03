@@ -49,7 +49,7 @@ public class JImLexerTest {
         System.out.println(input);
         JExcelImportModel model = parseImportConfig(input);
         System.out.println(model);
-        List<Map<String, String>> processor= new JExcelProcessor().importData(model);
+        List<Map<String, Object>> processor= new JExcelProcessor().importData(model);
         System.out.println(processor);
     }
 

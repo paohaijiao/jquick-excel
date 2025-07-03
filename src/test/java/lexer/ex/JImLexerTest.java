@@ -18,7 +18,7 @@ package lexer.ex;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelExportVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -36,7 +36,7 @@ public class JImLexerTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data=new ArrayList<>();
-        JQuickExcelExportVisitor visitor = new JQuickExcelExportVisitor(data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
         @SuppressWarnings("unchecked")
         JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
         return result;
@@ -139,7 +139,7 @@ public class JImLexerTest {
     }
     @Test
     public void export() {
-        String input = "EXPORT FROM annual_report TO \"output/report_2023.xlsx\" WITH\n" +
+        String input = "EXPORT FROM annual_report TO \"d://test//report_2023.xlsx\" WITH\n" +
                 "    SHEET=\"年度汇总\",\n" +
                 "    HEADER='YES',\n" +
                 "    RANGE=\"A3\",\n" +
