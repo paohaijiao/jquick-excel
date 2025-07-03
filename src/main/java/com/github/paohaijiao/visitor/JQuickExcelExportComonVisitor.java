@@ -36,7 +36,7 @@ import java.util.Map;
  * @date 2025/6/18
  * @description
  */
-public class JQuickExcelExportComonVisitor extends JQuickExcelExportFormulateVisitor {
+public class JQuickExcelExportComonVisitor extends JQuickExcelExportStyleVisitor {
 
     public JQuickExcelExportComonVisitor(List<Map<String, Object>> data) {
         this.context = new JContext();

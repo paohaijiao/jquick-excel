@@ -1,4 +1,4 @@
-// Generated from D:/my/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -147,6 +147,86 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFormulaOption(JQuickExcelParser.FormulaOptionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#styleOption}.
+	 * @param ctx the parse tree
+	 */
+	void enterStyleOption(JQuickExcelParser.StyleOptionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#styleOption}.
+	 * @param ctx the parse tree
+	 */
+	void exitStyleOption(JQuickExcelParser.StyleOptionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#styleTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterStyleTarget(JQuickExcelParser.StyleTargetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#styleTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitStyleTarget(JQuickExcelParser.StyleTargetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rowStyle}.
+	 * @param ctx the parse tree
+	 */
+	void enterRowStyle(JQuickExcelParser.RowStyleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rowStyle}.
+	 * @param ctx the parse tree
+	 */
+	void exitRowStyle(JQuickExcelParser.RowStyleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#colStyle}.
+	 * @param ctx the parse tree
+	 */
+	void enterColStyle(JQuickExcelParser.ColStyleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#colStyle}.
+	 * @param ctx the parse tree
+	 */
+	void exitColStyle(JQuickExcelParser.ColStyleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#cellStyle}.
+	 * @param ctx the parse tree
+	 */
+	void enterCellStyle(JQuickExcelParser.CellStyleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#cellStyle}.
+	 * @param ctx the parse tree
+	 */
+	void exitCellStyle(JQuickExcelParser.CellStyleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rangeStyle}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeStyle(JQuickExcelParser.RangeStyleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rangeStyle}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeStyle(JQuickExcelParser.RangeStyleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rangeRef}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeRef(JQuickExcelParser.RangeRefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rangeRef}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeRef(JQuickExcelParser.RangeRefContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#styleProperty}.
+	 * @param ctx the parse tree
+	 */
+	void enterStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#styleProperty}.
+	 * @param ctx the parse tree
+	 */
+	void exitStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
 	 * @param ctx the parse tree

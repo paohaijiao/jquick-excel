@@ -1,4 +1,4 @@
-// Generated from D:/my/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -94,6 +94,54 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFormulaOption(JQuickExcelParser.FormulaOptionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#styleOption}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStyleOption(JQuickExcelParser.StyleOptionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#styleTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStyleTarget(JQuickExcelParser.StyleTargetContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rowStyle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRowStyle(JQuickExcelParser.RowStyleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#colStyle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColStyle(JQuickExcelParser.ColStyleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#cellStyle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCellStyle(JQuickExcelParser.CellStyleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rangeStyle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRangeStyle(JQuickExcelParser.RangeStyleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rangeRef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRangeRef(JQuickExcelParser.RangeRefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#styleProperty}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
 	 * @param ctx the parse tree

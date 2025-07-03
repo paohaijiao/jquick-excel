@@ -45,4 +45,11 @@ public class JExcelExportModel {
 
     Map<String, String> transforms = new HashMap<>();
 
+    Map<String, Map<String, String>> rowStyles = new HashMap<>();
+
+    Map<String, Map<String, String>> colStyles = new HashMap<>();
+
+    Map<String, Map<String, String>> cellStyles = new HashMap<>();
+
+    Map<String, Map<String, String>> rangeStyles = new HashMap<>();
 }
