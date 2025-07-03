@@ -143,6 +143,78 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mergeOption}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMergeOption(JQuickExcelParser.MergeOptionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mergeSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMergeSpec(JQuickExcelParser.MergeSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rowMerge}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRowMerge(JQuickExcelParser.RowMergeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rowRange}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRowRange(JQuickExcelParser.RowRangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#singleRow}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleRow(JQuickExcelParser.SingleRowContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#multiRowRange}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiRowRange(JQuickExcelParser.MultiRowRangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#colMerge}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColMerge(JQuickExcelParser.ColMergeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#colRange}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColRange(JQuickExcelParser.ColRangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#singleCol}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleCol(JQuickExcelParser.SingleColContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#multiColRange}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiColRange(JQuickExcelParser.MultiColRangeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rangeMerge}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRangeMerge(JQuickExcelParser.RangeMergeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mergeProperties}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

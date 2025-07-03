@@ -52,4 +52,11 @@ public class JExcelExportModel {
     Map<String, Map<String, String>> cellStyles = new HashMap<>();
 
     Map<String, Map<String, String>> rangeStyles = new HashMap<>();
+
+    Map<String, Object> rowMerge = new HashMap<>();
+
+    Map<String, Object> colMerge = new HashMap<>();
+
+    Map<String, Object> rangeMerge = new HashMap<>();
+
 }

@@ -228,6 +228,126 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#mergeOption}.
+	 * @param ctx the parse tree
+	 */
+	void enterMergeOption(JQuickExcelParser.MergeOptionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#mergeOption}.
+	 * @param ctx the parse tree
+	 */
+	void exitMergeOption(JQuickExcelParser.MergeOptionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#mergeSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterMergeSpec(JQuickExcelParser.MergeSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#mergeSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitMergeSpec(JQuickExcelParser.MergeSpecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rowMerge}.
+	 * @param ctx the parse tree
+	 */
+	void enterRowMerge(JQuickExcelParser.RowMergeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rowMerge}.
+	 * @param ctx the parse tree
+	 */
+	void exitRowMerge(JQuickExcelParser.RowMergeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rowRange}.
+	 * @param ctx the parse tree
+	 */
+	void enterRowRange(JQuickExcelParser.RowRangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rowRange}.
+	 * @param ctx the parse tree
+	 */
+	void exitRowRange(JQuickExcelParser.RowRangeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#singleRow}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleRow(JQuickExcelParser.SingleRowContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#singleRow}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleRow(JQuickExcelParser.SingleRowContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#multiRowRange}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiRowRange(JQuickExcelParser.MultiRowRangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#multiRowRange}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiRowRange(JQuickExcelParser.MultiRowRangeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#colMerge}.
+	 * @param ctx the parse tree
+	 */
+	void enterColMerge(JQuickExcelParser.ColMergeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#colMerge}.
+	 * @param ctx the parse tree
+	 */
+	void exitColMerge(JQuickExcelParser.ColMergeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#colRange}.
+	 * @param ctx the parse tree
+	 */
+	void enterColRange(JQuickExcelParser.ColRangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#colRange}.
+	 * @param ctx the parse tree
+	 */
+	void exitColRange(JQuickExcelParser.ColRangeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#singleCol}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleCol(JQuickExcelParser.SingleColContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#singleCol}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleCol(JQuickExcelParser.SingleColContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#multiColRange}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiColRange(JQuickExcelParser.MultiColRangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#multiColRange}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiColRange(JQuickExcelParser.MultiColRangeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rangeMerge}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeMerge(JQuickExcelParser.RangeMergeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rangeMerge}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeMerge(JQuickExcelParser.RangeMergeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#mergeProperties}.
+	 * @param ctx the parse tree
+	 */
+	void enterMergeProperties(JQuickExcelParser.MergePropertiesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#mergeProperties}.
+	 * @param ctx the parse tree
+	 */
+	void exitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
 	 * @param ctx the parse tree
 	 */
