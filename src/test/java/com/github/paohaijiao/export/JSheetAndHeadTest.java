@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.css;
+package com.github.paohaijiao.export;
 
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
@@ -31,7 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.*;
 
-public class JDataTest {
+public class JSheetAndHeadTest {
 
     public static List<JStudentModel> getData() {
         List<JStudentModel> students = new ArrayList<>();
@@ -42,7 +42,7 @@ public class JDataTest {
     }
 
     @Test
-    public void export() throws FileNotFoundException {
+    public void sheet() throws FileNotFoundException {
         String input = "EXPORT   WITH\n" +
                 "    SHEET=\"年度汇总\",\n" +
                 "    HEADER='YES',\n" +
@@ -61,18 +61,17 @@ public class JDataTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//map.xlsx");
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
-
     @Test
-    public void mapping() {
-        String input = "EXPORT FROM annual_report TO \"d://test//report_2023.xlsx\" WITH\n" +
-                "    SHEET=\"年度汇总\",\n" +
+    public void sheet1() throws FileNotFoundException {
+        String input = "EXPORT   WITH\n" +
+                "    SHEET=\"1\",\n" +
                 "    HEADER='YES',\n" +
                 "    RANGE=\"A3\",\n" +
                 "    MAPPING= {\n" +
@@ -82,10 +81,6 @@ public class JDataTest {
                 "    FORMAT = {\n" +
                 "        \"name\": NUMBER('¥#,##0.00'),\n" +
                 "        \"gender\": DATE('yyyy年mm月dd日')\n" +
-                "    },\n" +
-                "    FORMULAS = {\n" +
-                "        \"YTDTotal\": \"SUM(D4:D15)\",\n" +
-                "        \"YoYGrowth\": \"TEXT((D15-D4)/D4,\\\"0.00%\\\")\"\n" +
                 "    }";
         System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
@@ -93,27 +88,26 @@ public class JDataTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
-        @SuppressWarnings("unchecked")
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
+        JContext context=new JContext();
+        context.put("fos", fileOutputStream);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
-
     @Test
-    public void trans() {
-        String input = "\n" +
-                "EXPORT FROM annual_report TO \"d://test//report_2023.xlsx\" WITH\n" +
-                "    SHEET=\"年度汇总\",\n" +
+    public void header() throws FileNotFoundException {
+        String input = "EXPORT   WITH\n" +
+                "    SHEET=\"1\",\n" +
                 "    HEADER='YES',\n" +
                 "    RANGE=\"A3\",\n" +
                 "    MAPPING= {\n" +
                 "        \"name\": \"姓名\",\n" +
-                "        \"gender\":\"性别\",\n" +
-                "        \"enrollmentDate\":\"入校日期\"\n" +
+                "        \"gender\":\"性别\"\n" +
                 "    },\n" +
-                "\tTRANSFORM= {\n" +
-                "        \"gender\":trans(${codeTable},${gender}),\n" +
-                "        \"enrollmentDate\":dateFormat(${enrollmentDate},'yyyy-MM-dd')\n" +
+                "    FORMAT = {\n" +
+                "        \"name\": NUMBER('¥#,##0.00'),\n" +
+                "        \"gender\": DATE('yyyy年mm月dd日')\n" +
                 "    }";
         System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
@@ -121,16 +115,40 @@ public class JDataTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        HashMap<String, Object> variable = new HashMap<>();
-        JContext params = new JContext();
-        variable.put("1", "男");
-        variable.put("2", "女");
-        params.put("codeTable", variable);
-
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(params, data);
-        @SuppressWarnings("unchecked")
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//header.xlsx");
+        JContext context=new JContext();
+        context.put("fos", fileOutputStream);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
+    @Test
+    public void header1() throws FileNotFoundException {
+        String input = "EXPORT   WITH\n" +
+                "    SHEET=\"1\",\n" +
+                "    HEADER='NO',\n" +
+                "    RANGE=\"A3\",\n" +
+                "    MAPPING= {\n" +
+                "        \"name\": \"姓名\",\n" +
+                "        \"gender\":\"性别\"\n" +
+                "    },\n" +
+                "    FORMAT = {\n" +
+                "        \"name\": NUMBER('¥#,##0.00'),\n" +
+                "        \"gender\": DATE('yyyy年mm月dd日')\n" +
+                "    }";
+        System.out.println(input);
+        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickExcelParser parser = new JQuickExcelParser(tokens);
+        ParseTree tree = parser.exportConfig();
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//headerno.xlsx");
+        JContext context=new JContext();
+        context.put("fos", fileOutputStream);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+
+    }
+
 
 }
