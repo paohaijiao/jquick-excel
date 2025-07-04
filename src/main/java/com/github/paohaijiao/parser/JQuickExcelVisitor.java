@@ -299,36 +299,6 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExcelFormula(JQuickExcelParser.ExcelFormulaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#formatSpec}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFormatSpec(JQuickExcelParser.FormatSpecContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#dateFormat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDateFormat(JQuickExcelParser.DateFormatContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#numberFormat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberFormat(JQuickExcelParser.NumberFormatContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#stringFormat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStringFormat(JQuickExcelParser.StringFormatContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#customFormat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCustomFormat(JQuickExcelParser.CustomFormatContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#functionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

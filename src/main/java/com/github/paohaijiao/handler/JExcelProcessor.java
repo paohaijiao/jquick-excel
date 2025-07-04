@@ -236,8 +236,8 @@ public class JExcelProcessor {
             int[] startCoords = parseCellReference(start);
             int[] endCoords = parseCellReference(end);
             return new int[]{
-                    startCoords[0], endCoords[0], // 行范围
-                    startCoords[1], endCoords[1]  // 列范围
+                    startCoords[0], endCoords[0],
+                    startCoords[1], endCoords[1]
             };
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid range format: " + range);
@@ -251,7 +251,7 @@ public class JExcelProcessor {
         for (int i = 0; i < colPart.length(); i++) {
             col = col * 26 + (colPart.charAt(i) - 'A' + 1);
         }
-        int row = Integer.parseInt(rowPart) - 1; // 转换为0-based
+        int row = Integer.parseInt(rowPart) - 1;
         return new int[]{row, col - 1};
     }
 
@@ -282,15 +282,7 @@ public class JExcelProcessor {
 
     private void applyCellFormat(Cell cell, String formatSpec) {
         CellStyle style = workbook.createCellStyle();
-        if (formatSpec.startsWith("DATE")) {
-            style.setDataFormat(workbook.createDataFormat().getFormat("yyyy-mm-dd"));
-        } else if (formatSpec.startsWith("NUMBER")) {
-            style.setDataFormat(workbook.createDataFormat().getFormat("0"));
-            cell.setCellType(CellType.NUMERIC);
-        } else if (formatSpec.startsWith("STRING")) {
-            style.setDataFormat(workbook.createDataFormat().getFormat("@"));
-
-        }
+        style.setDataFormat(workbook.createDataFormat().getFormat(formatSpec));
         cell.setCellStyle(style);
     }
 

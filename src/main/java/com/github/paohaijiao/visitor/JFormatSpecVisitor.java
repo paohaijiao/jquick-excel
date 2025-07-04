@@ -22,6 +22,9 @@ import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import com.github.paohaijiao.visitor.function.JQuickExcelFunctionVisitor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * packageName com.paohaijiao.javelin.visitor
  *
@@ -34,74 +37,23 @@ import com.github.paohaijiao.visitor.function.JQuickExcelFunctionVisitor;
 public class JFormatSpecVisitor extends JQuickExcelFunctionVisitor {
 
     @Override
-    public String visitCustomFormat(JQuickExcelParser.CustomFormatContext ctx) {
-        if (ctx.STRING() != null) {
-            String customString = ctx.STRING().toString();
-            String newString = JStringUtils.trim(customString);
-            return newString;
+    public Map<String, String> visitCellFormat(JQuickExcelParser.CellFormatContext ctx) {
+        Map<String, String> formats = new HashMap<>();
+        if(ctx.STRING() != null&&ctx.STRING().size()==2) {
+            String  key=JStringUtils.trim(ctx.STRING().get(0).getText());
+            String  value=JStringUtils.trim(ctx.STRING().get(1).getText());
+            formats.put(key,value);
         }
-        JAssert.throwNewException("invalid custom format");
-        return null;
+        return formats;
     }
-
     @Override
-    public String visitStringFormat(JQuickExcelParser.StringFormatContext ctx) {
-        if (ctx.STRING() != null) {
-            String customString = ctx.STRING().toString();
-            String newString = JStringUtils.trim(customString);
-            return newString;
+    public Void visitFormatOption(JQuickExcelParser.FormatOptionContext ctx) {
+        Map<String, String> formats = new HashMap<>();
+        for (JQuickExcelParser.CellFormatContext cells : ctx.cellFormat()) {
+            Map<String, String> formatSpec=  visitCellFormat(cells);
+            formats.putAll(formatSpec);
         }
-        JAssert.throwNewException("invalid string format");
-        return null;
-    }
-
-    @Override
-    public String visitNumberFormat(JQuickExcelParser.NumberFormatContext ctx) {
-        if (ctx.STRING() != null) {
-            String customString = ctx.STRING().toString();
-            String newString = JStringUtils.trim(customString);
-            return newString;
-        }
-        JAssert.throwNewException("invalid NumberFormat ");
-        return null;
-    }
-
-    @Override
-    public String visitDateFormat(JQuickExcelParser.DateFormatContext ctx) {
-        if (ctx.STRING() != null) {
-            String customString = ctx.STRING().toString();
-            String newString = JStringUtils.trim(customString);
-            return newString;
-        }
-        JAssert.throwNewException("invalid DateFormat ");
-        return null;
-    }
-
-    @Override
-    public JFormatSpec visitFormatSpec(JQuickExcelParser.FormatSpecContext ctx) {
-        JFormatSpec jFormatSpec = new JFormatSpec();
-        if (ctx.dateFormat() != null) {
-            String value = visitDateFormat(ctx.dateFormat());
-            jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.DATE);
-            jFormatSpec.setValue(value);
-            return jFormatSpec;
-        } else if (ctx.numberFormat() != null) {
-            String value = visitNumberFormat(ctx.numberFormat());
-            jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.NUMBER);
-            jFormatSpec.setValue(value);
-            return jFormatSpec;
-        } else if (ctx.stringFormat() != null) {
-            String value = visitStringFormat(ctx.stringFormat());
-            jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.STRING);
-            jFormatSpec.setValue(value);
-            return jFormatSpec;
-        } else if (ctx.customFormat() != null) {
-            String value = visitCustomFormat(ctx.customFormat());
-            jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.CUSTOM);
-            jFormatSpec.setValue(value);
-            return jFormatSpec;
-        }
-        JAssert.throwNewException("invalid format spec");
+        config.setFormat(formats);
         return null;
     }
 

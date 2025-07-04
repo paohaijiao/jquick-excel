@@ -488,56 +488,6 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitExcelFormula(JQuickExcelParser.ExcelFormulaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JQuickExcelParser#formatSpec}.
-	 * @param ctx the parse tree
-	 */
-	void enterFormatSpec(JQuickExcelParser.FormatSpecContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickExcelParser#formatSpec}.
-	 * @param ctx the parse tree
-	 */
-	void exitFormatSpec(JQuickExcelParser.FormatSpecContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link JQuickExcelParser#dateFormat}.
-	 * @param ctx the parse tree
-	 */
-	void enterDateFormat(JQuickExcelParser.DateFormatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickExcelParser#dateFormat}.
-	 * @param ctx the parse tree
-	 */
-	void exitDateFormat(JQuickExcelParser.DateFormatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link JQuickExcelParser#numberFormat}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumberFormat(JQuickExcelParser.NumberFormatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickExcelParser#numberFormat}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumberFormat(JQuickExcelParser.NumberFormatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link JQuickExcelParser#stringFormat}.
-	 * @param ctx the parse tree
-	 */
-	void enterStringFormat(JQuickExcelParser.StringFormatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickExcelParser#stringFormat}.
-	 * @param ctx the parse tree
-	 */
-	void exitStringFormat(JQuickExcelParser.StringFormatContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link JQuickExcelParser#customFormat}.
-	 * @param ctx the parse tree
-	 */
-	void enterCustomFormat(JQuickExcelParser.CustomFormatContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JQuickExcelParser#customFormat}.
-	 * @param ctx the parse tree
-	 */
-	void exitCustomFormat(JQuickExcelParser.CustomFormatContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#functionCall}.
 	 * @param ctx the parse tree
 	 */

@@ -103,17 +103,7 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
         return null;
     }
 
-    @Override
-    public Void visitFormatOption(JQuickExcelParser.FormatOptionContext ctx) {
-        Map<String, String> formats = new HashMap<>();
-        for (JQuickExcelParser.CellFormatContext format : ctx.cellFormat()) {
-            String field = format.STRING().getText().replaceAll("\"", "");
-            String formatSpec = format.formatSpec().getText();
-            formats.put(field, formatSpec);
-        }
-        config.setFormat(formats);
-        return null;
-    }
+
 
 
     @Override

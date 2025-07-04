@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class JFormatTest {
+public class JMappingTest {
 
     public static List<JStudentModel> getData() {
         List<JStudentModel> students = new ArrayList<>();
@@ -47,9 +47,16 @@ public class JFormatTest {
     @Test
     public void sheet() throws FileNotFoundException {
         String input = "EXPORT   WITH\n" +
-                "    FORMAT = {\n" +
-                "        \"age\": '#,##0.00',\n" +
-                "        \"enrollmentDate\": 'yy年mm月dd日'\n" +
+                "    SHEET=\"年度汇总\",\n" +
+                "    HEADER='YES',\n" +
+                "    RANGE=\"A3\",\n" +
+                "    MAPPING= {\n" +
+                "        \"id\": \"主键\",\n" +
+                "        \"name\": \"姓名\",\n" +
+                "        \"gender\":\"性别\",\n" +
+                "        \"age\":\"年龄\",\n" +
+                "        \"enrollmentDate\":\"入学时间\",\n" +
+                "        \"className\":\"课程名称\"\n" +
                 "    }";
         System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));

@@ -43,23 +43,7 @@ public class JFieldMapping extends JFormatSpecVisitor {
         return jKeyValueModel;
     }
 
-    @Override
-    public JKeyValueModel visitCellFormat(JQuickExcelParser.CellFormatContext ctx) {
-        JKeyValueModel jKeyValueModel = new JKeyValueModel();
-        Object value = null;
-        String key = null;
-        if (ctx.STRING() != null) {
-            String str = ctx.STRING().getText();
-            key = JStringUtils.trim(str);
-        }
-        JAssert.notNull(key, "key not null");
-        jKeyValueModel.setKey(key);
-        if (ctx.formatSpec() != null) {
-            value = visitFormatSpec(ctx.formatSpec());
-        }
-        jKeyValueModel.setValue(value);
-        return jKeyValueModel;
-    }
+
 
     @Override
     public JKeyValueModel visitTransformRule(JQuickExcelParser.TransformRuleContext ctx) {
