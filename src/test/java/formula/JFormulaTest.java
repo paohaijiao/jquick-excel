@@ -15,7 +15,7 @@
  */
 package formula;
 
-import com.github.paohaijiao.factory.ExcelFormulaFactory;
+import com.github.paohaijiao.factory.JExcelFormulaFactory;
 import com.github.paohaijiao.formula.impl.JVLookupFormula;
 import com.github.paohaijiao.formula.impl.judge.JIfFormula;
 import com.github.paohaijiao.formula.impl.math.JAverageFormula;
@@ -32,7 +32,7 @@ public class JFormulaTest {
     @Test
     public void fieldMapping1() {
         Workbook workbook = new XSSFWorkbook();
-        ExcelFormulaFactory factory = new ExcelFormulaFactory(workbook);
+        JExcelFormulaFactory factory = new JExcelFormulaFactory(workbook);
         Sheet sheet = workbook.createSheet("Data");
         for (int i = 0; i < 10; i++) {
             Row row = sheet.createRow(i);

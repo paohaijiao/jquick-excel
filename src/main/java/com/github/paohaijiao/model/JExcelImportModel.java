@@ -29,9 +29,9 @@ public class JExcelImportModel {
 
     private Object sheet;
 
-    private Boolean header=true;
+    private Boolean header = true;
 
-    private String range=null;
+    private String range = null;
 
     Map<String, String> mappings = new HashMap<>();
 

@@ -9,7 +9,7 @@ public class JVLookupFormula extends JAbstractExcelFormula {
     private final boolean exactMatch;
 
     public JVLookupFormula(String lookupValue, String tableArray,
-                          int colIndex, boolean exactMatch) {
+                           int colIndex, boolean exactMatch) {
         super(String.format("VLOOKUP(%s, %s, %d, %s)",
                 lookupValue, tableArray, colIndex, exactMatch ? "TRUE" : "FALSE"));
         this.lookupValue = lookupValue;
@@ -17,6 +17,7 @@ public class JVLookupFormula extends JAbstractExcelFormula {
         this.colIndex = colIndex;
         this.exactMatch = exactMatch;
     }
+
     public boolean isExactMatch() {
         return exactMatch;
     }

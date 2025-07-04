@@ -24,8 +24,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-public class JMethodCallTest
-{
+public class JMethodCallTest {
     @Test
     public void fileName() {
         String input = "'d://test/a.txt'";
@@ -37,6 +36,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void identifier() {
         String input = "id";
@@ -50,6 +50,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void functionArg() {
         String input = "${id}";
@@ -63,6 +64,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void string() {
         String input = "'xsaxsa'";
@@ -76,6 +78,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void number() {
         String input = "1234.23432";
@@ -89,6 +92,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void identify() {
         String input = "id";
@@ -102,6 +106,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void variable() {
         String input = "${id}";
@@ -115,6 +120,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void quotedFunctionCall() {
         String input = "'toInt(${id})'";
@@ -128,6 +134,7 @@ public class JMethodCallTest
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void functionCall() {
         String input = "length(${id})";

@@ -40,6 +40,7 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
         }
         return null;
     }
+
     @Override
     public Void visitStyleTarget(JQuickExcelParser.StyleTargetContext ctx) {
         if (ctx.rowStyle() != null) {
@@ -53,12 +54,13 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
         }
         return null;
     }
+
     @Override
     public Void visitRowStyle(JQuickExcelParser.RowStyleContext ctx) {
         String rowSpec = ctx.rowSpec().getText();
-        Map<String, String> styleProps=new HashMap<>();
+        Map<String, Object> styleProps = new HashMap<>();
         for (JQuickExcelParser.StylePropertyContext prop : ctx.styleProperty()) {
-            Map<String, String> row=  visitStyleProperty(prop);
+            Map<String, Object> row = visitStyleProperty(prop);
             styleProps.putAll(row);
         }
         config.getRowStyles().put(rowSpec, styleProps);
@@ -68,9 +70,9 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
     @Override
     public Void visitColStyle(JQuickExcelParser.ColStyleContext ctx) {
         String colSpec = ctx.colSpec().getText();
-        Map<String, String> styleProps=new HashMap<>();
+        Map<String, Object> styleProps = new HashMap<>();
         for (JQuickExcelParser.StylePropertyContext prop : ctx.styleProperty()) {
-            Map<String, String> row=  visitStyleProperty(prop);
+            Map<String, Object> row = visitStyleProperty(prop);
             styleProps.putAll(row);
         }
         config.getColStyles().put(colSpec, styleProps);
@@ -80,9 +82,9 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
     @Override
     public Void visitCellStyle(JQuickExcelParser.CellStyleContext ctx) {
         String cellRef = ctx.cellRef().getText();
-        Map<String, String> styleProps=new HashMap<>();
+        Map<String, Object> styleProps = new HashMap<>();
         for (JQuickExcelParser.StylePropertyContext prop : ctx.styleProperty()) {
-            Map<String, String> row=  visitStyleProperty(prop);
+            Map<String, Object> row = visitStyleProperty(prop);
             styleProps.putAll(row);
         }
         config.getCellStyles().put(cellRef, styleProps);
@@ -92,9 +94,9 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
     @Override
     public Void visitRangeStyle(JQuickExcelParser.RangeStyleContext ctx) {
         String rangeRef = ctx.rangeRef().getText();
-        Map<String, String> styleProps=new HashMap<>();
+        Map<String, Object> styleProps = new HashMap<>();
         for (JQuickExcelParser.StylePropertyContext prop : ctx.styleProperty()) {
-            Map<String, String> row=  visitStyleProperty(prop);
+            Map<String, Object> row = visitStyleProperty(prop);
             styleProps.putAll(row);
         }
         config.getRangeStyles().put(rangeRef, styleProps);
@@ -105,12 +107,13 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
     public String visitRangeRef(JQuickExcelParser.RangeRefContext ctx) {
         return ctx.getText();
     }
+
     @Override
-    public Map<String, String> visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx) {
-        Map<String, String> style = new HashMap<>();
-        if (ctx.IDENTIFIER() != null&&ctx.IDENTIFIER().size()==2) {
-            String key=JStringUtils.trim(ctx.IDENTIFIER(0).getText());
-            String value=JStringUtils.trim(ctx.IDENTIFIER(1).getText());
+    public Map<String, Object> visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx) {
+        Map<String, Object> style = new HashMap<>();
+        if (ctx.IDENTIFIER() != null && ctx.IDENTIFIER().size() == 2) {
+            String key = JStringUtils.trim(ctx.IDENTIFIER(0).getText());
+            Object value = JStringUtils.trim(ctx.IDENTIFIER(1).getText());
             style.put(key, value);
         }
         return style;

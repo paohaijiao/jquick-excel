@@ -11,18 +11,22 @@ public class JAndFormula extends JAbstractExcelFormula {
         super(buildFormulaString(conditions));
         this.conditions = conditions;
     }
+
     private static String buildFormulaString(String... conditions) {
         if (conditions == null || conditions.length == 0) {
             throw new IllegalArgumentException("AND 函数至少需要一个参数");
         }
         return "AND(" + String.join(",", conditions) + ")";
     }
+
     public int getConditionCount() {
         return conditions.length;
     }
+
     public String getCondition(int index) {
         return conditions[index];
     }
+
     @Override
     public Object evaluate(FormulaEvaluator evaluator, Cell cell) {
         Object result = super.evaluate(evaluator, cell);

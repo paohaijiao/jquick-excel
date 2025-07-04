@@ -15,20 +15,13 @@
  */
 package lexer.ex;
 
-import com.github.paohaijiao.factory.ExcelFormulaFactory;
-import com.github.paohaijiao.model.JExcelExportModel;
+import com.github.paohaijiao.factory.JExcelFormulaFactory;
 import com.github.paohaijiao.model.JStudentModel;
-import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.util.JObjectConverter;
 import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
@@ -38,13 +31,14 @@ import java.util.*;
 
 public class JExcelExportFormulatTest {
 
-    public static   List<JStudentModel> getData(){
+    public static List<JStudentModel> getData() {
         List<JStudentModel> students = new ArrayList<>();
-        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班","true"));
-        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班","true"));
-        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班","true"));
+        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
+        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
+        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
         return students;
     }
+
     @Test
     public void testFormulaApplication() throws IOException {
         List<Map<String, Object>> data = new ArrayList<>();
@@ -56,7 +50,7 @@ public class JExcelExportFormulatTest {
             data.add(row);
         }
         Workbook workbook = new XSSFWorkbook();
-        ExcelFormulaFactory formulaFactory = new ExcelFormulaFactory(workbook);
+        JExcelFormulaFactory formulaFactory = new JExcelFormulaFactory(workbook);
         String configText = "EXPORT FROM data TO \"d://test//output.xlsx\" WITH FORMULAS =\n" +
                 " {   ROW 12: \"SUM(A${rowNum}:A${rowNum})\",   " +
                 "COL E : \"IF(A${rowNum}>5,A1,A2)\", " +

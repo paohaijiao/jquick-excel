@@ -37,9 +37,10 @@ public class JImLexerTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.importConfig();
         JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
-        JExcelImportModel result = (JExcelImportModel)visitor.visit(tree);
+        JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
         return result;
     }
+
     @Test
     public void testComplexImport() throws IOException {
         String input = "IMPORT FROM \"d://student.xlsx\"" +
@@ -49,7 +50,7 @@ public class JImLexerTest {
         System.out.println(input);
         JExcelImportModel model = parseImportConfig(input);
         System.out.println(model);
-        List<Map<String, Object>> processor= new JExcelProcessor().importData(model);
+        List<Map<String, Object>> processor = new JExcelProcessor().importData(model);
         System.out.println(processor);
     }
 

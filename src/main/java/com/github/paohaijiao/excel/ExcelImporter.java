@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ExcelImporter <T> {
+public class ExcelImporter<T> {
     private final Class<T> clazz;
     private JReadListener<T> listener;
     private int headRowNumber = 1;

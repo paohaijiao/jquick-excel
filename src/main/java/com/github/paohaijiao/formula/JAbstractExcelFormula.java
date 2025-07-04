@@ -5,7 +5,7 @@ import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.FormulaError;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
-public class JAbstractExcelFormula implements JExcelFormula{
+public class JAbstractExcelFormula implements JExcelFormula {
 
     protected final String formula;
 

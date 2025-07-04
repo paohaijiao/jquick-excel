@@ -7,6 +7,7 @@ import org.apache.poi.xddf.usermodel.chart.*;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.FileOutputStream;
+
 public class PoiBarChartExample {
     public static void main(String[] args) throws Exception {
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {

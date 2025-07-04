@@ -28,7 +28,7 @@ public class JFieldMappingTest {
     @Test
     public void fieldMapping1() {
         String input = " \"name\": \"姓名\"";
-        System.out.println( input );
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
@@ -37,10 +37,11 @@ public class JFieldMappingTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void fieldMapping2() {
         String input = " \"name\": length(12340)";
-        System.out.println( input );
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
@@ -49,10 +50,11 @@ public class JFieldMappingTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void cellFormat() {
         String input = " \"name\": DATE('12340')";
-        System.out.println( input );
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
@@ -61,10 +63,11 @@ public class JFieldMappingTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void transformRule() {
         String input = " \"name\": length('12340')";
-        System.out.println( input );
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
@@ -73,10 +76,11 @@ public class JFieldMappingTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void transformValue() {
         String input = "  length('12340')";
-        System.out.println( input );
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);

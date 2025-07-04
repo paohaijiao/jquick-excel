@@ -35,9 +35,9 @@ public class JFormatSpecVisitor extends JQuickExcelFunctionVisitor {
 
     @Override
     public String visitCustomFormat(JQuickExcelParser.CustomFormatContext ctx) {
-        if(ctx.STRING() != null) {
-            String customString=ctx.STRING().toString();
-            String newString= JStringUtils.trim(customString);
+        if (ctx.STRING() != null) {
+            String customString = ctx.STRING().toString();
+            String newString = JStringUtils.trim(customString);
             return newString;
         }
         JAssert.throwNewException("invalid custom format");
@@ -46,19 +46,20 @@ public class JFormatSpecVisitor extends JQuickExcelFunctionVisitor {
 
     @Override
     public String visitStringFormat(JQuickExcelParser.StringFormatContext ctx) {
-        if(ctx.STRING() != null) {
-            String customString=ctx.STRING().toString();
-            String newString= JStringUtils.trim(customString);
+        if (ctx.STRING() != null) {
+            String customString = ctx.STRING().toString();
+            String newString = JStringUtils.trim(customString);
             return newString;
         }
         JAssert.throwNewException("invalid string format");
         return null;
     }
+
     @Override
     public String visitNumberFormat(JQuickExcelParser.NumberFormatContext ctx) {
-        if(ctx.STRING() != null) {
-            String customString=ctx.STRING().toString();
-            String newString= JStringUtils.trim(customString);
+        if (ctx.STRING() != null) {
+            String customString = ctx.STRING().toString();
+            String newString = JStringUtils.trim(customString);
             return newString;
         }
         JAssert.throwNewException("invalid NumberFormat ");
@@ -67,34 +68,35 @@ public class JFormatSpecVisitor extends JQuickExcelFunctionVisitor {
 
     @Override
     public String visitDateFormat(JQuickExcelParser.DateFormatContext ctx) {
-        if(ctx.STRING() != null) {
-            String customString=ctx.STRING().toString();
-            String newString= JStringUtils.trim(customString);
+        if (ctx.STRING() != null) {
+            String customString = ctx.STRING().toString();
+            String newString = JStringUtils.trim(customString);
             return newString;
         }
         JAssert.throwNewException("invalid DateFormat ");
         return null;
     }
+
     @Override
     public JFormatSpec visitFormatSpec(JQuickExcelParser.FormatSpecContext ctx) {
         JFormatSpec jFormatSpec = new JFormatSpec();
-        if(ctx.dateFormat()!= null) {
-            String value=visitDateFormat(ctx.dateFormat());
+        if (ctx.dateFormat() != null) {
+            String value = visitDateFormat(ctx.dateFormat());
             jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.DATE);
             jFormatSpec.setValue(value);
             return jFormatSpec;
-        } else if (ctx.numberFormat()!= null) {
-            String value=visitNumberFormat(ctx.numberFormat());
+        } else if (ctx.numberFormat() != null) {
+            String value = visitNumberFormat(ctx.numberFormat());
             jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.NUMBER);
             jFormatSpec.setValue(value);
             return jFormatSpec;
-        }else if (ctx.stringFormat()!= null) {
-            String value=visitStringFormat(ctx.stringFormat());
+        } else if (ctx.stringFormat() != null) {
+            String value = visitStringFormat(ctx.stringFormat());
             jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.STRING);
             jFormatSpec.setValue(value);
             return jFormatSpec;
-        }else if (ctx.customFormat()!= null) {
-            String value= visitCustomFormat(ctx.customFormat());
+        } else if (ctx.customFormat() != null) {
+            String value = visitCustomFormat(ctx.customFormat());
             jFormatSpec.setFormat(JQuickExcelFormatSpecEnums.CUSTOM);
             jFormatSpec.setValue(value);
             return jFormatSpec;
@@ -102,9 +104,6 @@ public class JFormatSpecVisitor extends JQuickExcelFunctionVisitor {
         JAssert.throwNewException("invalid format spec");
         return null;
     }
-
-
-
 
 
 }

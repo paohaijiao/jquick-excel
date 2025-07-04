@@ -34,56 +34,57 @@ import java.util.List;
 public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
     @Override
     public Object visitFunctionArg(JQuickExcelParser.FunctionArgContext ctx) {
-        if(ctx.STRING() != null) {
-            String string= ctx.STRING().getText();
-            String value= JStringUtils.trim(string);
+        if (ctx.STRING() != null) {
+            String string = ctx.STRING().getText();
+            String value = JStringUtils.trim(string);
             return value;
-        }else if(ctx.NUMBER() != null) {
-            String number= ctx.NUMBER().getText();
-            String value= JStringUtils.trim(number);
+        } else if (ctx.NUMBER() != null) {
+            String number = ctx.NUMBER().getText();
+            String value = JStringUtils.trim(number);
             return new BigDecimal(value);
-        }else if(ctx.BOOLEAN() != null) {
-            String number= ctx.BOOLEAN().getText();
-            String value= JStringUtils.trim(number);
+        } else if (ctx.BOOLEAN() != null) {
+            String number = ctx.BOOLEAN().getText();
+            String value = JStringUtils.trim(number);
             return new Boolean(value);
-        }else if(ctx.functionCall() != null) {
-           return visitFunctionCall(ctx.functionCall());
-        }else if(ctx.variable() != null) {
-            Object object= visitVariable(ctx.variable());
-            JAssert.notNull(object,"the variable is not initialized");
+        } else if (ctx.functionCall() != null) {
+            return visitFunctionCall(ctx.functionCall());
+        } else if (ctx.variable() != null) {
+            Object object = visitVariable(ctx.variable());
+            JAssert.notNull(object, "the variable is not initialized");
             return object;
-        }
-        else if(ctx.quotedFunctionCall() != null) {
-            Object object= visitQuotedFunctionCall(ctx.quotedFunctionCall());
+        } else if (ctx.quotedFunctionCall() != null) {
+            Object object = visitQuotedFunctionCall(ctx.quotedFunctionCall());
             return object;
         }
         JAssert.throwNewException("Invalid FunctionArg");
         return null;
     }
+
     @Override
     public JMethodCallModel visitFunctionCall(JQuickExcelParser.FunctionCallContext ctx) {
         JMethodCallModel methodCallModel = new JMethodCallModel();
-        List<Object> list=new ArrayList<>();
-        String functionName=null;
-        if(ctx.IDENTIFIER() != null) {
-            functionName= JStringUtils.trim(ctx.IDENTIFIER().getText());
+        List<Object> list = new ArrayList<>();
+        String functionName = null;
+        if (ctx.IDENTIFIER() != null) {
+            functionName = JStringUtils.trim(ctx.IDENTIFIER().getText());
         }
-        JAssert.notNull(functionName,"Invalid functionName");
+        JAssert.notNull(functionName, "Invalid functionName");
         methodCallModel.setMethod(JMethodEnums.methodOf(functionName));
-        if(ctx.functionArg()!= null) {
-            for (JQuickExcelParser.FunctionArgContext functionArg : ctx.functionArg()){
-                Object object= visitFunctionArg(functionArg);
+        if (ctx.functionArg() != null) {
+            for (JQuickExcelParser.FunctionArgContext functionArg : ctx.functionArg()) {
+                Object object = visitFunctionArg(functionArg);
                 list.add(object);
             }
         }
         methodCallModel.setList(list);
         return methodCallModel;
     }
+
     @Override
     public Object visitQuotedFunctionCall(JQuickExcelParser.QuotedFunctionCallContext ctx) {
-        if(ctx.STRING() != null) {
-            String string= ctx.STRING().getText();
-            String script= JStringUtils.trim(string);
+        if (ctx.STRING() != null) {
+            String string = ctx.STRING().getText();
+            String script = JStringUtils.trim(string);
             JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(script));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             JQuickExcelParser parser = new JQuickExcelParser(tokens);
@@ -95,7 +96,6 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         JAssert.throwNewException("Invalid QuotedFunctionCall");
         return null;
     }
-
 
 
 }

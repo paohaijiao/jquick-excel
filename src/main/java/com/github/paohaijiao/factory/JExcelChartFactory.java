@@ -18,6 +18,7 @@ public class JExcelChartFactory {
         createChart(workbook, chartData, chartType, sheetName);
         return workbook;
     }
+
     public static void createChart(XSSFWorkbook workbook, JExcelChartData chartData, JExcelChartType chartType, String sheetName) {
         XSSFSheet sheet = workbook.createSheet(sheetName);
         writeDataToSheet(sheet, chartData);
@@ -51,6 +52,7 @@ public class JExcelChartFactory {
         }
         chart.plot(chartDataObj);
     }
+
     private static void writeDataToSheet(XSSFSheet sheet, JExcelChartData chartData) {
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Categories");
@@ -66,6 +68,7 @@ public class JExcelChartFactory {
             }
         }
     }
+
     private static XDDFChartData createChartData(XSSFChart chart, JExcelChartType chartType,
                                                  XDDFCategoryAxis categoryAxis, XDDFValueAxis valueAxis) {
         switch (chartType) {
@@ -103,6 +106,7 @@ public class JExcelChartFactory {
                 throw new IllegalArgumentException("Unsupported chart type: " + chartType);
         }
     }
+
     public static void writeWorkbookToStream(XSSFWorkbook workbook, OutputStream outputStream) throws IOException {
         workbook.write(outputStream);
         workbook.close();

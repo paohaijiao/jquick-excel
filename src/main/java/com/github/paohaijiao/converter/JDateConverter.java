@@ -18,17 +18,19 @@ package com.github.paohaijiao.converter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class JDateConverter implements JCustomConverter<Date>{
-    private   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+public class JDateConverter implements JCustomConverter<Date> {
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public JDateConverter(){
+    public JDateConverter() {
 
     }
-    public JDateConverter(SimpleDateFormat sdf){
-        this.sdf=sdf;
+
+    public JDateConverter(SimpleDateFormat sdf) {
+        this.sdf = sdf;
     }
-    public JDateConverter(String format){
-        this.sdf= new SimpleDateFormat(format);
+
+    public JDateConverter(String format) {
+        this.sdf = new SimpleDateFormat(format);
     }
 
     @Override

@@ -26,7 +26,7 @@ import java.util.HashMap;
  * @date 2025/7/4
  * @description
  */
-public class JRowStyle  extends HashMap<String, Object> {
+public class JRowStyle extends HashMap<String, Object> {
 
     private static final String height = "height";
     private static final String rowNum = "rowNum";
@@ -45,9 +45,11 @@ public class JRowStyle  extends HashMap<String, Object> {
     public void setRowNum(int i) {
         put(rowNum, i);
     }
-    public int getRowNum() {
+
+    public Integer getRowNum() {
         return containsKey(rowNum) ? (int) get(rowNum) : 0;
     }
+
     public void setRowStyle(JCellStyle cellStyle) {
         put(rowStyle, cellStyle);
     }
@@ -60,7 +62,7 @@ public class JRowStyle  extends HashMap<String, Object> {
         put(heightInPoints, v);
     }
 
-    public float getHeightInPoints() {
+    public Float getHeightInPoints() {
         return containsKey(heightInPoints) ? (float) get(heightInPoints) : 0.0f;
     }
 
@@ -68,7 +70,7 @@ public class JRowStyle  extends HashMap<String, Object> {
         put(zeroHeight, b);
     }
 
-    public boolean isZeroHeight() {
+    public Boolean isZeroHeight() {
         return containsKey(zeroHeight) ? (boolean) get(zeroHeight) : false;
     }
 }

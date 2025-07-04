@@ -31,11 +31,11 @@ import java.util.*;
 
 public class JDataTest {
 
-    public static   List<JStudentModel> getData(){
+    public static List<JStudentModel> getData() {
         List<JStudentModel> students = new ArrayList<>();
-        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班","true"));
-        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班","true"));
-        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班","true"));
+        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
+        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
+        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
         return students;
     }
 
@@ -58,12 +58,13 @@ public class JDataTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
-        List<Map<String, Object>> data= JObjectConverter.convert(getData());
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
         @SuppressWarnings("unchecked")
-        JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
+
     @Test
     public void mapping() {
         String input = "EXPORT FROM annual_report TO \"d://test//report_2023.xlsx\" WITH\n" +
@@ -87,12 +88,13 @@ public class JDataTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
-        List<Map<String, Object>> data= JObjectConverter.convert(getData());
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
         @SuppressWarnings("unchecked")
-        JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
+
     @Test
     public void trans() {
         String input = "\n" +
@@ -114,16 +116,16 @@ public class JDataTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
-        List<Map<String, Object>> data= JObjectConverter.convert(getData());
-        HashMap<String,Object> variable=new HashMap<>();
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
+        HashMap<String, Object> variable = new HashMap<>();
         JContext params = new JContext();
-        variable.put("1","男");
-        variable.put("2","女");
-        params.put("codeTable",variable);
+        variable.put("1", "男");
+        variable.put("2", "女");
+        params.put("codeTable", variable);
 
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(params,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(params, data);
         @SuppressWarnings("unchecked")
-        JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
 

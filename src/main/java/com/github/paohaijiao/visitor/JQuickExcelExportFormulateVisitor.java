@@ -33,6 +33,7 @@ import java.util.Map;
  * @description
  */
 public class JQuickExcelExportFormulateVisitor extends JFieldMapping {
+
     @Override
     public Void visitFormulaOption(JQuickExcelParser.FormulaOptionContext ctx) {
         Map<String, String> cellFormulas = new HashMap<>();
@@ -61,6 +62,7 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMapping {
         config.setColFormulas(colFormulas);
         return null;
     }
+
     @Override
     public Void visitFormulaTarget(JQuickExcelParser.FormulaTargetContext ctx) {
         if (ctx.rowFormula() != null) {
@@ -72,65 +74,70 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMapping {
         }
         return null;
     }
+
     @Override
     public Void visitRowFormula(JQuickExcelParser.RowFormulaContext ctx) {
-        String rowSpec =null;
+        String rowSpec = null;
         if (ctx.rowSpec() != null) {
-            String text= ctx.rowSpec().getText();
-            rowSpec =JStringUtils.trim(text);
+            String text = ctx.rowSpec().getText();
+            rowSpec = JStringUtils.trim(text);
         }
-        String formula =null;
+        String formula = null;
         if (ctx.formulaSpec() != null) {
-            String text= ctx.formulaSpec().getText();
-            formula =JStringUtils.trim(text);
+            String text = ctx.formulaSpec().getText();
+            formula = JStringUtils.trim(text);
         }
-        if(StringUtils.isNotEmpty(rowSpec)&&StringUtils.isNotEmpty(formula)){
+        if (StringUtils.isNotEmpty(rowSpec) && StringUtils.isNotEmpty(formula)) {
             config.getColFormulas().put(rowSpec, formula);
         }
         return null;
     }
+
     @Override
     public Void visitColFormula(JQuickExcelParser.ColFormulaContext ctx) {
-        String colSpec =null;
+        String colSpec = null;
         if (ctx.colSpec() != null) {
-            String text= ctx.colSpec().getText();
-            colSpec =JStringUtils.trim(text);
+            String text = ctx.colSpec().getText();
+            colSpec = JStringUtils.trim(text);
         }
-        String formula =null;
+        String formula = null;
         if (ctx.formulaSpec() != null) {
-            String text= ctx.formulaSpec().getText();
-            formula =JStringUtils.trim(text);
+            String text = ctx.formulaSpec().getText();
+            formula = JStringUtils.trim(text);
         }
-        if(StringUtils.isNotEmpty(colSpec)&&StringUtils.isNotEmpty(formula)){
+        if (StringUtils.isNotEmpty(colSpec) && StringUtils.isNotEmpty(formula)) {
             config.getColFormulas().put(colSpec, formula);
         }
         return null;
     }
+
     @Override
     public Void visitCellFormula(JQuickExcelParser.CellFormulaContext ctx) {
-        String cellRef =null;
+        String cellRef = null;
         if (ctx.cellRef() != null) {
-           String text= ctx.cellRef().getText();
-           cellRef =JStringUtils.trim(text);
+            String text = ctx.cellRef().getText();
+            cellRef = JStringUtils.trim(text);
         }
-        String formula =null;
+        String formula = null;
         if (ctx.formulaSpec() != null) {
-            String text= ctx.formulaSpec().getText();
-            formula =JStringUtils.trim(text);
+            String text = ctx.formulaSpec().getText();
+            formula = JStringUtils.trim(text);
         }
-        if(StringUtils.isNotEmpty(cellRef)&&StringUtils.isNotEmpty(formula)){
+        if (StringUtils.isNotEmpty(cellRef) && StringUtils.isNotEmpty(formula)) {
             config.getCellFormulas().put(cellRef, formula);
         }
         return null;
     }
+
     @Override
     public String visitCellRef(JQuickExcelParser.CellRefContext ctx) {
         return ctx.getText();
     }
+
     @Override
     public String visitFormulaSpec(JQuickExcelParser.FormulaSpecContext ctx) {
         if (ctx.STRING() != null) {
-            String text=ctx.STRING().getText();
+            String text = ctx.STRING().getText();
             return JStringUtils.trim(text);
         } else if (ctx.functionCall() != null) {//SUM(A1:A10)
             return ctx.functionCall().getText();

@@ -40,7 +40,7 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
 
     public JQuickExcelExportComonVisitor(List<Map<String, Object>> data) {
         this.context = new JContext();
-        this.excelProcessor = new JExcelProcessor( this.context);
+        this.excelProcessor = new JExcelProcessor(this.context);
         this.data = data;
 
     }
@@ -63,20 +63,21 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
             }
         }
         try {
-            excelProcessor.exportData(data,  config);
+            excelProcessor.exportData(data, config);
         } catch (IOException e) {
             throw new RuntimeException("导出Excel失败: " + outputFile, e);
         }
         return config;
     }
+
     @Override
     public Void visitMappingOption(JQuickExcelParser.MappingOptionContext ctx) {
         Map<String, String> mapping = new HashMap<>();
         for (JQuickExcelParser.FieldMappingContext fieldMappingContext : ctx.fieldMapping()) {
-            JKeyValueModel fieldMappings= visitFieldMapping(fieldMappingContext);
+            JKeyValueModel fieldMappings = visitFieldMapping(fieldMappingContext);
             mapping.put(fieldMappings.getKey(), fieldMappings.getValue().toString());
         }
-        config.setMapping( mapping);
+        config.setMapping(mapping);
         return null;
     }
 
@@ -90,10 +91,10 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Void visitHeaderOption(JQuickExcelParser.HeaderOptionContext ctx) {
-        boolean header=Boolean.FALSE;
+        boolean header = Boolean.FALSE;
         if (ctx.STRING() != null) {
-            String headerText=ctx.STRING().getText();
-            header= JStringUtils.trim(headerText).equalsIgnoreCase("YES");
+            String headerText = ctx.STRING().getText();
+            header = JStringUtils.trim(headerText).equalsIgnoreCase("YES");
         }
         config.setHeader(header);
         return null;
@@ -101,7 +102,7 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Void visitRangeOption(JQuickExcelParser.RangeOptionContext ctx) {
-        String range= JStringUtils.trim(ctx.STRING().getText());
+        String range = JStringUtils.trim(ctx.STRING().getText());
         config.setRange(range);
         return null;
     }
@@ -114,7 +115,7 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
             String formatSpec = format.formatSpec().getText();
             formats.put(field, formatSpec);
         }
-        config.setFormat( formats);
+        config.setFormat(formats);
         return null;
     }
 

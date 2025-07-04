@@ -15,7 +15,12 @@
  */
 package com.github.paohaijiao.handler;
 
+import cn.hutool.core.util.NumberUtil;
+import com.github.paohaijiao.enums.JMergeType;
 import com.github.paohaijiao.evalue.JEvaluator;
+import com.github.paohaijiao.jstyle.context.JStyleContext;
+import com.github.paohaijiao.merge.JMergeHandler;
+import com.github.paohaijiao.merge.context.JMergeHandlerContext;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.model.JMethodCallModel;
@@ -27,6 +32,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -37,15 +43,17 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class JExcelProcessor {
-     private Workbook workbook;
-     private Sheet currentSheet;
-     private DataFormatter dataFormatter = new DataFormatter();
-     private JContext contextParams = new JContext();
-     public JExcelProcessor() {
-         this.contextParams=new JContext();
-     }
+    private Workbook workbook;
+    private Sheet currentSheet;
+    private DataFormatter dataFormatter = new DataFormatter();
+    private JContext contextParams = new JContext();
+
+    public JExcelProcessor() {
+        this.contextParams = new JContext();
+    }
+
     public JExcelProcessor(JContext contextParams) {
-        this.contextParams=contextParams;
+        this.contextParams = contextParams;
     }
 
     public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
@@ -54,7 +62,7 @@ public class JExcelProcessor {
             setSheet(config.getSheet());
             String range = config.getRange();
             int[] rangeBounds = parseRange(range);
-            boolean hasHeader =config.getHeader();
+            boolean hasHeader = config.getHeader();
             List<String> headers = new ArrayList<>();
             Map<String, String> mappings = config.getMappings();
             List<Map<String, Object>> data = new ArrayList<>();
@@ -85,7 +93,7 @@ public class JExcelProcessor {
                     Map<String, String> transforms = config.getTransforms();
                     String fieldName = headers.get(colNum);
                     if (transforms.containsKey(fieldName)) {
-                        value = applyTransform(fieldName,value, transforms.get(fieldName));
+                        value = applyTransform(fieldName, value, transforms.get(fieldName));
                     }
                     rowData.put(headers.get(colNum), value);
                 }
@@ -94,18 +102,20 @@ public class JExcelProcessor {
             return data;
         }
     }
+
     public void exportData(List<Map<String, Object>> data, JExcelExportModel config) throws IOException {
         workbook = new XSSFWorkbook();
         Object sheet = config.getSheet();
-        if (null!= sheet) {
-            currentSheet = workbook.createSheet((String)sheet);
-        }else{
+        if (null != sheet) {
+            currentSheet = workbook.createSheet((String) sheet);
+        } else {
             currentSheet = workbook.createSheet();
         }
         int lastColNum = 0;
-        if(null!=data&&!data.isEmpty()){
-            lastColNum=data.get(0).size();
+        if (null != data && !data.isEmpty()) {
+            lastColNum = data.get(0).size();
         }
+
         boolean hasHeader = config.getHeader();
         Map<String, String> mappings = config.getMapping();
         Map<String, String> transforms = config.getTransforms();
@@ -115,7 +125,7 @@ public class JExcelProcessor {
             int colNum = 0;
             for (String header : data.get(0).keySet()) {
                 Cell cell = headerRow.createCell(colNum++);
-                cell.setCellValue(mappings.getOrDefault(header,header));
+                cell.setCellValue(mappings.getOrDefault(header, header));
                 CellStyle headerStyle = workbook.createCellStyle();
                 Font headerFont = workbook.createFont();
                 headerFont.setBold(true);
@@ -135,16 +145,18 @@ public class JExcelProcessor {
                     applyCellFormat(cell, formats.get(entry.getKey()));
                 }
                 if (transforms.containsKey(entry.getKey())) {
-                    Object value=applyTransform(entry.getKey(),entry.getValue(), transforms.get(entry.getKey()));
+                    Object value = applyTransform(entry.getKey(), entry.getValue(), transforms.get(entry.getKey()));
                     setCellValue(cell, value);
-                }else{
-                    Object value= entry.getValue() != null ? entry.getValue() : null;
+                } else {
+                    Object value = entry.getValue() != null ? entry.getValue() : null;
                     setCellValue(cell, value);
                 }
 
             }
         }
-        applyFormulate(config,currentSheet.getLastRowNum(),lastColNum);
+        applyFormulate(config, currentSheet.getLastRowNum(), lastColNum);
+        applyStyle(config);
+        applyMerge(config, currentSheet.getLastRowNum(), lastColNum);
         for (int i = 0; i < data.size(); i++) {
             autoSizeColumns(data.get(i).keySet().size());
         }
@@ -152,48 +164,49 @@ public class JExcelProcessor {
             workbook.write(fos);
         }
     }
+
     private String getFormulaValue(String formula, int rowNum, int colNum) {
-         if(null==formula){
+        if (null == formula) {
             return null;
-         }
-         if(formula.contains("${rowNum}")){
-             String value=formula.replaceAll("\\$\\{rowNum\\}", rowNum+"");
-             return value;
-         }else if(formula.contains("${colNum}")){
-             String value=formula.replaceAll("\\$\\{colNum\\}", colNum+"");
-             return value;
-         }else{
-             return formula;
+        }
+        if (formula.contains("${rowNum}")) {
+            String value = formula.replaceAll("\\$\\{rowNum\\}", rowNum + "");
+            return value;
+        } else if (formula.contains("${colNum}")) {
+            String value = formula.replaceAll("\\$\\{colNum\\}", colNum + "");
+            return value;
+        } else {
+            return formula;
         }
     }
 
     private void setCellValue(Cell cell, Object value) {
-         if(value!=null){
-             if(value instanceof Number){
-                 if(value instanceof Integer){
-                     Integer i=(Integer)value;
-                     cell.setCellValue(i.doubleValue());
-                 }else if(value instanceof Long){
-                     Long l=(Long)value;
-                     cell.setCellValue(l.doubleValue());
-                 }else if(value instanceof Double){
-                     Double d=(Double)value;
-                     cell.setCellValue((Double)d);
-                 }else if(value instanceof Float){
-                     Float f=(Float)value;
-                     cell.setCellValue(f.doubleValue());
-                 }else if(value instanceof BigDecimal ){
-                     BigDecimal bigDecimal=(BigDecimal)value;
-                     cell.setCellValue(bigDecimal.doubleValue());
-                 }
-             }else if(value instanceof Date){
-                 cell.setCellValue((Date)value);
-             }else if(value instanceof Boolean){
-                 cell.setCellValue((Boolean)value);
-             }else{
-                 cell.setCellValue(value.toString());
-             }
-         }
+        if (value != null) {
+            if (value instanceof Number) {
+                if (value instanceof Integer) {
+                    Integer i = (Integer) value;
+                    cell.setCellValue(i.doubleValue());
+                } else if (value instanceof Long) {
+                    Long l = (Long) value;
+                    cell.setCellValue(l.doubleValue());
+                } else if (value instanceof Double) {
+                    Double d = (Double) value;
+                    cell.setCellValue((Double) d);
+                } else if (value instanceof Float) {
+                    Float f = (Float) value;
+                    cell.setCellValue(f.doubleValue());
+                } else if (value instanceof BigDecimal) {
+                    BigDecimal bigDecimal = (BigDecimal) value;
+                    cell.setCellValue(bigDecimal.doubleValue());
+                }
+            } else if (value instanceof Date) {
+                cell.setCellValue((Date) value);
+            } else if (value instanceof Boolean) {
+                cell.setCellValue((Boolean) value);
+            } else {
+                cell.setCellValue(value.toString());
+            }
+        }
     }
 
     private void autoSizeColumns(int columnCount) {
@@ -201,6 +214,7 @@ public class JExcelProcessor {
             currentSheet.autoSizeColumn(i);
         }
     }
+
     private void setSheet(Object sheetConfig) {
         if (sheetConfig == null) {
             currentSheet = workbook.getSheetAt(0);
@@ -241,6 +255,7 @@ public class JExcelProcessor {
         int row = Integer.parseInt(rowPart) - 1; // 转换为0-based
         return new int[]{row, col - 1};
     }
+
     private int getMaxColumnCount() {
         int maxCols = 0;
         for (Row row : currentSheet) {
@@ -251,20 +266,21 @@ public class JExcelProcessor {
         return maxCols;
     }
 
-    private Object applyTransform(String key,Object value, String transform) {
+    private Object applyTransform(String key, Object value, String transform) {
         this.contextParams.put(key, value);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(transform));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformValue();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams, data);
         @SuppressWarnings("unchecked")
-        JMethodCallModel methodCallModel = (JMethodCallModel)visitor.visit(tree);
-        List<Object> list=methodCallModel.getList();
-        Object object= JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(),list);
+        JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
+        List<Object> list = methodCallModel.getList();
+        Object object = JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(), list);
         return object;
     }
+
     private void applyCellFormat(Cell cell, String formatSpec) {
         CellStyle style = workbook.createCellStyle();
         if (formatSpec.startsWith("DATE")) {
@@ -278,16 +294,17 @@ public class JExcelProcessor {
         }
         cell.setCellStyle(style);
     }
-    private void applyFormulate(JExcelExportModel config,Integer maxRow,Integer maxCol) {
-         if(null==config){
-             return;
-         }
+
+    private void applyFormulate(JExcelExportModel config, Integer maxRow, Integer maxCol) {
+        if (null == config) {
+            return;
+        }
         Map<String, String> cellFormulas = config.getCellFormulas();
         Map<String, String> rowFormulas = config.getRowFormulas();
         Map<String, String> colFormulas = config.getColFormulas();
         for (Map.Entry<String, String> keyset : cellFormulas.entrySet()) {
-            String key=keyset.getKey();
-            String value=keyset.getValue();
+            String key = keyset.getKey();
+            String value = keyset.getValue();
             CellReference cellRef = new CellReference(key);
             int row = cellRef.getRow();    // 0-based
             int col = cellRef.getCol();    // 0-based
@@ -302,41 +319,186 @@ public class JExcelProcessor {
             c.setCellFormula(value);
         }
         for (Map.Entry<String, String> keyset : rowFormulas.entrySet()) {
-            String rowNum=keyset.getKey();
-            String value=keyset.getValue();
+            String rowNum = keyset.getKey();
+            String value = keyset.getValue();
             CellReference cellRef = new CellReference(rowNum);
-            for (int i = 0; i <maxCol ; i++) {
+            for (int i = 0; i < maxCol; i++) {
                 int row = cellRef.getRow();    // 0-based
                 int col = i;
                 Row r = currentSheet.getRow(row);
                 if (r == null) {
-                    r =currentSheet.createRow(row);
+                    r = currentSheet.createRow(row);
                 }
                 Cell c = r.getCell(col);
                 if (c == null) {
                     c = r.createCell(col);
                 }
-                String formula=getFormulaValue(value,row,col);
+                String formula = getFormulaValue(value, row, col);
                 c.setCellFormula(formula);
             }
         }
         for (Map.Entry<String, String> keyset : colFormulas.entrySet()) {
-            String colNum=keyset.getKey();
+            String colNum = keyset.getKey();
             CellReference cellRef = new CellReference(colNum);
-            int col=cellRef.getCol();
-            String value=keyset.getValue();
-            for (int i = 1; i <maxRow ; i++) {
-                int row =i;    // 0-based
+            int col = cellRef.getCol();
+            String value = keyset.getValue();
+            for (int i = 1; i < maxRow; i++) {
+                int row = i;    // 0-based
                 Row r = currentSheet.getRow(row);
                 if (r == null) {
-                    r =currentSheet.createRow(row);
+                    r = currentSheet.createRow(row);
                 }
                 Cell c = r.getCell(col);
                 if (c == null) {
                     c = r.createCell(col);
                 }
-                String formula=getFormulaValue(value,row,col);
+                String formula = getFormulaValue(value, row, col);
                 c.setCellFormula(formula);
+            }
+        }
+    }
+
+    private void applyMerge(JExcelExportModel config, Integer maxRow, Integer maxCol) {
+        if (config == null) {
+            return; // No merge configurations to apply
+        }
+        Map<String, Object> rowMerge = config.getRowMerge();
+        if (rowMerge != null) {
+            for (Map.Entry<String, Object> rowStyle : rowMerge.entrySet()) {
+                String key = rowStyle.getKey().trim();
+                if (key.contains("..")) {
+                    StringTokenizer tokenizer = new StringTokenizer(key, "..");
+                    int start = Integer.parseInt(tokenizer.nextToken());
+                    int end = Integer.parseInt(tokenizer.nextToken());
+                    JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
+                    JMergeHandler rowHanler = styleContext.createHandler(JMergeType.ROW);
+                    for (int i = start; i <= end; i++) {
+                        HashMap<String, Object> merge = new HashMap<>();
+                        merge.put("rowIndex", i);
+                        merge.put("startCol", 0);
+                        merge.put("endCol", maxCol);
+                        rowHanler.merge(merge);
+                    }
+                } else {
+                    Integer row = Integer.parseInt(rowStyle.getKey());
+                    JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
+                    JMergeHandler rowHanler = styleContext.createHandler(JMergeType.ROW);
+                    HashMap<String, Object> merge = new HashMap<>();
+                    merge.put("rowIndex", row);
+                    merge.put("startCol", 0);
+                    merge.put("endCol", maxCol);
+                    rowHanler.merge(merge);
+                }
+            }
+        }
+        Map<String, Object> colMerge = config.getColMerge();
+        if (null != colMerge && !colMerge.isEmpty()) {
+            for (Map.Entry<String, Object> colStyle : colMerge.entrySet()) {
+                String key = colStyle.getKey().trim();
+                if (key.contains("..")) {
+                    StringTokenizer tokenizer = new StringTokenizer(key, "..");
+                    int start = Integer.parseInt(tokenizer.nextToken());
+                    int end = Integer.parseInt(tokenizer.nextToken());
+                    JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
+                    JMergeHandler rowHanler = styleContext.createHandler(JMergeType.COLUMN);
+                    for (int i = start; i <= end; i++) {
+                        HashMap<String, Object> merge = new HashMap<>();
+                        merge.put("columnIndex", i);
+                        merge.put("startRow", 0);
+                        merge.put("endRow", maxRow);
+                        rowHanler.merge(merge);
+                    }
+                } else {
+                    int col = 0;
+                    if (NumberUtil.isNumber(key)) {
+                        col = Integer.parseInt(key);
+                    } else {
+                        CellReference cellReference = new CellReference(colStyle.getKey());
+                        col = cellReference.getCol();
+                    }
+                    HashMap<String, Object> merge = new HashMap<>();
+                    merge.put("columnIndex", col);
+                    merge.put("startRow", 0);
+                    merge.put("endRow", maxRow);
+                    JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
+                    JMergeHandler rowHanler = styleContext.createHandler(JMergeType.COLUMN);
+                    rowHanler.merge(merge);
+                }
+            }
+        }
+        Map<String, Object> rangeMerge = config.getRangeMerge();
+        if (null != rangeMerge && !rangeMerge.isEmpty()) {
+            for (Map.Entry<String, Object> cellStyle : rangeMerge.entrySet()) {
+                String cell = cellStyle.getKey();
+                HashMap<String, Object> merge = new HashMap<>();
+                CellRangeAddress mergedRegion = CellRangeAddress.valueOf(cell);
+                merge.put("firstRow", mergedRegion.getFirstColumn());
+                merge.put("lastRow", mergedRegion.getLastRow());
+                merge.put("firstCol", mergedRegion.getFirstColumn());
+                merge.put("lastCol", mergedRegion.getLastColumn());
+                JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
+                JMergeHandler rowHanler = styleContext.createHandler(JMergeType.COLUMN);
+                rowHanler.merge(merge);
+            }
+        }
+    }
+
+    private void applyStyle(JExcelExportModel config) {
+        Map<String, Map<String, Object>> rowStyles = config.getRowStyles();
+        if (null != rowStyles && !rowStyles.isEmpty()) {
+            for (Map.Entry<String, Map<String, Object>> rowStyle : rowStyles.entrySet()) {
+                String key = rowStyle.getKey().trim();
+                if (key.contains("..")) {
+                    StringTokenizer tokenizer = new StringTokenizer(key, "..");
+                    int start = Integer.parseInt(tokenizer.nextToken());
+                    int end = Integer.parseInt(tokenizer.nextToken());
+                    for (int i = start; i <= end; i++) {
+                        Map<String, Object> cssStyle = rowStyle.getValue();
+                        JStyleContext styleContext = JStyleContext.forRow(workbook, currentSheet, i);
+                        styleContext.applyStyle(cssStyle);
+                    }
+                } else {
+                    Integer row = Integer.parseInt(rowStyle.getKey());
+                    Map<String, Object> cssStyle = rowStyle.getValue();
+                    JStyleContext styleContext = JStyleContext.forRow(workbook, currentSheet, row);
+                    styleContext.applyStyle(cssStyle);
+                }
+            }
+        }
+        Map<String, Map<String, Object>> colStyles = config.getColStyles();
+        if (null != colStyles && !colStyles.isEmpty()) {
+            for (Map.Entry<String, Map<String, Object>> colStyle : colStyles.entrySet()) {
+                String key = colStyle.getKey().trim();
+                if (key.contains("..")) {
+                    StringTokenizer tokenizer = new StringTokenizer(key, "..");
+                    int start = Integer.parseInt(tokenizer.nextToken());
+                    int end = Integer.parseInt(tokenizer.nextToken());
+                    for (int i = start; i <= end; i++) {
+                        Map<String, Object> cssStyle = colStyle.getValue();
+                        JStyleContext styleContext = JStyleContext.forColumn(workbook, currentSheet, i);
+                        styleContext.applyStyle(cssStyle);
+                    }
+                } else {
+                    int col = 0;
+                    if (NumberUtil.isNumber(key)) {
+                        col = Integer.parseInt(key);
+                    } else {
+                        CellReference cellReference = new CellReference(colStyle.getKey());
+                        col = cellReference.getCol();
+                    }
+                    Map<String, Object> cssStyle = colStyle.getValue();
+                    JStyleContext styleContext = JStyleContext.forColumn(workbook, currentSheet, col);
+                    styleContext.applyStyle(cssStyle);
+                }
+            }
+        }
+        Map<String, Map<String, Object>> cellStyles = config.getCellStyles();
+        if (null != cellStyles && !cellStyles.isEmpty()) {
+            for (Map.Entry<String, Map<String, Object>> cellStyle : cellStyles.entrySet()) {
+                String cell = cellStyle.getKey();
+                Map<String, Object> cssStyle = cellStyle.getValue();
+                JStyleContext styleContext = JStyleContext.forCell(workbook, currentSheet, cell);
+                styleContext.applyStyle(cssStyle);
             }
         }
     }

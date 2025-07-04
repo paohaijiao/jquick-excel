@@ -29,9 +29,9 @@ public class JExcelExportModel {
 
     private Object sheet;
 
-    private Boolean header=true;
+    private Boolean header = true;
 
-    private String range=null;
+    private String range = null;
 
     Map<String, String> format = new HashMap<>();
 
@@ -45,13 +45,13 @@ public class JExcelExportModel {
 
     Map<String, String> transforms = new HashMap<>();
 
-    Map<String, Map<String, String>> rowStyles = new HashMap<>();
+    Map<String, Map<String, Object>> rowStyles = new HashMap<>();
 
-    Map<String, Map<String, String>> colStyles = new HashMap<>();
+    Map<String, Map<String, Object>> colStyles = new HashMap<>();
 
-    Map<String, Map<String, String>> cellStyles = new HashMap<>();
+    Map<String, Map<String, Object>> cellStyles = new HashMap<>();
 
-    Map<String, Map<String, String>> rangeStyles = new HashMap<>();
+    Map<String, Map<String, Object>> rangeStyles = new HashMap<>();
 
     Map<String, Object> rowMerge = new HashMap<>();
 

@@ -5,15 +5,15 @@ import lombok.Getter;
 @Getter
 public enum JFormulaType {
 
-    row("row","row"),
+    row("row", "row"),
 
-    col("col","col");
+    col("col", "col");
 
     private String code;
 
     private String name;
 
-    private JFormulaType(String code,String name) {
+    private JFormulaType(String code, String name) {
         this.code = code;
         this.name = name;
     }

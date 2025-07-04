@@ -44,6 +44,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void stringFormat() {
         String input = "STRING('hahaijiao')";
@@ -55,6 +56,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void numberFormat() {
         String input = "NUMBER('hahaijiao')";
@@ -66,6 +68,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void dateFormat() {
         String input = "DATE('hahaijiao')";
@@ -77,6 +80,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void formatSpec() {
         String input = "DATE('hahaijiao')";
@@ -88,6 +92,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void formatSpec1() {
         String input = "NUMBER('hahaijiao')";
@@ -99,6 +104,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void formatSpec2() {
         String input = "STRING('hahaijiao')";
@@ -110,6 +116,7 @@ public class JFormatSpecTest {
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
+
     @Test
     public void formatSpec3() {
         String input = "CUSTOM('hahaijiao')";

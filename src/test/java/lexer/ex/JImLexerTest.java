@@ -35,36 +35,41 @@ public class JImLexerTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
-        List<Map<String, Object>> data=new ArrayList<>();
+        List<Map<String, Object>> data = new ArrayList<>();
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
         @SuppressWarnings("unchecked")
-        JExcelExportModel result = (JExcelExportModel)visitor.visit(tree);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         return result;
     }
+
     @Test
     public void testSimpleExport() {
         String input = "EXPORT FROM customer_data TO \"output/customers.xlsx\"\n";
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport02() {
         String input = "EXPORT FROM sales_records TO \"output/sales_Q2.xlsx\" WITH SHEET=\"第二季度\"\n";
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport03() {
         String input = "EXPORT FROM product_inventory TO \"output/inventory_report.xlsx\" WITH HEADER='YES'\n";
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport04() {
         String input = "EXPORT FROM employee_list TO \"output/staff.xlsx\" WITH RANGE=\"B5\"\n";
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport05() {
         String input = "EXPORT FROM financial_data TO \"output/financials.xlsx\" WITH\n" +
@@ -76,6 +81,7 @@ public class JImLexerTest {
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport06() {
         String input = "EXPORT FROM event_schedule TO \"output/events.xlsx\" WITH\n" +
@@ -87,6 +93,7 @@ public class JImLexerTest {
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport07() {
         String input = "EXPORT FROM monthly_sales TO \"output/sales_summary.xlsx\" WITH\n" +
@@ -97,6 +104,7 @@ public class JImLexerTest {
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport08() {
         String input = "EXPORT FROM student_scores TO \"output/score_report.xlsx\" WITH\n" +
@@ -109,6 +117,7 @@ public class JImLexerTest {
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport09() {
         String input = "EXPORT FROM project_tasks TO \"output/project_status.xlsx\" WITH\n" +
@@ -119,6 +128,7 @@ public class JImLexerTest {
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void testSimpleExport10() {
         String input = "EXPORT FROM annual_report TO \"output/report_2023.xlsx\" WITH\n" +
@@ -137,6 +147,7 @@ public class JImLexerTest {
         JExcelExportModel result = parseExportConfig(input);
         System.out.println(result);
     }
+
     @Test
     public void export() {
         String input = "EXPORT FROM annual_report TO \"d://test//report_2023.xlsx\" WITH\n" +

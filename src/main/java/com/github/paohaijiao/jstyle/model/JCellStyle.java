@@ -55,7 +55,7 @@ public class JCellStyle extends HashMap<String, Object> {
     private static final String FILL_FOREGROUND_COLOR = "fillForegroundColor";
     private static final String SHRINK_TO_FIT = "shrinkToFit";
 
-    public short getIndex() {
+    public Short getIndex() {
         return containsKey(INDEX) ? (short) get(INDEX) : 0;
     }
 
@@ -63,7 +63,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(DATA_FORMAT, var1);
     }
 
-    public short getDataFormat() {
+    public Short getDataFormat() {
         return containsKey(DATA_FORMAT) ? (short) get(DATA_FORMAT) : 0;
     }
 
@@ -75,12 +75,12 @@ public class JCellStyle extends HashMap<String, Object> {
         put(FONT, var1);
     }
 
-    public int getFontIndex() {
+    public Integer getFontIndex() {
         return containsKey(FONT_INDEX) ? (int) get(FONT_INDEX) : 0;
     }
 
     @Deprecated
-    public int getFontIndexAsInt() {
+    public Integer getFontIndexAsInt() {
         return getFontIndex();
     }
 
@@ -88,7 +88,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(HIDDEN, var1);
     }
 
-    public boolean getHidden() {
+    public Boolean getHidden() {
         return containsKey(HIDDEN) ? (boolean) get(HIDDEN) : false;
     }
 
@@ -96,7 +96,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(LOCKED, var1);
     }
 
-    public boolean getLocked() {
+    public Boolean getLocked() {
         return containsKey(LOCKED) ? (boolean) get(LOCKED) : false;
     }
 
@@ -104,7 +104,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(QUOTE_PREFIXED, var1);
     }
 
-    public boolean getQuotePrefixed() {
+    public Boolean getQuotePrefixed() {
         return containsKey(QUOTE_PREFIXED) ? (boolean) get(QUOTE_PREFIXED) : false;
     }
 
@@ -113,14 +113,38 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public HorizontalAlignment getAlignment() {
-        return (HorizontalAlignment) get(ALIGNMENT);
+        if (null == get(ALIGNMENT)) {
+            return null;
+        }
+        String align = (String) get(ALIGNMENT);
+        if (align == null) {
+            return null;
+        } else if (align.equals("left")) {
+            return HorizontalAlignment.LEFT;
+        } else if (align.equals("right")) {
+            return HorizontalAlignment.RIGHT;
+        } else if (align.equals("center")) {
+            return HorizontalAlignment.CENTER;
+        } else if (align.equals("center-section")) {
+            return HorizontalAlignment.CENTER_SELECTION;
+        } else if (align.equals("general")) {
+            return HorizontalAlignment.GENERAL;
+        } else if (align.equals("fill")) {
+            return HorizontalAlignment.FILL;
+        } else if (align.equals("justify")) {
+            return HorizontalAlignment.JUSTIFY;
+        } else if (align.equals("distributed")) {
+            return HorizontalAlignment.DISTRIBUTED;
+        } else {
+            return HorizontalAlignment.CENTER;
+        }
     }
 
     public void setWrapText(boolean var1) {
         put(WRAP_TEXT, var1);
     }
 
-    public boolean getWrapText() {
+    public Boolean getWrapText() {
         return containsKey(WRAP_TEXT) ? (boolean) get(WRAP_TEXT) : false;
     }
 
@@ -129,14 +153,30 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public VerticalAlignment getVerticalAlignment() {
-        return (VerticalAlignment) get(VERTICAL_ALIGNMENT);
+        if (null == get(VERTICAL_ALIGNMENT)) {
+            return null;
+        }
+        String align = (String) get(VERTICAL_ALIGNMENT);
+        if ("top".equals(align)) {
+            return VerticalAlignment.TOP;
+        } else if ("bottom".equals(align)) {
+            return VerticalAlignment.BOTTOM;
+        } else if ("center".equals(align)) {
+            return VerticalAlignment.CENTER;
+        } else if ("justify".equals(align)) {
+            return VerticalAlignment.JUSTIFY;
+        } else if ("distributed".equals(align)) {
+            return VerticalAlignment.DISTRIBUTED;
+        } else {
+            return VerticalAlignment.CENTER;
+        }
     }
 
     public void setRotation(short var1) {
         put(ROTATION, var1);
     }
 
-    public short getRotation() {
+    public Short getRotation() {
         return containsKey(ROTATION) ? (short) get(ROTATION) : 0;
     }
 
@@ -144,7 +184,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(INDENTION, var1);
     }
 
-    public short getIndention() {
+    public Short getIndention() {
         return containsKey(INDENTION) ? (short) get(INDENTION) : 0;
     }
 
@@ -153,7 +193,41 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public BorderStyle getBorderLeft() {
-        return (BorderStyle) get(BORDER_LEFT);
+        if (null == get(BORDER_LEFT)) {
+            return null;
+        }
+        String borderLeft = (String) get(BORDER_LEFT);
+        if ("none".equals(borderLeft)) {
+            return BorderStyle.NONE;
+        } else if ("thin".equals(borderLeft)) {
+            return BorderStyle.THIN;
+        } else if ("medium".equals(borderLeft)) {
+            return BorderStyle.MEDIUM;
+        } else if ("dashed".equals(borderLeft)) {
+            return BorderStyle.DASHED;
+        } else if ("dotted".equals(borderLeft)) {
+            return BorderStyle.DOTTED;
+        } else if ("thick".equals(borderLeft)) {
+            return BorderStyle.THICK;
+        } else if ("double".equals(borderLeft)) {
+            return BorderStyle.DOUBLE;
+        } else if ("hair".equals(borderLeft)) {
+            return BorderStyle.HAIR;
+        } else if ("medium_dashed".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASHED;
+        } else if ("dash_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT;
+        } else if ("medium_dash_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT;
+        } else if ("dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT_DOT;
+        } else if ("medium_dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT_DOT;
+        } else if ("slanted_dash_dot".equals(borderLeft)) {
+            return BorderStyle.SLANTED_DASH_DOT;
+        } else {
+            return BorderStyle.NONE;
+        }
     }
 
     public void setBorderRight(BorderStyle var1) {
@@ -161,7 +235,41 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public BorderStyle getBorderRight() {
-        return (BorderStyle) get(BORDER_RIGHT);
+        if (null == get(BORDER_RIGHT)) {
+            return null;
+        }
+        String borderLeft = (String) get(BORDER_RIGHT);
+        if ("none".equals(borderLeft)) {
+            return BorderStyle.NONE;
+        } else if ("thin".equals(borderLeft)) {
+            return BorderStyle.THIN;
+        } else if ("medium".equals(borderLeft)) {
+            return BorderStyle.MEDIUM;
+        } else if ("dashed".equals(borderLeft)) {
+            return BorderStyle.DASHED;
+        } else if ("dotted".equals(borderLeft)) {
+            return BorderStyle.DOTTED;
+        } else if ("thick".equals(borderLeft)) {
+            return BorderStyle.THICK;
+        } else if ("double".equals(borderLeft)) {
+            return BorderStyle.DOUBLE;
+        } else if ("hair".equals(borderLeft)) {
+            return BorderStyle.HAIR;
+        } else if ("medium_dashed".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASHED;
+        } else if ("dash_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT;
+        } else if ("medium_dash_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT;
+        } else if ("dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT_DOT;
+        } else if ("medium_dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT_DOT;
+        } else if ("slanted_dash_dot".equals(borderLeft)) {
+            return BorderStyle.SLANTED_DASH_DOT;
+        } else {
+            return BorderStyle.NONE;
+        }
     }
 
     public void setBorderTop(BorderStyle var1) {
@@ -169,7 +277,41 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public BorderStyle getBorderTop() {
-        return (BorderStyle) get(BORDER_TOP);
+        if (null == get(BORDER_TOP)) {
+            return null;
+        }
+        String borderLeft = (String) get(BORDER_TOP);
+        if ("none".equals(borderLeft)) {
+            return BorderStyle.NONE;
+        } else if ("thin".equals(borderLeft)) {
+            return BorderStyle.THIN;
+        } else if ("medium".equals(borderLeft)) {
+            return BorderStyle.MEDIUM;
+        } else if ("dashed".equals(borderLeft)) {
+            return BorderStyle.DASHED;
+        } else if ("dotted".equals(borderLeft)) {
+            return BorderStyle.DOTTED;
+        } else if ("thick".equals(borderLeft)) {
+            return BorderStyle.THICK;
+        } else if ("double".equals(borderLeft)) {
+            return BorderStyle.DOUBLE;
+        } else if ("hair".equals(borderLeft)) {
+            return BorderStyle.HAIR;
+        } else if ("medium_dashed".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASHED;
+        } else if ("dash_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT;
+        } else if ("medium_dash_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT;
+        } else if ("dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT_DOT;
+        } else if ("medium_dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT_DOT;
+        } else if ("slanted_dash_dot".equals(borderLeft)) {
+            return BorderStyle.SLANTED_DASH_DOT;
+        } else {
+            return BorderStyle.NONE;
+        }
     }
 
     public void setBorderBottom(BorderStyle var1) {
@@ -177,14 +319,48 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public BorderStyle getBorderBottom() {
-        return (BorderStyle) get(BORDER_BOTTOM);
+        if (null == get(BORDER_BOTTOM)) {
+            return null;
+        }
+        String borderLeft = (String) get(BORDER_BOTTOM);
+        if ("none".equals(borderLeft)) {
+            return BorderStyle.NONE;
+        } else if ("thin".equals(borderLeft)) {
+            return BorderStyle.THIN;
+        } else if ("medium".equals(borderLeft)) {
+            return BorderStyle.MEDIUM;
+        } else if ("dashed".equals(borderLeft)) {
+            return BorderStyle.DASHED;
+        } else if ("dotted".equals(borderLeft)) {
+            return BorderStyle.DOTTED;
+        } else if ("thick".equals(borderLeft)) {
+            return BorderStyle.THICK;
+        } else if ("double".equals(borderLeft)) {
+            return BorderStyle.DOUBLE;
+        } else if ("hair".equals(borderLeft)) {
+            return BorderStyle.HAIR;
+        } else if ("medium_dashed".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASHED;
+        } else if ("dash_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT;
+        } else if ("medium_dash_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT;
+        } else if ("dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.DASH_DOT_DOT;
+        } else if ("medium_dash_dot_dot".equals(borderLeft)) {
+            return BorderStyle.MEDIUM_DASH_DOT_DOT;
+        } else if ("slanted_dash_dot".equals(borderLeft)) {
+            return BorderStyle.SLANTED_DASH_DOT;
+        } else {
+            return BorderStyle.NONE;
+        }
     }
 
     public void setLeftBorderColor(short var1) {
         put(LEFT_BORDER_COLOR, var1);
     }
 
-    public short getLeftBorderColor() {
+    public Short getLeftBorderColor() {
         return containsKey(LEFT_BORDER_COLOR) ? (short) get(LEFT_BORDER_COLOR) : 0;
     }
 
@@ -192,7 +368,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(RIGHT_BORDER_COLOR, var1);
     }
 
-    public short getRightBorderColor() {
+    public Short getRightBorderColor() {
         return containsKey(RIGHT_BORDER_COLOR) ? (short) get(RIGHT_BORDER_COLOR) : 0;
     }
 
@@ -200,7 +376,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(TOP_BORDER_COLOR, var1);
     }
 
-    public short getTopBorderColor() {
+    public Short getTopBorderColor() {
         return containsKey(TOP_BORDER_COLOR) ? (short) get(TOP_BORDER_COLOR) : 0;
     }
 
@@ -208,7 +384,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(BOTTOM_BORDER_COLOR, var1);
     }
 
-    public short getBottomBorderColor() {
+    public Short getBottomBorderColor() {
         return containsKey(BOTTOM_BORDER_COLOR) ? (short) get(BOTTOM_BORDER_COLOR) : 0;
     }
 
@@ -217,7 +393,53 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public FillPatternType getFillPattern() {
-        return (FillPatternType) get(FILL_PATTERN);
+        if (null == get(FILL_PATTERN)) {
+            return null;
+        }
+        String borderLeft = (String) get(FILL_PATTERN);
+        if ("no_fill".equals(borderLeft)) {
+            return FillPatternType.NO_FILL;
+        } else if ("solid_foreground".equals(borderLeft)) {
+            return FillPatternType.SOLID_FOREGROUND;
+        } else if ("fine_dots".equals(borderLeft)) {
+            return FillPatternType.FINE_DOTS;
+        } else if ("fine_dots".equals(borderLeft)) {
+            return FillPatternType.FINE_DOTS;
+        } else if ("alt_bars".equals(borderLeft)) {
+            return FillPatternType.ALT_BARS;
+        } else if ("sparse_dots".equals(borderLeft)) {
+            return FillPatternType.SPARSE_DOTS;
+        } else if ("thick_horz_bands".equals(borderLeft)) {
+            return FillPatternType.THICK_HORZ_BANDS;
+        } else if ("thick_vert_bands".equals(borderLeft)) {
+            return FillPatternType.THICK_VERT_BANDS;
+        } else if ("thick_backward_diag".equals(borderLeft)) {
+            return FillPatternType.THICK_BACKWARD_DIAG;
+        } else if ("thick_forward_diag".equals(borderLeft)) {
+            return FillPatternType.THICK_FORWARD_DIAG;
+        } else if ("big_spots".equals(borderLeft)) {
+            return FillPatternType.BIG_SPOTS;
+        } else if ("bricks".equals(borderLeft)) {
+            return FillPatternType.BRICKS;
+        } else if ("thin_horz_bands".equals(borderLeft)) {
+            return FillPatternType.THIN_HORZ_BANDS;
+        } else if ("thin_vert_bands".equals(borderLeft)) {
+            return FillPatternType.THIN_VERT_BANDS;
+        } else if ("thin_backward_diag".equals(borderLeft)) {
+            return FillPatternType.THIN_BACKWARD_DIAG;
+        } else if ("thin_forward_diag".equals(borderLeft)) {
+            return FillPatternType.THIN_FORWARD_DIAG;
+        } else if ("squares".equals(borderLeft)) {
+            return FillPatternType.SQUARES;
+        } else if ("diamonds".equals(borderLeft)) {
+            return FillPatternType.DIAMONDS;
+        } else if ("less_dots".equals(borderLeft)) {
+            return FillPatternType.LESS_DOTS;
+        } else if ("least_dots".equals(borderLeft)) {
+            return FillPatternType.LEAST_DOTS;
+        } else {
+            return FillPatternType.NO_FILL;
+        }
     }
 
     public void setFillBackgroundColor(short var1) {
@@ -228,7 +450,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(FILL_BACKGROUND_COLOR, var1);
     }
 
-    public short getFillBackgroundColor() {
+    public Short getFillBackgroundColor() {
         return containsKey(FILL_BACKGROUND_COLOR) && get(FILL_BACKGROUND_COLOR) instanceof Short
                 ? (short) get(FILL_BACKGROUND_COLOR) : 0;
     }
@@ -246,14 +468,16 @@ public class JCellStyle extends HashMap<String, Object> {
         put(FILL_FOREGROUND_COLOR, var1);
     }
 
-    public short getFillForegroundColor() {
+    public Short getFillForegroundColor() {
         return containsKey(FILL_FOREGROUND_COLOR) && get(FILL_FOREGROUND_COLOR) instanceof Short
                 ? (short) get(FILL_FOREGROUND_COLOR) : 0;
     }
 
     public Color getFillForegroundColorColor() {
-        return get(FILL_FOREGROUND_COLOR) instanceof Color
-                ? (Color) get(FILL_FOREGROUND_COLOR) : null;
+        if (null == get(FILL_FOREGROUND_COLOR)) {
+            return null;
+        }
+        return null;
     }
 
     public void cloneStyleFrom(JCellStyle var1) {
@@ -265,7 +489,7 @@ public class JCellStyle extends HashMap<String, Object> {
         put(SHRINK_TO_FIT, var1);
     }
 
-    public boolean getShrinkToFit() {
+    public Boolean getShrinkToFit() {
         return containsKey(SHRINK_TO_FIT) ? (boolean) get(SHRINK_TO_FIT) : false;
     }
 }

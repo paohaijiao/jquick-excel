@@ -15,7 +15,7 @@
  */
 package com.github.paohaijiao.converter;
 
-public class JGenderConverter implements JCustomConverter<Integer>{
+public class JGenderConverter implements JCustomConverter<Integer> {
     @Override
     public Integer convert(String value) {
         if ("男".equals(value)) return 1;

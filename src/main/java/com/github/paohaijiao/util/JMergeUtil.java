@@ -15,8 +15,16 @@
  */
 package com.github.paohaijiao.util;
 
+import com.github.paohaijiao.enums.JMergeValueType;
+import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.merge.JMergeHandler;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 /**
  * packageName com.github.paohaijiao.util
@@ -28,30 +36,120 @@ import org.apache.poi.ss.util.CellRangeAddress;
  * @description
  */
 public class JMergeUtil {
-    public static void setMergedRegionValue(Sheet sheet ) {
-        CellRangeAddress mergedRegion = new CellRangeAddress(0, 2, 0, 2); // 行0-2，列0-2
-        sheet.addMergedRegion(mergedRegion);
-        Row firstRow = sheet.getRow(0);
-        if (firstRow == null) {
-            firstRow = sheet.createRow(0);
+    public static List<Object> flapTheList(List<List<Object>> data) {
+        if (null == data || data.isEmpty()) {
+            return new ArrayList<>();
         }
-        Cell firstCell = firstRow.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-        firstCell.setCellValue("合并单元格内容");
+        List<Object> result = new ArrayList<>();
+        data.forEach(e -> {
+            result.addAll(e);
+        });
+        return result;
     }
 
-    public static void setMergedRegionValue(Sheet sheet, int firstRow, int lastRow,
-                                            int firstCol, int lastCol, String value) {
+    public static Object buildResult(JMergeValueType type, List<List<Object>> data) {
+        List<Object> list = flapTheList(data);
+        if (null == list || list.isEmpty()) {
+            return null;
+        }
+        if (JMergeValueType.FIRST.getCode().equals(type.getCode())) {
+            return list.get(0);
+        }
+        if (JMergeValueType.LAST.getCode().equals(type.getCode())) {
+            return list.get(list.size() - 1);
+        }
+        if (JMergeValueType.CONCAT.getCode().equals(type.getCode())) {
+            return list.stream().map(String::valueOf).collect(Collectors.joining(","));
+        }
+
+        if (JMergeValueType.MAX.getCode().equals(type.getCode())) {
+            OptionalDouble d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).max();
+            return d.isPresent() ? d.getAsDouble() : 0d;
+        }
+        if (JMergeValueType.MIN.getCode().equals(type.getCode())) {
+            OptionalDouble d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).min();
+            return d.isPresent() ? d.getAsDouble() : 0d;
+        }
+        if (JMergeValueType.AVG.getCode().equals(type.getCode())) {
+            OptionalDouble d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).average();
+            return d.isPresent() ? d.getAsDouble() : 0d;
+        }
+        if (JMergeValueType.COUNT.getCode().equals(type.getCode())) {
+            Long d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).count();
+            return d;
+        }
+        if (JMergeValueType.SUM.getCode().equals(type.getCode())) {
+            double d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).sum();
+            return d;
+        }
+        return null;
+
+
+    }
+
+
+    public static void setMergedRegionValue(Workbook workbook, Sheet sheet, int firstRow, int lastRow, int firstCol, int lastCol, JMergeValueType mergeType) {
+        JAssert.notNull(mergeType, "invalid mergeType ");
         CellRangeAddress mergedRegion = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
         sheet.addMergedRegion(mergedRegion);
         Row row = sheet.getRow(firstRow);
         if (row == null) {
             row = sheet.createRow(firstRow);
         }
+        List<List<Object>> list = getRangeValues(sheet, mergedRegion);
+        Object object = buildResult(mergeType, list);
         Cell cell = row.getCell(firstCol, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-        cell.setCellValue(value);
+        if (object == null) {
+            cell.setCellValue("");
+        } else if (object instanceof String) {
+            cell.setCellValue((String) object);
+        } else if (object instanceof Double) {
+            cell.setCellValue((Double) object);
+        }
         CellStyle style = sheet.getWorkbook().createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         cell.setCellStyle(style);
+    }
+
+    public static List<List<Object>> getRangeValues(Sheet sheet, CellRangeAddress range) {
+        List<List<Object>> data = new ArrayList<>();
+        for (int rowNum = range.getFirstRow(); rowNum <= range.getLastRow(); rowNum++) {
+            Row row = sheet.getRow(rowNum);
+            List<Object> rowData = new ArrayList<>();
+            for (int colNum = range.getFirstColumn(); colNum <= range.getLastColumn(); colNum++) {
+                if (row == null) {
+                    rowData.add(null);
+                } else {
+                    Cell cell = row.getCell(colNum);
+                    Object value = getCellValue(cell);
+                    rowData.add(value);
+                }
+            }
+            data.add(rowData);
+        }
+        return data;
+    }
+
+    /**
+     * only support the( number or string)
+     *
+     * @param cell
+     * @return
+     */
+    public static Object getCellValue(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        switch (cell.getCellType()) {
+            case NUMERIC:
+                return cell.getNumericCellValue();
+            case STRING:
+                return cell.getStringCellValue();
+            case BLANK:
+                return "";
+            default:
+                return null;
+        }
     }
 }

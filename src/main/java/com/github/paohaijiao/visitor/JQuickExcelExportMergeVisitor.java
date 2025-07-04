@@ -44,11 +44,11 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
     @Override
     public Void visitMergeSpec(JQuickExcelParser.MergeSpecContext ctx) {
         if (ctx.rowMerge() != null) {
-             visit(ctx.rowMerge());
+            visit(ctx.rowMerge());
         } else if (ctx.colMerge() != null) {
-             visit(ctx.colMerge());
+            visit(ctx.colMerge());
         } else if (ctx.rangeMerge() != null) {
-             visit(ctx.rangeMerge());
+            visit(ctx.rangeMerge());
         }
         return null;
     }

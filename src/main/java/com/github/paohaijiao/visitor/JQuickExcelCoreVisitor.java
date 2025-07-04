@@ -33,40 +33,43 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
 
     protected Cell cell;
 
-    protected  JExcelProcessor excelProcessor;
+    protected JExcelProcessor excelProcessor;
 
-    protected  List<Map<String, Object>> data;
+    protected List<Map<String, Object>> data;
 
     protected JExcelExportModel config = new JExcelExportModel();
 
 
     @Override
     public String visitFileName(JQuickExcelParser.FileNameContext ctx) {
-        if(ctx.STRING() != null) {
+        if (ctx.STRING() != null) {
             String fileName = JStringUtils.trim(ctx.STRING().getText());
             return fileName;
         }
         JAssert.throwNewException("Invalid file name");
         return null;
     }
+
     @Override
     public String visitIdentifier(JQuickExcelParser.IdentifierContext ctx) {
-        if(ctx.IDENTIFIER() != null) {
+        if (ctx.IDENTIFIER() != null) {
             String varName = JStringUtils.trim(ctx.IDENTIFIER().getText());
             return varName;
         }
         JAssert.throwNewException("Invalid varName");
         return null;
     }
+
     @Override
     public String visitDestination(JQuickExcelParser.DestinationContext ctx) {
-        if(ctx.identifier() != null) {
+        if (ctx.identifier() != null) {
             String varName = JStringUtils.trim(ctx.identifier().getText());
             return varName;
         }
         JAssert.throwNewException("Invalid Destination");
         return null;
     }
+
     @Override
     public Object visitVariable(JQuickExcelParser.VariableContext ctx) {
         if (ctx.identifier() != null) {

@@ -14,6 +14,7 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.visitor;
+
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelParser;
@@ -23,13 +24,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JQuickExcelImportVisitor extends JFieldMapping {
-    private JExcelImportModel config=new JExcelImportModel();
+    private JExcelImportModel config = new JExcelImportModel();
 
     public JQuickExcelImportVisitor(JContext contextParams) {
-        this.context=contextParams;
+        this.context = contextParams;
     }
+
     public JQuickExcelImportVisitor() {
-        this.context=new JContext();
+        this.context = new JContext();
     }
 
     @Override
@@ -43,9 +45,9 @@ public class JQuickExcelImportVisitor extends JFieldMapping {
                 visit(option);
             }
         }
-        if(null!=ctx.destination()){
-           String dest= visitDestination(ctx.destination());
-           config.setDestination(dest);
+        if (null != ctx.destination()) {
+            String dest = visitDestination(ctx.destination());
+            config.setDestination(dest);
         }
         return performImport();
     }
@@ -64,7 +66,7 @@ public class JQuickExcelImportVisitor extends JFieldMapping {
         if (ctx.STRING() != null) {
             String header = JStringUtils.trim(ctx.STRING().getText());
             config.setHeader(header.equalsIgnoreCase("YES"));
-        }else {
+        } else {
             config.setHeader(false);
         }
         return null;
@@ -72,13 +74,14 @@ public class JQuickExcelImportVisitor extends JFieldMapping {
 
     @Override
     public Object visitRangeOption(JQuickExcelParser.RangeOptionContext ctx) {
-        String range= JStringUtils.trim(ctx.STRING().getText());
+        String range = JStringUtils.trim(ctx.STRING().getText());
         config.setRange(range);
         return null;
     }
 
     /**
      * only process excelField to entity field mapping ,not change the cell value
+     *
      * @param ctx the parse tree
      * @return
      */
@@ -87,7 +90,7 @@ public class JQuickExcelImportVisitor extends JFieldMapping {
         Map<String, String> mappings = new HashMap<>();
         for (JQuickExcelParser.FieldMappingContext mapping : ctx.fieldMapping()) {
             String source = JStringUtils.trim(mapping.STRING(0).getText());
-            String target = mapping.STRING(1) != null ? JStringUtils.trim(mapping.STRING(1).getText()): mapping.functionCall().getText();
+            String target = mapping.STRING(1) != null ? JStringUtils.trim(mapping.STRING(1).getText()) : mapping.functionCall().getText();
             mappings.put(source, target);
         }
         config.setMappings(mappings);

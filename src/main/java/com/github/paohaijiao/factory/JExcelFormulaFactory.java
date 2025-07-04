@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExcelFormulaFactory {
+public class JExcelFormulaFactory {
 
     private final Workbook workbook;
 
@@ -23,11 +23,12 @@ public class ExcelFormulaFactory {
 
     private final Map<String, CellStyle> styleCache;
 
-    public ExcelFormulaFactory(Workbook workbook) {
+    public JExcelFormulaFactory(Workbook workbook) {
         this.workbook = workbook;
         this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
         this.styleCache = new HashMap<>();
     }
+
     public Cell applyFormula(Sheet sheet, int rowNum, int colNum, JExcelFormula formula) {
         Row row = sheet.getRow(rowNum) != null ? sheet.getRow(rowNum) : sheet.createRow(rowNum);
         Cell cell = row.getCell(colNum) != null ? row.getCell(colNum) : row.createCell(colNum);
@@ -46,12 +47,14 @@ public class ExcelFormulaFactory {
         }
 
         CellValue cellValue = evaluator.evaluate(cell);
-        return new JAbstractExcelFormula("") {}.evaluate(evaluator, cell);
+        return new JAbstractExcelFormula("") {
+        }.evaluate(evaluator, cell);
     }
 
     public JSumFormula createSumFormula(String range) {
         return new JSumFormula(range);
     }
+
     public JAverageFormula createAverageFormula(String range) {
         return new JAverageFormula(range);
     }
@@ -59,6 +62,7 @@ public class ExcelFormulaFactory {
     public JIfFormula createIfFormula(String condition, String trueValue, String falseValue) {
         return new JIfFormula(condition, trueValue, falseValue);
     }
+
     public JVLookupFormula createVLookupFormula(String lookupValue, String tableArray,
                                                 int colIndex, boolean exactMatch) {
         return new JVLookupFormula(lookupValue, tableArray, colIndex, exactMatch);
@@ -67,12 +71,15 @@ public class ExcelFormulaFactory {
     public JCustomFormula createCustomFormula(String formula) {
         return new JCustomFormula(formula);
     }
+
     public void evaluateAll() {
         evaluator.evaluateAll();
     }
+
     public JAndFormula createAndFormula(String... conditions) {
         return new JAndFormula(conditions);
     }
+
     public JAndFormula createAndFormula(Collection<String> conditions) {
         return new JAndFormula(conditions.toArray(new String[0]));
     }

@@ -24,7 +24,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JExcelColumn {
     String name() default "";
+
     int index() default -1;
+
     String format() default "";
+
     String converter() default "";
 }

@@ -36,6 +36,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void bar() {
         JExcelChartData salesData = new JExcelChartData();
@@ -53,7 +54,7 @@ public class JGraphTest {
         productC.setName("产品C");
         productC.setData(Arrays.asList(280, 310, 350, 400));
         salesData.setSeries(Arrays.asList(productA, productB, productC));
-        salesData.setSeries(Arrays.asList(productA, productB,productC));
+        salesData.setSeries(Arrays.asList(productA, productB, productC));
         XSSFWorkbook workbook = JExcelChartFactory.createWorkbookWithChart(
                 salesData, JExcelChartType.BAR, "销售报表");
         try (FileOutputStream out = new FileOutputStream("D://test//bar.xlsx")) {
@@ -63,6 +64,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void bar3d() {
         JExcelChartData chartData = new JExcelChartData();
@@ -89,6 +91,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void line() {
         JExcelChartData chartData = new JExcelChartData();
@@ -127,6 +130,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void pie() {
         JExcelChartData chartData = new JExcelChartData();
@@ -147,6 +151,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void area() {
         JExcelChartData chartData = new JExcelChartData();
@@ -174,6 +179,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void area3d() {
         JExcelChartData chartData = new JExcelChartData();
@@ -200,6 +206,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void scatter() {
         JExcelChartData chartData = new JExcelChartData();
@@ -225,6 +232,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void radar() {
         JExcelChartData chartData = new JExcelChartData();
@@ -249,6 +257,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void surface() {
         JExcelChartData chartData = new JExcelChartData();
