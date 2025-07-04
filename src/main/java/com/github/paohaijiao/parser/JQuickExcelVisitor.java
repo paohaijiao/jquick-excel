@@ -293,12 +293,6 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTransformValue(JQuickExcelParser.TransformValueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#excelFormula}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExcelFormula(JQuickExcelParser.ExcelFormulaContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#functionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -311,12 +305,6 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionArg(JQuickExcelParser.FunctionArgContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#quotedFunctionCall}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitQuotedFunctionCall(JQuickExcelParser.QuotedFunctionCallContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -328,10 +316,4 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIdentifier(JQuickExcelParser.IdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#fileName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFileName(JQuickExcelParser.FileNameContext ctx);
 }

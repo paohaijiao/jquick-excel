@@ -581,18 +581,6 @@ public class JQuickExcelBaseListener implements JQuickExcelListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExcelFormula(JQuickExcelParser.ExcelFormulaContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExcelFormula(JQuickExcelParser.ExcelFormulaContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionCall(JQuickExcelParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -617,18 +605,6 @@ public class JQuickExcelBaseListener implements JQuickExcelListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterQuotedFunctionCall(JQuickExcelParser.QuotedFunctionCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitQuotedFunctionCall(JQuickExcelParser.QuotedFunctionCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterVariable(JQuickExcelParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -648,18 +624,6 @@ public class JQuickExcelBaseListener implements JQuickExcelListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIdentifier(JQuickExcelParser.IdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFileName(JQuickExcelParser.FileNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFileName(JQuickExcelParser.FileNameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
