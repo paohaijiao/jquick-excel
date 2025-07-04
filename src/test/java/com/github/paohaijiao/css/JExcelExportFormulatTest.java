@@ -15,7 +15,7 @@
  */
 package com.github.paohaijiao.css;
 
-import com.github.paohaijiao.factory.JExcelFormulaFactory;
+import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
@@ -50,7 +50,7 @@ public class JExcelExportFormulatTest {
             data.add(row);
         }
         Workbook workbook = new XSSFWorkbook();
-        JExcelFormulaFactory formulaFactory = new JExcelFormulaFactory(workbook);
+        JExcelFormulaContext formulaFactory = new JExcelFormulaContext(workbook);
         String configText = "EXPORT FROM data TO \"d://test//output.xlsx\" WITH FORMULAS =\n" +
                 " {   ROW 12: \"SUM(A${rowNum}:A${rowNum})\",   " +
                 "COL E : \"IF(A${rowNum}>5,A1,A2)\", " +

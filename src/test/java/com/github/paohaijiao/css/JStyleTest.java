@@ -43,18 +43,6 @@ public class JStyleTest {
         visitor.visitExportConfig(exportConfig);
     }
 
-    public static class JImportFileLexerTest {
-
-        private JExcelImportModel parseImportConfig(String input) {
-            JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            JQuickExcelParser parser = new JQuickExcelParser(tokens);
-            ParseTree tree = parser.importConfig();
-            JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
-            @SuppressWarnings("unchecked")
-            JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
-            return result;
-        }
 
         @Test
         public void testSimpleImport() {
@@ -102,9 +90,8 @@ public class JStyleTest {
             System.out.println(model);
         }
 
-    }
 
-    public static class JImportLexerTest {
+
 
         private JExcelImportModel parseImportConfig(String input) {
             JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
@@ -129,5 +116,5 @@ public class JStyleTest {
             System.out.println(processor);
         }
 
-    }
+
 }

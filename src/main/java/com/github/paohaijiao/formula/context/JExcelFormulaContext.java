@@ -1,4 +1,4 @@
-package com.github.paohaijiao.factory;
+package com.github.paohaijiao.formula.context;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import com.github.paohaijiao.formula.JExcelFormula;
@@ -12,21 +12,17 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-public class JExcelFormulaFactory {
+public class JExcelFormulaContext {
 
     private final Workbook workbook;
 
     private final FormulaEvaluator evaluator;
 
-    private final Map<String, CellStyle> styleCache;
 
-    public JExcelFormulaFactory(Workbook workbook) {
+    public JExcelFormulaContext(Workbook workbook) {
         this.workbook = workbook;
         this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
-        this.styleCache = new HashMap<>();
     }
 
     public Cell applyFormula(Sheet sheet, int rowNum, int colNum, JExcelFormula formula) {

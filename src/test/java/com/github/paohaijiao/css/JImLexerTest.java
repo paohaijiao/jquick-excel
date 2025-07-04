@@ -42,33 +42,12 @@ public class JImLexerTest {
         return result;
     }
 
-    @Test
-    public void testSimpleExport() {
-        String input = "EXPORT FROM customer_data TO \"output/customers.xlsx\"\n";
-        JExcelExportModel result = parseExportConfig(input);
-        System.out.println(result);
-    }
 
-    @Test
-    public void testSimpleExport02() {
-        String input = "EXPORT FROM sales_records TO \"output/sales_Q2.xlsx\" WITH SHEET=\"第二季度\"\n";
-        JExcelExportModel result = parseExportConfig(input);
-        System.out.println(result);
-    }
 
-    @Test
-    public void testSimpleExport03() {
-        String input = "EXPORT FROM product_inventory TO \"output/inventory_report.xlsx\" WITH HEADER='YES'\n";
-        JExcelExportModel result = parseExportConfig(input);
-        System.out.println(result);
-    }
 
-    @Test
-    public void testSimpleExport04() {
-        String input = "EXPORT FROM employee_list TO \"output/staff.xlsx\" WITH RANGE=\"B5\"\n";
-        JExcelExportModel result = parseExportConfig(input);
-        System.out.println(result);
-    }
+
+
+
 
     @Test
     public void testSimpleExport05() {

@@ -5,17 +5,18 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
 public class JIfFormula extends JAbstractExcelFormula {
 
     private final String condition;
-    private final String trueValue;
-    private final String falseValue;
+    private final String value;
+    private final String otherValue;
 
-    public JIfFormula(String condition, String trueValue, String falseValue) {
-        super(String.format("IF(%s, %s, %s)", condition, trueValue, falseValue));
+    public JIfFormula(String condition, String value, String otherValue) {
+        super(String.format("IF(%s, %s, %s)", condition, value, otherValue));
         this.condition = condition;
-        this.trueValue = trueValue;
-        this.falseValue = falseValue;
+        this.value = value;
+        this.otherValue = otherValue;
     }
 
     public String getCondition() {
         return condition;
     }
+
 }

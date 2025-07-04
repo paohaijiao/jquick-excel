@@ -13,7 +13,28 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.css;
+package com.github.paohaijiao.formula.impl.math;
 
-public class JLexerTest {
+import com.github.paohaijiao.formula.JAbstractExcelFormula;
+
+/**
+ * packageName com.github.paohaijiao.formula.impl.math
+ *
+ * @author Martin
+ * @version 1.0.0
+ * @className JABSFormula
+ * @date 2025/7/4
+ * @description
+ */
+public class JABSFormula extends JAbstractExcelFormula {
+    private final String range;
+
+    public JABSFormula(String range) {
+        super("ABS(" + range + ")");
+        this.range = range;
+    }
+
+    public String getRange() {
+        return range;
+    }
 }

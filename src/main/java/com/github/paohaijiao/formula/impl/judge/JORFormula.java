@@ -1,13 +1,11 @@
 package com.github.paohaijiao.formula.impl.judge;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
-public class JAndFormula extends JAbstractExcelFormula {
+public class JORFormula extends JAbstractExcelFormula {
     private final String[] conditions;
 
-    public JAndFormula(String... conditions) {
+    public JORFormula(String... conditions) {
         super(buildFormulaString(conditions));
         this.conditions = conditions;
     }
@@ -16,7 +14,7 @@ public class JAndFormula extends JAbstractExcelFormula {
         if (conditions == null || conditions.length == 0) {
             throw new IllegalArgumentException("and  function requires at least one parameter");
         }
-        return "AND(" + String.join(",", conditions) + ")";
+        return "OR(" + String.join(",", conditions) + ")";
     }
 
     public int getConditionCount() {
@@ -26,5 +24,5 @@ public class JAndFormula extends JAbstractExcelFormula {
     public String getCondition(int index) {
         return conditions[index];
     }
-
+    
 }
