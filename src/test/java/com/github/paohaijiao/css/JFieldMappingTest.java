@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package lexer;
+package com.github.paohaijiao.css;
 
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
@@ -23,107 +23,68 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-/**
- * packageName lexer
- *
- * @author Martin
- * @version 1.0.0
- * @className JFormatSpecTest
- * @date 2025/6/18
- * @description
- */
-public class JFormatSpecTest {
+public class JFieldMappingTest {
+
     @Test
-    public void CUSTOM() {
-        String input = "CUSTOM('hahaijiao')";
+    public void fieldMapping1() {
+        String input = " \"name\": \"姓名\"";
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.customFormat();
+        ParseTree tree = parser.fieldMapping();
         JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
 
     @Test
-    public void stringFormat() {
-        String input = "STRING('hahaijiao')";
+    public void fieldMapping2() {
+        String input = " \"name\": length(12340)";
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.stringFormat();
+        ParseTree tree = parser.fieldMapping();
         JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
 
     @Test
-    public void numberFormat() {
-        String input = "NUMBER('hahaijiao')";
+    public void cellFormat() {
+        String input = " \"name\": DATE('12340')";
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.numberFormat();
+        ParseTree tree = parser.cellFormat();
         JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
 
     @Test
-    public void dateFormat() {
-        String input = "DATE('hahaijiao')";
+    public void transformRule() {
+        String input = " \"name\": length('12340')";
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.dateFormat();
+        ParseTree tree = parser.transformRule();
         JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
 
     @Test
-    public void formatSpec() {
-        String input = "DATE('hahaijiao')";
+    public void transformValue() {
+        String input = "  length('12340')";
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.formatSpec();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
-        Object result = visitor.visit(tree);
-        System.out.println(result);
-    }
-
-    @Test
-    public void formatSpec1() {
-        String input = "NUMBER('hahaijiao')";
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.formatSpec();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
-        Object result = visitor.visit(tree);
-        System.out.println(result);
-    }
-
-    @Test
-    public void formatSpec2() {
-        String input = "STRING('hahaijiao')";
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.formatSpec();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
-        Object result = visitor.visit(tree);
-        System.out.println(result);
-    }
-
-    @Test
-    public void formatSpec3() {
-        String input = "CUSTOM('hahaijiao')";
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.formatSpec();
+        ParseTree tree = parser.transformValue();
         JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);

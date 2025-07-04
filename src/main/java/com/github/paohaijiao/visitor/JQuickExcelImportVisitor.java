@@ -36,18 +36,10 @@ public class JQuickExcelImportVisitor extends JFieldMapping {
 
     @Override
     public Object visitImportConfig(JQuickExcelParser.ImportConfigContext ctx) {
-        if (ctx.fileName() != null) {
-            String fileName = JStringUtils.trim(ctx.fileName().getText());
-            config.setFileName(fileName);
-        }
         if (ctx.importOption() != null) {
             for (JQuickExcelParser.ImportOptionContext option : ctx.importOption()) {
                 visit(option);
             }
-        }
-        if (null != ctx.destination()) {
-            String dest = visitDestination(ctx.destination());
-            config.setDestination(dest);
         }
         return performImport();
     }

@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package lexer.data;
+package com.github.paohaijiao.css;
 
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
@@ -27,6 +27,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.*;
 
 public class JDataTest {
@@ -40,27 +42,29 @@ public class JDataTest {
     }
 
     @Test
-    public void export() {
-        String input = "EXPORT FROM annual_report TO \"d://test//report_2023.xlsx\" WITH\n" +
+    public void export() throws FileNotFoundException {
+        String input = "EXPORT   WITH\n" +
                 "    SHEET=\"年度汇总\",\n" +
                 "    HEADER='YES',\n" +
                 "    RANGE=\"A3\",\n" +
-                "    FORMAT = {\n" +
-                "        \"Amount\": NUMBER('¥#,##0.00'),\n" +
-                "        \"Date\": DATE('yyyy年mm月dd日')\n" +
+                "    MAPPING= {\n" +
+                "        \"name\": \"姓名\",\n" +
+                "        \"gender\":\"性别\"\n" +
                 "    },\n" +
-                "    FORMULAS = {\n" +
-                "        \"YTDTotal\": \"SUM(D4:D15)\",\n" +
-                "        \"YoYGrowth\": \"TEXT((D15-D4)/D4,\\\"0.00%\\\")\"\n" +
-                "    }\n";
+                "    FORMAT = {\n" +
+                "        \"name\": NUMBER('¥#,##0.00'),\n" +
+                "        \"gender\": DATE('yyyy年mm月dd日')\n" +
+                "    }";
         System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
-        @SuppressWarnings("unchecked")
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//map.xlsx");
+        JContext context=new JContext();
+        context.put("fos", fileOutputStream);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }

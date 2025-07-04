@@ -46,6 +46,7 @@ public class JExcelProcessor {
     private Workbook workbook;
     private Sheet currentSheet;
     private DataFormatter dataFormatter = new DataFormatter();
+
     private JContext contextParams = new JContext();
 
     public JExcelProcessor() {
@@ -57,8 +58,7 @@ public class JExcelProcessor {
     }
 
     public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
-        try (FileInputStream fis = new FileInputStream(config.getFileName())) {
-            workbook = new XSSFWorkbook(fis);
+            workbook = new XSSFWorkbook();//fis;
             setSheet(config.getSheet());
             String range = config.getRange();
             int[] rangeBounds = parseRange(range);
@@ -100,7 +100,7 @@ public class JExcelProcessor {
                 data.add(rowData);
             }
             return data;
-        }
+
     }
 
     public void exportData(List<Map<String, Object>> data, JExcelExportModel config) throws IOException {
@@ -160,9 +160,8 @@ public class JExcelProcessor {
         for (int i = 0; i < data.size(); i++) {
             autoSizeColumns(data.get(i).keySet().size());
         }
-        try (FileOutputStream fos = new FileOutputStream(config.getOutputFile())) {
-            workbook.write(fos);
-        }
+        FileOutputStream fos=(FileOutputStream)contextParams.get("fos");
+        workbook.write(fos);
     }
 
     private String getFormulaValue(String formula, int rowNum, int colNum) {

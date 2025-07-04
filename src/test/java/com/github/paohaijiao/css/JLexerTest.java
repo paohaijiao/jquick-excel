@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package lexer;
+package com.github.paohaijiao.css;
 
 public class JLexerTest {
 }

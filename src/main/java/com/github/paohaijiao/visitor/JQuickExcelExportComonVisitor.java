@@ -53,10 +53,6 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public JExcelExportModel visitExportConfig(JQuickExcelParser.ExportConfigContext ctx) {
-        String source = ctx.source().getText();
-        config.setSource(source);
-        String outputFile = ctx.STRING().getText().replaceAll("\"", "");
-        config.setOutputFile(outputFile);
         if (ctx.exportOption() != null) {
             for (JQuickExcelParser.ExportOptionContext option : ctx.exportOption()) {
                 visit(option);
@@ -65,7 +61,7 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportMergeVisitor
         try {
             excelProcessor.exportData(data, config);
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel失败: " + outputFile, e);
+            throw new RuntimeException("导出Excel失败: " , e);
         }
         return config;
     }

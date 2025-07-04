@@ -23,9 +23,6 @@ import java.util.Map;
 @Data
 public class JExcelImportModel {
 
-    private String fileName;
-
-    private String destination;
 
     private Object sheet;
 
