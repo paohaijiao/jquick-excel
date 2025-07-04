@@ -13,7 +13,7 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.css;
+package com.github.paohaijiao.export;
 
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
@@ -24,18 +24,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-public class JMethodCallTest {
-    @Test
-    public void fileName() {
-        String input = "'d://test/a.txt'";
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.fileName();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
-        Object result = visitor.visit(tree);
-        System.out.println(result);
-    }
+public class JValueTest {
+
 
     @Test
     public void identifier() {

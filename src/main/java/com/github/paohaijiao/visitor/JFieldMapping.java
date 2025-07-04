@@ -67,8 +67,6 @@ public class JFieldMapping extends JFormatSpecVisitor {
     public Object visitTransformValue(JQuickExcelParser.TransformValueContext ctx) {
         if (ctx.functionCall() != null) {
             return visitFunctionCall(ctx.functionCall());
-        } else if (ctx.quotedFunctionCall() != null) {
-            return visitQuotedFunctionCall(ctx.quotedFunctionCall());
         }
         JAssert.notNull(visitFunctionCall(ctx.functionCall()), "invalid TransformValue");
         return null;

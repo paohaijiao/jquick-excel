@@ -40,15 +40,7 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
     protected JExcelExportModel config = new JExcelExportModel();
 
 
-    @Override
-    public String visitFileName(JQuickExcelParser.FileNameContext ctx) {
-        if (ctx.STRING() != null) {
-            String fileName = JStringUtils.trim(ctx.STRING().getText());
-            return fileName;
-        }
-        JAssert.throwNewException("Invalid file name");
-        return null;
-    }
+
 
     @Override
     public String visitIdentifier(JQuickExcelParser.IdentifierContext ctx) {

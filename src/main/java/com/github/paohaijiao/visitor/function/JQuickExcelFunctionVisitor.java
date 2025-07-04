@@ -18,15 +18,9 @@ package com.github.paohaijiao.visitor.function;
 import com.github.paohaijiao.enums.JMethodEnums;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JMethodCallModel;
-import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import com.github.paohaijiao.visitor.JQuickExcelCoreVisitor;
-import com.github.paohaijiao.visitor.JQuickExcelImportVisitor;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +45,6 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         } else if (ctx.variable() != null) {
             Object object = visitVariable(ctx.variable());
             JAssert.notNull(object, "the variable is not initialized");
-            return object;
-        } else if (ctx.quotedFunctionCall() != null) {
-            Object object = visitQuotedFunctionCall(ctx.quotedFunctionCall());
             return object;
         }
         JAssert.throwNewException("Invalid FunctionArg");
@@ -80,22 +71,7 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         return methodCallModel;
     }
 
-    @Override
-    public Object visitQuotedFunctionCall(JQuickExcelParser.QuotedFunctionCallContext ctx) {
-        if (ctx.STRING() != null) {
-            String string = ctx.STRING().getText();
-            String script = JStringUtils.trim(string);
-            JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(script));
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            JQuickExcelParser parser = new JQuickExcelParser(tokens);
-            ParseTree tree = parser.functionArg();
-            JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(this.context);
-            Object result = visitor.visit(tree);
-            return result;
-        }
-        JAssert.throwNewException("Invalid QuotedFunctionCall");
-        return null;
-    }
+
 
 
 }
