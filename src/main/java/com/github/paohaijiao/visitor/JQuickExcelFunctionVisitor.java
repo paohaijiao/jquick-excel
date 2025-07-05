@@ -51,6 +51,10 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
             Object object = visitVariable(ctx.variable());
             JAssert.notNull(object, "the variable is not initialized");
             return object;
+        }else if (ctx.range() != null) {
+            Object object = visitRange(ctx.range());
+            JAssert.notNull(object, "the variable is not initialized");
+            return object;
         }
         JAssert.throwNewException("Invalid FunctionArg");
         return null;
@@ -73,6 +77,10 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         }
         methodCallModel.setList(list);
         return methodCallModel;
+    }
+    @Override
+    public String visitRange(JQuickExcelParser.RangeContext ctx) {
+        return ctx.getText();
     }
 
 

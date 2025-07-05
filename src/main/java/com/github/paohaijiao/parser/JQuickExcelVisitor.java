@@ -299,6 +299,12 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionArg(JQuickExcelParser.FunctionArgContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#range}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRange(JQuickExcelParser.RangeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

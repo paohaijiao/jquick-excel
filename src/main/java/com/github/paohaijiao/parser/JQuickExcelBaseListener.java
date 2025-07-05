@@ -593,6 +593,18 @@ public class JQuickExcelBaseListener implements JQuickExcelListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRange(JQuickExcelParser.RangeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRange(JQuickExcelParser.RangeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariable(JQuickExcelParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}

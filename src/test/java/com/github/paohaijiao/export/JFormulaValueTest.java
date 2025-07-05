@@ -28,10 +28,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class JFormulaValueTest {
 
+    private static String fileDir ="d://test";
+
     @Test
-    public void fieldMapping1() {
+    public void fieldMapping1() throws IOException {
         Workbook workbook = new XSSFWorkbook();
         JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
         Sheet sheet = workbook.createSheet("Data");
@@ -45,6 +51,7 @@ public class JFormulaValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("SUM result: " + sumResult);
+        workbook.write(new FileOutputStream(fileDir+"/sum.xlsx"));
     }
 
 }

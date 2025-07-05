@@ -488,6 +488,16 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitFunctionArg(JQuickExcelParser.FunctionArgContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#range}.
+	 * @param ctx the parse tree
+	 */
+	void enterRange(JQuickExcelParser.RangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#range}.
+	 * @param ctx the parse tree
+	 */
+	void exitRange(JQuickExcelParser.RangeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#variable}.
 	 * @param ctx the parse tree
 	 */
