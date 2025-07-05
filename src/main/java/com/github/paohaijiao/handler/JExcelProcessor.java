@@ -18,6 +18,8 @@ package com.github.paohaijiao.handler;
 import cn.hutool.core.util.NumberUtil;
 import com.github.paohaijiao.enums.JMergeType;
 import com.github.paohaijiao.evalue.JEvaluator;
+import com.github.paohaijiao.formula.JAbstractExcelFormula;
+import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.jstyle.context.JStyleContext;
 import com.github.paohaijiao.merge.JMergeHandler;
 import com.github.paohaijiao.merge.context.JMergeHandlerContext;
@@ -311,21 +313,27 @@ public class JExcelProcessor {
         }
         for (Map.Entry<String, String> keyset : rowFormulas.entrySet()) {
             String rowNum = keyset.getKey();
-            String value = keyset.getValue();
-            CellReference cellRef = new CellReference(rowNum);
-            for (int i = 0; i < maxCol; i++) {
-                int row = cellRef.getRow();    // 0-based
-                int col = i;
-                Row r = currentSheet.getRow(row);
-                if (r == null) {
-                    r = currentSheet.createRow(row);
+            String formulate = keyset.getValue();
+            if(rowNum.contains("..")){
+                StringTokenizer tokenizer = new StringTokenizer(rowNum, "..");
+                int start = Integer.parseInt(tokenizer.nextToken());
+                int end = Integer.parseInt(tokenizer.nextToken());
+                for (int i = start; i <= end; i++) {
+                    for (int j = 0; j < maxCol; j++) {
+                        JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
+                        JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
+                        int r=i-1>0?i-1:0;
+                        factory.applyFormula(currentSheet, r, j, formula);
+                    }
                 }
-                Cell c = r.getCell(col);
-                if (c == null) {
-                    c = r.createCell(col);
+            }else{
+                for (int i = 0; i < maxCol; i++) {
+                    Integer row=Integer.valueOf(rowNum);
+                    JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
+                    JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
+                    int r=row-1>0?row-1:0;
+                    factory.applyFormula(currentSheet, r, i, formula);
                 }
-                String formula = getFormulaValue(value, row, col);
-                c.setCellFormula(formula);
             }
         }
         for (Map.Entry<String, String> keyset : colFormulas.entrySet()) {
