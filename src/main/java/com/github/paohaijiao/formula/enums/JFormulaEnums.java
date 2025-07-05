@@ -163,7 +163,7 @@ public enum JFormulaEnums {
     TEXT("TEXT(", JTextFormula.class) {
         @Override
         public boolean matches(String formulaContent) {
-            return super.matches(formulaContent) && countParams(formulaContent) == 1;
+            return super.matches(formulaContent) && countParams(formulaContent) == 2;
         }
     },
     TRIM("TRIM(", JTrimFormula.class) {
@@ -225,7 +225,6 @@ public enum JFormulaEnums {
             if (formulaContent == null || formulaContent.isEmpty()) {
                 return null;
             }
-
             String upperContent = formulaContent.toUpperCase();
             for (JFormulaEnums type : values()) {
                 if (type.matches(upperContent)) {

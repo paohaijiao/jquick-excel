@@ -15,7 +15,9 @@ public class JConcatenateFormula extends JAbstractExcelFormula {
         if (text == null || text.length == 0) {
             throw new IllegalArgumentException("and  function requires at least one parameter");
         }
-        return "CONCATENATE(" + String.join(",", text) + ")";
+        String str= "CONCATENATE(" + String.join(",", text) + ")";
+        System.out.println(str);
+        return str;
     }
     
 }

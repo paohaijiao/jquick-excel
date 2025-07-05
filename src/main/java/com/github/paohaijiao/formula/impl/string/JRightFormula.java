@@ -16,6 +16,9 @@
 package com.github.paohaijiao.formula.impl.string;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
+import lombok.Getter;
+
+import java.math.BigDecimal;
 
 /**
  * packageName com.github.paohaijiao.formula.impl.string
@@ -26,23 +29,12 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @date 2025/7/4
  * @description
  */
+@Getter
 public class JRightFormula extends JAbstractExcelFormula {
 
-    private final String text;
-    private final Integer size;
+    public JRightFormula(String text, BigDecimal size) {
 
-    public JRightFormula(String text, Integer size) {
-
-        super("RIGHT(" + text +","+size+ ")");
-        this.text = text;
-        this.size = size;
+        super("RIGHT(" + text +","+size.toPlainString()+ ")");
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
 }

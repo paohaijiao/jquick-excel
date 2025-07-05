@@ -18,6 +18,8 @@ package com.github.paohaijiao.formula.impl.string;
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 /**
  * packageName com.github.paohaijiao.formula.impl.string
  *
@@ -30,17 +32,11 @@ import lombok.Getter;
 @Getter
 public class JMidFormula extends JAbstractExcelFormula {
 
-    private final String text;
-    private final Integer startNum;
-    private final Integer numChars;
 
-    public JMidFormula(String text, Integer startNum,Integer numChars) {
-        
-        super("MID(" + text +","+startNum+","+numChars+")");
-        this.text = text;
-        this.startNum = startNum;
-        this.numChars = numChars;
-    }
+    public JMidFormula(String text, BigDecimal startNum, BigDecimal numChars) {
+        super("MID(" + text +","+startNum.toPlainString()+","+numChars.toPlainString()+")");
+        System.out.println("MID(" + text +","+startNum.toPlainString()+","+numChars.toPlainString()+")");
+        }
 
 
 }

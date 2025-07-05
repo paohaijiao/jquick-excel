@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -87,6 +88,8 @@ public class JExcelFormulaContext {
         try {
             Constructor<?>[] constructors = clazz.getDeclaredConstructors();
             for (Constructor<?> constructor : constructors) {
+                Class<?>[] paramTypes = constructor.getParameterTypes();
+                boolean isVarArgs = constructor.isVarArgs();
                 if (constructor.getParameterCount() == params.length) {
                     constructor.setAccessible(true);
                     if (constructor.isVarArgs()) {
@@ -97,11 +100,59 @@ public class JExcelFormulaContext {
                         return (JAbstractExcelFormula) constructor.newInstance(params);
                     }
                 }
+                Object[] adaptedParams = adaptParameters(params, paramTypes, isVarArgs);
+                if (adaptedParams != null) {
+                    constructor.setAccessible(true);
+                    return (JAbstractExcelFormula) constructor.newInstance(adaptedParams);
+                }
             }
 
             throw new RuntimeException("no matching constructor found, number of parameters:" + params.length);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException("failed to create  instance: " + clazz.getName(), e);
         }
+    }
+    private static Object[] adaptParameters(Object[] params, Class<?>[] paramTypes, boolean isVarArgs) {
+        if (!isVarArgs) {
+            if (params.length != paramTypes.length) {
+                return null;
+            }
+            Object[] adapted = new Object[params.length];
+            for (int i = 0; i < params.length; i++) {
+                if (!isAssignable(paramTypes[i], params[i])) {
+                    return null;
+                }
+                adapted[i] = params[i];
+            }
+            return adapted;
+        } else {
+            int fixedParams = paramTypes.length - 1;
+            Object[] adapted = new Object[paramTypes.length];
+            for (int i = 0; i < fixedParams; i++) {
+                if (!isAssignable(paramTypes[i], params[i])) {
+                    return null;
+                }
+                adapted[i] = params[i];
+            }
+            Class<?> varArgType = paramTypes[fixedParams].getComponentType();
+            int varArgCount = params.length - fixedParams;
+            Object varArgs = Array.newInstance(varArgType, varArgCount);
+            for (int i = 0; i < varArgCount; i++) {
+                Object param = params[fixedParams + i];
+                if (!isAssignable(varArgType, param)) {
+                    return null;
+                }
+                Array.set(varArgs, i, param);
+            }
+            adapted[fixedParams] = varArgs;
+            return adapted;
+        }
+    }
+
+    private static boolean isAssignable(Class<?> targetType, Object value) {
+        if (value == null) {
+            return !targetType.isPrimitive();
+        }
+        return targetType.isAssignableFrom(value.getClass());
     }
 }

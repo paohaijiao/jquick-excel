@@ -7,11 +7,9 @@ import lombok.Getter;
 @Getter
 public class JTextFormula extends JAbstractExcelFormula {
 
-    private final String text;
 
-    public JTextFormula(String text) {
-        super("TEXT(" + text + ")");
-        this.text = text;
+    public JTextFormula(Object text,String format_text) {
+        super("TEXT(" + text.toString()+ ","+format_text+")");
     }
     
 }

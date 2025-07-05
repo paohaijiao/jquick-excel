@@ -16,6 +16,9 @@
 package com.github.paohaijiao.formula.impl.string;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
+import lombok.Getter;
+
+import java.math.BigDecimal;
 
 /**
  * packageName com.github.paohaijiao.formula.impl.string
@@ -26,22 +29,13 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @date 2025/7/4
  * @description
  */
+@Getter
 public class JLeftFormula extends JAbstractExcelFormula {
 
-    private final String text;
-    private final Integer size;
 
-    public JLeftFormula(String text,Integer size) {
-        super("LEFT(" + text +","+size+ ")");
-        this.text = text;
-        this.size = size;
-    }
+    public JLeftFormula(String text, BigDecimal size) {
+        super("LEFT(" + text +","+size.toPlainString()+ ")");
+        System.out.println("LEFT(" + text +","+size.toPlainString()+ ")");
 
-    public String getText() {
-        return text;
-    }
-
-    public Integer getSize() {
-        return size;
     }
 }
