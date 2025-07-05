@@ -24,8 +24,8 @@ public enum JFormulaEnums {
     STDEV("STDEV(", JSTDEVFormula.class),
     SUM("SUM(", JSumFormula.class),
 
-    DATEDIF("DATEDIF(", JDateDifFormula.class),
-    DATE("DATE(", JDateFormula.class),
+//    DATEDIF("DATEDIF(", JDateDifFormula.class),
+//    DATE("DATE(", JDateFormula.class),
     DATE_PLUS_TIME("DATE(", JDatePlusTimeFormula.class) {
         @Override
         public boolean matches(String formulaContent) {
@@ -71,13 +71,6 @@ public enum JFormulaEnums {
         }
     },
     YEAR("YEAR(", JYearFormula.class),
-    YEARFRAC("YEARFRAC(", JYearFracFormula.class) {
-        @Override
-        public boolean matches(String formulaContent) {
-            int paramCount = countParams(formulaContent);
-            return super.matches(formulaContent) && (paramCount == 2 || paramCount == 3);
-        }
-    },
 
     CONCATENATE("CONCATENATE(", JConcatenateFormula.class) {
         @Override

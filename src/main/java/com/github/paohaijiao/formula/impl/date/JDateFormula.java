@@ -17,6 +17,8 @@ package com.github.paohaijiao.formula.impl.date;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 
+import java.math.BigDecimal;
+
 /**
  * packageName com.github.paohaijiao.formula.impl.date
  *
@@ -27,13 +29,8 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @description
  */
 public class JDateFormula extends JAbstractExcelFormula {
-    private String year;
-    private String month;
-    private String day;
-    public JDateFormula(String year, String month, String day) {
-        super("DATE(" + year + "," + month + "," + day + ")");
-        this.year = year;
-        this.month = month;
-        this.day = day;
+    public JDateFormula(BigDecimal year, BigDecimal month, BigDecimal day) {
+        super("DATE(" + year.toPlainString() + "," + month.toPlainString() + "," + day.toPlainString() + ")");
+        System.out.println("DATE(" + year.toPlainString() + "," + month.toPlainString() + "," + day.toPlainString() + ")");
     }
 }

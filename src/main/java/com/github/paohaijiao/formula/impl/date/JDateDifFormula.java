@@ -16,6 +16,7 @@
 package com.github.paohaijiao.formula.impl.date;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
+import lombok.Getter;
 
 /**
  * packageName com.github.paohaijiao.formula.impl.date
@@ -26,14 +27,10 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @date 2025/7/4
  * @description
  */
+@Getter
 public class JDateDifFormula extends JAbstractExcelFormula {
-    private String start_date;
-    private String end_date;
-    private String unit;
     public JDateDifFormula(String start_date, String end_date, String unit) {
         super("DATEDIF(" + start_date + "," + end_date + "," + unit + ")");
-        this.end_date = end_date;
-        this.start_date = start_date;
-        this.unit = unit;
+        System.out.println("DATEDIF(" + start_date + "," + end_date + "," + unit + ")");
     }
 }

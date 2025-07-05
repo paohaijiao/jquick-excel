@@ -17,6 +17,8 @@ package com.github.paohaijiao.formula.impl.date;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 
+import java.math.BigDecimal;
+
 /**
  * packageName com.github.paohaijiao.formula.impl.date
  *
@@ -27,19 +29,8 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @description
  */
 public class JDateTimeFormula extends JAbstractExcelFormula {
-    private String year;
-    private String month;
-    private String day;
-    private String hour;
-    private String minute;
-    private String second;
-    public JDateTimeFormula(String year, String month, String day,String hour ,String minute, String second) {
+
+    public JDateTimeFormula(BigDecimal year, BigDecimal month, BigDecimal day, BigDecimal hour , BigDecimal minute, BigDecimal second) {
         super("DATETIME (" + year + "," + month + "," + day +","+hour+","+minute+","+second+ ")");
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
-        this.second = second;
     }
 }
