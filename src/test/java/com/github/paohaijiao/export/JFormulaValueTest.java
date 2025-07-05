@@ -13,8 +13,9 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.css;
+package com.github.paohaijiao.export;
 
+import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.formula.impl.JVLookupFormula;
 import com.github.paohaijiao.formula.impl.judge.JIfFormula;
@@ -27,7 +28,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
-public class JFormulaTest {
+public class JFormulaValueTest {
 
     @Test
     public void fieldMapping1() {
@@ -39,18 +40,11 @@ public class JFormulaTest {
             row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
             row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
         }
-        JSumFormula sumFormula = factory.createSumFormula("A1:A10");
-        JAverageFormula avgFormula = factory.createAverageFormula("B1:B10");
-        JIfFormula ifFormula = factory.createIfFormula("A1>5", "\"Large\"", "\"Small\"");
-        JVLookupFormula vlookup = factory.createVLookupFormula("A1", "A1:B10", 2, false);
-        factory.applyFormula(sheet, 10, 0, sumFormula);  // A11
-        factory.applyFormula(sheet, 10, 1, avgFormula);  // B11
-        factory.applyFormula(sheet, "C1", ifFormula);  // C1
-        factory.applyFormula(sheet, 0, 3, vlookup);  // D1
-        factory.evaluateAll();
+        JAbstractExcelFormula formula = factory.createFormulaInstance("SUM(A1:A10)");
+        factory.applyFormula(sheet, 10, 0, formula);  // A11
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
-        System.out.println("SUM结果: " + sumResult);
+        System.out.println("SUM result: " + sumResult);
     }
 
 }

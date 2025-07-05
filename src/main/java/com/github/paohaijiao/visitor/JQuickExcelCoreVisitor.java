@@ -52,15 +52,6 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
         return null;
     }
 
-    @Override
-    public String visitDestination(JQuickExcelParser.DestinationContext ctx) {
-        if (ctx.identifier() != null) {
-            String varName = JStringUtils.trim(ctx.identifier().getText());
-            return varName;
-        }
-        JAssert.throwNewException("Invalid Destination");
-        return null;
-    }
 
     @Override
     public Object visitVariable(JQuickExcelParser.VariableContext ctx) {

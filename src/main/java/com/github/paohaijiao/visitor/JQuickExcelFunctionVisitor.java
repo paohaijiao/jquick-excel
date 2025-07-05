@@ -13,14 +13,15 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.visitor.function;
+package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.enums.JMethodEnums;
 import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.model.JFormulateCallModel;
 import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
-import com.github.paohaijiao.visitor.JQuickExcelCoreVisitor;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,11 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
             String string = ctx.STRING().getText();
             String value = JStringUtils.trim(string);
             return value;
-        } else if (ctx.NUMBER() != null) {
+        } else if(ctx.IDENTIFIER() != null){
+            String string = ctx.IDENTIFIER().getText();
+            String value = JStringUtils.trim(string);
+            return value;
+        }else if (ctx.NUMBER() != null) {
             String number = ctx.NUMBER().getText();
             String value = JStringUtils.trim(number);
             return new BigDecimal(value);
@@ -50,17 +55,16 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         JAssert.throwNewException("Invalid FunctionArg");
         return null;
     }
-
     @Override
-    public JMethodCallModel visitFunctionCall(JQuickExcelParser.FunctionCallContext ctx) {
-        JMethodCallModel methodCallModel = new JMethodCallModel();
+    public JFormulateCallModel visitFormulateCall(JQuickExcelParser.FormulateCallContext ctx) {
+        JFormulateCallModel methodCallModel = new JFormulateCallModel();
         List<Object> list = new ArrayList<>();
         String functionName = null;
         if (ctx.IDENTIFIER() != null) {
             functionName = JStringUtils.trim(ctx.IDENTIFIER().getText());
         }
         JAssert.notNull(functionName, "Invalid functionName");
-        methodCallModel.setMethod(JMethodEnums.methodOf(functionName));
+        methodCallModel.setMethod(functionName);
         if (ctx.functionArg() != null) {
             for (JQuickExcelParser.FunctionArgContext functionArg : ctx.functionArg()) {
                 Object object = visitFunctionArg(functionArg);

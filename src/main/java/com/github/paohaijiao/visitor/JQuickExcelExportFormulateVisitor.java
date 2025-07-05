@@ -16,11 +16,16 @@
 package com.github.paohaijiao.visitor;
 
 
+import com.github.paohaijiao.enums.JMethodEnums;
+import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -143,5 +148,24 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMapping {
             return ctx.functionCall().getText();
         }
         return "";
+    }
+    @Override
+    public JMethodCallModel visitFunctionCall(JQuickExcelParser.FunctionCallContext ctx) {
+        JMethodCallModel methodCallModel = new JMethodCallModel();
+        List<Object> list = new ArrayList<>();
+        String functionName = null;
+        if (ctx.IDENTIFIER() != null) {
+            functionName = JStringUtils.trim(ctx.IDENTIFIER().getText());
+        }
+        JAssert.notNull(functionName, "Invalid functionName");
+        methodCallModel.setMethod(JMethodEnums.methodOf(functionName));
+        if (ctx.functionArg() != null) {
+            for (JQuickExcelParser.FunctionArgContext functionArg : ctx.functionArg()) {
+                Object object = visitFunctionArg(functionArg);
+                list.add(object);
+            }
+        }
+        methodCallModel.setList(list);
+        return methodCallModel;
     }
 }
