@@ -18,6 +18,8 @@ package com.github.paohaijiao.formula.impl.math;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 
+import java.math.BigDecimal;
+
 /**
  * packageName com.github.paohaijiao.formula.impl.math
  *
@@ -29,7 +31,7 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  */
 public class JPowerFormula extends JAbstractExcelFormula {
 
-    public JPowerFormula(Integer num,Integer num1) {
-        super("POWER(" + num+","+num1 + ")");
+    public JPowerFormula(BigDecimal num, BigDecimal num1) {
+        super("POWER(" + num.toPlainString()+","+num1.toPlainString() + ")");
     }
 }

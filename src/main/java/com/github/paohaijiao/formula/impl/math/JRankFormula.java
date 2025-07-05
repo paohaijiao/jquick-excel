@@ -17,6 +17,8 @@ package com.github.paohaijiao.formula.impl.math;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 
+import java.math.BigDecimal;
+
 /**
  * packageName com.github.paohaijiao.formula.impl.math
  *
@@ -27,14 +29,12 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @description
  */
 public class JRankFormula extends JAbstractExcelFormula {
-    private final String range;
 
-    public JRankFormula(String range) {
-        super("RANK(" + range + ")");
-        this.range = range;
+    public JRankFormula(BigDecimal num,String range) {
+        super("RANK(" +num+","+ range + ")");
+    }
+    public JRankFormula(BigDecimal num,String range,BigDecimal  ascOrDesc) {
+        super("RANK(" +num+","+ range +","+ascOrDesc+ ")");
     }
 
-    public String getRange() {
-        return range;
-    }
 }

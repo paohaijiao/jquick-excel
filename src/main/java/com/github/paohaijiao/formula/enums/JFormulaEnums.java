@@ -23,7 +23,6 @@ public enum JFormulaEnums {
     SQRT("SQRT(", JSQRTFormula.class),
     STDEV("STDEV(", JSTDEVFormula.class),
     SUM("SUM(", JSumFormula.class),
-    SUMIF("SUMIF(", JSumIFFormula.class),
 
     DATEDIF("DATEDIF(", JDateDifFormula.class),
     DATE("DATE(", JDateFormula.class),

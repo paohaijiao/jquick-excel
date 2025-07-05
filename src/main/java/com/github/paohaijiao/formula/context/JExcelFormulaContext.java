@@ -73,9 +73,15 @@ public class JExcelFormulaContext {
         JQuickExcelParser.FormulateCallContext tree = parser.formulateCall();
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(new ArrayList<>());
         JFormulateCallModel result =(JFormulateCallModel) visitor.visit(tree);
-        String para= StringUtils.join(result.getList(),",");
-//        Object[] params = result.getList().toArray(new Object[0]);
-        return createInstance(clazz, para);
+        if(result.getList().isEmpty()){
+           return createInstance(clazz);
+        }else if(result.getList().size() == 1){
+            return createInstance(clazz, result.getList().get(0));
+        }else{
+            Object[] params = result.getList().toArray(new Object[0]);
+            return createInstance(clazz, params);
+        }
+
     }
     public static JAbstractExcelFormula createInstance(Class<? extends JAbstractExcelFormula> clazz, Object... params) {
         try {

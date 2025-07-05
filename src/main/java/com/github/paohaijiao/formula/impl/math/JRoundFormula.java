@@ -3,6 +3,7 @@ package com.github.paohaijiao.formula.impl.math;
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 
 public class JRoundFormula extends JAbstractExcelFormula {
+
     private final String range;
 
     public JRoundFormula(String range) {

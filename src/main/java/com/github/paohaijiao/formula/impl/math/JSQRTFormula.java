@@ -16,6 +16,9 @@
 package com.github.paohaijiao.formula.impl.math;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
+import lombok.Getter;
+
+import java.math.BigDecimal;
 
 /**
  * packageName com.github.paohaijiao.formula.impl.math
@@ -26,15 +29,12 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
  * @date 2025/7/4
  * @description
  */
+@Getter
 public class JSQRTFormula extends JAbstractExcelFormula {
-    private final Integer num;
+    private final BigDecimal num;
 
-    public JSQRTFormula(Integer num) {
-        super("SQRT(" + num + ")");
+    public JSQRTFormula(BigDecimal num) {
+        super("SQRT(" + num.toPlainString() + ")");
         this.num = num;
-    }
-
-    public Integer getNum() {
-        return num;
     }
 }
