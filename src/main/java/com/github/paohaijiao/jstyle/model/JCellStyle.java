@@ -17,6 +17,7 @@ package com.github.paohaijiao.jstyle.model;
 
 import org.apache.poi.ss.usermodel.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -55,16 +56,16 @@ public class JCellStyle extends HashMap<String, Object> {
     private static final String FILL_FOREGROUND_COLOR = "fillForegroundColor";
     private static final String SHRINK_TO_FIT = "shrinkToFit";
 
-    public Short getIndex() {
-        return containsKey(INDEX) ? (short) get(INDEX) : 0;
+    public BigDecimal getIndex() {
+        return containsKey(INDEX) ? (BigDecimal) get(INDEX) : null;
     }
 
-    public void setDataFormat(short var1) {
+    public void setDataFormat(BigDecimal var1) {
         put(DATA_FORMAT, var1);
     }
 
-    public Short getDataFormat() {
-        return containsKey(DATA_FORMAT) ? (short) get(DATA_FORMAT) : 0;
+    public BigDecimal getDataFormat() {
+        return containsKey(DATA_FORMAT) ? (BigDecimal) get(DATA_FORMAT) : null;
     }
 
     public String getDataFormatString() {
@@ -75,21 +76,21 @@ public class JCellStyle extends HashMap<String, Object> {
         put(FONT, var1);
     }
 
-    public Integer getFontIndex() {
-        return containsKey(FONT_INDEX) ? (int) get(FONT_INDEX) : 0;
+    public BigDecimal getFontIndex() {
+        return containsKey(FONT_INDEX) ? (BigDecimal) get(FONT_INDEX) : null;
     }
 
     @Deprecated
-    public Integer getFontIndexAsInt() {
+    public BigDecimal getFontIndexAsInt() {
         return getFontIndex();
     }
 
-    public void setHidden(boolean var1) {
+    public void setHidden(Boolean var1) {
         put(HIDDEN, var1);
     }
 
     public Boolean getHidden() {
-        return containsKey(HIDDEN) ? (boolean) get(HIDDEN) : false;
+        return containsKey(HIDDEN) ? (boolean) get(HIDDEN) : null;
     }
 
     public void setLocked(boolean var1) {
@@ -97,7 +98,7 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public Boolean getLocked() {
-        return containsKey(LOCKED) ? (boolean) get(LOCKED) : false;
+        return containsKey(LOCKED) ? (boolean) get(LOCKED) : null;
     }
 
     public void setQuotePrefixed(boolean var1) {
@@ -105,7 +106,7 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public Boolean getQuotePrefixed() {
-        return containsKey(QUOTE_PREFIXED) ? (boolean) get(QUOTE_PREFIXED) : false;
+        return containsKey(QUOTE_PREFIXED) ? (boolean) get(QUOTE_PREFIXED) : null;
     }
 
     public void setAlignment(HorizontalAlignment var1) {
@@ -145,7 +146,7 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public Boolean getWrapText() {
-        return containsKey(WRAP_TEXT) ? (boolean) get(WRAP_TEXT) : false;
+        return containsKey(WRAP_TEXT) ? (boolean) get(WRAP_TEXT) : null;
     }
 
     public void setVerticalAlignment(VerticalAlignment var1) {
@@ -172,20 +173,20 @@ public class JCellStyle extends HashMap<String, Object> {
         }
     }
 
-    public void setRotation(short var1) {
+    public void setRotation(BigDecimal var1) {
         put(ROTATION, var1);
     }
 
-    public Short getRotation() {
-        return containsKey(ROTATION) ? (short) get(ROTATION) : 0;
+    public BigDecimal getRotation() {
+        return containsKey(ROTATION) ? (BigDecimal) get(ROTATION) : null;
     }
 
-    public void setIndention(short var1) {
+    public void setIndention(BigDecimal var1) {
         put(INDENTION, var1);
     }
 
-    public Short getIndention() {
-        return containsKey(INDENTION) ? (short) get(INDENTION) : 0;
+    public BigDecimal getIndention() {
+        return containsKey(INDENTION) ? (BigDecimal) get(INDENTION) : null;
     }
 
     public void setBorderLeft(BorderStyle var1) {
@@ -356,36 +357,36 @@ public class JCellStyle extends HashMap<String, Object> {
         }
     }
 
-    public void setLeftBorderColor(short var1) {
+    public void setLeftBorderColor(BigDecimal var1) {
         put(LEFT_BORDER_COLOR, var1);
     }
 
-    public Short getLeftBorderColor() {
-        return containsKey(LEFT_BORDER_COLOR) ? (short) get(LEFT_BORDER_COLOR) : 0;
+    public BigDecimal getLeftBorderColor() {
+        return containsKey(LEFT_BORDER_COLOR) ? (BigDecimal) get(LEFT_BORDER_COLOR) : null;
     }
 
-    public void setRightBorderColor(short var1) {
+    public void setRightBorderColor(BigDecimal var1) {
         put(RIGHT_BORDER_COLOR, var1);
     }
 
-    public Short getRightBorderColor() {
-        return containsKey(RIGHT_BORDER_COLOR) ? (short) get(RIGHT_BORDER_COLOR) : 0;
+    public BigDecimal getRightBorderColor() {
+        return containsKey(RIGHT_BORDER_COLOR) ? (BigDecimal) get(RIGHT_BORDER_COLOR) : null;
     }
 
-    public void setTopBorderColor(short var1) {
+    public void setTopBorderColor(BigDecimal var1) {
         put(TOP_BORDER_COLOR, var1);
     }
 
-    public Short getTopBorderColor() {
-        return containsKey(TOP_BORDER_COLOR) ? (short) get(TOP_BORDER_COLOR) : 0;
+    public BigDecimal getTopBorderColor() {
+        return containsKey(TOP_BORDER_COLOR) ? (BigDecimal) get(TOP_BORDER_COLOR) : null;
     }
 
-    public void setBottomBorderColor(short var1) {
+    public void setBottomBorderColor(BigDecimal var1) {
         put(BOTTOM_BORDER_COLOR, var1);
     }
 
-    public Short getBottomBorderColor() {
-        return containsKey(BOTTOM_BORDER_COLOR) ? (short) get(BOTTOM_BORDER_COLOR) : 0;
+    public BigDecimal getBottomBorderColor() {
+        return containsKey(BOTTOM_BORDER_COLOR) ? (BigDecimal) get(BOTTOM_BORDER_COLOR) : null;
     }
 
     public void setFillPattern(FillPatternType var1) {
@@ -442,17 +443,17 @@ public class JCellStyle extends HashMap<String, Object> {
         }
     }
 
-    public void setFillBackgroundColor(short var1) {
+    public void setFillBackgroundColor(BigDecimal var1) {
         put(FILL_BACKGROUND_COLOR, var1);
     }
 
-    public void setFillBackgroundColor(Color var1) {
+    public void setFillBackgroundColor(String var1) {
         put(FILL_BACKGROUND_COLOR, var1);
     }
 
-    public Short getFillBackgroundColor() {
-        return containsKey(FILL_BACKGROUND_COLOR) && get(FILL_BACKGROUND_COLOR) instanceof Short
-                ? (short) get(FILL_BACKGROUND_COLOR) : 0;
+    public BigDecimal getFillBackgroundColor() {
+        return containsKey(FILL_BACKGROUND_COLOR) && get(FILL_BACKGROUND_COLOR) instanceof BigDecimal
+                ? (BigDecimal) get(FILL_BACKGROUND_COLOR) : null;
     }
 
     public Color getFillBackgroundColorColor() {
@@ -460,7 +461,7 @@ public class JCellStyle extends HashMap<String, Object> {
                 ? (Color) get(FILL_BACKGROUND_COLOR) : null;
     }
 
-    public void setFillForegroundColor(short var1) {
+    public void setFillForegroundColor(BigDecimal var1) {
         put(FILL_FOREGROUND_COLOR, var1);
     }
 
@@ -468,9 +469,10 @@ public class JCellStyle extends HashMap<String, Object> {
         put(FILL_FOREGROUND_COLOR, var1);
     }
 
-    public Short getFillForegroundColor() {
-        return containsKey(FILL_FOREGROUND_COLOR) && get(FILL_FOREGROUND_COLOR) instanceof Short
-                ? (short) get(FILL_FOREGROUND_COLOR) : 0;
+    public BigDecimal getFillForegroundColor() {
+        return containsKey(FILL_FOREGROUND_COLOR) && get(FILL_FOREGROUND_COLOR) instanceof BigDecimal
+                ? (BigDecimal
+                ) get(FILL_FOREGROUND_COLOR) : null;
     }
 
     public Color getFillForegroundColorColor() {
@@ -490,6 +492,6 @@ public class JCellStyle extends HashMap<String, Object> {
     }
 
     public Boolean getShrinkToFit() {
-        return containsKey(SHRINK_TO_FIT) ? (boolean) get(SHRINK_TO_FIT) : false;
+        return containsKey(SHRINK_TO_FIT) ? (boolean) get(SHRINK_TO_FIT) : null;
     }
 }

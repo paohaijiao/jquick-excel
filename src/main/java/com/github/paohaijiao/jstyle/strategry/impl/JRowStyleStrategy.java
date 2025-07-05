@@ -5,6 +5,7 @@ import com.github.paohaijiao.jstyle.strategry.IStyleStrategy;
 import com.github.paohaijiao.util.JStyleHelper;
 import org.apache.poi.ss.usermodel.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,18 +18,23 @@ public class JRowStyleStrategy implements IStyleStrategy {
 
     @Override
     public void applyStyle(Workbook workbook, Sheet sheet, Map<String, Object> style) {
+        int rowNum = this.rowNum-1>0?this.rowNum-1:0;
         Row row = sheet.getRow(rowNum);
         if (row == null) {
             row = sheet.createRow(rowNum);
         }
         JRowStyle jRowStyle = transferToJRowStyle(style);
-        if (jRowStyle.getHeight() > 0) {
-            row.setHeight(jRowStyle.getHeight());
+        if (null!=jRowStyle.getHeight()) {//1/height
+            String string=jRowStyle.getHeight().toPlainString();
+            row.setHeight(Short.parseShort(string));
         }
-        if (jRowStyle.getHeightInPoints() > 0) {
-            row.setHeightInPoints(jRowStyle.getHeightInPoints());
+        if (null!=jRowStyle.getHeightInPoints() ) {
+            String string=jRowStyle.getHeightInPoints().toPlainString();
+            row.setHeightInPoints(Short.parseShort(string));
         }
-        row.setZeroHeight(jRowStyle.isZeroHeight());
+        if(null!=jRowStyle.isZeroHeight()){
+            row.setZeroHeight(jRowStyle.isZeroHeight());
+        }
         if (jRowStyle.getRowStyle() != null) {
             CellStyle cellStyle = JStyleHelper.createCellStyle(workbook, jRowStyle.getRowStyle());
             for (Cell cell : row) {

@@ -34,25 +34,25 @@ public class JStyleContext {
         strategy.applyStyle(workbook, sheet, style);
     }
 
-    public static JStyleContext forRow(Workbook workbook, Sheet sheet, int rowNum) {
+    public  JStyleContext forRow( int rowNum) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JRowStyleStrategy(rowNum));
         return context;
     }
 
-    public static JStyleContext forColumn(Workbook workbook, Sheet sheet, int colNum) {
+    public  JStyleContext forColumn( int colNum) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JColumnStyleStrategy(colNum));
         return context;
     }
 
-    public static JStyleContext forCell(Workbook workbook, Sheet sheet, String cellRef) {
+    public  JStyleContext forCell( String cellRef) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JCellStyleStrategy(cellRef));
         return context;
     }
 
-    public static JStyleContext forCell(Workbook workbook, Sheet sheet, int rowNum, int colNum) {
+    public  JStyleContext forCell( int rowNum, int colNum) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JCellStyleStrategy(rowNum, colNum));
         return context;

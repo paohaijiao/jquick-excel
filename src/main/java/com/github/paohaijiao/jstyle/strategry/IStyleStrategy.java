@@ -15,7 +15,6 @@ public interface IStyleStrategy {
         if (style == null) {
             return null;
         }
-
         JRowStyle rowStyle = new JRowStyle();
         rowStyle.putAll(style);
         return rowStyle;

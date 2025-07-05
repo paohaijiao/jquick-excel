@@ -457,13 +457,13 @@ public class JExcelProcessor {
                     int end = Integer.parseInt(tokenizer.nextToken());
                     for (int i = start; i <= end; i++) {
                         Map<String, Object> cssStyle = rowStyle.getValue();
-                        JStyleContext styleContext = JStyleContext.forRow(workbook, currentSheet, i);
+                        JStyleContext styleContext = new JStyleContext(workbook,currentSheet).forRow( i);
                         styleContext.applyStyle(cssStyle);
                     }
                 } else {
                     Integer row = Integer.parseInt(rowStyle.getKey());
                     Map<String, Object> cssStyle = rowStyle.getValue();
-                    JStyleContext styleContext = JStyleContext.forRow(workbook, currentSheet, row);
+                    JStyleContext styleContext = new JStyleContext(workbook,currentSheet).forRow(row);
                     styleContext.applyStyle(cssStyle);
                 }
             }
@@ -478,7 +478,7 @@ public class JExcelProcessor {
                     int end = Integer.parseInt(tokenizer.nextToken());
                     for (int i = start; i <= end; i++) {
                         Map<String, Object> cssStyle = colStyle.getValue();
-                        JStyleContext styleContext = JStyleContext.forColumn(workbook, currentSheet, i);
+                        JStyleContext styleContext = new JStyleContext(workbook,currentSheet).forColumn( i);
                         styleContext.applyStyle(cssStyle);
                     }
                 } else {
@@ -490,7 +490,7 @@ public class JExcelProcessor {
                         col = cellReference.getCol();
                     }
                     Map<String, Object> cssStyle = colStyle.getValue();
-                    JStyleContext styleContext = JStyleContext.forColumn(workbook, currentSheet, col);
+                    JStyleContext styleContext = new JStyleContext(workbook,currentSheet).forColumn( col);
                     styleContext.applyStyle(cssStyle);
                 }
             }
@@ -500,7 +500,7 @@ public class JExcelProcessor {
             for (Map.Entry<String, Map<String, Object>> cellStyle : cellStyles.entrySet()) {
                 String cell = cellStyle.getKey();
                 Map<String, Object> cssStyle = cellStyle.getValue();
-                JStyleContext styleContext = JStyleContext.forCell(workbook, currentSheet, cell);
+                JStyleContext styleContext = new JStyleContext(workbook,currentSheet).forCell( cell);
                 styleContext.applyStyle(cssStyle);
             }
         }

@@ -15,7 +15,9 @@
  */
 package com.github.paohaijiao.jstyle.model;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.jstyle.model
@@ -34,12 +36,12 @@ public class JRowStyle extends HashMap<String, Object> {
     private static final String heightInPoints = "heightInPoints";
     private static final String zeroHeight = "zeroHeight";
 
-    public void setHeight(short i) {
+    public void setHeight(BigDecimal i) {
         put(height, i);
     }
 
-    public short getHeight() {
-        return containsKey(height) ? (short) get(height) : 0;
+    public BigDecimal getHeight() {
+        return containsKey(height) ? (BigDecimal) get(height) : null;
     }
 
     public void setRowNum(int i) {
@@ -55,15 +57,19 @@ public class JRowStyle extends HashMap<String, Object> {
     }
 
     public JCellStyle getRowStyle() {
-        return (JCellStyle) get(rowStyle);
+        Map<String, Object> map=(Map<String, Object>) get(rowStyle);
+        JCellStyle cellStyle=new JCellStyle();
+        cellStyle.putAll(map);
+        return cellStyle;
+
     }
 
-    public void setHeightInPoints(float v) {
+    public void setHeightInPoints(BigDecimal v) {
         put(heightInPoints, v);
     }
 
-    public Float getHeightInPoints() {
-        return containsKey(heightInPoints) ? (float) get(heightInPoints) : 0.0f;
+    public BigDecimal getHeightInPoints() {
+        return containsKey(heightInPoints) ? (BigDecimal) get(heightInPoints) : null;
     }
 
     public void setZeroHeight(boolean b) {
@@ -71,6 +77,6 @@ public class JRowStyle extends HashMap<String, Object> {
     }
 
     public Boolean isZeroHeight() {
-        return containsKey(zeroHeight) ? (boolean) get(zeroHeight) : false;
+        return containsKey(zeroHeight) ? (boolean) get(zeroHeight) : null;
     }
 }
