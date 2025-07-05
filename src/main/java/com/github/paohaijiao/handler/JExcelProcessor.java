@@ -292,24 +292,18 @@ public class JExcelProcessor {
         if (null == config) {
             return;
         }
+        if(config.getHeader()){
+            maxRow=maxRow+1;
+        }
         Map<String, String> cellFormulas = config.getCellFormulas();
         Map<String, String> rowFormulas = config.getRowFormulas();
         Map<String, String> colFormulas = config.getColFormulas();
         for (Map.Entry<String, String> keyset : cellFormulas.entrySet()) {
             String key = keyset.getKey();
-            String value = keyset.getValue();
-            CellReference cellRef = new CellReference(key);
-            int row = cellRef.getRow();    // 0-based
-            int col = cellRef.getCol();    // 0-based
-            Row r = currentSheet.getRow(row);
-            if (r == null) {
-                currentSheet.createRow(row);
-            }
-            Cell c = r.getCell(col);
-            if (c == null) {
-                c = r.createCell(col);
-            }
-            c.setCellFormula(value);
+            String formulate = keyset.getValue();
+            JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
+            JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
+            factory.applyFormula(currentSheet, key, formula);
         }
         for (Map.Entry<String, String> keyset : rowFormulas.entrySet()) {
             String rowNum = keyset.getKey();
@@ -338,21 +332,31 @@ public class JExcelProcessor {
         }
         for (Map.Entry<String, String> keyset : colFormulas.entrySet()) {
             String colNum = keyset.getKey();
-            CellReference cellRef = new CellReference(colNum);
-            int col = cellRef.getCol();
-            String value = keyset.getValue();
-            for (int i = 1; i < maxRow; i++) {
-                int row = i;    // 0-based
-                Row r = currentSheet.getRow(row);
-                if (r == null) {
-                    r = currentSheet.createRow(row);
+            String formulate = keyset.getValue();
+
+            if(colNum.contains("..")){
+                StringTokenizer tokenizer = new StringTokenizer(colNum, "..");
+                String start = tokenizer.nextToken();
+                String end = tokenizer.nextToken();
+                CellReference startCellReference=new CellReference(start);
+                Short startCol=startCellReference.getCol();
+                CellReference endCellReference=new CellReference(end);
+                Short endCol=endCellReference.getCol();
+                for (int i = startCol; i <= endCol; i++) {
+                    for (int j = 0; j < maxRow; j++) {
+                        JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
+                        JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
+                        factory.applyFormula(currentSheet, j, i+1, formula);
+                    }
                 }
-                Cell c = r.getCell(col);
-                if (c == null) {
-                    c = r.createCell(col);
+            }else{
+                for (int i = 0; i < maxRow; i++) {
+                    CellReference cellReference=new CellReference(colNum);
+                    Short col=cellReference.getCol();
+                    JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
+                    JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
+                    factory.applyFormula(currentSheet, i, col+1, formula);
                 }
-                String formula = getFormulaValue(value, row, col);
-                c.setCellFormula(formula);
             }
         }
     }

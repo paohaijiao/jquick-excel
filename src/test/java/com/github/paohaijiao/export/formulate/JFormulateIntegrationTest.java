@@ -84,4 +84,56 @@ public class JFormulateIntegrationTest {
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
+    @Test
+    public void testColumnFormulas() throws IOException {
+        String config = "EXPORT WITH FORMULAS = {\n" +
+                "  COL G: \"SUM(A1,B1)\",\n" +
+                "  COL H..I: \"SUM(A2,B2)\"\n" +
+                "}";
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Data");
+        for (int i = 0; i < 2; i++) {
+            Row row = sheet.createRow(i);
+            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
+            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
+        }
+        System.out.println(config);
+        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickExcelParser parser = new JQuickExcelParser(tokens);
+        ParseTree tree = parser.exportConfig();
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//testRowFormulas.xlsx");
+        JContext context=new JContext();
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
+        context.put("fos", fileOutputStream);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+    }
+    @Test
+    public void testCellFormulas() throws IOException {
+        String config = "EXPORT WITH FORMULAS = {\n" +
+                "  A11: \"SUM(A1:A10)\",\n" +
+                "  B11: \"AVERAGE(B1:B10)\",\n" +
+                "  C1: \"NOW()\",\n" +
+                "  D5: \"NOW()\"\n" +
+                "}";
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Data");
+        for (int i = 0; i < 2; i++) {
+            Row row = sheet.createRow(i);
+            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
+            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
+        }
+        System.out.println(config);
+        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickExcelParser parser = new JQuickExcelParser(tokens);
+        ParseTree tree = parser.exportConfig();
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//testRowFormulas.xlsx");
+        JContext context=new JContext();
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
+        context.put("fos", fileOutputStream);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+    }
 }
