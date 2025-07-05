@@ -474,9 +474,13 @@ public class JExcelProcessor {
                 String key = colStyle.getKey().trim();
                 if (key.contains("..")) {
                     StringTokenizer tokenizer = new StringTokenizer(key, "..");
-                    int start = Integer.parseInt(tokenizer.nextToken());
-                    int end = Integer.parseInt(tokenizer.nextToken());
-                    for (int i = start; i <= end; i++) {
+                    String start = tokenizer.nextToken();
+                    String end = tokenizer.nextToken();
+                    CellReference startCellReference=new CellReference(start);
+                    Short startCol=startCellReference.getCol();
+                    CellReference endCellReference=new CellReference(end);
+                    Short endCol=endCellReference.getCol();
+                    for (int i = startCol; i <= endCol; i++) {
                         Map<String, Object> cssStyle = colStyle.getValue();
                         JStyleContext styleContext = new JStyleContext(workbook,currentSheet).forColumn( i);
                         styleContext.applyStyle(cssStyle);

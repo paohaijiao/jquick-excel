@@ -35,6 +35,12 @@ public class JRowStyle extends HashMap<String, Object> {
     private static final String rowStyle = "rowStyle";
     private static final String heightInPoints = "heightInPoints";
     private static final String zeroHeight = "zeroHeight";
+    private static final String fontHeightInPoints = "fontHeightInPoints";
+    private static final String fontName = "fontName";
+    private static final String bold = "bold";
+    private static final String italic = "italic";
+    private static final String color = "color";
+    private static final String underLine = "underLine";
 
     public void setHeight(BigDecimal i) {
         put(height, i);
@@ -58,6 +64,7 @@ public class JRowStyle extends HashMap<String, Object> {
 
     public JCellStyle getRowStyle() {
         Map<String, Object> map=(Map<String, Object>) get(rowStyle);
+        if(null==map)return new JCellStyle();
         JCellStyle cellStyle=new JCellStyle();
         cellStyle.putAll(map);
         return cellStyle;
@@ -78,5 +85,46 @@ public class JRowStyle extends HashMap<String, Object> {
 
     public Boolean isZeroHeight() {
         return containsKey(zeroHeight) ? (boolean) get(zeroHeight) : null;
+    }
+    public void setFontHeightInPoints(BigDecimal v) {
+        put(fontHeightInPoints, v);
+    }
+
+    public BigDecimal getFontHeightInPoints() {
+        return containsKey(fontHeightInPoints) ? (BigDecimal) get(fontHeightInPoints) : null;
+    }
+
+    public void setFontName(String name) {
+        put(fontName, name);
+    }
+
+    public String getFontName() {
+        return containsKey(fontName) ? (String) get(fontName) : null;
+    }
+
+    public void setBold(Boolean b) {
+        put(bold, b);
+    }
+
+    public Boolean isBold() {
+        return containsKey(bold) ? (Boolean) get(bold) : null;
+    }
+
+    public void setItalic(Boolean b) {
+        put(italic, b);
+    }
+
+    public Boolean isItalic() {
+        return containsKey(italic) ? (Boolean) get(italic) : null;
+    }
+
+    public void setColor(String c) {
+        put(color, c);
+    }
+    public void setUnderLine(Boolean line) {
+        put(underLine, line);
+    }
+    public Boolean getUnderLine() {
+        return containsKey(underLine) ? (Boolean) get(underLine) : null;
     }
 }

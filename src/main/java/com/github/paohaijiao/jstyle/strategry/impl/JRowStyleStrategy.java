@@ -35,11 +35,37 @@ public class JRowStyleStrategy implements IStyleStrategy {
         if(null!=jRowStyle.isZeroHeight()){
             row.setZeroHeight(jRowStyle.isZeroHeight());
         }
+        Font font = workbook.createFont();
+ //       font.setFontName("Arial");
+   //     font.setFontHeightInPoints((short)12);
+//        font.setBold(true);
+//        font.setItalic(true);
+//        font.setUnderline(Font.U_SINGLE);
+//        font.setColor(IndexedColors.RED.getIndex()); // 字体颜色
+        if(null!=jRowStyle.getFontName()){
+            font.setFontName(jRowStyle.getFontName());
+        }
+        if(null!=jRowStyle.getFontHeightInPoints()){
+            BigDecimal string=jRowStyle.getFontHeightInPoints();
+            font.setFontHeightInPoints(Short.parseShort(string.toString()));
+        }
+        if(null!=jRowStyle.isBold()){
+            font.setBold(jRowStyle.isBold());
+        }
+        if(null!=jRowStyle.isItalic()){
+            font.setItalic(jRowStyle.isItalic());
+        }
+        if(null!=jRowStyle.getUnderLine()){
+            font.setUnderline(Font.U_SINGLE);
+        }
         if (jRowStyle.getRowStyle() != null) {
             CellStyle cellStyle = JStyleHelper.createCellStyle(workbook, jRowStyle.getRowStyle());
+            cellStyle.setFont(font);
+
             for (Cell cell : row) {
                 cell.setCellStyle(cellStyle);
             }
         }
+
     }
 }
