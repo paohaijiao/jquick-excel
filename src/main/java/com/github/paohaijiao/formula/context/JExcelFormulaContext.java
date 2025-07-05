@@ -65,7 +65,7 @@ public class JExcelFormulaContext {
     public static JAbstractExcelFormula createFormulaInstance(String formulaContent)  {
         JFormulaEnums type = JFormulaEnums.getByFormulaContent(formulaContent);
         if (type == null) {
-            throw new IllegalArgumentException("Unsupported formula: " + formulaContent);
+          return new JCustomFormula(formulaContent);
         }
         Class<? extends JAbstractExcelFormula> clazz=type.getFormulaClass();
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(formulaContent));

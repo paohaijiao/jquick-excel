@@ -275,7 +275,20 @@ public class JFormulaDateValueTest {
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
         workbook.write(new FileOutputStream(fileDir+"/year.xlsx"));
+    }    @Test
+    public void custom() throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
+        Sheet sheet = workbook.createSheet("Data");
+        sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
+        JAbstractExcelFormula formula = factory.createFormulaInstance("custom(A1,123443,edwedwe)");
+        factory.applyFormula(sheet, 1, 0, formula);
+        Cell resultCell = sheet.getRow(1).getCell(0);
+        Object result = factory.evaluateFormula(resultCell);
+        System.out.println(result);
+        workbook.write(new FileOutputStream(fileDir+"/year.xlsx"));
     }
+
 
 
 

@@ -6,5 +6,6 @@ public class JCustomFormula extends JAbstractExcelFormula {
 
     public JCustomFormula(String formula) {
         super(formula);
+        System.out.println(formula);
     }
 }
