@@ -17,6 +17,8 @@
 package com.github.paohaijiao.visitor;
 
 
+import com.github.paohaijiao.enums.JMergeValueType;
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 
@@ -55,85 +57,70 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
 
     @Override
     public Void visitRowMerge(JQuickExcelParser.RowMergeContext ctx) {
-        Map<String, Object> rowMerge = new HashMap<>();
-        rowMerge.put("type", "ROW");
-        Map<String, Object> range = visitRowRange(ctx.rowRange());
-        rowMerge.put("range", range);
-        if (ctx.mergeProperties() != null) {
-            Map<String, String> properties = visitMergeProperties(ctx.mergeProperties());
-            rowMerge.putAll(properties);
+        Map<String, Object> rowMerge =config.getRowMerge();
+        Object range = visitRowRange(ctx.rowRange());
+        JMergeValueType policy =null;
+        if (ctx.mergePolicy() != null) {
+             policy = visitMergePolicy(ctx.mergePolicy());
+            JAssert.notNull(policy, "policy is null");
         }
+        rowMerge.put(range.toString(),policy);
         config.setRowMerge(rowMerge);
         return null;
     }
 
     @Override
-    public Map<String, Object> visitRowRange(JQuickExcelParser.RowRangeContext ctx) {
-        Map<String, Object> range = new HashMap<>();
+    public Object visitRowRange(JQuickExcelParser.RowRangeContext ctx) {
         if (ctx.singleRow() != null) {
-            range.put("type", "SINGLE");
-            range.put("value", Integer.parseInt(ctx.singleRow().NUMBER().getText()));
+            String number=ctx.singleRow().getText();
+           return  Integer.parseInt(number);
         } else if (ctx.multiRowRange() != null) {
-            range.put("type", "MULTI");
-            String[] parts = ctx.multiRowRange().getText().split("\\.\\.");
-            range.put("start", Integer.parseInt(parts[0]));
-            range.put("end", Integer.parseInt(parts[1]));
+            String string=ctx.multiRowRange().getText();
+            return string;
         }
-        return range;
+        return null;
     }
 
     @Override
     public Void visitColMerge(JQuickExcelParser.ColMergeContext ctx) {
-        Map<String, Object> colMerge = new HashMap<>();
-        Map<String, Object> range = visitColRange(ctx.colRange());
-        colMerge.put("range", range);
-        if (ctx.mergeProperties() != null) {
-            Map<String, String> properties = visitMergeProperties(ctx.mergeProperties());
-            colMerge.putAll(properties);
+        Map<String, Object> colMerge =config.getColMerge();
+        Object range = visitColRange(ctx.colRange());
+        JMergeValueType policy =null;
+        if (ctx.mergePolicy() != null) {
+            policy = visitMergePolicy(ctx.mergePolicy());
         }
-
+        colMerge.put(range.toString(),policy);
         config.setColMerge(colMerge);
         return null;
     }
 
     @Override
-    public Map<String, Object> visitColRange(JQuickExcelParser.ColRangeContext ctx) {
-        Map<String, Object> range = new HashMap<>();
+    public Object visitColRange(JQuickExcelParser.ColRangeContext ctx) {
         if (ctx.singleCol() != null) {
-            range.put("type", "SINGLE");
-            range.put("value", ctx.singleCol().IDENTIFIER().getText());
+            String text=ctx.singleCol().getText();
+            return  text;
         } else if (ctx.multiColRange() != null) {
-            range.put("type", "MULTI");
-            String[] parts = ctx.multiColRange().getText().split("\\.\\.");
-            range.put("start", parts[0]);
-            range.put("end", parts[1]);
+            String string=ctx.multiColRange().getText();
+            return string;
         }
-        return range;
+        return null;
     }
 
     @Override
     public Void visitRangeMerge(JQuickExcelParser.RangeMergeContext ctx) {
-        Map<String, Object> rangeMerge = new HashMap<>();
-        rangeMerge.put("type", "RANGE");
+        Map<String, Object> rangeMerge = config.getRangeMerge();
         String rangeRef = ctx.rangeRef().getText();
-        rangeMerge.put("range", rangeRef);
-        if (ctx.mergeProperties() != null) {
-            Map<String, String> properties = visitMergeProperties(ctx.mergeProperties());
-            rangeMerge.putAll(properties);
+        if (ctx.mergePolicy() != null) {
+            JMergeValueType properties = visitMergePolicy(ctx.mergePolicy());
+            rangeMerge.put(rangeRef,properties);
         }
-
         config.setRangeMerge(rangeMerge);
         return null;
     }
 
     @Override
-    public Map<String, String> visitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx) {
-        Map<String, String> properties = new HashMap<>();
-        for (JQuickExcelParser.StylePropertyContext prop : ctx.styleProperty()) {
-            String key = prop.IDENTIFIER(0).getText();
-            String value = prop.IDENTIFIER(1).getText();
-            properties.put(key, value);
-        }
-        return properties;
+    public JMergeValueType visitMergePolicy(JQuickExcelParser.MergePolicyContext ctx) {
+       String text= ctx.getText();
+       return JMergeValueType.codeOf(text);
     }
 }

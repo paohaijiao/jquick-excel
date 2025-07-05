@@ -197,11 +197,11 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRangeMerge(JQuickExcelParser.RangeMergeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JQuickExcelParser#mergeProperties}.
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mergePolicy}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx);
+	T visitMergePolicy(JQuickExcelParser.MergePolicyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
 	 * @param ctx the parse tree

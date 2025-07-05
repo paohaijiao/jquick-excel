@@ -235,7 +235,7 @@ public class JQuickExcelBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMergePolicy(JQuickExcelParser.MergePolicyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -389,13 +389,13 @@ public class JQuickExcelBaseListener implements JQuickExcelListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMergeProperties(JQuickExcelParser.MergePropertiesContext ctx) { }
+	@Override public void enterMergePolicy(JQuickExcelParser.MergePolicyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx) { }
+	@Override public void exitMergePolicy(JQuickExcelParser.MergePolicyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

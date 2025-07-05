@@ -21,6 +21,7 @@ import com.github.paohaijiao.merge.JMergeHandler;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -46,6 +47,14 @@ public class JMergeUtil {
         });
         return result;
     }
+    public static boolean filterDouble(Object obj) {
+        if (null == obj || !(obj instanceof Number)) {
+            return false;
+        }else {
+            return true;
+        }
+
+    }
 
     public static Object buildResult(JMergeValueType type, List<List<Object>> data) {
         List<Object> list = flapTheList(data);
@@ -59,32 +68,30 @@ public class JMergeUtil {
             return list.get(list.size() - 1);
         }
         if (JMergeValueType.CONCAT.getCode().equals(type.getCode())) {
-            return list.stream().map(String::valueOf).collect(Collectors.joining(","));
+            return list.stream().filter(e->filterDouble(e)).map(String::valueOf).collect(Collectors.joining(","));
         }
 
         if (JMergeValueType.MAX.getCode().equals(type.getCode())) {
-            OptionalDouble d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).max();
+            OptionalDouble d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).max();
             return d.isPresent() ? d.getAsDouble() : 0d;
         }
         if (JMergeValueType.MIN.getCode().equals(type.getCode())) {
-            OptionalDouble d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).min();
+            OptionalDouble d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).min();
             return d.isPresent() ? d.getAsDouble() : 0d;
         }
         if (JMergeValueType.AVG.getCode().equals(type.getCode())) {
-            OptionalDouble d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).average();
+            OptionalDouble d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).average();
             return d.isPresent() ? d.getAsDouble() : 0d;
         }
         if (JMergeValueType.COUNT.getCode().equals(type.getCode())) {
-            Long d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).count();
+            Long d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).count();
             return d;
         }
         if (JMergeValueType.SUM.getCode().equals(type.getCode())) {
-            double d = list.stream().mapToDouble(e -> Double.valueOf(e.toString())).sum();
+            double d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).sum();
             return d;
         }
         return null;
-
-
     }
 
 
@@ -105,6 +112,8 @@ public class JMergeUtil {
             cell.setCellValue((String) object);
         } else if (object instanceof Double) {
             cell.setCellValue((Double) object);
+        } else {
+            cell.setCellValue(object.toString());
         }
         CellStyle style = sheet.getWorkbook().createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
@@ -118,9 +127,7 @@ public class JMergeUtil {
             Row row = sheet.getRow(rowNum);
             List<Object> rowData = new ArrayList<>();
             for (int colNum = range.getFirstColumn(); colNum <= range.getLastColumn(); colNum++) {
-                if (row == null) {
-                    rowData.add(null);
-                } else {
+                if (row != null) {
                     Cell cell = row.getCell(colNum);
                     Object value = getCellValue(cell);
                     rowData.add(value);

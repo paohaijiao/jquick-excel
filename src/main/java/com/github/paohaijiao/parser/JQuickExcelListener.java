@@ -318,15 +318,15 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitRangeMerge(JQuickExcelParser.RangeMergeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JQuickExcelParser#mergeProperties}.
+	 * Enter a parse tree produced by {@link JQuickExcelParser#mergePolicy}.
 	 * @param ctx the parse tree
 	 */
-	void enterMergeProperties(JQuickExcelParser.MergePropertiesContext ctx);
+	void enterMergePolicy(JQuickExcelParser.MergePolicyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JQuickExcelParser#mergeProperties}.
+	 * Exit a parse tree produced by {@link JQuickExcelParser#mergePolicy}.
 	 * @param ctx the parse tree
 	 */
-	void exitMergeProperties(JQuickExcelParser.MergePropertiesContext ctx);
+	void exitMergePolicy(JQuickExcelParser.MergePolicyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#formulaTarget}.
 	 * @param ctx the parse tree

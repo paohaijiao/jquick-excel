@@ -17,6 +17,7 @@ package com.github.paohaijiao.handler;
 
 import cn.hutool.core.util.NumberUtil;
 import com.github.paohaijiao.enums.JMergeType;
+import com.github.paohaijiao.enums.JMergeValueType;
 import com.github.paohaijiao.evalue.JEvaluator;
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import com.github.paohaijiao.formula.context.JExcelFormulaContext;
@@ -369,6 +370,7 @@ public class JExcelProcessor {
         if (rowMerge != null) {
             for (Map.Entry<String, Object> rowStyle : rowMerge.entrySet()) {
                 String key = rowStyle.getKey().trim();
+                JMergeValueType value = (JMergeValueType)rowStyle.getValue();
                 if (key.contains("..")) {
                     StringTokenizer tokenizer = new StringTokenizer(key, "..");
                     int start = Integer.parseInt(tokenizer.nextToken());
@@ -379,7 +381,8 @@ public class JExcelProcessor {
                         HashMap<String, Object> merge = new HashMap<>();
                         merge.put("rowIndex", i);
                         merge.put("startCol", 0);
-                        merge.put("endCol", maxCol);
+                        merge.put("endCol", maxCol-1);
+                        merge.put("mergeType", value);
                         rowHanler.merge(merge);
                     }
                 } else {
@@ -389,26 +392,33 @@ public class JExcelProcessor {
                     HashMap<String, Object> merge = new HashMap<>();
                     merge.put("rowIndex", row);
                     merge.put("startCol", 0);
-                    merge.put("endCol", maxCol);
+                    merge.put("endCol", maxCol-1);
+                    merge.put("mergeType", value);
                     rowHanler.merge(merge);
                 }
             }
         }
         Map<String, Object> colMerge = config.getColMerge();
         if (null != colMerge && !colMerge.isEmpty()) {
-            for (Map.Entry<String, Object> colStyle : colMerge.entrySet()) {
-                String key = colStyle.getKey().trim();
+            for (Map.Entry<String, Object> colMergeMap : colMerge.entrySet()) {
+                String key = colMergeMap.getKey().trim();
+                JMergeValueType value = (JMergeValueType)colMergeMap.getValue();
                 if (key.contains("..")) {
                     StringTokenizer tokenizer = new StringTokenizer(key, "..");
-                    int start = Integer.parseInt(tokenizer.nextToken());
-                    int end = Integer.parseInt(tokenizer.nextToken());
+                    String start = tokenizer.nextToken();
+                    String end = tokenizer.nextToken();
+                    CellReference startCellReference=new CellReference(start);
+                    Short startCol=startCellReference.getCol();
+                    CellReference endCellReference=new CellReference(end);
+                    Short endCol=endCellReference.getCol();
                     JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
                     JMergeHandler rowHanler = styleContext.createHandler(JMergeType.COLUMN);
-                    for (int i = start; i <= end; i++) {
+                    for (int i = startCol; i <=endCol; i++) {
                         HashMap<String, Object> merge = new HashMap<>();
                         merge.put("columnIndex", i);
                         merge.put("startRow", 0);
                         merge.put("endRow", maxRow);
+                        merge.put("mergeType", value);
                         rowHanler.merge(merge);
                     }
                 } else {
@@ -416,13 +426,14 @@ public class JExcelProcessor {
                     if (NumberUtil.isNumber(key)) {
                         col = Integer.parseInt(key);
                     } else {
-                        CellReference cellReference = new CellReference(colStyle.getKey());
+                        CellReference cellReference = new CellReference(colMergeMap.getKey());
                         col = cellReference.getCol();
                     }
                     HashMap<String, Object> merge = new HashMap<>();
                     merge.put("columnIndex", col);
                     merge.put("startRow", 0);
                     merge.put("endRow", maxRow);
+                    merge.put("mergeType", value);
                     JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
                     JMergeHandler rowHanler = styleContext.createHandler(JMergeType.COLUMN);
                     rowHanler.merge(merge);
@@ -433,14 +444,16 @@ public class JExcelProcessor {
         if (null != rangeMerge && !rangeMerge.isEmpty()) {
             for (Map.Entry<String, Object> cellStyle : rangeMerge.entrySet()) {
                 String cell = cellStyle.getKey();
+                JMergeValueType value = (JMergeValueType)cellStyle.getValue();
                 HashMap<String, Object> merge = new HashMap<>();
                 CellRangeAddress mergedRegion = CellRangeAddress.valueOf(cell);
                 merge.put("firstRow", mergedRegion.getFirstColumn());
                 merge.put("lastRow", mergedRegion.getLastRow());
                 merge.put("firstCol", mergedRegion.getFirstColumn());
                 merge.put("lastCol", mergedRegion.getLastColumn());
+                merge.put("mergeType", value);
                 JMergeHandlerContext styleContext = new JMergeHandlerContext(workbook, currentSheet);
-                JMergeHandler rowHanler = styleContext.createHandler(JMergeType.COLUMN);
+                JMergeHandler rowHanler = styleContext.createHandler(JMergeType.RANGE);
                 rowHanler.merge(merge);
             }
         }
