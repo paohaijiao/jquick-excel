@@ -16,9 +16,11 @@
 package com.github.paohaijiao.handler;
 
 import cn.hutool.core.util.NumberUtil;
+import com.github.paohaijiao.enums.JExcelChartType;
 import com.github.paohaijiao.enums.JMergeType;
 import com.github.paohaijiao.enums.JMergeValueType;
 import com.github.paohaijiao.evalue.JEvaluator;
+import com.github.paohaijiao.factory.JExcelChartFactory;
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.jstyle.context.JStyleContext;
@@ -160,6 +162,7 @@ public class JExcelProcessor {
         applyFormulate(config, currentSheet.getLastRowNum(), lastColNum);
         applyStyle(config);
         applyMerge(config, currentSheet.getLastRowNum(), lastColNum);
+        applyGraph(config);
         for (int i = 0; i < data.size(); i++) {
             autoSizeColumns(data.get(i).keySet().size());
         }
@@ -522,4 +525,9 @@ public class JExcelProcessor {
             }
         }
     }
+        private void applyGraph(JExcelExportModel config) {
+            JExcelChartType excelChartType=JExcelChartType.codeOf( config.getGraph().getChartType());
+             JExcelChartFactory.createChart((XSSFWorkbook)workbook,
+                    config.getGraph(), excelChartType, config.getGraph().getTitle());
+        }
 }

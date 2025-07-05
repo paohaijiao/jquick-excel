@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.model;
 
+import com.github.paohaijiao.graph.model.JChartData;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -58,5 +59,7 @@ public class JExcelExportModel {
     Map<String, Object> colMerge = new HashMap<>();
 
     Map<String, Object> rangeMerge = new HashMap<>();
+
+    JChartData graph =new JChartData();
 
 }

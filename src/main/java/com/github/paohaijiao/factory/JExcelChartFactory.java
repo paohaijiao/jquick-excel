@@ -1,8 +1,8 @@
 package com.github.paohaijiao.factory;
 
 import com.github.paohaijiao.enums.JExcelChartType;
-import com.github.paohaijiao.model.JExcelChartData;
-import com.github.paohaijiao.model.JSeriesData;
+import com.github.paohaijiao.graph.model.JChartData;
+import com.github.paohaijiao.graph.model.JSeriesData;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xddf.usermodel.chart.*;
@@ -13,13 +13,13 @@ import java.io.OutputStream;
 
 public class JExcelChartFactory {
 
-    public static XSSFWorkbook createWorkbookWithChart(JExcelChartData chartData, JExcelChartType chartType, String sheetName) {
+    public static XSSFWorkbook createWorkbookWithChart(JChartData chartData, JExcelChartType chartType, String sheetName) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         createChart(workbook, chartData, chartType, sheetName);
         return workbook;
     }
 
-    public static void createChart(XSSFWorkbook workbook, JExcelChartData chartData, JExcelChartType chartType, String sheetName) {
+    public static void createChart(XSSFWorkbook workbook, JChartData chartData, JExcelChartType chartType, String sheetName) {
         XSSFSheet sheet = workbook.createSheet(sheetName);
         writeDataToSheet(sheet, chartData);
         XSSFDrawing drawing = sheet.createDrawingPatriarch();
@@ -53,7 +53,7 @@ public class JExcelChartFactory {
         chart.plot(chartDataObj);
     }
 
-    private static void writeDataToSheet(XSSFSheet sheet, JExcelChartData chartData) {
+    private static void writeDataToSheet(XSSFSheet sheet, JChartData chartData) {
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Categories");
         for (int i = 0; i < chartData.getSeries().size(); i++) {

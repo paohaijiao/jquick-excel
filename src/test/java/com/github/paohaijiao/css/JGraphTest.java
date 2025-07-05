@@ -2,8 +2,8 @@ package com.github.paohaijiao.css;
 
 import com.github.paohaijiao.enums.JExcelChartType;
 import com.github.paohaijiao.factory.JExcelChartFactory;
-import com.github.paohaijiao.model.JExcelChartData;
-import com.github.paohaijiao.model.JSeriesData;
+import com.github.paohaijiao.graph.model.JChartData;
+import com.github.paohaijiao.graph.model.JSeriesData;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.util.Collections;
 public class JGraphTest {
     @Test
     public void column() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("销售数据统计");
         chartData.setCategoryAxisTitle("产品");
         chartData.setValueAxisTitle("销量");
@@ -39,7 +39,7 @@ public class JGraphTest {
 
     @Test
     public void bar() {
-        JExcelChartData salesData = new JExcelChartData();
+        JChartData salesData = new JChartData();
         salesData.setTitle("2023年季度销售数据");
         salesData.setCategoryAxisTitle("季度");
         salesData.setValueAxisTitle("销售额(万元)");
@@ -67,7 +67,7 @@ public class JGraphTest {
 
     @Test
     public void bar3d() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("产品季度销售(3D)");
         chartData.setCategoryAxisTitle("产品");
         chartData.setValueAxisTitle("销售额(万元)");
@@ -94,7 +94,7 @@ public class JGraphTest {
 
     @Test
     public void line() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("2023年北京月平均温度变化");
         chartData.setCategoryAxisTitle("月份");
         chartData.setValueAxisTitle("温度(℃)");
@@ -133,7 +133,7 @@ public class JGraphTest {
 
     @Test
     public void pie() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("2023年智能手机市场份额");
         JSeriesData marketShare = new JSeriesData();
         marketShare.setName("市场份额");
@@ -154,7 +154,7 @@ public class JGraphTest {
 
     @Test
     public void area() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("季度销售趋势分析");
         chartData.setCategoryAxisTitle("季度");
         chartData.setValueAxisTitle("销售额(万元)");
@@ -182,7 +182,7 @@ public class JGraphTest {
 
     @Test
     public void area3d() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("季度销售趋势(3D)");
         chartData.setCategoryAxisTitle("季度");
         chartData.setValueAxisTitle("销售额(万元)");
@@ -209,7 +209,7 @@ public class JGraphTest {
 
     @Test
     public void scatter() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("身高体重分布");
         chartData.setCategoryAxisTitle("身高(cm)");
         chartData.setValueAxisTitle("体重(kg)");
@@ -235,7 +235,7 @@ public class JGraphTest {
 
     @Test
     public void radar() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("员工能力评估");
         chartData.setCategories(Arrays.asList(
                 "编程能力", "沟通能力", "设计能力",
@@ -260,7 +260,7 @@ public class JGraphTest {
 
     @Test
     public void surface() {
-        JExcelChartData chartData = new JExcelChartData();
+        JChartData chartData = new JChartData();
         chartData.setTitle("地形高度示例");
         chartData.setCategoryAxisTitle("X坐标");
         chartData.setValueAxisTitle("Y坐标");

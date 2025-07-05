@@ -19,9 +19,9 @@ public enum JExcelChartType {
         this.name = name;
     }
 
-    public JExcelChartType codeOf(String code) {
+    public static JExcelChartType codeOf(String code) {
         for (JExcelChartType jExcelChartType : JExcelChartType.values()) {
-            if (jExcelChartType.code.equals(code)) {
+            if (jExcelChartType.code.equalsIgnoreCase(code)) {
                 return jExcelChartType;
             }
         }

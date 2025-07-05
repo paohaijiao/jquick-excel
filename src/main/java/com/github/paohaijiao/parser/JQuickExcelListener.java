@@ -388,6 +388,126 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitFormulaSpec(JQuickExcelParser.FormulaSpecContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#graphOption}.
+	 * @param ctx the parse tree
+	 */
+	void enterGraphOption(JQuickExcelParser.GraphOptionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#graphOption}.
+	 * @param ctx the parse tree
+	 */
+	void exitGraphOption(JQuickExcelParser.GraphOptionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#graphSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterGraphSpec(JQuickExcelParser.GraphSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#graphSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitGraphSpec(JQuickExcelParser.GraphSpecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#chartType}.
+	 * @param ctx the parse tree
+	 */
+	void enterChartType(JQuickExcelParser.ChartTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#chartType}.
+	 * @param ctx the parse tree
+	 */
+	void exitChartType(JQuickExcelParser.ChartTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#chartTypeValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterChartTypeValue(JQuickExcelParser.ChartTypeValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#chartTypeValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitChartTypeValue(JQuickExcelParser.ChartTypeValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#chartTitle}.
+	 * @param ctx the parse tree
+	 */
+	void enterChartTitle(JQuickExcelParser.ChartTitleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#chartTitle}.
+	 * @param ctx the parse tree
+	 */
+	void exitChartTitle(JQuickExcelParser.ChartTitleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#categoryAxis}.
+	 * @param ctx the parse tree
+	 */
+	void enterCategoryAxis(JQuickExcelParser.CategoryAxisContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#categoryAxis}.
+	 * @param ctx the parse tree
+	 */
+	void exitCategoryAxis(JQuickExcelParser.CategoryAxisContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#valueAxis}.
+	 * @param ctx the parse tree
+	 */
+	void enterValueAxis(JQuickExcelParser.ValueAxisContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#valueAxis}.
+	 * @param ctx the parse tree
+	 */
+	void exitValueAxis(JQuickExcelParser.ValueAxisContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#categories}.
+	 * @param ctx the parse tree
+	 */
+	void enterCategories(JQuickExcelParser.CategoriesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#categories}.
+	 * @param ctx the parse tree
+	 */
+	void exitCategories(JQuickExcelParser.CategoriesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#series}.
+	 * @param ctx the parse tree
+	 */
+	void enterSeries(JQuickExcelParser.SeriesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#series}.
+	 * @param ctx the parse tree
+	 */
+	void exitSeries(JQuickExcelParser.SeriesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#seriesSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterSeriesSpec(JQuickExcelParser.SeriesSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#seriesSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitSeriesSpec(JQuickExcelParser.SeriesSpecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#seriesName}.
+	 * @param ctx the parse tree
+	 */
+	void enterSeriesName(JQuickExcelParser.SeriesNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#seriesName}.
+	 * @param ctx the parse tree
+	 */
+	void exitSeriesName(JQuickExcelParser.SeriesNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#seriesData}.
+	 * @param ctx the parse tree
+	 */
+	void enterSeriesData(JQuickExcelParser.SeriesDataContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#seriesData}.
+	 * @param ctx the parse tree
+	 */
+	void exitSeriesData(JQuickExcelParser.SeriesDataContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#rowSpec}.
 	 * @param ctx the parse tree
 	 */

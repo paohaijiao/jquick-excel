@@ -239,6 +239,78 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFormulaSpec(JQuickExcelParser.FormulaSpecContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#graphOption}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGraphOption(JQuickExcelParser.GraphOptionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#graphSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGraphSpec(JQuickExcelParser.GraphSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#chartType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChartType(JQuickExcelParser.ChartTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#chartTypeValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChartTypeValue(JQuickExcelParser.ChartTypeValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#chartTitle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChartTitle(JQuickExcelParser.ChartTitleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#categoryAxis}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCategoryAxis(JQuickExcelParser.CategoryAxisContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#valueAxis}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValueAxis(JQuickExcelParser.ValueAxisContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#categories}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCategories(JQuickExcelParser.CategoriesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#series}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSeries(JQuickExcelParser.SeriesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#seriesSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSeriesSpec(JQuickExcelParser.SeriesSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#seriesName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSeriesName(JQuickExcelParser.SeriesNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#seriesData}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSeriesData(JQuickExcelParser.SeriesDataContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#rowSpec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
