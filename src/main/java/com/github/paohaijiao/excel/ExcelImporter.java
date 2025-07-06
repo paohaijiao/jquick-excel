@@ -107,7 +107,6 @@ public class ExcelImporter<T> {
             }
 
             if (hasValue) {
-                // 校验数据
                 if (obj instanceof JStudentModel) {
                     errors.addAll(JExcelValidator.validate((JStudentModel) obj));
                 }

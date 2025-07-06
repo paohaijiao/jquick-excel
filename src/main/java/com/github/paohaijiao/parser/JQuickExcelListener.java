@@ -208,6 +208,86 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#validationOption}.
+	 * @param ctx the parse tree
+	 */
+	void enterValidationOption(JQuickExcelParser.ValidationOptionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#validationOption}.
+	 * @param ctx the parse tree
+	 */
+	void exitValidationOption(JQuickExcelParser.ValidationOptionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#validationRule}.
+	 * @param ctx the parse tree
+	 */
+	void enterValidationRule(JQuickExcelParser.ValidationRuleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#validationRule}.
+	 * @param ctx the parse tree
+	 */
+	void exitValidationRule(JQuickExcelParser.ValidationRuleContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#targetSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterTargetSpec(JQuickExcelParser.TargetSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#targetSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitTargetSpec(JQuickExcelParser.TargetSpecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rowTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterRowTarget(JQuickExcelParser.RowTargetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rowTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitRowTarget(JQuickExcelParser.RowTargetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#colTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterColTarget(JQuickExcelParser.ColTargetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#colTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitColTarget(JQuickExcelParser.ColTargetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#cellTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterCellTarget(JQuickExcelParser.CellTargetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#cellTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitCellTarget(JQuickExcelParser.CellTargetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#rangeTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterRangeTarget(JQuickExcelParser.RangeTargetContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#rangeTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitRangeTarget(JQuickExcelParser.RangeTargetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#ruleSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuleSpec(JQuickExcelParser.RuleSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#ruleSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuleSpec(JQuickExcelParser.RuleSpecContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#mergeOption}.
 	 * @param ctx the parse tree
 	 */
@@ -627,6 +707,16 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariable(JQuickExcelParser.VariableContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#date}.
+	 * @param ctx the parse tree
+	 */
+	void enterDate(JQuickExcelParser.DateContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#date}.
+	 * @param ctx the parse tree
+	 */
+	void exitDate(JQuickExcelParser.DateContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#identifier}.
 	 * @param ctx the parse tree

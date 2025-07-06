@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.visitor;
 
+import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.handler.JExcelProcessor;
 import com.github.paohaijiao.model.JExcelExportModel;
@@ -24,6 +25,9 @@ import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,5 +66,21 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
         JAssert.throwNewException("Invalid Variable");
         return null;
     }
+
+    @Override
+    public Date visitDate(JQuickExcelParser.DateContext ctx) {
+        if (ctx.DATE() != null) {
+           String string= ctx.DATE().getText();
+           String str = string.replaceAll("[-/]", "");
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+           return JDateUtil.parse(sdf, str);
+        }else{
+            String string= ctx.DATETIMETYPE().getText();
+            String str = string.replaceAll("[-/:Tt]", "");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+            return JDateUtil.parse(sdf, str);
+        }
+    }
+
 
 }

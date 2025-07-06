@@ -23,8 +23,9 @@ import com.github.paohaijiao.util.JStringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JQuickExcelImportVisitor extends JFieldMapping {
-    private JExcelImportModel config = new JExcelImportModel();
+public class JQuickExcelImportVisitor extends JQuickExcelImportValidateVisitor {
+
+
 
     public JQuickExcelImportVisitor(JContext contextParams) {
         this.context = contextParams;
@@ -99,9 +100,5 @@ public class JQuickExcelImportVisitor extends JFieldMapping {
         }
         config.setTransforms(transforms);
         return null;
-    }
-
-    private JExcelImportModel performImport() {
-        return config;
     }
 }

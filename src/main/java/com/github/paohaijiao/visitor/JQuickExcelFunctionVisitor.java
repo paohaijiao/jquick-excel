@@ -15,15 +15,14 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.enums.JMethodEnums;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JFormulateCallModel;
-import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
@@ -54,6 +53,9 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         }else if (ctx.range() != null) {
             Object object = visitRange(ctx.range());
             JAssert.notNull(object, "the variable is not initialized");
+            return object;
+        }else if (ctx.date() != null) {
+            Date object = visitDate(ctx.date());
             return object;
         }
         JAssert.throwNewException("Invalid FunctionArg");

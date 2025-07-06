@@ -15,9 +15,11 @@
  */
 package com.github.paohaijiao.model;
 
+import com.github.paohaijiao.validate.JExcelValidationRule;
 import lombok.Data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -33,6 +35,14 @@ public class JExcelImportModel {
     Map<String, String> mappings = new HashMap<>();
 
     Map<String, String> transforms = new HashMap<>();
+
+    private Map<String, List<JExcelValidationRule>> rowValidate = new HashMap<>();
+
+    private Map<String, List<JExcelValidationRule >> colValidate = new HashMap<>();
+
+    private Map<String, List<JExcelValidationRule >> cellValidate = new HashMap<>();
+
+    private Map<String, List<JExcelValidationRule >> rangeValidate = new HashMap<>();
 
 
 }

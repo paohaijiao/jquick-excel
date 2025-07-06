@@ -131,6 +131,54 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#validationOption}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValidationOption(JQuickExcelParser.ValidationOptionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#validationRule}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValidationRule(JQuickExcelParser.ValidationRuleContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#targetSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTargetSpec(JQuickExcelParser.TargetSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rowTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRowTarget(JQuickExcelParser.RowTargetContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#colTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColTarget(JQuickExcelParser.ColTargetContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#cellTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCellTarget(JQuickExcelParser.CellTargetContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#rangeTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRangeTarget(JQuickExcelParser.RangeTargetContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#ruleSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRuleSpec(JQuickExcelParser.RuleSpecContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#mergeOption}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -382,6 +430,12 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariable(JQuickExcelParser.VariableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#date}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDate(JQuickExcelParser.DateContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#identifier}.
 	 * @param ctx the parse tree
