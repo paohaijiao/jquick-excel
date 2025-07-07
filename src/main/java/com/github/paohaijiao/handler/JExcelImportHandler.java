@@ -31,22 +31,21 @@ import java.util.Map;
 
 public class JExcelImportHandler extends JExcelCommonHandler {
 
-    private Workbook workbook;
 
-    private Sheet currentSheet;
 
-    private XSSFWorkbook xssfWorkbook;
+
+
 
     private final DataFormatter dataFormatter = new DataFormatter();
 
 
     public JExcelImportHandler(XSSFWorkbook xssfWorkbook) {
-        this.xssfWorkbook = xssfWorkbook;
+        this.workbook = xssfWorkbook;
         this.contextParams = new JContext();
     }
 
     public JExcelImportHandler(XSSFWorkbook xssfWorkbook,JContext contextParams) {
-        this.xssfWorkbook = xssfWorkbook;
+        this.workbook = xssfWorkbook;
         this.contextParams = contextParams;
     }
 
