@@ -288,6 +288,56 @@ public interface JQuickExcelListener extends ParseTreeListener {
 	 */
 	void exitRuleSpec(JQuickExcelParser.RuleSpecContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#ruleItem}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuleItem(JQuickExcelParser.RuleItemContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#ruleItem}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuleItem(JQuickExcelParser.RuleItemContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#ruleRequired}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuleRequired(JQuickExcelParser.RuleRequiredContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#ruleRequired}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuleRequired(JQuickExcelParser.RuleRequiredContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#ruleMsg}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuleMsg(JQuickExcelParser.RuleMsgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#ruleMsg}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuleMsg(JQuickExcelParser.RuleMsgContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#map}.
+	 * @param ctx the parse tree
+	 */
+	void enterMap(JQuickExcelParser.MapContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#map}.
+	 * @param ctx the parse tree
+	 */
+	void exitMap(JQuickExcelParser.MapContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JQuickExcelParser#mapValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterMapValue(JQuickExcelParser.MapValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JQuickExcelParser#mapValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitMapValue(JQuickExcelParser.MapValueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JQuickExcelParser#mergeOption}.
 	 * @param ctx the parse tree
 	 */

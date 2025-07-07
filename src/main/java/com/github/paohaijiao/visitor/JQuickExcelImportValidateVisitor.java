@@ -18,6 +18,7 @@ package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.enums.JMethodValidationRuleType;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JExcelImportModel;
+import com.github.paohaijiao.model.JRuleItem;
 import com.github.paohaijiao.model.JTargetSpec;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelParser;
@@ -28,10 +29,8 @@ import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.string.JEndWithRule;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 public class JQuickExcelImportValidateVisitor extends JFieldMapping {
 
@@ -74,9 +73,7 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
     @Override
     public JAbstractValidationRule visitRuleSpec(JQuickExcelParser.RuleSpecContext ctx) {
         String method=ctx.IDENTIFIER().getText();
-        boolean required=false;
-        HashMap<String,Object> map=new HashMap<>();
-        String customMessage=null;
+        JRuleItem item=visitRuleItem(ctx.ruleItem());
         JMethodValidationRuleType type=JMethodValidationRuleType.codeOf(method);
         try{
             Class<? > ruleClass = type.getClass();
@@ -85,7 +82,7 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
             }
             Constructor<? extends JAbstractValidationRule> constructor =
                     (Constructor<? extends JAbstractValidationRule>) ruleClass.getDeclaredConstructor(boolean.class, Map.class, String.class);
-            return constructor.newInstance(required, map, customMessage);
+            return constructor.newInstance(item.getRequired(), item.getMap(), item.getCustomMessage());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -130,6 +127,79 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
     @Override
     public String visitRangeTarget(JQuickExcelParser.RangeTargetContext ctx) {
         return ctx.getText();
+    }
+
+    @Override
+    public JRuleItem visitRuleItem(JQuickExcelParser.RuleItemContext ctx) {
+        JRuleItem ruleItem =new JRuleItem();
+        if (ctx.ruleRequired()!=null) {
+           Boolean bool= visitRuleRequired(ctx.ruleRequired());
+           ruleItem.setRequired(bool);
+        }
+        if (ctx.ruleMsg()!=null) {
+            String msg=visitRuleMsg(ctx.ruleMsg());
+            ruleItem.setCustomMessage(msg);
+        }
+        HashMap<String,Object> map=new HashMap<>();
+        if (ctx.map()!=null&&!ctx.map().isEmpty()) {
+            for (JQuickExcelParser.MapContext mapContext :ctx.map()) {
+                HashMap<String,Object> value=visitMap(mapContext);
+                for (Map.Entry<String, Object> entry : value.entrySet()) {
+                    map.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        ruleItem.setMap(map);
+        return ruleItem;
+    }
+    @Override
+    public HashMap<String,Object> visitMap(JQuickExcelParser.MapContext ctx) {
+        HashMap<String,Object> map=new HashMap<>();
+        String key=ctx.IDENTIFIER().getText();
+        Object value=visitMapValue(ctx.mapValue());
+        map.put(key,value);
+        return map;
+    }
+    @Override
+    public Object visitMapValue(JQuickExcelParser.MapValueContext ctx) {
+        if (ctx.STRING() != null) {
+            String string = ctx.STRING().getText();
+            String value = JStringUtils.trim(string);
+            return value;
+        } else if(ctx.IDENTIFIER() != null){
+            String string = ctx.IDENTIFIER().getText();
+            String value = JStringUtils.trim(string);
+            return value;
+        }else if (ctx.NUMBER() != null) {
+            String number = ctx.NUMBER().getText();
+            String value = JStringUtils.trim(number);
+            return new BigDecimal(value);
+        } else if (ctx.BOOLEAN() != null) {
+            String number = ctx.BOOLEAN().getText();
+            String value = JStringUtils.trim(number);
+            return new Boolean(value);
+        } else if (ctx.functionCall() != null) {
+            return visitFunctionCall(ctx.functionCall());
+        } else if (ctx.variable() != null) {
+            Object object = visitVariable(ctx.variable());
+            JAssert.notNull(object, "the variable is not initialized");
+            return object;
+        }else if (ctx.date() != null) {
+            Date object = visitDate(ctx.date());
+            return object;
+        }
+        JAssert.throwNewException("Invalid FunctionArg");
+        return null;
+    }
+
+
+    @Override
+    public Boolean visitRuleRequired(JQuickExcelParser.RuleRequiredContext ctx) {
+        return Boolean.parseBoolean(ctx.getText());
+    }
+    @Override
+    public String visitRuleMsg(JQuickExcelParser.RuleMsgContext ctx) {
+        return ctx.IDENTIFIER().getText();
     }
 
 

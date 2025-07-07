@@ -179,6 +179,36 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRuleSpec(JQuickExcelParser.RuleSpecContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#ruleItem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRuleItem(JQuickExcelParser.RuleItemContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#ruleRequired}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRuleRequired(JQuickExcelParser.RuleRequiredContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#ruleMsg}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRuleMsg(JQuickExcelParser.RuleMsgContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#map}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMap(JQuickExcelParser.MapContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mapValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMapValue(JQuickExcelParser.MapValueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#mergeOption}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
