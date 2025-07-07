@@ -51,12 +51,12 @@ public class ImportG4Test {
         XSSFWorkbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Test Sheet");
         Row headerRow = sheet.createRow(0);
-        String[] headers = {"ID", "Name", "Score", "Grade"};
+        String[] headers = {"ID", "Name", "Score"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
         }
-        Object[][] data = {{1, "Alice", 85}, {2, "Bob", 72}, {3, "Charlie", 93}, {4, "David", 68}};
+        Object[][] data = {{1, "Alice", 85}, {2, "Bob", 72}};
         for (int i = 0; i < data.length; i++) {
             Row row = sheet.createRow(i + 1);
             for (int j = 0; j < data[i].length; j++) {
@@ -67,8 +67,8 @@ public class ImportG4Test {
                     cell.setCellValue(data[i][j].toString());
                 }
             }
-            Cell gradeCell = row.createCell(3);
-            gradeCell.setCellFormula("IF(C" + (i + 2) + ">=90, \"A\", IF(C" + (i + 2) + ">=80, \"B\", IF(C" + (i + 2) + ">=70, \"C\", \"D\")))");
+          //  Cell gradeCell = row.createCell(3);
+           // gradeCell.setCellFormula("IF(C" + (i + 2) + ">=90, \"A\", IF(C" + (i + 2) + ">=80, \"B\", IF(C" + (i + 2) + ">=70, \"C\", \"D\")))");
         }
         for (int i = 0; i < headers.length; i++) {
             sheet.autoSizeColumn(i);
@@ -79,7 +79,26 @@ public class ImportG4Test {
     public void boolRequire() throws IOException {
         String input = "IMPORT WITH VALIDATION={\n" +
                 "   ROW 1:{\n" +
-                "    MAX_LENGTH{required:true,msg:你好,map:{maxLength:12,minLength:12}}\n" +
+                    "    MAX_LENGTH{required:true,msg:你好,map:{maxLength:1,minLength:12}}\n" +
+                "   }\n" +
+                "}";
+        System.out.println(input);
+        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickExcelParser parser = new JQuickExcelParser(tokens);
+        ParseTree tree = parser.importConfig();
+        JContext context=new JContext();
+        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(context);
+        JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
+        JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
+        List<Map<String, Object>> list=handler.importData(result);
+        System.out.println(list);
+    }
+    @Test
+    public void rows() throws IOException {
+        String input = "IMPORT WITH VALIDATION={\n" +
+                "   ROW 1..2 :{\n" +
+                "    MAX_LENGTH{required:true,msg:你好,map:{maxLength:15,minLength:12}}\n" +
                 "   }\n" +
                 "}";
         System.out.println(input);

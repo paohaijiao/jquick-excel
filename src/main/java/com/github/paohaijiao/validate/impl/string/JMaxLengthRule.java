@@ -18,6 +18,7 @@ package com.github.paohaijiao.validate.impl.string;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -41,7 +42,8 @@ public class JMaxLengthRule extends JAbstractValidationRule {
     protected boolean doValidate(String value) {
         Object maxLengthObject=map.get("maxLength");
         JAssert.notNull(maxLengthObject, "the maxLength Value must not be null");
-        this.maxLength =(Integer) maxLengthObject;
+        BigDecimal bigDecimal=(BigDecimal) maxLengthObject;
+        this.maxLength =bigDecimal.intValue();
         return value.length() <= maxLength;
     }
     @Override

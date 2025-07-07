@@ -115,11 +115,11 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
     }
     @Override
     public String visitRowTarget(JQuickExcelParser.RowTargetContext ctx) {
-        return ctx.getText();
+        return ctx.rowSpec().getText();
     }
     @Override
     public String visitColTarget(JQuickExcelParser.ColTargetContext ctx) {
-        return ctx.getText();
+        return ctx.colSpec().getText();
     }
     @Override
     public String visitCellTarget(JQuickExcelParser.CellTargetContext ctx) {
@@ -200,22 +200,15 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
         return null;
     }
 
-
     @Override
     public Boolean visitRuleRequired(JQuickExcelParser.RuleRequiredContext ctx) {
-        return Boolean.parseBoolean(ctx.getText());
+        String text=ctx.BOOLEAN().getText();
+        return Boolean.parseBoolean(text);
     }
     @Override
     public String visitRuleMsg(JQuickExcelParser.RuleMsgContext ctx) {
         return ctx.IDENTIFIER().getText();
     }
-
-
-
-
-
-
-
     protected JExcelImportModel performImport() {
         return config;
     }

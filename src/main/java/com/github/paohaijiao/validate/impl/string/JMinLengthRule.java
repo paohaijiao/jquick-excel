@@ -18,6 +18,7 @@ package com.github.paohaijiao.validate.impl.string;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -41,7 +42,8 @@ public class JMinLengthRule extends JAbstractValidationRule {
     protected boolean doValidate(String value) {
         Object minLengthObject=map.get("minLength");
         JAssert.notNull(minLengthObject, "the minLength Value must not be null");
-        this.minLength =(Integer) minLengthObject;
+        BigDecimal bigDecimal=(BigDecimal) minLengthObject;
+        this.minLength =bigDecimal.intValue();
         return value.length() >= minLength;
     }
 

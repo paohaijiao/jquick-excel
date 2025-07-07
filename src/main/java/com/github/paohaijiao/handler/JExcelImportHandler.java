@@ -15,19 +15,21 @@
  */
 package com.github.paohaijiao.handler;
 
+import com.github.paohaijiao.formula.JAbstractExcelFormula;
+import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 import com.github.paohaijiao.validate.JExcelValidationRule;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JExcelImportHandler extends JExcelCommonHandler {
 
@@ -51,6 +53,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
 
     public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
         setSheet(config.getSheet());
+        applyValidate(config);
         boolean hasHeader = config.getHeader();
         List<String> headers = new ArrayList<>();
         Map<String, String> mappings = config.getMappings();
@@ -58,7 +61,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         int startCol=0;
         if (hasHeader) {
             Row headerRow = currentSheet.getRow(0);
-            int  endCol=getUsedColumnCount(currentSheet,headerRow);
+            int  endCol=getUsedColumnCount(currentSheet);
             for (int i = 0; i <= endCol; i++) {
                 Cell cell = headerRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                 String headerName = dataFormatter.formatCellValue(cell);
@@ -70,7 +73,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
             Row row = currentSheet.getRow(rowNum);
             if (row == null) continue;
             Map<String, Object> rowData = new LinkedHashMap<>();
-            int  endCol=getUsedColumnCount(currentSheet,row);
+            int  endCol=getUsedColumnCount(currentSheet);
             for (int colNum = startCol; colNum <= endCol; colNum++) {
                 if (colNum >= headers.size()) break;
                 Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
@@ -80,7 +83,10 @@ public class JExcelImportHandler extends JExcelCommonHandler {
                 if (transforms.containsKey(fieldName)) {
                     value = applyTransform(fieldName, value, transforms.get(fieldName));
                 }
-                rowData.put(headers.get(colNum), value);
+                if(StringUtils.isNotEmpty(headers.get(colNum))&&null!=value){
+                    rowData.put(headers.get(colNum), value);
+                }
+
             }
             data.add(rowData);
         }
@@ -88,12 +94,96 @@ public class JExcelImportHandler extends JExcelCommonHandler {
     }
 
     private  void applyValidate(JExcelImportModel config){
+        int maxCol=this.getUsedColumnCount(this.currentSheet);
         Map<String, List<JAbstractValidationRule>>  rowValidate=config.getRowValidate();
         for (Map.Entry<String, List<JAbstractValidationRule>> entry : rowValidate.entrySet()) {
-            String row=entry.getKey();
+            String rowNum=entry.getKey();
             List<JAbstractValidationRule> rules=entry.getValue();
+            if (rowNum.contains("..")) {
+                StringTokenizer tokenizer = new StringTokenizer(rowNum, "..");
+                int start = Integer.parseInt(tokenizer.nextToken());
+                int rowStart=start-1>0?start-1:0;
+                int end = Integer.parseInt(tokenizer.nextToken());
+                int rowEnd=end-1>0?end-1:0;
+                for (int i = rowStart; i <= rowEnd; i++) {
+                    for (int j = 0; j < maxCol; j++) {
+                        String cellValue=getCellValueStringByIndex(this.currentSheet,i,j);
+                        for(JAbstractValidationRule rule:rules){
+                             rule.test(cellValue);
+                        }
+                    }
+                }
+            }else{
+                for (int j = 0; j < maxCol; j++) {
+                    Integer rowNumInteger=Integer.valueOf(rowNum);
+                    int i=rowNumInteger-1>0?rowNumInteger-1:0;
+                    String cellValue=getCellValueStringByIndex(this.currentSheet,i,j);
+                    for(JAbstractValidationRule rule:rules){
+                      boolean bool=  rule.test(cellValue);
+                      if(!bool){
+                          throw new RuntimeException("not validate data");
+                      }
+                    }
+                }
+            }
+
+        }
+
+        Map<String, List<JAbstractValidationRule>>  coalValidate=config.getColValidate();
+        for (Map.Entry<String, List<JAbstractValidationRule>> keyset : coalValidate.entrySet()) {
+            String colNum = keyset.getKey();
+            List<JAbstractValidationRule> rules = keyset.getValue();
+            if(colNum.contains("..")){
+                StringTokenizer tokenizer = new StringTokenizer(colNum, "..");
+                String start = tokenizer.nextToken();
+                String end = tokenizer.nextToken();
+                CellReference startCellReference=new CellReference(start);
+                Short startCol=startCellReference.getCol();
+                CellReference endCellReference=new CellReference(end);
+                Short endCol=endCellReference.getCol();
+                for (int i = startCol; i <= endCol; i++) {
+                    for (int j = 0; j < this.getLastRowNum(this.currentSheet); j++) {
+                        String cellValue=getCellValueStringByIndex(this.currentSheet,i,j);
+                        for(JAbstractValidationRule rule:rules){
+                            rule.test(cellValue);
+                        }
+                    }
+                }
+            }else{
+                for (int i = 0; i < this.getLastRowNum(this.currentSheet); i++) {
+                    CellReference cellReference=new CellReference(colNum);
+                    Short col=cellReference.getCol();
+                    String cellValue=getCellValueStringByIndex(this.currentSheet,i,col.intValue());
+                    for(JAbstractValidationRule rule:rules){
+                        rule.test(cellValue);
+                    }
+                }
+            }
+        }
+        for (Map.Entry<String,  List<JAbstractValidationRule>> keyset : config.getCellValidate().entrySet()) {
+            String key = keyset.getKey();
+            List<JAbstractValidationRule> rules = keyset.getValue();
+            CellReference cellReference=new CellReference(key);
+            String cellValue=getCellValueStringByIndex(this.currentSheet,cellReference.getRow(),cellReference.getCol());
             for(JAbstractValidationRule rule:rules){
-               // rule.test(rule.);
+                rule.test(cellValue);
+            }
+        }
+        for (Map.Entry<String,  List<JAbstractValidationRule>> keyset : config.getRangeValidate().entrySet()) {
+            String key = keyset.getKey();
+            List<JAbstractValidationRule> rules = keyset.getValue();
+            CellRangeAddress rangeRegion = CellRangeAddress.valueOf(key);
+            int firstRow = rangeRegion.getFirstRow();
+            int lastRow = rangeRegion.getLastRow();
+            int firstCol = rangeRegion.getFirstColumn();
+            int lastCol = rangeRegion.getLastColumn();
+            for (int i = firstRow; i <= lastRow; i++) {
+                for (int j = firstCol; j < lastCol; j++) {
+                    String cellValue=getCellValueStringByIndex(this.currentSheet,i,j);
+                    for(JAbstractValidationRule rule:rules){
+                        rule.test(cellValue);
+                    }
+                }
             }
         }
 

@@ -13,10 +13,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JExcelCommonHandler {
 
@@ -53,19 +52,75 @@ public class JExcelCommonHandler {
             }
         }
     }
-    protected int getUsedColumnCount(Sheet sheet,Row row ) {
-        int maxColumns = 0;
-        int lastCellNum = row.getLastCellNum();
-        for (int i = lastCellNum - 1; i >= 0; i--) {
-            Cell cell = row.getCell(i, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
-            if (cell != null) {
-                maxColumns = Math.max(maxColumns, i + 1);
-                break;
+    protected int getUsedColumnCount(Sheet sheet) {
+        if (sheet == null || sheet.getPhysicalNumberOfRows() == 0) {
+            return 0;
+        }
+        Set<Integer> usedColumns = new HashSet<>();
+        for (Row row : sheet) {
+            if (row != null) {
+                for (Cell cell : row) {
+                    if (cell != null && !isCellEmpty(cell)) {
+                        usedColumns.add(cell.getColumnIndex());
+                    }
+                }
             }
         }
-        return maxColumns;
+        return usedColumns.size();
+    }
+    private static boolean isCellEmpty(Cell cell) {
+        if (cell == null) {
+            return true;
+        }
+        switch (cell.getCellType()) {
+            case BLANK:
+                return true;
+            case STRING:
+                return cell.getStringCellValue().trim().isEmpty();
+            default:
+                return false;
+        }
     }
     protected int getLastRowNum(Sheet sheet) {
         return sheet.getLastRowNum() + 1;
+    }
+    public static String getCellValueStringByIndex(Sheet sheet, int rowIndex, int columnIndex) {
+        Object object = getCellValueByIndex(sheet, rowIndex, columnIndex);
+        if (object == null) {
+            return null;
+        }else{
+            return object.toString();
+        }
+    }
+    public static Object getCellValueByIndex(Sheet sheet, int rowIndex, int columnIndex) {
+        if (sheet == null) {
+            return null;
+        }
+        Row row = sheet.getRow(rowIndex);
+        if (row == null) {
+            return null;
+        }
+        Cell cell = row.getCell(columnIndex);
+        if (cell == null) {
+            return null;
+        }
+        return getCellValue(cell);
+    }
+
+    private static Object getCellValue(Cell cell) {
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                return cell.getNumericCellValue();
+            case BOOLEAN:
+                return cell.getBooleanCellValue();
+            case FORMULA:
+                return cell.getCellFormula();
+            case BLANK:
+                return "";
+            default:
+                return null;
+        }
     }
 }
