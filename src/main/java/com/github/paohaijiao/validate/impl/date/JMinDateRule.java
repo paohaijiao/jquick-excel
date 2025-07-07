@@ -15,11 +15,13 @@
  */
 package com.github.paohaijiao.validate.impl.date;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -30,30 +32,35 @@ import java.util.Date;
  */
 public class JMinDateRule extends JAbstractValidationRule {
 
-    private final Date minDate;
+    private  Date minDate;
 
-    private final String format;
+    private  String format;
 
-    public JMinDateRule(Date minDate, String format, boolean required) {
-        super(required);
-        this.minDate = minDate;
-        this.format = format;
+    public JMinDateRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
     }
 
     @Override
     protected boolean doValidate(String value) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        sdf.setLenient(false);
+        JAssert.notNull(map, "the map must not be null");
+        Object minDateObject=map.get("minDate");
+        JAssert.notNull(minDateObject, "the minDate Value must not be null");
+        this.minDate =(Date) minDateObject;
+        Object formatValue=map.get("format");
+        JAssert.notNull(formatValue, "the format Value must not be null");
+        this.format = formatValue.toString();
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            sdf.setLenient(false);
             Date date = sdf.parse(value);
             return !date.before(minDate);
         } catch (ParseException e) {
             return false;
         }
     }
-
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return String.format("the date cannot be earlier than %s", minDate);
     }
+
 }

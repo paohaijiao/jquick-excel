@@ -15,7 +15,10 @@
  */
 package com.github.paohaijiao.validate.impl.string;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate
@@ -26,20 +29,24 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JNotStartWithRule extends JAbstractValidationRule {
 
-    private String ruleValue;
+    private String notStartWith;
 
-    public JNotStartWithRule(String ruleValue, boolean required) {
-        super(required);
-        this.ruleValue = ruleValue;
+    public JNotStartWithRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+        JAssert.notNull(map, "the map must not be null");
+
     }
 
     @Override
     protected boolean doValidate(String value) {
-        return !value.startsWith(ruleValue);
+        Object notStartWithObject=map.get("notStartWith");
+        JAssert.notNull(notStartWithObject, "the notStartWith Value must not be null");
+        this.notStartWith =(String) notStartWithObject;
+        return !value.startsWith(notStartWith);
     }
 
     @Override
-    public String getErrorMessage() {
-        return String.format("the value should start with %s characters\n", ruleValue);
+    public String getDefaultMsg() {
+        return String.format("the value should not start with %s characters\n", notStartWith);
     }
 }

@@ -15,7 +15,10 @@
  */
 package com.github.paohaijiao.validate.impl;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate
@@ -26,18 +29,24 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JRequiredRule extends JAbstractValidationRule {
 
-    public JRequiredRule() {
-        super(true);
+    public JRequiredRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map , customMessage);
     }
 
     @Override
     protected boolean doValidate(String value) {
-        return true;
+        if(value != null&&required){
+            return true;
+        }else{
+            JAssert.throwNewException(buildMsg());
+            return false;
+        }
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return "the field is required";
     }
+
 
 }

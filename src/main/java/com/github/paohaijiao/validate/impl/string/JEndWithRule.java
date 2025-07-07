@@ -15,7 +15,10 @@
  */
 package com.github.paohaijiao.validate.impl.string;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate
@@ -26,20 +29,23 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JEndWithRule extends JAbstractValidationRule {
 
-    private String ruleValue;
+    private String endWith;
 
-    public JEndWithRule(String ruleValue, boolean required) {
-        super(required);
-        this.ruleValue = ruleValue;
+    public JEndWithRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+        JAssert.notNull(map, "the map must not be null");
+
     }
 
     @Override
     protected boolean doValidate(String value) {
-        return value.endsWith(ruleValue);
+        Object endWithObject=map.get("endWith");
+        JAssert.notNull(endWithObject, "the endWith Value must not be null");
+        this.endWith =(String) endWithObject;
+        return value.endsWith(endWith);
     }
-
     @Override
-    public String getErrorMessage() {
-        return String.format("the value should ends with %s characters\n", ruleValue);
+    public String getDefaultMsg() {
+        return String.format("the value should ends with %s characters\n", endWith);
     }
 }

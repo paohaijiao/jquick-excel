@@ -15,7 +15,10 @@
  */
 package com.github.paohaijiao.validate.impl.number;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -26,8 +29,8 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JIntegerRule extends JAbstractValidationRule {
 
-    public JIntegerRule(boolean required) {
-        super(required);
+    public JIntegerRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
     }
 
     @Override
@@ -36,12 +39,12 @@ public class JIntegerRule extends JAbstractValidationRule {
             Integer.parseInt(value);
             return true;
         } catch (NumberFormatException e) {
+            JAssert.throwNewException(this.buildMsg());
             return false;
         }
     }
-
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return "it must be an integer\n";
     }
 }

@@ -17,6 +17,8 @@ package com.github.paohaijiao.validate.impl.other;
 
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
+import java.util.Map;
+
 /**
  * packageName com.github.paohaijiao.validate.impl.other
  *
@@ -25,11 +27,11 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  * @since 2025/7/6
  */
 public class JEmailRule extends JAbstractValidationRule {
+
     private static final String EMAIL_REGEX = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-    private String email;
-    public JEmailRule(String email, boolean required) {
-        super( required);
-        this.email=email;
+
+    public JEmailRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
     }
 
     @Override
@@ -38,7 +40,8 @@ public class JEmailRule extends JAbstractValidationRule {
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return "the email is not valid";
-   }
+    }
+
 }

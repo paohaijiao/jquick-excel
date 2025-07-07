@@ -15,6 +15,11 @@
  */
 package com.github.paohaijiao.validate;
 
+import com.github.paohaijiao.exception.JAssert;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+
 /**
  * packageName com.github.paohaijiao.validate
  *
@@ -24,10 +29,19 @@ package com.github.paohaijiao.validate;
  */
 public abstract class JAbstractValidationRule implements JExcelValidationRule{
 
+
     protected final boolean required;
 
-    protected JAbstractValidationRule(boolean required) {
+    protected final Map<String,Object> map;
+
+    protected final String customMessage;
+
+
+
+    protected JAbstractValidationRule(boolean required, Map<String,Object> map,String customMessage) {
         this.required = required;
+        this.map = map;
+        this.customMessage = customMessage;
     }
 
     protected boolean isEmpty(String value) {
@@ -36,10 +50,31 @@ public abstract class JAbstractValidationRule implements JExcelValidationRule{
 
     @Override
     public boolean test(String value) {
-        if (isEmpty(value)) {
-            return !required;
+        if (!required) {
+            return true;
         }
-        return doValidate(value);
+        if (null==value&&required) {
+            JAssert.throwNewException(this.buildMsg());
+        }
+        boolean bool= doValidate(value);
+
+        if(!bool){
+            if(customMessage != null){
+                JAssert.throwNewException(customMessage);
+            }else{
+                JAssert.throwNewException(getDefaultMsg());
+            }
+        }
+        return bool;
+    }
+
+    public String buildMsg(){
+        if(StringUtils.isNotEmpty(customMessage)){
+            return customMessage;
+        }else{
+            return getDefaultMsg();
+        }
+
     }
 
     protected abstract boolean doValidate(String value);

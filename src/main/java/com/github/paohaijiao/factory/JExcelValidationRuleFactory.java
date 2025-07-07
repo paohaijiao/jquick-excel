@@ -28,10 +28,10 @@ import com.github.paohaijiao.validate.impl.number.JMinValueRule;
 import com.github.paohaijiao.validate.impl.other.JDictRule;
 import com.github.paohaijiao.validate.impl.other.JEmailRule;
 import com.github.paohaijiao.validate.impl.other.JMobileRule;
-import com.github.paohaijiao.validate.impl.string.JMaxLengthRule;
-import com.github.paohaijiao.validate.impl.string.JMinLengthRule;
-import com.github.paohaijiao.validate.impl.string.JRegexRule;
+import com.github.paohaijiao.validate.impl.string.*;
+
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,66 +43,93 @@ import java.util.Set;
  */
 public class JExcelValidationRuleFactory {
 
-    public static JRequiredRule required() {
-        return new JRequiredRule();
+    public static JBooleanRule booleanRule(boolean required, Map<String,Object> map, String customMessage) {
+        return new JBooleanRule(required,map, customMessage);
     }
 
-    public static JMinLengthRule minLength(int minLength, boolean required) {
-        return new JMinLengthRule(minLength, required);
+    public static JRequiredRule required(boolean required, Map<String,Object> map, String customMessage) {
+        return new JRequiredRule(required,map, customMessage);
     }
 
-    public static JMaxLengthRule maxLength(int maxLength, boolean required) {
-        return new JMaxLengthRule(maxLength, required);
+    public static JDateFormatRule dateFormat(boolean required, Map<String,Object> map, String customMessage) {
+        return new JDateFormatRule(required,map, customMessage);
+    }
+    public static JMinDateRule minDate(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMinDateRule(required,map, customMessage);
+    }
+    public static JMaxDateRule maxDate(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMaxDateRule(required,map, customMessage);
+    }
+    public static JDecimalRule decimal(boolean required, Map<String,Object> map, String customMessage) {
+        return new JDecimalRule(required,map, customMessage);
+    }
+    public static JIntegerRule integer(boolean required, Map<String,Object> map, String customMessage) {
+        return new JIntegerRule(required,map, customMessage);
+    }
+    public static JMaxValueRule maxValue(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMaxValueRule(required,map, customMessage);
+    }
+    public static JMinValueRule minValue(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMinValueRule(required,map, customMessage);
     }
 
-    public static JRegexRule regex(String pattern, boolean required) {
-        return new JRegexRule(pattern, required);
+    public static JContainWithRule containWith(boolean required, Map<String,Object> map, String customMessage) {
+        return new JContainWithRule(required,map, customMessage);
+    }
+    public static JEndWithRule endsWith(boolean required, Map<String,Object> map, String customMessage) {
+        return new JEndWithRule(required,map, customMessage);
+    }
+    public static JMaxLengthRule maxLength(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMaxLengthRule(required,map, customMessage);
+    }
+    public static JMinLengthRule minLength(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMinLengthRule(required,map, customMessage);
+    }
+    public static JNotContainWithRule notContainWith(boolean required, Map<String,Object> map, String customMessage) {
+        return new JNotContainWithRule(required,map, customMessage);
+    }
+    public static JNotEndWithRule notEndWith(boolean required, Map<String,Object> map, String customMessage) {
+        return new JNotEndWithRule(required,map, customMessage);
     }
 
-    public static JIntegerRule integer(boolean required) {
-        return new JIntegerRule(required);
+    public static JNotStartWithRule notStart(boolean required, Map<String,Object> map, String customMessage) {
+        return new JNotStartWithRule(required,map, customMessage);
     }
 
-    public static JDecimalRule decimal(boolean required) {
-        return new JDecimalRule(required);
+    public static JRegexRule regex(boolean required, Map<String,Object> map, String customMessage) {
+        return new JRegexRule(required,map, customMessage);
+    }
+    public static JStartWithRule startWith(boolean required, Map<String,Object> map, String customMessage) {
+        return new JStartWithRule(required,map, customMessage);
     }
 
-    public static JMinValueRule minValue(double minValue, boolean required) {
-        return new JMinValueRule(minValue, required);
+    public static JEmailRule email(boolean required, Map<String,Object> map, String customMessage) {
+        return new JEmailRule(required,map, customMessage);
+    }
+    public static JMobileRule mobile(boolean required, Map<String,Object> map, String customMessage) {
+        return new JMobileRule(required,map, customMessage);
     }
 
-    public static JMaxValueRule maxValue(double maxValue, boolean required) {
-        return new JMaxValueRule(maxValue, required);
+    public static JDictRule dict(boolean required, Map<String,Object> map, String customMessage) {
+        return new JDictRule(required,map, customMessage);
     }
 
-    public static JBooleanRule booleanRule(String[] trueValues, String[] falseValues, boolean required) {
-        return new JBooleanRule(trueValues, falseValues, required);
-    }
 
-    public static JDateFormatRule dateFormat(String format, boolean required) {
-        return new JDateFormatRule(format, required);
-    }
 
-    public static JMinDateRule minDate(Date minDate, String format, boolean required) {
-        return new JMinDateRule(minDate, format, required);
-    }
 
-    public static JMaxDateRule maxDate(Date maxDate, String format, boolean required) {
-        return new JMaxDateRule(maxDate, format, required);
-    }
+
+
+
+
+
+
 
     public static JCompositeRule composite() {
         return new JCompositeRule();
     }
-    public static JEmailRule emailRule(String email, boolean required) {
-        return new JEmailRule(email,required);
-    }
 
-    public static JMobileRule mobileRule(String mobile, boolean required) {
-        return new JMobileRule(mobile,required);
-    }
 
-    public static JDictRule dictRule(String value, boolean required, Set<String> dict) {
-        return new JDictRule(value,required,dict);
-    }
+
+
+
 }

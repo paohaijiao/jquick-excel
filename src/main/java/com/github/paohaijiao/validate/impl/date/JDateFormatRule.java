@@ -15,10 +15,12 @@
  */
 package com.github.paohaijiao.validate.impl.date;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -29,27 +31,31 @@ import java.text.SimpleDateFormat;
  */
 public class JDateFormatRule extends JAbstractValidationRule {
 
-    private final String format;
+    private String format;
 
-    public JDateFormatRule(String format, boolean required) {
-        super(required);
-        this.format = format;
+    public JDateFormatRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+        JAssert.notNull(map, "the map must not be null");
+        Object formatValue=map.get("format");
+        JAssert.notNull(formatValue, "the format Value must not be null");
+        this.format = formatValue.toString();
     }
 
     @Override
     protected boolean doValidate(String value) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        sdf.setLenient(false);
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
             sdf.parse(value);
             return true;
-        } catch (ParseException e) {
+        } catch (Exception e) {
+            JAssert.throwNewException(buildMsg());
             return false;
         }
     }
-
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return String.format("the date format must be: %s", format);
     }
+
+
 }

@@ -15,7 +15,10 @@
  */
 package com.github.paohaijiao.validate.impl.string;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -26,20 +29,24 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JRegexRule extends JAbstractValidationRule {
 
-    private final String pattern;
+    private  String pattern;
 
-    public JRegexRule(String pattern, boolean required) {
-        super(required);
-        this.pattern = pattern;
+    public JRegexRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+        JAssert.notNull(map, "the map must not be null");
+
     }
 
     @Override
     protected boolean doValidate(String value) {
+        Object patternObject=map.get("pattern");
+        JAssert.notNull(patternObject, "the pattern Value must not be null");
+        this.pattern =(String) patternObject;
         return value.matches(pattern);
     }
 
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return String.format("must match regular expression: %s", pattern);
     }
 }

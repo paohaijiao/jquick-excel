@@ -15,7 +15,11 @@
  */
 package com.github.paohaijiao.validate.impl.string;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate
@@ -26,20 +30,22 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JContainWithRule extends JAbstractValidationRule {
 
-    private String ruleValue;
+    private String contains;
 
-    public JContainWithRule(String ruleValue, boolean required) {
-        super(required);
-        this.ruleValue = ruleValue;
+    public JContainWithRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+        JAssert.notNull(map, "the map must not be null");
     }
 
     @Override
     protected boolean doValidate(String value) {
-        return value.contains(ruleValue);
+        Object containsObject=map.get("contains");
+        JAssert.notNull(containsObject, "the contains Value must not be null");
+        this.contains =(String) containsObject;
+        return value.contains(contains);
     }
-
     @Override
-    public String getErrorMessage() {
-        return String.format("the value should contain with %s characters\n", ruleValue);
+    public String getDefaultMsg() {
+        return String.format("the value should contain with %s characters\n", contains);
     }
 }

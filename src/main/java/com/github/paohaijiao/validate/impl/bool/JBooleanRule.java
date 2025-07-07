@@ -15,9 +15,13 @@
  */
 package com.github.paohaijiao.validate.impl.bool;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -28,29 +32,26 @@ import java.util.Arrays;
  */
 public class JBooleanRule extends JAbstractValidationRule {
 
-    private final String[] trueValues;
-    private final String[] falseValues;
 
-    public JBooleanRule(String[] trueValues, String[] falseValues, boolean required) {
-        super(required);
-        this.trueValues = trueValues;
-        this.falseValues = falseValues;
+    public JBooleanRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+        JAssert.notNull(map, "the map must not be null");
     }
 
-    @Override
+        @Override
     protected boolean doValidate(String value) {
-        for (String trueValue : trueValues) {
-            if (value.equalsIgnoreCase(trueValue)) return true;
+        boolean bool=this.map.containsValue(value);
+        if(bool){
+            return true;
         }
-        for (String falseValue : falseValues) {
-            if (value.equalsIgnoreCase(falseValue)) return true;
-        }
+        JAssert.throwNewException(this.buildMsg() );
         return false;
+
     }
 
     @Override
-    public String getErrorMessage() {
-        return String.format("it must be a boolean value(true: %s, false: %s)",
-                Arrays.toString(trueValues), Arrays.toString(falseValues));
+    public String getDefaultMsg() {
+        String scope=StringUtils.join(map.values(),",");
+        return String.format("it must be a boolean value scope is:%s", scope);
     }
 }

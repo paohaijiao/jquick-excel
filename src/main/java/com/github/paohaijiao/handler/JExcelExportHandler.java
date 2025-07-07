@@ -27,7 +27,6 @@ import com.github.paohaijiao.jstyle.context.JStyleContext;
 import com.github.paohaijiao.merge.JMergeHandler;
 import com.github.paohaijiao.merge.context.JMergeHandlerContext;
 import com.github.paohaijiao.model.JExcelExportModel;
-import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
@@ -41,71 +40,23 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class JExcelProcessor {
-    private Workbook workbook;
-    private Sheet currentSheet;
+public class JExcelExportHandler extends JExcelCommonHandler{
+
     private DataFormatter dataFormatter = new DataFormatter();
 
-    private JContext contextParams = new JContext();
 
-    public JExcelProcessor() {
+
+    public JExcelExportHandler() {
         this.contextParams = new JContext();
     }
 
-    public JExcelProcessor(JContext contextParams) {
+    public JExcelExportHandler(JContext contextParams) {
         this.contextParams = contextParams;
-    }
-
-    public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
-            workbook = new XSSFWorkbook();//fis;
-            setSheet(config.getSheet());
-            String range = config.getRange();
-            int[] rangeBounds = parseRange(range);
-            boolean hasHeader = config.getHeader();
-            List<String> headers = new ArrayList<>();
-            Map<String, String> mappings = config.getMappings();
-            List<Map<String, Object>> data = new ArrayList<>();
-            int startRow = rangeBounds != null ? rangeBounds[0] : (hasHeader ? 1 : 0);
-            int endRow = rangeBounds != null ? rangeBounds[1] : currentSheet.getLastRowNum();
-            int startCol = rangeBounds != null ? rangeBounds[2] : 0;
-            int endCol = rangeBounds != null ? rangeBounds[3] : getMaxColumnCount();
-            if (hasHeader) {
-                Row headerRow = currentSheet.getRow(rangeBounds != null ? rangeBounds[0] : 0);
-                for (int i = startCol; i <= endCol; i++) {
-                    Cell cell = headerRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                    String headerName = dataFormatter.formatCellValue(cell);
-                    headers.add(mappings.getOrDefault(headerName, headerName));
-                }
-            } else {
-                for (int i = startCol; i <= endCol; i++) {
-                    headers.add("column_" + (i + 1));
-                }
-            }
-            for (int rowNum = startRow; rowNum <= endRow; rowNum++) {
-                Row row = currentSheet.getRow(rowNum);
-                if (row == null) continue;
-                Map<String, Object> rowData = new LinkedHashMap<>();
-                for (int colNum = startCol; colNum <= endCol; colNum++) {
-                    if (colNum >= headers.size()) break;
-                    Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                    Object value = dataFormatter.formatCellValue(cell);
-                    Map<String, String> transforms = config.getTransforms();
-                    String fieldName = headers.get(colNum);
-                    if (transforms.containsKey(fieldName)) {
-                        value = applyTransform(fieldName, value, transforms.get(fieldName));
-                    }
-                    rowData.put(headers.get(colNum), value);
-                }
-                data.add(rowData);
-            }
-            return data;
-
     }
 
     public void exportData(List<Map<String, Object>> data, JExcelExportModel config) throws IOException {
@@ -120,7 +71,6 @@ public class JExcelProcessor {
         if (null != data && !data.isEmpty()) {
             lastColNum = data.get(0).size();
         }
-
         boolean hasHeader = config.getHeader();
         Map<String, String> mappings = config.getMapping();
         Map<String, String> transforms = config.getTransforms();
@@ -220,18 +170,7 @@ public class JExcelProcessor {
         }
     }
 
-    private void setSheet(Object sheetConfig) {
-        if (sheetConfig == null) {
-            currentSheet = workbook.getSheetAt(0);
-        } else if (sheetConfig instanceof Integer) {
-            currentSheet = workbook.getSheetAt((Integer) sheetConfig - 1);
-        } else if (sheetConfig instanceof String) {
-            currentSheet = workbook.getSheet((String) sheetConfig);
-            if (currentSheet == null) {
-                currentSheet = workbook.createSheet((String) sheetConfig);
-            }
-        }
-    }
+
 
     private int[] parseRange(String range) {
         if (range == null || range.isEmpty()) return null;
@@ -271,20 +210,7 @@ public class JExcelProcessor {
         return maxCols;
     }
 
-    private Object applyTransform(String key, Object value, String transform) {
-        this.contextParams.put(key, value);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(transform));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.transformValue();
-        List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams, data);
-        @SuppressWarnings("unchecked")
-        JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
-        List<Object> list = methodCallModel.getList();
-        Object object = JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(), list);
-        return object;
-    }
+
 
     private void applyCellFormat(Cell cell, String formatSpec) {
         CellStyle style = workbook.createCellStyle();

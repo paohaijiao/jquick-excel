@@ -27,6 +27,7 @@ import com.github.paohaijiao.validate.JExcelValidationRule;
 import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.string.JEndWithRule;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,7 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
         if(null!=ctx.targetSpec()){
              targetSpec=visitTargetSpec(ctx.targetSpec());
         }
-        List<JExcelValidationRule > list=new ArrayList<JExcelValidationRule>();
+        List<JAbstractValidationRule > list=new ArrayList<JAbstractValidationRule>();
         if(null!=ctx.ruleSpec()&&!ctx.ruleSpec().isEmpty()){
             for (JQuickExcelParser.RuleSpecContext ruleSpecContext :ctx.ruleSpec()) {
                 list.add(visitRuleSpec(ruleSpecContext));
@@ -71,9 +72,24 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
         return null;
     }
     @Override
-    public JExcelValidationRule visitRuleSpec(JQuickExcelParser.RuleSpecContext ctx) {
+    public JAbstractValidationRule visitRuleSpec(JQuickExcelParser.RuleSpecContext ctx) {
         String method=ctx.IDENTIFIER().getText();
+        boolean required=false;
+        HashMap<String,Object> map=new HashMap<>();
+        String customMessage=null;
         JMethodValidationRuleType type=JMethodValidationRuleType.codeOf(method);
+        try{
+            Class<? > ruleClass = type.getClass();
+            if (type == JMethodValidationRuleType.COMPOSITE) {
+                return (JAbstractValidationRule) ruleClass.getDeclaredConstructor().newInstance();
+            }
+            Constructor<? extends JAbstractValidationRule> constructor =
+                    (Constructor<? extends JAbstractValidationRule>) ruleClass.getDeclaredConstructor(boolean.class, Map.class, String.class);
+            return constructor.newInstance(required, map, customMessage);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 

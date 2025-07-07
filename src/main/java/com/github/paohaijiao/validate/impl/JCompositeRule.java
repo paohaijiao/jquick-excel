@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.validate.impl;
 
+import com.github.paohaijiao.validate.JAbstractValidationRule;
 import com.github.paohaijiao.validate.JExcelValidationRule;
 
 import java.util.ArrayList;
@@ -29,9 +30,9 @@ import java.util.List;
  */
 public class JCompositeRule implements JExcelValidationRule {
 
-    private final List<JExcelValidationRule> rules = new ArrayList<>();
+    private final List<JAbstractValidationRule> rules = new ArrayList<>();
 
-    public JCompositeRule addRule(JExcelValidationRule rule) {
+    public JCompositeRule addRule(JAbstractValidationRule rule) {
         rules.add(rule);
         return this;
     }
@@ -44,14 +45,5 @@ public class JCompositeRule implements JExcelValidationRule {
             }
         }
         return true;
-    }
-
-    @Override
-    public String getErrorMessage() {
-        StringBuilder sb = new StringBuilder();
-        for (JExcelValidationRule rule : rules) {
-            sb.append(rule.getErrorMessage()).append("; ");
-        }
-        return sb.toString();
     }
 }

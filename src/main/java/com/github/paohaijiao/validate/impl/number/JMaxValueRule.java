@@ -15,7 +15,12 @@
  */
 package com.github.paohaijiao.validate.impl.number;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -26,25 +31,30 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JMaxValueRule extends JAbstractValidationRule {
 
-    private final double maxValue;
+    private  double maxValue;
 
-    public JMaxValueRule(double maxValue, boolean required) {
-        super(required);
-        this.maxValue = maxValue;
+    public JMaxValueRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+
     }
 
     @Override
     protected boolean doValidate(String value) {
+        JAssert.notNull(map, "the map must not be null");
+        Object maxValueObject=map.get("maxValue");
+        JAssert.notNull(maxValueObject, "the maxValue Value must not be null");
+        BigDecimal bigDecimal=(BigDecimal) maxValueObject;
+        this.maxValue =bigDecimal.doubleValue();
         try {
             double num = Double.parseDouble(value);
             return num <= maxValue;
         } catch (NumberFormatException e) {
+            JAssert.throwNewException(this.buildMsg());
             return false;
         }
     }
-
     @Override
-    public String getErrorMessage() {
-        return String.format("the value cannot be greater than %.2f", maxValue);
+    public String getDefaultMsg() {
+        return String.format("the value cannot be greater than %s", maxValue);
     }
 }

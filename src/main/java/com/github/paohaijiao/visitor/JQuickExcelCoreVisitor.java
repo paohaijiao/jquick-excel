@@ -17,7 +17,7 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.handler.JExcelProcessor;
+import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelBaseVisitor;
@@ -25,7 +25,6 @@ import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +36,7 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
 
     protected Cell cell;
 
-    protected JExcelProcessor excelProcessor;
+    protected JExcelExportHandler excelProcessor;
 
     protected List<Map<String, Object>> data;
 

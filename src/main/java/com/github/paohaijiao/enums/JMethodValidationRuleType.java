@@ -1,6 +1,8 @@
 package com.github.paohaijiao.enums;
 
 import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.validate.JAbstractValidationRule;
+import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.bool.JBooleanRule;
 import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
 import com.github.paohaijiao.validate.impl.date.JMaxDateRule;
@@ -34,7 +36,8 @@ public enum JMethodValidationRuleType {
     END_WITH("end_with", JEndWithRule.class),
     NOT_END_WITH("not_end_with", JNotEndWithRule.class),
     CONTAIN("contain", JContainWithRule.class),
-    NOTCONTAIN("not_contain", JNotContainWithRule.class);
+    NOTCONTAIN("not_contain", JNotContainWithRule.class),
+    COMPOSITE("composite",JCompositeRule .class);
 
     private String key;
 

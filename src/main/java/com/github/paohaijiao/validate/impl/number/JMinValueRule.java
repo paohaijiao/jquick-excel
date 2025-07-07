@@ -15,7 +15,11 @@
  */
 package com.github.paohaijiao.validate.impl.number;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.validate.impl
@@ -26,15 +30,20 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
  */
 public class JMinValueRule extends JAbstractValidationRule {
 
-    private final double minValue;
+    private  double minValue;
 
-    public JMinValueRule(double minValue, boolean required) {
-        super(required);
-        this.minValue = minValue;
+    public JMinValueRule(boolean required, Map<String,Object> map, String customMessage) {
+        super(required, map, customMessage);
+
     }
 
     @Override
     protected boolean doValidate(String value) {
+        JAssert.notNull(map, "the map must not be null");
+        Object minValueObject=map.get("minValue");
+        JAssert.notNull(minValueObject, "the minValue Value must not be null");
+        BigDecimal bigDecimal=(BigDecimal) minValueObject;
+        this.minValue =bigDecimal.doubleValue();
         try {
             double num = Double.parseDouble(value);
             return num >= minValue;
@@ -42,9 +51,8 @@ public class JMinValueRule extends JAbstractValidationRule {
             return false;
         }
     }
-
     @Override
-    public String getErrorMessage() {
+    public String getDefaultMsg() {
         return String.format("the value cannot be less than%.2f", minValue);
     }
 }
