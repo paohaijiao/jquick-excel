@@ -9,6 +9,7 @@ import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -54,10 +55,12 @@ public class JExcelCommonHandler {
     }
     protected int getUsedColumnCount(Sheet sheet,Row row ) {
         int maxColumns = 0;
-        if (row != null) {
-            int lastCellNum = row.getLastCellNum();
-            if (lastCellNum > maxColumns) {
-                maxColumns = lastCellNum;
+        int lastCellNum = row.getLastCellNum();
+        for (int i = lastCellNum - 1; i >= 0; i--) {
+            Cell cell = row.getCell(i, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+            if (cell != null) {
+                maxColumns = Math.max(maxColumns, i + 1);
+                break;
             }
         }
         return maxColumns;
