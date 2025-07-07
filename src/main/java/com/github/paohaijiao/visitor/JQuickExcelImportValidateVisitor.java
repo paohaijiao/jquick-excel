@@ -27,6 +27,8 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
 import com.github.paohaijiao.validate.JExcelValidationRule;
 import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.string.JEndWithRule;
+import com.github.paohaijiao.validate.impl.string.JMinLengthRule;
+import org.apache.xpath.operations.Bool;
 
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
@@ -76,13 +78,12 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
         JRuleItem item=visitRuleItem(ctx.ruleItem());
         JMethodValidationRuleType type=JMethodValidationRuleType.codeOf(method);
         try{
-            Class<? > ruleClass = type.getClass();
+            Class<? extends JAbstractValidationRule> ruleClass = type.getClazz();
             if (type == JMethodValidationRuleType.COMPOSITE) {
                 return (JAbstractValidationRule) ruleClass.getDeclaredConstructor().newInstance();
             }
-            Constructor<? extends JAbstractValidationRule> constructor =
-                    (Constructor<? extends JAbstractValidationRule>) ruleClass.getDeclaredConstructor(boolean.class, Map.class, String.class);
-            return constructor.newInstance(item.getRequired(), item.getMap(), item.getCustomMessage());
+            Constructor<?> constructor = ruleClass.getDeclaredConstructor(boolean.class, Map.class, String.class);
+            return (JAbstractValidationRule) constructor.newInstance(item.getRequired(), item.getMap(), item.getCustomMessage());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -140,26 +141,33 @@ public class JQuickExcelImportValidateVisitor extends JFieldMapping {
             String msg=visitRuleMsg(ctx.ruleMsg());
             ruleItem.setCustomMessage(msg);
         }
-        HashMap<String,Object> map=new HashMap<>();
-        if (ctx.map()!=null&&!ctx.map().isEmpty()) {
-            for (JQuickExcelParser.MapContext mapContext :ctx.map()) {
-                HashMap<String,Object> value=visitMap(mapContext);
-                for (Map.Entry<String, Object> entry : value.entrySet()) {
-                    map.put(entry.getKey(), entry.getValue());
-                }
-            }
+        if (ctx.map()!=null) {
+            HashMap<String,Object> map=visitMap(ctx.map());
+            ruleItem.setMap(map);
         }
-        ruleItem.setMap(map);
+
         return ruleItem;
     }
     @Override
     public HashMap<String,Object> visitMap(JQuickExcelParser.MapContext ctx) {
         HashMap<String,Object> map=new HashMap<>();
-        String key=ctx.IDENTIFIER().getText();
+        for (JQuickExcelParser.MapItemContext mapItemContext:ctx.mapItem()){
+            HashMap<String,Object>  value=  visitMapItem(mapItemContext);
+            for (Map.Entry<String, Object> entry:value.entrySet()){
+                map.put(entry.getKey(),entry.getValue());
+            }
+        }
+        return map;
+    }
+    @Override
+    public HashMap<String,Object> visitMapItem(JQuickExcelParser.MapItemContext ctx) {
+        HashMap<String,Object> map=new HashMap<>();
+        String key=ctx.mapkey().getText();
         Object value=visitMapValue(ctx.mapValue());
         map.put(key,value);
         return map;
     }
+
     @Override
     public Object visitMapValue(JQuickExcelParser.MapValueContext ctx) {
         if (ctx.STRING() != null) {

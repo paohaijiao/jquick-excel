@@ -203,6 +203,18 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMap(JQuickExcelParser.MapContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mapItem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMapItem(JQuickExcelParser.MapItemContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#mapkey}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMapkey(JQuickExcelParser.MapkeyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#mapValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -401,6 +401,30 @@ public class JQuickExcelBaseListener implements JQuickExcelListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMapItem(JQuickExcelParser.MapItemContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMapItem(JQuickExcelParser.MapItemContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMapkey(JQuickExcelParser.MapkeyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMapkey(JQuickExcelParser.MapkeyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMapValue(JQuickExcelParser.MapValueContext ctx) { }
 	/**
 	 * {@inheritDoc}

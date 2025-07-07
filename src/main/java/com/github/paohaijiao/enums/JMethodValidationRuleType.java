@@ -15,7 +15,12 @@ import com.github.paohaijiao.validate.impl.other.JDictRule;
 import com.github.paohaijiao.validate.impl.other.JEmailRule;
 import com.github.paohaijiao.validate.impl.other.JMobileRule;
 import com.github.paohaijiao.validate.impl.string.*;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+@Getter
 public enum JMethodValidationRuleType {
     BOOLEAN("boolean", JBooleanRule.class),
     DATE_FORMAT("date_format", JDateFormatRule.class),
@@ -49,11 +54,15 @@ public enum JMethodValidationRuleType {
     }
     public static JMethodValidationRuleType codeOf(String code) {
         for (JMethodValidationRuleType type : values()) {
-            if (type.key.equals(code)) {
+            if (type.key.equalsIgnoreCase(code)) {
                 return type;
             }
         }
-        JAssert.throwNewException("no such method validation rule type");
+        List<String> method=new ArrayList<String>();
+        for (JMethodValidationRuleType type : values()) {
+            method.add(type.key);
+        }
+        JAssert.throwNewException("only follow method code is supported:"+ StringUtils.join(method,","));
         return null;
     }
 }
