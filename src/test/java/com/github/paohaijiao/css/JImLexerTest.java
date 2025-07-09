@@ -36,7 +36,7 @@ public class JImLexerTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor();
         @SuppressWarnings("unchecked")
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         return result;

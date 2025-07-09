@@ -451,34 +451,21 @@ public class JCellStyle extends JFontStyle{
     }
 
     public String getFillBackgroundColor() {
-        return containsKey(FILL_BACKGROUND_COLOR) && get(FILL_BACKGROUND_COLOR) instanceof BigDecimal
+        return containsKey(FILL_BACKGROUND_COLOR) && get(FILL_BACKGROUND_COLOR) instanceof String
                 ? (String) get(FILL_BACKGROUND_COLOR) : null;
     }
 
-    public Color getFillBackgroundColorColor() {
-        return get(FILL_BACKGROUND_COLOR) instanceof Color
-                ? (Color) get(FILL_BACKGROUND_COLOR) : null;
-    }
 
-    public void setFillForegroundColor(BigDecimal var1) {
-        put(FILL_FOREGROUND_COLOR, var1);
-    }
 
-    public void setFillForegroundColor(Color var1) {
+
+    public void setFillForegroundColor(String var1) {
         put(FILL_FOREGROUND_COLOR, var1);
     }
 
     public String getFillForegroundColor() {
-        return containsKey(FILL_FOREGROUND_COLOR) && get(FILL_FOREGROUND_COLOR) instanceof BigDecimal
+        return containsKey(FILL_FOREGROUND_COLOR) && get(FILL_FOREGROUND_COLOR) instanceof String
                 ? (String
                 ) get(FILL_FOREGROUND_COLOR) : null;
-    }
-
-    public Color getFillForegroundColorColor() {
-        if (null == get(FILL_FOREGROUND_COLOR)) {
-            return null;
-        }
-        return null;
     }
 
     public void cloneStyleFrom(JCellStyle var1) {

@@ -44,7 +44,7 @@ public class JRowStyleStrategy extends JFontBuilder  implements IStyleStrategy {
             JStyleHelper.applyCellStyle(cellStyle, jRowStyle.getRowStyle());
             XSSFCellStyle xssfCellStyle =(XSSFCellStyle) cellStyle;
             XSSFFont font = xssfCellStyle.getFont();
-            buildFont(cellStyle,font, jRowStyle.getRowStyle());
+            buildFont(cellStyle,font, jRowStyle);
             cell.setCellStyle(cellStyle);
         }
 

@@ -38,15 +38,14 @@ import java.util.Map;
  */
 public class JQuickExcelExportComonVisitor extends JQuickExcelExportGraphVisitor {
 
-    public JQuickExcelExportComonVisitor(List<Map<String, Object>> data) {
+    public JQuickExcelExportComonVisitor() {
         this.context = new JContext();
-        this.excelProcessor = new JExcelExportHandler(this.context);
         this.data = data;
 
     }
 
-    public JQuickExcelExportComonVisitor(JContext context, List<Map<String, Object>> data) {
-        this.excelProcessor = new JExcelExportHandler(context);
+    public JQuickExcelExportComonVisitor(JContext context) {
+
         this.data = data;
         this.context = context;
     }
@@ -57,11 +56,6 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportGraphVisitor
             for (JQuickExcelParser.ExportOptionContext option : ctx.exportOption()) {
                 visit(option);
             }
-        }
-        try {
-            excelProcessor.exportData(data, config);
-        } catch (IOException e) {
-            throw new RuntimeException("导出Excel失败: " , e);
         }
         return config;
     }

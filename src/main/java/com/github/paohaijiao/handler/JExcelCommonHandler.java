@@ -29,7 +29,7 @@ public class JExcelCommonHandler {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformValue();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams, data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams);
         @SuppressWarnings("unchecked")
         JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
         List<Object> list = methodCallModel.getList();

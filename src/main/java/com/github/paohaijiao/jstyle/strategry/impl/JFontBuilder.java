@@ -22,20 +22,21 @@ public class JFontBuilder  {
         if(null==font||null==map||map.size()==0){
             return;
         }
-        if(map.get(JRowStyle.bold)==null){
-            font.setBold(true);
+        if(map.get(JRowStyle.bold)!=null){
+            Boolean bold=(Boolean)map.get(JRowStyle.bold);
+            font.setBold(bold);
         }
-        if(map.get(JRowStyle.fontName)==null){
+        if(map.get(JRowStyle.fontName)!=null){
             String fontName=(String)map.get(JRowStyle.fontName);
             font.setFontName(fontName);
         }
         if(null!=map.get(JRowStyle.fontHeightInPoints)){
-            Short fontHeightInPoints=(Short)map.get(JRowStyle.fontHeightInPoints);
-            font.setFontHeightInPoints(fontHeightInPoints);
+            BigDecimal fontHeightInPoints=(BigDecimal)map.get(JRowStyle.fontHeightInPoints);
+            font.setFontHeightInPoints(fontHeightInPoints.shortValue());
         }
         if(null!=map.get(JRowStyle.fontHeight)){
-            Short fontHeight=(Short)map.get(JRowStyle.fontHeight);
-            font.setFontHeight(fontHeight);
+            BigDecimal fontHeight=(BigDecimal)map.get(JRowStyle.fontHeight);
+            font.setFontHeight(fontHeight.shortValue());
         }
         if(null!=map.get(JRowStyle.bold)){
             Boolean bold=(Boolean)map.get(JRowStyle.bold);
@@ -58,11 +59,6 @@ public class JFontBuilder  {
         if(null!=map.get(JRowStyle.strikeout)){
             Boolean strikeout=(Boolean)map.get(JRowStyle.strikeout);
             font.setStrikeout(strikeout);
-        }
-        if(null!=map.get(JRowStyle.underLine)){
-            String underLine=(String)map.get(JRowStyle.underLine);
-            FontUnderline fontUnderline=JFontUnderline.codeOf(underLine);
-            font.setUnderline(fontUnderline.getByteValue());
         }
         cellStyle.setFont(font);
 

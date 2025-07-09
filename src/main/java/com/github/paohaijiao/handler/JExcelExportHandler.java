@@ -49,17 +49,21 @@ public class JExcelExportHandler extends JExcelCommonHandler{
 
     private DataFormatter dataFormatter = new DataFormatter();
 
+    private JExcelExportModel config=null;
 
 
-    public JExcelExportHandler() {
-        this.contextParams = new JContext();
+
+    public JExcelExportHandler(JExcelExportModel config,List<Map<String, Object>> data) {
+        this.config = config;
+        try {
+            this.exportData(config,data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public JExcelExportHandler(JContext contextParams) {
-        this.contextParams = contextParams;
-    }
 
-    public void exportData(List<Map<String, Object>> data, JExcelExportModel config) throws IOException {
+    public void exportData(JExcelExportModel config,List<Map<String, Object>> data) throws IOException {
         workbook = new XSSFWorkbook();
         Object sheet = config.getSheet();
         if (null != sheet) {
@@ -115,10 +119,9 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         applyMerge(config, currentSheet.getLastRowNum(), lastColNum);
         applyGraph(config);
         if(config.getFooter()!=null){
-            buildDefaultFooter(workbook,currentSheet,this.getLastRowNum(currentSheet),this.getUsedColumnCount(currentSheet),config.getFooter());
+            buildDefaultFooter(workbook,currentSheet,this.getLastRowNum(currentSheet)-1,
+                    this.getUsedColumnCount(currentSheet)-1,config.getFooter());
         }
-        FileOutputStream fos=(FileOutputStream)contextParams.get("fos");
-        workbook.write(fos);
     }
 
     private String getFormulaValue(String formula, int rowNum, int colNum) {
@@ -417,5 +420,9 @@ public class JExcelExportHandler extends JExcelCommonHandler{
             JExcelChartType excelChartType=JExcelChartType.codeOf( config.getGraph().getChartType());
             JExcelChartFactory.createChart((XSSFWorkbook)workbook, config.getGraph(), excelChartType, config.getGraph().getTitle());
         }
+    }
+
+    public Workbook getWorkBook(){
+        return workbook;
     }
 }

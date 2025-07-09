@@ -60,7 +60,7 @@ public class JExcelExportFormulatTest {
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(configText));
         JQuickExcelParser parser = new JQuickExcelParser(new CommonTokenStream(lexer));
         JQuickExcelParser.ExportConfigContext exportConfig = parser.exportConfig();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor();
         visitor.visitExportConfig(exportConfig);
     }
 }

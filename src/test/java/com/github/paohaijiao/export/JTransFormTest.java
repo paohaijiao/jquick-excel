@@ -67,7 +67,7 @@ public class JTransFormTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//format.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }

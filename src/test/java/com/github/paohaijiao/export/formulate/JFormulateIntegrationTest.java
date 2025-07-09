@@ -81,7 +81,7 @@ public class JFormulateIntegrationTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
     @Test
@@ -106,7 +106,7 @@ public class JFormulateIntegrationTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
     @Test
@@ -133,7 +133,7 @@ public class JFormulateIntegrationTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
 }

@@ -64,7 +64,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
@@ -91,7 +91,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
@@ -118,7 +118,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//header.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
@@ -145,7 +145,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//headerno.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }

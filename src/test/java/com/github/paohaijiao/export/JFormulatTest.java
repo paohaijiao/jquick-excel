@@ -59,7 +59,7 @@ public class JFormulatTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//formulat.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
 

@@ -72,7 +72,7 @@ public class JExcelFormulaContext {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         JQuickExcelParser.FormulateCallContext tree = parser.formulateCall();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(new ArrayList<>());
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor();
         JFormulateCallModel result =(JFormulateCallModel) visitor.visit(tree);
         if(result.getList().isEmpty()){
            return createInstance(clazz);

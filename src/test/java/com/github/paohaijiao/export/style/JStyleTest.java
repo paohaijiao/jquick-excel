@@ -16,6 +16,7 @@
 package com.github.paohaijiao.export.style;
 
 import com.github.paohaijiao.formula.context.JExcelFormulaContext;
+import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
@@ -61,16 +62,19 @@ public class JStyleTest {
         String config = "EXPORT WITH\n" +
                 "  SHEET=\"销售报表\",\n" +
                 "  HEADER=true,\n" +
+                "  FOOTER=\"NIXSAXSAXSAXASXSAXSAXSA\",\n" +
                 "  STYLE={\n" +
                 "    ROW 1: {\n" +
                 "      fontName: Arial,\n" +
                 "      fontHeightInPoints: 12,\n" +
+                "      italic: true,\n" +
                 "      bold: true\n" +
                 "    },\n" +
                 "    ROW 2..5: {\n" +
                 "      fontName: Arial,\n" +
-                "      underLine: true,\n" +
-                "      color: 11\n" +
+                "      underLine: uSingle,\n" +
+                "      strikeout: true,\n" +
+                "      color: red\n" +
                 "    }\n" +
                 "}";
         Workbook workbook = new XSSFWorkbook();
@@ -89,7 +93,7 @@ public class JStyleTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         System.out.println(result);
     }
@@ -97,8 +101,11 @@ public class JStyleTest {
     public void testCellFormulas() throws IOException {
         String config = "EXPORT WITH  \n" +
                 "  STYLE={\n" +
-                "    C1: { fillForegroundColor: red },\n" +
-                "    F1: { fillForegroundColor: red }\n" +
+                "    C1: { " +
+                "color: red " +
+                "" +
+                "},\n" +
+                "    F1: { color: red }\n" +
                 "  }";
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Data");
@@ -116,15 +123,15 @@ public class JStyleTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
     @Test
     public void testColFormulas() throws IOException {
         String config = "EXPORT WITH  \n" +
                 "  STYLE={\n" +
-                "    COL A1: { fillForegroundColor: 13 },\n" +
-                "    COL C..D: { fillForegroundColor: 13 }\n" +
+                "    COL A: { bottomBorderColor: black },\n" +
+                "    COL C..D: { topBorderColor: black }\n" +
                 "  }\n";
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Data");
@@ -138,11 +145,13 @@ public class JStyleTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//styleCol.xlsx");
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
+        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+        JExcelExportHandler excelProcessor = new JExcelExportHandler(result,data);
+        Workbook workbook1=excelProcessor.getWorkBook();
+        workbook1.write(new FileOutputStream("d://test//haha.xlsx"));
+
     }
 }
