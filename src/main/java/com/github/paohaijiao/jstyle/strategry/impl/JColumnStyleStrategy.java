@@ -21,12 +21,13 @@ public class JColumnStyleStrategy implements IStyleStrategy {
     public void applyStyle(Workbook workbook, Sheet sheet, Map<String, Object> style) {
 
         JCellStyle jCellStyle = transferToJCellStyle(style);
-        CellStyle cellStyle = JStyleHelper.createCellStyle(workbook, jCellStyle);
+
         for (Row row : sheet) {
             Cell cell = row.getCell(colNum);
             if (cell == null) {
                 cell = row.createCell(colNum);
             }
+            CellStyle cellStyle = JStyleHelper.applyCellStyle(cell.getCellStyle(), jCellStyle);
             cell.setCellStyle(cellStyle);
         }
     }

@@ -42,7 +42,16 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
 
     protected JExcelExportModel config = new JExcelExportModel();
 
-
+    @Override
+    public Void visitHeaderOption(JQuickExcelParser.HeaderOptionContext ctx) {
+        boolean header = Boolean.FALSE;
+        if (ctx.BOOLEAN() != null) {
+            String headerText = ctx.BOOLEAN().getText();
+            header = JStringUtils.trim(headerText).equalsIgnoreCase("true");
+        }
+        config.setHeader(header);
+        return null;
+    }
 
 
     @Override

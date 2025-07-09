@@ -54,16 +54,6 @@ public class JQuickExcelImportVisitor extends JQuickExcelImportValidateVisitor {
         return null;
     }
 
-    @Override
-    public Object visitHeaderOption(JQuickExcelParser.HeaderOptionContext ctx) {
-        if (ctx.STRING() != null) {
-            String header = JStringUtils.trim(ctx.STRING().getText());
-            config.setHeader(header.equalsIgnoreCase("YES"));
-        } else {
-            config.setHeader(false);
-        }
-        return null;
-    }
 
     @Override
     public Object visitRangeOption(JQuickExcelParser.RangeOptionContext ctx) {

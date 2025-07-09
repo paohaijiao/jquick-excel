@@ -7,12 +7,11 @@ import java.math.BigDecimal;
 
 public class JStyleHelper {
     /**
-     * @param workbook   workbook
+     * @param cellStyle   workbook
      * @param jCellStyle cellStyle
      * @return
      */
-    public static CellStyle createCellStyle(Workbook workbook, JCellStyle jCellStyle) {
-        CellStyle cellStyle = workbook.createCellStyle();
+    public static CellStyle applyCellStyle(CellStyle cellStyle, JCellStyle jCellStyle) {
         if (jCellStyle.getAlignment() != null) {
             cellStyle.setAlignment(jCellStyle.getAlignment());
         }

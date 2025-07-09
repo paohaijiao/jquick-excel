@@ -60,7 +60,7 @@ public class JStyleTest {
     public void testRowFormulas() throws IOException {
         String config = "EXPORT WITH\n" +
                 "  SHEET=\"销售报表\",\n" +
-                "  HEADER=\"2023年销售数据\",\n" +
+                "  HEADER=true,\n" +
                 "  STYLE={\n" +
                 "    ROW 1: {\n" +
                 "      fontName: Arial,\n" +
@@ -91,6 +91,7 @@ public class JStyleTest {
         context.put("fos", fileOutputStream);
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context,data);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+        System.out.println(result);
     }
     @Test
     public void testCellFormulas() throws IOException {

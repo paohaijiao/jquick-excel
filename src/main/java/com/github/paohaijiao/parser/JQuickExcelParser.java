@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 
 import org.antlr.v4.runtime.*;
@@ -663,7 +663,7 @@ public class JQuickExcelParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class HeaderOptionContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(JQuickExcelParser.STRING, 0); }
+		public TerminalNode BOOLEAN() { return getToken(JQuickExcelParser.BOOLEAN, 0); }
 		public HeaderOptionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -694,7 +694,7 @@ public class JQuickExcelParser extends Parser {
 			setState(210);
 			match(T__5);
 			setState(211);
-			match(STRING);
+			match(BOOLEAN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1563,9 +1563,9 @@ public class JQuickExcelParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StylePropertyContext extends ParserRuleContext {
-		public List<TerminalNode> IDENTIFIER() { return getTokens(JQuickExcelParser.IDENTIFIER); }
-		public TerminalNode IDENTIFIER(int i) {
-			return getToken(JQuickExcelParser.IDENTIFIER, i);
+		public TerminalNode IDENTIFIER() { return getToken(JQuickExcelParser.IDENTIFIER, 0); }
+		public FunctionArgContext functionArg() {
+			return getRuleContext(FunctionArgContext.class,0);
 		}
 		public StylePropertyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1597,7 +1597,7 @@ public class JQuickExcelParser extends Parser {
 			setState(347);
 			match(T__16);
 			setState(348);
-			match(IDENTIFIER);
+			functionArg();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5318,7 +5318,7 @@ public class JQuickExcelParser extends Parser {
 		"\u0005\u0000\u0000\u00ce\u00cf\u0005\u0006\u0000\u0000\u00cf\u00d0\u0007"+
 		"\u0000\u0000\u0000\u00d0\u000b\u0001\u0000\u0000\u0000\u00d1\u00d2\u0005"+
 		"\u0007\u0000\u0000\u00d2\u00d3\u0005\u0006\u0000\u0000\u00d3\u00d4\u0005"+
-		"?\u0000\u0000\u00d4\r\u0001\u0000\u0000\u0000\u00d5\u00d6\u0005\b\u0000"+
+		"=\u0000\u0000\u00d4\r\u0001\u0000\u0000\u0000\u00d5\u00d6\u0005\b\u0000"+
 		"\u0000\u00d6\u00d7\u0005\u0006\u0000\u0000\u00d7\u00d8\u0005?\u0000\u0000"+
 		"\u00d8\u000f\u0001\u0000\u0000\u0000\u00d9\u00da\u0005\t\u0000\u0000\u00da"+
 		"\u00db\u0005\u0006\u0000\u0000\u00db\u00dc\u0005\n\u0000\u0000\u00dc\u00e1"+
@@ -5388,8 +5388,8 @@ public class JQuickExcelParser extends Parser {
 		"\u0000\u0000\u0000\u0154\u0155\u0005\u000b\u0000\u0000\u0155#\u0001\u0000"+
 		"\u0000\u0000\u0156\u0157\u0003f3\u0000\u0157\u0158\u0005\u0011\u0000\u0000"+
 		"\u0158\u0159\u0003f3\u0000\u0159%\u0001\u0000\u0000\u0000\u015a\u015b"+
-		"\u0005>\u0000\u0000\u015b\u015c\u0005\u0011\u0000\u0000\u015c\u015d\u0005"+
-		">\u0000\u0000\u015d\'\u0001\u0000\u0000\u0000\u015e\u015f\u0005\u0013"+
+		"\u0005>\u0000\u0000\u015b\u015c\u0005\u0011\u0000\u0000\u015c\u015d\u0003"+
+		"\u0094J\u0000\u015d\'\u0001\u0000\u0000\u0000\u015e\u015f\u0005\u0013"+
 		"\u0000\u0000\u015f\u0160\u0005\u0006\u0000\u0000\u0160\u0161\u0005\n\u0000"+
 		"\u0000\u0161\u0166\u0003*\u0015\u0000\u0162\u0163\u0005\u0003\u0000\u0000"+
 		"\u0163\u0165\u0003*\u0015\u0000\u0164\u0162\u0001\u0000\u0000\u0000\u0165"+

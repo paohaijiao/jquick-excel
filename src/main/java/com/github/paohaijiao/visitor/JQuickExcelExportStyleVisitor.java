@@ -111,11 +111,16 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
     @Override
     public Map<String, Object> visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx) {
         Map<String, Object> style = new HashMap<>();
-        if (ctx.IDENTIFIER() != null && ctx.IDENTIFIER().size() == 2) {
-            String key = JStringUtils.trim(ctx.IDENTIFIER(0).getText());
-            Object value = JStringUtils.trim(ctx.IDENTIFIER(1).getText());
-            style.put(key, value);
+        String key=null;
+        if (ctx.IDENTIFIER() != null ) {
+             key = JStringUtils.trim(ctx.IDENTIFIER().getText());
+
         }
+        Object value =null;
+        if(null!=ctx.functionArg()){
+            value=visitFunctionArg(ctx.functionArg());
+        }
+        style.put(key, value);
         return style;
     }
 

@@ -67,6 +67,7 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         } else {
             currentSheet = workbook.createSheet();
         }
+        currentSheet.setDefaultColumnWidth(18);
         int lastColNum = 0;
         if (null != data && !data.isEmpty()) {
             lastColNum = data.get(0).size();
@@ -77,20 +78,19 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         int rowNum = 0;
         if (hasHeader && !data.isEmpty()) {
             Row headerRow = currentSheet.createRow(rowNum++);
+            headerRow.setHeightInPoints(36);
             int colNum = 0;
             for (String header : data.get(0).keySet()) {
                 Cell cell = headerRow.createCell(colNum++);
                 cell.setCellValue(mappings.getOrDefault(header, header));
-                CellStyle headerStyle = workbook.createCellStyle();
-                Font headerFont = workbook.createFont();
-                headerFont.setBold(true);
-                headerStyle.setFont(headerFont);
-                cell.setCellStyle(headerStyle);
+                CellStyle cellStyle=buildDefaultHeaderStyle(workbook);
+                cell.setCellStyle(cellStyle);
             }
         }
 
         for (Map<String, Object> rowData : data) {
             Row row = currentSheet.createRow(rowNum++);
+            row.setHeightInPoints(24);
             int colNum = 0;
             for (Map.Entry<String, Object> entry : rowData.entrySet()) {
                 Cell cell = row.createCell(colNum++);
@@ -106,16 +106,14 @@ public class JExcelExportHandler extends JExcelCommonHandler{
                     Object value = entry.getValue() != null ? entry.getValue() : null;
                     setCellValue(cell, value);
                 }
-
+                CellStyle cellStyle=buildDefaultDataOddStyle(workbook);
+                cell.setCellStyle(cellStyle);
             }
         }
         applyFormulate(config, currentSheet.getLastRowNum(), lastColNum);
         applyStyle(config);
         applyMerge(config, currentSheet.getLastRowNum(), lastColNum);
         applyGraph(config);
-        for (int i = 0; i < data.size(); i++) {
-            autoSizeColumns(data.get(i).keySet().size());
-        }
         FileOutputStream fos=(FileOutputStream)contextParams.get("fos");
         workbook.write(fos);
     }
@@ -168,46 +166,6 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         for (int i = 0; i < columnCount; i++) {
             currentSheet.autoSizeColumn(i);
         }
-    }
-
-
-
-    private int[] parseRange(String range) {
-        if (range == null || range.isEmpty()) return null;
-        try {
-            String[] parts = range.split(":");
-            String start = parts[0];
-            String end = parts.length > 1 ? parts[1] : start;
-            int[] startCoords = parseCellReference(start);
-            int[] endCoords = parseCellReference(end);
-            return new int[]{
-                    startCoords[0], endCoords[0],
-                    startCoords[1], endCoords[1]
-            };
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid range format: " + range);
-        }
-    }
-
-    private int[] parseCellReference(String ref) {
-        String colPart = ref.replaceAll("[0-9]", "");
-        String rowPart = ref.replaceAll("[^0-9]", "");
-        int col = 0;
-        for (int i = 0; i < colPart.length(); i++) {
-            col = col * 26 + (colPart.charAt(i) - 'A' + 1);
-        }
-        int row = Integer.parseInt(rowPart) - 1;
-        return new int[]{row, col - 1};
-    }
-
-    private int getMaxColumnCount() {
-        int maxCols = 0;
-        for (Row row : currentSheet) {
-            if (row.getLastCellNum() > maxCols) {
-                maxCols = row.getLastCellNum();
-            }
-        }
-        return maxCols;
     }
 
 
@@ -451,9 +409,10 @@ public class JExcelExportHandler extends JExcelCommonHandler{
             }
         }
     }
-        private void applyGraph(JExcelExportModel config) {
+    private void applyGraph(JExcelExportModel config) {
+        if(config.getGraph() != null&&0!=config.getGraph().size()) {
             JExcelChartType excelChartType=JExcelChartType.codeOf( config.getGraph().getChartType());
-             JExcelChartFactory.createChart((XSSFWorkbook)workbook,
-                    config.getGraph(), excelChartType, config.getGraph().getTitle());
+            JExcelChartFactory.createChart((XSSFWorkbook)workbook, config.getGraph(), excelChartType, config.getGraph().getTitle());
         }
+    }
 }

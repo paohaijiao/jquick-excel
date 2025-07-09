@@ -85,16 +85,7 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportGraphVisitor
         return null;
     }
 
-    @Override
-    public Void visitHeaderOption(JQuickExcelParser.HeaderOptionContext ctx) {
-        boolean header = Boolean.FALSE;
-        if (ctx.STRING() != null) {
-            String headerText = ctx.STRING().getText();
-            header = JStringUtils.trim(headerText).equalsIgnoreCase("YES");
-        }
-        config.setHeader(header);
-        return null;
-    }
+
 
     @Override
     public Void visitRangeOption(JQuickExcelParser.RangeOptionContext ctx) {

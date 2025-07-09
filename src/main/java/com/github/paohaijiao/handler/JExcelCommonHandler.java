@@ -9,10 +9,7 @@ import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.*;
@@ -122,5 +119,84 @@ public class JExcelCommonHandler {
             default:
                 return null;
         }
+    }
+    public static CellStyle buildDefaultHeaderStyle(Workbook wb){
+        CellStyle headerStyle = wb.createCellStyle();
+        Font headerFont = wb.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 12);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
+        headerStyle.setFont(headerFont);
+        headerStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle.setBorderBottom(BorderStyle.THIN);
+        headerStyle.setBorderTop(BorderStyle.THIN);
+        headerStyle.setBorderRight(BorderStyle.THIN);
+        headerStyle.setBorderLeft(BorderStyle.THIN);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        return headerStyle;
+    }
+
+    public static CellStyle buildDefaultDataEvenStyle(Workbook wb){
+        CellStyle dataEven = wb.createCellStyle();
+        dataEven.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        dataEven.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        dataEven.setBorderBottom(BorderStyle.THIN);
+        dataEven.setBorderTop(BorderStyle.THIN);
+        dataEven.setBorderRight(BorderStyle.THIN);
+        dataEven.setBorderLeft(BorderStyle.THIN);
+        dataEven.setAlignment(HorizontalAlignment.RIGHT);
+        dataEven.setVerticalAlignment(VerticalAlignment.CENTER);
+        dataEven.setDataFormat(wb.createDataFormat().getFormat("#,##0"));
+        return dataEven;
+    }
+    public static CellStyle buildDefaultDataOddStyle(Workbook wb){
+        CellStyle dataOdd = wb.createCellStyle();
+        dataOdd.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+        dataOdd.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        dataOdd.setBorderBottom(BorderStyle.THIN);
+        dataOdd.setBorderTop(BorderStyle.THIN);
+        dataOdd.setBorderRight(BorderStyle.THIN);
+        dataOdd.setBorderLeft(BorderStyle.THIN);
+        dataOdd.setAlignment(HorizontalAlignment.RIGHT);
+        dataOdd.setVerticalAlignment(VerticalAlignment.CENTER);
+       // dataOdd.setDataFormat(wb.createDataFormat().getFormat("#,##0"));
+        return dataOdd;
+    }
+
+    public static CellStyle buildDefaultFooterStyle(Workbook wb){
+        CellStyle footerStyle = wb.createCellStyle();
+        Font footerFont = wb.createFont();
+        footerFont.setItalic(true);
+        footerFont.setColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        footerStyle.setFont(footerFont);
+        footerStyle.setAlignment(HorizontalAlignment.LEFT);
+        footerStyle.setVerticalAlignment(VerticalAlignment.BOTTOM);
+        return footerStyle;
+    }
+
+    public static CellStyle buildDefaultFormulaCellStyle(Workbook wb){
+        CellStyle formulaCell = wb.createCellStyle();
+        //formulaCell.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+        formulaCell.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        formulaCell.setBorderBottom(BorderStyle.THIN);
+        formulaCell.setBorderTop(BorderStyle.THIN);
+        formulaCell.setBorderRight(BorderStyle.THIN);
+        formulaCell.setBorderLeft(BorderStyle.THIN);
+        formulaCell.setAlignment(HorizontalAlignment.RIGHT);
+        formulaCell.setVerticalAlignment(VerticalAlignment.CENTER);
+        Font formulaFont = wb.createFont();
+        formulaFont.setItalic(true);
+        formulaCell.setFont(formulaFont);
+        return formulaCell;
+    }
+    public static void buildDefaultFooter(Workbook workbook, Sheet sheet, int rowNum,int maxColumn, String label) {
+        CellStyle cellStyle= buildDefaultFormulaCellStyle(workbook);
+        Row footerRow = sheet.createRow(rowNum);
+        Cell footerCell = footerRow.createCell(0);
+        footerCell.setCellValue(label);
+        footerCell.setCellStyle(cellStyle);
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, maxColumn));
     }
 }

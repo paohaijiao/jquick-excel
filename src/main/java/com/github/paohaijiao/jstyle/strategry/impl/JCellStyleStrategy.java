@@ -35,7 +35,7 @@ public class JCellStyleStrategy implements IStyleStrategy {
             cell = row.createCell(colNum);
         }
         JCellStyle jCellStyle = transferToJCellStyle(style);
-        CellStyle cellStyle = JStyleHelper.createCellStyle(workbook, jCellStyle);
+        CellStyle cellStyle = JStyleHelper.applyCellStyle(cell.getCellStyle(), jCellStyle);
         cell.setCellStyle(cellStyle);
     }
 }
