@@ -76,6 +76,17 @@ public class JQuickExcelExportComonVisitor extends JQuickExcelExportGraphVisitor
         config.setMapping(mapping);
         return null;
     }
+    @Override
+    public Void visitFooterOption(JQuickExcelParser.FooterOptionContext ctx) {
+        if(ctx.STRING()!=null){
+            this.config.setFooter(JStringUtils.trim(ctx.STRING().getText()));
+        }else if(ctx.IDENTIFIER()!=null){
+            this.config.setFooter(JStringUtils.trim(ctx.STRING().getText()));
+        }
+        return null;
+    }
+
+
 
     @Override
     public Void visitSheetOption(JQuickExcelParser.SheetOptionContext ctx) {

@@ -1,5 +1,6 @@
 package com.github.paohaijiao.enums;
 
+
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 import com.github.paohaijiao.validate.impl.JCompositeRule;

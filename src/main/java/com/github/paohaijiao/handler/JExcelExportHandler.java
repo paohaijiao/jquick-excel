@@ -114,6 +114,9 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         applyStyle(config);
         applyMerge(config, currentSheet.getLastRowNum(), lastColNum);
         applyGraph(config);
+        if(config.getFooter()!=null){
+            buildDefaultFooter(workbook,currentSheet,this.getLastRowNum(currentSheet),this.getUsedColumnCount(currentSheet),config.getFooter());
+        }
         FileOutputStream fos=(FileOutputStream)contextParams.get("fos");
         workbook.write(fos);
     }

@@ -28,7 +28,6 @@ import com.github.paohaijiao.validate.JExcelValidationRule;
 import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.string.JEndWithRule;
 import com.github.paohaijiao.validate.impl.string.JMinLengthRule;
-import org.apache.xpath.operations.Bool;
 
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;

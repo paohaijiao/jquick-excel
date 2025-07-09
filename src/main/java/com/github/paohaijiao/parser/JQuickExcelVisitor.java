@@ -1,4 +1,4 @@
-// Generated from D:/my/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
+// Generated from D:/idea/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -400,6 +400,12 @@ public interface JQuickExcelVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSeriesData(JQuickExcelParser.SeriesDataContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JQuickExcelParser#footerOption}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFooterOption(JQuickExcelParser.FooterOptionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JQuickExcelParser#rowSpec}.
 	 * @param ctx the parse tree

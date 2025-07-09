@@ -28,6 +28,8 @@ public class JExcelExportModel {
 
     private String outputFile;
 
+    private String footer;
+
     private Object sheet;
 
     private Boolean header = true;

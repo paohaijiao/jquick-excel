@@ -4,12 +4,14 @@ import com.github.paohaijiao.jstyle.model.JRowStyle;
 import com.github.paohaijiao.jstyle.strategry.IStyleStrategy;
 import com.github.paohaijiao.util.JStyleHelper;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JRowStyleStrategy implements IStyleStrategy {
+public class JRowStyleStrategy extends JFontBuilder  implements IStyleStrategy {
     private int rowNum;
 
     public JRowStyleStrategy(int rowNum) {
@@ -36,27 +38,13 @@ public class JRowStyleStrategy implements IStyleStrategy {
             row.setZeroHeight(jRowStyle.isZeroHeight());
         }
 
-        Font font = workbook.createFont();
-        if(null!=jRowStyle.getFontName()){
-            font.setFontName(jRowStyle.getFontName());
-        }
-        if(null!=jRowStyle.getFontHeightInPoints()){
-            BigDecimal string=jRowStyle.getFontHeightInPoints();
-            font.setFontHeightInPoints(Short.parseShort(string.toString()));
-        }
-        if(null!=jRowStyle.isBold()){
-            font.setBold(jRowStyle.isBold());
-        }
-        if(null!=jRowStyle.isItalic()){
-            font.setItalic(jRowStyle.isItalic());
-        }
-        if(null!=jRowStyle.getUnderLine()){
-            font.setUnderline(Font.U_SINGLE);
-        }
         for (int i = 0; i < row.getLastCellNum(); i++) {
             Cell cell=row.getCell(i);
             CellStyle cellStyle=cell.getCellStyle();
             JStyleHelper.applyCellStyle(cellStyle, jRowStyle.getRowStyle());
+            XSSFCellStyle xssfCellStyle =(XSSFCellStyle) cellStyle;
+            XSSFFont font = xssfCellStyle.getFont();
+            buildFont(cellStyle,font, jRowStyle.getRowStyle());
             cell.setCellStyle(cellStyle);
         }
 

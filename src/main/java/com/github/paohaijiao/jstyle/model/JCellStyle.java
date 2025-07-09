@@ -29,7 +29,8 @@ import java.util.HashMap;
  * @date 2025/7/4
  * @description
  */
-public class JCellStyle extends HashMap<String, Object> {
+public class JCellStyle extends JFontStyle{
+
     private static final String INDEX = "index";
     private static final String DATA_FORMAT = "dataFormat";
     private static final String DATA_FORMAT_STRING = "dataFormatString";

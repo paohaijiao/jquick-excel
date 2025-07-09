@@ -5,11 +5,14 @@ import com.github.paohaijiao.jstyle.model.JCellStyle;
 import com.github.paohaijiao.util.JStyleHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JCellStyleStrategy implements IStyleStrategy {
+public class JCellStyleStrategy extends JFontBuilder implements IStyleStrategy {
 
     private final String cellRef;
 
@@ -36,6 +39,9 @@ public class JCellStyleStrategy implements IStyleStrategy {
         }
         JCellStyle jCellStyle = transferToJCellStyle(style);
         CellStyle cellStyle = JStyleHelper.applyCellStyle(cell.getCellStyle(), jCellStyle);
+        XSSFCellStyle xssfCellStyle =(XSSFCellStyle) cellStyle;
+        XSSFFont font = xssfCellStyle.getFont();
+        buildFont(cellStyle,font, jCellStyle);
         cell.setCellStyle(cellStyle);
     }
 }
