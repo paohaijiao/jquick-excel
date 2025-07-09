@@ -1,5 +1,6 @@
 package com.github.paohaijiao.util;
 
+import com.github.paohaijiao.color.JColorEnum;
 import com.github.paohaijiao.jstyle.model.JCellStyle;
 import org.apache.poi.ss.usermodel.*;
 
@@ -58,47 +59,34 @@ public class JStyleHelper {
             cellStyle.setQuotePrefixed(jCellStyle.getQuotePrefixed());
         }
         if (jCellStyle.getBottomBorderColor()!= null) {
-            BigDecimal color=jCellStyle.getBottomBorderColor();
-            if(jCellStyle.getBorderBottom()==null){
-                cellStyle.setBorderBottom(BorderStyle.MEDIUM);
-            }
-            cellStyle.setBottomBorderColor(Short.parseShort(color.toPlainString()));
+            String color=jCellStyle.getBottomBorderColor();
+            JColorEnum colorEnum=JColorEnum.codeOf(color);
+            cellStyle.setBottomBorderColor(colorEnum.getIndexedColor().getIndex());
         }
         if (jCellStyle.getLeftBorderColor() != null) {
-            BigDecimal color=jCellStyle.getLeftBorderColor();
-            if(jCellStyle.getBorderLeft()==null){
-                cellStyle.setBorderLeft(BorderStyle.THICK);
-            }
-            cellStyle.setLeftBorderColor(Short.parseShort(color.toPlainString()));
+            String color=jCellStyle.getLeftBorderColor();
+            JColorEnum colorEnum=JColorEnum.codeOf(color);
+            cellStyle.setLeftBorderColor(colorEnum.getIndexedColor().getIndex());
         }
         if (jCellStyle.getRightBorderColor()!= null) {
-            BigDecimal color=jCellStyle.getRightBorderColor();
-            if(jCellStyle.getBorderRight()==null){
-                cellStyle.setBorderRight(BorderStyle.THIN);
-            }
-            cellStyle.setRightBorderColor(Short.parseShort(color.toPlainString()));
+            String color=jCellStyle.getRightBorderColor();
+            JColorEnum colorEnum=JColorEnum.codeOf(color);
+            cellStyle.setRightBorderColor(colorEnum.getIndexedColor().getIndex());
         }
         if (jCellStyle.getTopBorderColor() != null) {
-            BigDecimal color=jCellStyle.getTopBorderColor();
-            if(jCellStyle.getBorderTop()==null){
-                cellStyle.setBorderTop(BorderStyle.THICK);
-            }
-            cellStyle.setTopBorderColor(Short.parseShort(color.toPlainString()));
+            String color=jCellStyle.getTopBorderColor();
+            JColorEnum colorEnum=JColorEnum.codeOf(color);
+            cellStyle.setTopBorderColor(colorEnum.getIndexedColor().getIndex());
         }
         if (jCellStyle.getFillForegroundColor() != null) {
-            BigDecimal color=jCellStyle.getFillForegroundColor();;
-            if(jCellStyle.getFillPattern()==null){
-                cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            }
-            cellStyle.setFillForegroundColor(Short.parseShort(color.toPlainString()));
+            String color=jCellStyle.getFillForegroundColor();;
+            JColorEnum colorEnum=JColorEnum.codeOf(color);
+            cellStyle.setFillForegroundColor(colorEnum.getIndexedColor().getIndex());
         }
         if (jCellStyle.getFillBackgroundColor() != null) {
-            BigDecimal color=jCellStyle.getFillBackgroundColor();;
-            if(jCellStyle.getFillPattern()==null){
-                cellStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
-                cellStyle.setFillPattern(FillPatternType.FINE_DOTS);
-            }
-            cellStyle.setFillBackgroundColor(Short.parseShort(color.toPlainString()));
+            String color=jCellStyle.getFillBackgroundColor();;
+            JColorEnum colorEnum=JColorEnum.codeOf(color);
+            cellStyle.setFillBackgroundColor(colorEnum.getIndexedColor().getIndex());
         }
         return cellStyle;
     }

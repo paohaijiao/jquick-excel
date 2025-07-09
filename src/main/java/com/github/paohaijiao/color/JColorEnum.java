@@ -1,10 +1,14 @@
 package com.github.paohaijiao.color;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.IndexedColors;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum JColorEnum {
 
-    // 基础颜色（0-15）
     BLACK1("black1", 0, IndexedColors.BLACK),
     WHITE1("white1", 1, IndexedColors.WHITE),
     RED1("red1", 2, IndexedColors.RED),
@@ -86,13 +90,14 @@ public enum JColorEnum {
         return indexedColor;
     }
 
-    public static JColorEnum fromCode(String code) {
+    public static JColorEnum codeOf(String code) {
         for (JColorEnum color : values()) {
             if (color.code.equalsIgnoreCase(code)) {
                 return color;
             }
         }
-        throw new IllegalArgumentException("Invalid ColorEnum code: " + code);
+        List<String> colorList=Arrays.stream(values()).map(JColorEnum::getCode).collect(Collectors.toList());
+        throw new IllegalArgumentException("color code should be one of : " + StringUtils.join(colorList,","));
     }
     public static JColorEnum fromIndexedColor(IndexedColors indexedColor) {
         for (JColorEnum color : values()) {

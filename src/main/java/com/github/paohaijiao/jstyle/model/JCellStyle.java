@@ -357,36 +357,36 @@ public class JCellStyle extends HashMap<String, Object> {
         }
     }
 
-    public void setLeftBorderColor(BigDecimal var1) {
+    public void setLeftBorderColor(String var1) {
         put(LEFT_BORDER_COLOR, var1);
     }
 
-    public BigDecimal getLeftBorderColor() {
-        return containsKey(LEFT_BORDER_COLOR) ? (BigDecimal) get(LEFT_BORDER_COLOR) : null;
+    public String getLeftBorderColor() {
+        return containsKey(LEFT_BORDER_COLOR) ? (String) get(LEFT_BORDER_COLOR) : null;
     }
 
-    public void setRightBorderColor(BigDecimal var1) {
+    public void setRightBorderColor(String var1) {
         put(RIGHT_BORDER_COLOR, var1);
     }
 
-    public BigDecimal getRightBorderColor() {
-        return containsKey(RIGHT_BORDER_COLOR) ? (BigDecimal) get(RIGHT_BORDER_COLOR) : null;
+    public String getRightBorderColor() {
+        return containsKey(RIGHT_BORDER_COLOR) ? (String) get(RIGHT_BORDER_COLOR) : null;
     }
 
-    public void setTopBorderColor(BigDecimal var1) {
+    public void setTopBorderColor(String var1) {
         put(TOP_BORDER_COLOR, var1);
     }
 
-    public BigDecimal getTopBorderColor() {
-        return containsKey(TOP_BORDER_COLOR) ? (BigDecimal) get(TOP_BORDER_COLOR) : null;
+    public String getTopBorderColor() {
+        return containsKey(TOP_BORDER_COLOR) ? (String) get(TOP_BORDER_COLOR) : null;
     }
 
-    public void setBottomBorderColor(BigDecimal var1) {
+    public void setBottomBorderColor(String var1) {
         put(BOTTOM_BORDER_COLOR, var1);
     }
 
-    public BigDecimal getBottomBorderColor() {
-        return containsKey(BOTTOM_BORDER_COLOR) ? (BigDecimal) get(BOTTOM_BORDER_COLOR) : null;
+    public String getBottomBorderColor() {
+        return containsKey(BOTTOM_BORDER_COLOR) ? (String) get(BOTTOM_BORDER_COLOR) : null;
     }
 
     public void setFillPattern(FillPatternType var1) {
@@ -443,17 +443,15 @@ public class JCellStyle extends HashMap<String, Object> {
         }
     }
 
-    public void setFillBackgroundColor(BigDecimal var1) {
-        put(FILL_BACKGROUND_COLOR, var1);
-    }
+
 
     public void setFillBackgroundColor(String var1) {
         put(FILL_BACKGROUND_COLOR, var1);
     }
 
-    public BigDecimal getFillBackgroundColor() {
+    public String getFillBackgroundColor() {
         return containsKey(FILL_BACKGROUND_COLOR) && get(FILL_BACKGROUND_COLOR) instanceof BigDecimal
-                ? (BigDecimal) get(FILL_BACKGROUND_COLOR) : null;
+                ? (String) get(FILL_BACKGROUND_COLOR) : null;
     }
 
     public Color getFillBackgroundColorColor() {
@@ -469,9 +467,9 @@ public class JCellStyle extends HashMap<String, Object> {
         put(FILL_FOREGROUND_COLOR, var1);
     }
 
-    public BigDecimal getFillForegroundColor() {
+    public String getFillForegroundColor() {
         return containsKey(FILL_FOREGROUND_COLOR) && get(FILL_FOREGROUND_COLOR) instanceof BigDecimal
-                ? (BigDecimal
+                ? (String
                 ) get(FILL_FOREGROUND_COLOR) : null;
     }
 
