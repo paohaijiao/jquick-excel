@@ -49,7 +49,7 @@ public class JExcelExportHandler extends JExcelCommonHandler{
 
     private DataFormatter dataFormatter = new DataFormatter();
 
-    private JExcelExportModel config=null;
+    private JExcelExportModel config=new JExcelExportModel();
 
 
 

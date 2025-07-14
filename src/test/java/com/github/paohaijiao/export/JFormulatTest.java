@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.export;
 
+import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
@@ -25,10 +26,12 @@ import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,13 +47,14 @@ public class JFormulatTest {
         return students;
     }
     @Test
-    public void formulat() throws FileNotFoundException {
-        String input = "EXPORT FROM annual_report TO \"output/report_2023.xlsx\" WITH\n" +
+    public void formulat() throws IOException {
+        String input = "EXPORT  WITH\n" +
                 "    SHEET=\"年度汇总\",\n" +
-                "    HEADER='YES',\n" +
-                "    FORMULAS = {\n" +
+                "    HEADER=true,\n" +
+                "    ROW 5 = {\n" +
                 "        \"YTDTotal\": \"SUM(D4:D15)\""+
                 "    }\n";
+        System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
@@ -58,9 +62,12 @@ public class JFormulatTest {
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//formulat.xlsx");
         JContext context=new JContext();
-        context.put("fos", fileOutputStream);
         JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+        List<Map<String, Object>> list = JObjectConverter.convert(getData());
+        JExcelExportHandler excelExportHandler=new JExcelExportHandler(result,list);
+        Workbook wb=excelExportHandler.getWorkBook();
+        wb.write(fileOutputStream);
     }
 
 }
