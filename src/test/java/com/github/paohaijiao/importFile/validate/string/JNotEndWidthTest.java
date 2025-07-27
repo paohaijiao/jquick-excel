@@ -1,4 +1,5 @@
 
+
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +15,14 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JMinValueRule;
 import com.github.paohaijiao.validate.impl.string.JNotContainWithRule;
+import com.github.paohaijiao.validate.impl.string.JNotEndWithRule;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -32,32 +32,32 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JNotContainWidthTest {
+public class JNotEndWidthTest {
 
     @Test
-    public void notContainWidth1() throws IOException {
+    public void notCEndWith1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true,map,"不能为空");
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void notContainWidth2() throws IOException {
+    public void notCEndWith2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(false,map,"不能为空");
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void notContainWidth3() throws IOException {
+    public void notCEndWith3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("notContain", "2");
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true,map,"不能为空");
+        map.put("notEndWith", "2");
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
         System.out.println(booleanRule.test("28"));
     }
     @Test
-    public void notContainWidth4() throws IOException {
+    public void notCEndWith4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("notContain", "cdscds2");
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true,map,"不能为空");
+        map.put("notEndWith", "8");
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

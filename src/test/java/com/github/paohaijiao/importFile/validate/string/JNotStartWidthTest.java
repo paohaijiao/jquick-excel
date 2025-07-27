@@ -15,11 +15,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JRegexRule;
-import com.github.paohaijiao.validate.impl.string.JStartWithRule;
+import com.github.paohaijiao.validate.impl.string.JNotEndWithRule;
+import com.github.paohaijiao.validate.impl.string.JNotStartWithRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -32,32 +32,32 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JStartWithTest {
+public class JNotStartWidthTest {
 
     @Test
-    public void startWith1() throws IOException {
+    public void notStart1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true,map,"不能为空");
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void startWith2() throws IOException {
+    public void notStart2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(false,map,"不能为空");
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void startWith3() throws IOException {
+    public void notStart3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("startWith", "2");
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true,map,"不能为空");
+        map.put("notStartWith", "2");
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
         System.out.println(booleanRule.test("28"));
     }
     @Test
-    public void startWith4() throws IOException {
+    public void notStart4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("startWith", "[0-9]*");
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true,map,"不能为空");
-        System.out.println(booleanRule.test("a"));
+        map.put("notStartWith", "8");
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
+        System.out.println(booleanRule.test("18"));
     }
 }

@@ -13,14 +13,15 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.bool;
+package com.github.paohaijiao.importFile.validate.nuber;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.JCompositeRule;
-import com.github.paohaijiao.validate.impl.bool.JBooleanRule;
+import com.github.paohaijiao.validate.impl.number.JMaxValueRule;
+import com.github.paohaijiao.validate.impl.number.JMinValueRule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -30,36 +31,32 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JBooleanTest {
+public class JMinValueTest {
 
     @Test
-    public void boolRequire() throws IOException {
+    public void minValue1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,"");
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void boolRequire1() throws IOException {
+    public void minValue2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(false,map,"");
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
-
     @Test
-    public void boolRequire2() throws IOException {
+    public void minValue3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("true","是");
-        map.put("false","否");
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,"没有该字典");
-        System.out.println(booleanRule.test("是"));
+        map.put("minValue", BigDecimal.valueOf(22));
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true,map,"不能为空");
+        System.out.println(booleanRule.test("28"));
     }
     @Test
-    public void boolRequire3() throws IOException {
+    public void minValue4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("true","是");
-        map.put("false","否");
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,null);
-        System.out.println(booleanRule.test("哈哈"));
+        map.put("minValue", BigDecimal.valueOf(22));
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true,map,"不能为空");
+        System.out.println(booleanRule.test("18"));
     }
-
 }

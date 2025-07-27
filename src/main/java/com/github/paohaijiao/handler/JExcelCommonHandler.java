@@ -5,7 +5,7 @@ import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -29,7 +29,7 @@ public class JExcelCommonHandler {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformValue();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(this.contextParams);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(this.contextParams);
         @SuppressWarnings("unchecked")
         JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
         List<Object> list = methodCallModel.getList();

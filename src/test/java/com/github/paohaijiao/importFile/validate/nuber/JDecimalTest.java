@@ -1,5 +1,3 @@
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +13,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.nuber;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JNotContainWithRule;
-import com.github.paohaijiao.validate.impl.string.JNotEndWithRule;
+import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
+import com.github.paohaijiao.validate.impl.number.JDecimalRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -32,32 +30,30 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JNotEndWidthTest {
+public class JDecimalTest {
 
     @Test
-    public void notCEndWith1() throws IOException {
+    public void decimal1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void notCEndWith2() throws IOException {
+    public void decimal2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(false,map,"不能为空");
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void notCEndWith3() throws IOException {
+    public void decimal3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("notEndWith", "2");
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
-        System.out.println(booleanRule.test("28"));
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
+        System.out.println(booleanRule.test("2020-01-01"));
     }
     @Test
-    public void notCEndWith4() throws IOException {
+    public void decimal4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("notEndWith", "8");
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
-        System.out.println(booleanRule.test("18"));
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
+        System.out.println(booleanRule.test("18.9"));
     }
 }

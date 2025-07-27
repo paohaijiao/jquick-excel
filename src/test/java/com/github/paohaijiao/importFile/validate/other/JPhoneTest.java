@@ -1,3 +1,4 @@
+
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +14,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.nuber;
+package com.github.paohaijiao.importFile.validate.other;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
-import com.github.paohaijiao.validate.impl.number.JDecimalRule;
+import com.github.paohaijiao.validate.impl.other.JEmailRule;
+import com.github.paohaijiao.validate.impl.other.JMobileRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,30 +31,25 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JDecimalTest {
+public class JPhoneTest {
 
     @Test
-    public void decimal1() throws IOException {
+    public void mobile1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
+        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void decimal2() throws IOException {
+    public void mobile2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(false,map,"不能为空");
+        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(false,map,null);
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void decimal3() throws IOException {
+    public void mobile3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
-        System.out.println(booleanRule.test("2020-01-01"));
+        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(true,map,null);
+        System.out.println(booleanRule.test("13198001111"));
     }
-    @Test
-    public void decimal4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
-        System.out.println(booleanRule.test("18.9"));
-    }
+
 }

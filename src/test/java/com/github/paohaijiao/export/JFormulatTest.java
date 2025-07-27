@@ -22,14 +22,13 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class JFormulatTest {
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//formulat.xlsx");
         JContext context=new JContext();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         List<Map<String, Object>> list = JObjectConverter.convert(getData());
         JExcelExportHandler excelExportHandler=new JExcelExportHandler(result,list);

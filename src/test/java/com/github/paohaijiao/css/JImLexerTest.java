@@ -18,7 +18,7 @@ package com.github.paohaijiao.css;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -36,7 +36,7 @@ public class JImLexerTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor();
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor();
         @SuppressWarnings("unchecked")
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         return result;

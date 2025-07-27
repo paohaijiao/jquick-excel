@@ -15,7 +15,6 @@
  */
 package com.github.paohaijiao.export.style;
 
-import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
@@ -23,7 +22,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -93,7 +92,7 @@ public class JStyleTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         System.out.println(result);
     }
@@ -123,7 +122,7 @@ public class JStyleTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
     @Test
@@ -147,7 +146,7 @@ public class JStyleTest {
         ParseTree tree = parser.exportConfig();
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         JExcelExportHandler excelProcessor = new JExcelExportHandler(result,data);
         Workbook workbook1=excelProcessor.getWorkBook();

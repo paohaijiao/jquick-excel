@@ -1,3 +1,5 @@
+
+
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +15,14 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.date;
+package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.date.JMaxDateRule;
-import com.github.paohaijiao.validate.impl.date.JMinDateRule;
+import com.github.paohaijiao.validate.impl.string.JNotStartWithRule;
+import com.github.paohaijiao.validate.impl.string.JRegexRule;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -31,36 +32,32 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JMaxDateTest {
+public class JRegexTest {
 
     @Test
-    public void maxDate1() throws IOException {
+    public void regex1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(true,map,"不能为空");
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void maxDate2() throws IOException {
+    public void regex2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(false,map,"不能为空");
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void maxDate3() throws IOException {
+    public void regex3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        map.put("maxDate",new Date());
-        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(true,map,"不能为空");
-        System.out.println(booleanRule.test("2025-01-01"));
+        map.put("pattern", "[0-9]*");
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
+        System.out.println(booleanRule.test("28"));
     }
     @Test
-    public void maxDate4() throws IOException {
+    public void regex4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        map.put("maxDate",new Date());
-        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(true,map,"不能为空");
-        System.out.println(booleanRule.test("2026-01-01"));
+        map.put("pattern", "[0-9]*");
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
+        System.out.println(booleanRule.test("a"));
     }
 }

@@ -15,17 +15,12 @@
  */
 package com.github.paohaijiao.importFile;
 
-import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
 import com.github.paohaijiao.handler.JExcelImportHandler;
-import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.validate.impl.JRequiredRule;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
-import com.github.paohaijiao.visitor.JQuickExcelImportVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelCommonImportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -33,9 +28,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +72,7 @@ public class ImportG4Test {
     public void boolRequire() throws IOException {
         String input = "IMPORT WITH VALIDATION={\n" +
                 "   ROW 1:{\n" +
-                    "    MAX_LENGTH{required:true,msg:你好,map:{maxLength:1,minLength:12}}\n" +
+                    "    MAX_LENGTH{required:true,msg:'你好',map:{maxLength:1,minLength:12}}\n" +
                 "   }\n" +
                 "}";
         System.out.println(input);
@@ -88,7 +81,7 @@ public class ImportG4Test {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.importConfig();
         JContext context=new JContext();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(context);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(context);
         JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
         JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
         List<Map<String, Object>> list=handler.importData(result);
@@ -107,7 +100,7 @@ public class ImportG4Test {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.importConfig();
         JContext context=new JContext();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(context);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(context);
         JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
         JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
         List<Map<String, Object>> list=handler.importData(result);

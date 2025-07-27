@@ -1,5 +1,3 @@
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +13,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.other;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JNotEndWithRule;
-import com.github.paohaijiao.validate.impl.string.JNotStartWithRule;
+import com.github.paohaijiao.validate.impl.JRequiredRule;
+import com.github.paohaijiao.validate.impl.other.JEmailRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -32,32 +30,25 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JNotStartWidthTest {
+public class JEmailTest {
 
     @Test
-    public void notStart1() throws IOException {
+    public void email1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
+        JEmailRule booleanRule = JExcelValidationRuleFactory.email(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void notStart2() throws IOException {
+    public void email2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(false,map,"不能为空");
+        JEmailRule booleanRule = JExcelValidationRuleFactory.email(false,map,null);
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void notStart3() throws IOException {
+    public void email3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("notStartWith", "2");
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
-        System.out.println(booleanRule.test("28"));
+        JEmailRule booleanRule = JExcelValidationRuleFactory.email(true,map,null);
+        System.out.println(booleanRule.test("xsa@qq.com"));
     }
-    @Test
-    public void notStart4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("notStartWith", "8");
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
-        System.out.println(booleanRule.test("18"));
-    }
+
 }

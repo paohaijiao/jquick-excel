@@ -14,7 +14,6 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.export.formulate;
-import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
@@ -22,16 +21,14 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +36,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
 /**
  * packageName com.github.paohaijiao.export.formulate
  *
@@ -81,7 +77,7 @@ public class JFormulateIntegrationTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
     @Test
@@ -106,7 +102,7 @@ public class JFormulateIntegrationTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
     @Test
@@ -133,7 +129,7 @@ public class JFormulateIntegrationTest {
         JContext context=new JContext();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
     }
 }

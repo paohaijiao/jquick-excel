@@ -15,16 +15,13 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JKeyValueModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,17 +33,14 @@ import java.util.Map;
  * @date 2025/6/18
  * @description
  */
-public class JQuickExcelExportComonVisitor extends JQuickExcelExportGraphVisitor {
+public class JQuickExcelComonExportVisitor extends JQuickExcelExportGraphVisitor {
 
-    public JQuickExcelExportComonVisitor() {
+    public JQuickExcelComonExportVisitor() {
         this.context = new JContext();
-        this.data = data;
 
     }
 
-    public JQuickExcelExportComonVisitor(JContext context) {
-
-        this.data = data;
+    public JQuickExcelComonExportVisitor(JContext context) {
         this.context = context;
     }
 

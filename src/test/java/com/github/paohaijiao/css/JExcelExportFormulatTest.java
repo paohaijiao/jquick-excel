@@ -15,11 +15,10 @@
  */
 package com.github.paohaijiao.css;
 
-import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -50,7 +49,6 @@ public class JExcelExportFormulatTest {
             data.add(row);
         }
         Workbook workbook = new XSSFWorkbook();
-        JExcelFormulaContext formulaFactory = new JExcelFormulaContext(workbook);
         String configText = "EXPORT FROM data TO \"d://test//output.xlsx\" WITH FORMULAS =\n" +
                 " {   ROW 12: \"SUM(A${rowNum}:A${rowNum})\",   " +
                 "COL E : \"IF(A${rowNum}>5,A1,A2)\", " +
@@ -60,7 +58,7 @@ public class JExcelExportFormulatTest {
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(configText));
         JQuickExcelParser parser = new JQuickExcelParser(new CommonTokenStream(lexer));
         JQuickExcelParser.ExportConfigContext exportConfig = parser.exportConfig();
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor();
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor();
         visitor.visitExportConfig(exportConfig);
     }
 }

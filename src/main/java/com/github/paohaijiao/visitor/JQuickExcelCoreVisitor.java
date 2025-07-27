@@ -27,18 +27,12 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
 
     protected JContext context;
 
     protected Cell cell;
-
-    protected JExcelExportHandler excelProcessor;
-
-    protected List<Map<String, Object>> data;
 
     protected JExcelExportModel config = new JExcelExportModel();
 

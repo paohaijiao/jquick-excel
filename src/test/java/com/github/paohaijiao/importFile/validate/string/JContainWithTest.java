@@ -13,11 +13,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.nuber;
+package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
 import com.github.paohaijiao.validate.impl.number.JDecimalRule;
-import com.github.paohaijiao.validate.impl.number.JIntegerRule;
+import com.github.paohaijiao.validate.impl.string.JContainWithRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,30 +30,32 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JIntegerTest {
+public class JContainWithTest {
 
     @Test
-    public void integer1() throws IOException {
+    public void containWith1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void integer2() throws IOException {
+    public void containWith2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(false,map,"不能为空");
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void integer3() throws IOException {
+    public void containWith3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
-        System.out.println(booleanRule.test("2020-01-01"));
+        map.put("contains","qwe");
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
+        System.out.println(booleanRule.test("qwer"));
     }
     @Test
-    public void integer4() throws IOException {
+    public void containWith4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
-        System.out.println(booleanRule.test("18"));
+        map.put("contains","qwer1");
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
+        System.out.println(booleanRule.test("qwer"));
     }
 }

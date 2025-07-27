@@ -17,7 +17,7 @@ package com.github.paohaijiao.css;
 
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelImportVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelCommonImportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -33,7 +33,7 @@ public class JFieldMappingTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.fieldMapping();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -46,7 +46,7 @@ public class JFieldMappingTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.fieldMapping();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -59,7 +59,7 @@ public class JFieldMappingTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.cellFormat();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -72,7 +72,7 @@ public class JFieldMappingTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformRule();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -85,7 +85,7 @@ public class JFieldMappingTest {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformValue();
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor();
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor();
         Object result = visitor.visit(tree);
         System.out.println(result);
     }

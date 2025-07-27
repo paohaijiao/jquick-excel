@@ -18,7 +18,7 @@ package com.github.paohaijiao.export;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelImportVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelCommonImportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -36,7 +36,7 @@ public class JValueTest {
         ParseTree tree = parser.identifier();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -50,7 +50,7 @@ public class JValueTest {
         ParseTree tree = parser.functionArg();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -64,7 +64,7 @@ public class JValueTest {
         ParseTree tree = parser.functionArg();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -78,7 +78,7 @@ public class JValueTest {
         ParseTree tree = parser.functionArg();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -92,7 +92,7 @@ public class JValueTest {
         ParseTree tree = parser.identifier();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -106,7 +106,7 @@ public class JValueTest {
         ParseTree tree = parser.variable();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -120,7 +120,7 @@ public class JValueTest {
         ParseTree tree = parser.functionArg();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }
@@ -134,7 +134,7 @@ public class JValueTest {
         ParseTree tree = parser.functionCall();
         JContext contextParams = new JContext();
         contextParams.put("id", "id1");
-        JQuickExcelImportVisitor visitor = new JQuickExcelImportVisitor(contextParams);
+        JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(contextParams);
         Object result = visitor.visit(tree);
         System.out.println(result);
     }

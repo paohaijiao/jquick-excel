@@ -1,4 +1,3 @@
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +13,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.other;
+package com.github.paohaijiao.importFile.validate.date;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.other.JDictRule;
-import com.github.paohaijiao.validate.impl.other.JMobileRule;
+import com.github.paohaijiao.validate.impl.JRequiredRule;
+import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -31,26 +30,34 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JDictTest {
+public class JDateTest {
 
     @Test
-    public void dict1() throws IOException {
+    public void boolRequire() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JDictRule booleanRule = JExcelValidationRuleFactory.dict(true,map,"不能为空");
+        map.put("format","yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void mobile2() throws IOException {
+    public void boolRequire1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JDictRule booleanRule = JExcelValidationRuleFactory.dict(false,map,null);
+        map.put("format","yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void mobile3() throws IOException {
+    public void boolRequire2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("1","13198001111");
-        JDictRule booleanRule = JExcelValidationRuleFactory.dict(true,map,"xasxajiayuo");
-        System.out.println(booleanRule.test("13198001111"));
+        map.put("format","yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true,map,"不能为空");
+        System.out.println(booleanRule.test("2020-01-01"));
     }
-
+    @Test
+    public void boolRequire3() throws IOException {
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("format","yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true,map,"不能为空");
+        System.out.println(booleanRule.test("2010x-01-01"));
+    }
 }

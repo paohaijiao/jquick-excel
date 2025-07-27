@@ -13,16 +13,14 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.date;
+package com.github.paohaijiao.importFile.validate.nuber;
 
-import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.date.JMinDateRule;
+import com.github.paohaijiao.validate.impl.number.JDecimalRule;
+import com.github.paohaijiao.validate.impl.number.JIntegerRule;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -32,36 +30,30 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JMinDateTest {
+public class JIntegerTest {
 
     @Test
-    public void minDate1() throws IOException {
+    public void integer1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(true,map,"不能为空");
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void minDate2() throws IOException {
+    public void integer2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(false,map,"不能为空");
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void boolRequire2() throws IOException {
+    public void integer3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        map.put("minDate",new Date());
-        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(true,map,"不能为空");
-        System.out.println(booleanRule.test("2025-01-01"));
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
+        System.out.println(booleanRule.test("2020-01-01"));
     }
     @Test
-    public void boolRequire3() throws IOException {
+    public void integer4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        map.put("minDate",new Date());
-        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(true,map,"不能为空");
-        System.out.println(booleanRule.test("2026-01-01"));
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
+        System.out.println(booleanRule.test("18"));
     }
 }

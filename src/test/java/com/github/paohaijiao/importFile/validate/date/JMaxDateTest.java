@@ -13,14 +13,15 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.date;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JMaxLengthRule;
-import com.github.paohaijiao.validate.impl.string.JMinLengthRule;
+import com.github.paohaijiao.validate.impl.date.JMaxDateRule;
+import com.github.paohaijiao.validate.impl.date.JMinDateRule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -30,32 +31,36 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JMinLengthTest {
+public class JMaxDateTest {
 
     @Test
-    public void minLength1() throws IOException {
+    public void maxDate1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true,map,"不能为空");
+        map.put("format","yyyy-MM-dd");
+        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void minLength2() throws IOException {
+    public void maxDate2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(false,map,"不能为空");
+        map.put("format","yyyy-MM-dd");
+        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void minLength3() throws IOException {
+    public void maxDate3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("minLength",12);
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true,map,"不能为空");
-        System.out.println(booleanRule.test("qwer"));
+        map.put("format","yyyy-MM-dd");
+        map.put("maxDate",new Date());
+        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(true,map,"不能为空");
+        System.out.println(booleanRule.test("2025-01-01"));
     }
     @Test
-    public void minLength4() throws IOException {
+    public void maxDate4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("minLength",1);
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true,map,"不能为空");
-        System.out.println(booleanRule.test("qwer"));
+        map.put("format","yyyy-MM-dd");
+        map.put("maxDate",new Date());
+        JMaxDateRule booleanRule = JExcelValidationRuleFactory.maxDate(true,map,"不能为空");
+        System.out.println(booleanRule.test("2026-01-01"));
     }
 }

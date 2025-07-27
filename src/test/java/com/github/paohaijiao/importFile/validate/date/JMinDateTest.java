@@ -1,5 +1,3 @@
-
-
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +13,16 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.date;
 
+import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JNotStartWithRule;
-import com.github.paohaijiao.validate.impl.string.JRegexRule;
+import com.github.paohaijiao.validate.impl.date.JMinDateRule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -32,32 +32,36 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JRegexTest {
+public class JMinDateTest {
 
     @Test
-    public void regex1() throws IOException {
+    public void minDate1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
+        map.put("format","yyyy-MM-dd");
+        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void regex2() throws IOException {
+    public void minDate2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(false,map,"不能为空");
+        map.put("format","yyyy-MM-dd");
+        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void regex3() throws IOException {
+    public void boolRequire2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("pattern", "[0-9]*");
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
-        System.out.println(booleanRule.test("28"));
+        map.put("format","yyyy-MM-dd");
+        map.put("minDate",new Date());
+        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(true,map,"不能为空");
+        System.out.println(booleanRule.test("2025-01-01"));
     }
     @Test
-    public void regex4() throws IOException {
+    public void boolRequire3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("pattern", "[0-9]*");
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
-        System.out.println(booleanRule.test("a"));
+        map.put("format","yyyy-MM-dd");
+        map.put("minDate",new Date());
+        JMinDateRule booleanRule = JExcelValidationRuleFactory.minDate(true,map,"不能为空");
+        System.out.println(booleanRule.test("2026-01-01"));
     }
 }

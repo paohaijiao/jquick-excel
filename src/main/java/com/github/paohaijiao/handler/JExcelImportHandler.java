@@ -15,20 +15,18 @@
  */
 package com.github.paohaijiao.handler;
 
-import com.github.paohaijiao.formula.JAbstractExcelFormula;
-import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
-import com.github.paohaijiao.validate.JExcelValidationRule;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 public class JExcelImportHandler extends JExcelCommonHandler {
@@ -59,21 +57,22 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         Map<String, String> mappings = config.getMappings();
         List<Map<String, Object>> data = new ArrayList<>();
         int startCol=0;
-        if (hasHeader) {
-            Row headerRow = currentSheet.getRow(0);
-            int  endCol=getUsedColumnCount(currentSheet);
-            for (int i = 0; i <= endCol; i++) {
+         Row headerRow = currentSheet.getRow(0);
+         int  endCol=getUsedColumnCount(currentSheet);
+         for (int i = 0; i <= endCol; i++) {
                 Cell cell = headerRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                 String headerName = dataFormatter.formatCellValue(cell);
                 headers.add(mappings.getOrDefault(headerName, headerName));
-            }
-        }
+         }
         int lastRowNum=this.getLastRowNum(currentSheet);
-        for (int rowNum = 0; rowNum <= lastRowNum; rowNum++) {
+        int startRow = 0;
+        if (hasHeader) {
+            startRow = 1;
+        }
+        for (int rowNum = startRow; rowNum <= lastRowNum; rowNum++) {
             Row row = currentSheet.getRow(rowNum);
             if (row == null) continue;
             Map<String, Object> rowData = new LinkedHashMap<>();
-            int  endCol=getUsedColumnCount(currentSheet);
             for (int colNum = startCol; colNum <= endCol; colNum++) {
                 if (colNum >= headers.size()) break;
                 Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);

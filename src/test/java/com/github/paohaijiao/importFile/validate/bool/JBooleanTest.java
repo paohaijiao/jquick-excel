@@ -13,11 +13,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.bool;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JDecimalRule;
-import com.github.paohaijiao.validate.impl.string.JContainWithRule;
+import com.github.paohaijiao.validate.impl.JCompositeRule;
+import com.github.paohaijiao.validate.impl.bool.JBooleanRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,32 +30,36 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JContainWithTest {
+public class JBooleanTest {
 
     @Test
-    public void containWith1() throws IOException {
+    public void boolRequire() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,"");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void containWith2() throws IOException {
+    public void boolRequire1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(false,map,"不能为空");
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(false,map,"");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
-    public void containWith3() throws IOException {
+    public void boolRequire2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("contains","qwe");
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
-        System.out.println(booleanRule.test("qwer"));
+        map.put("true","是");
+        map.put("false","否");
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,"没有该字典");
+        System.out.println(booleanRule.test("是"));
     }
     @Test
-    public void containWith4() throws IOException {
+    public void boolRequire3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("contains","qwer1");
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
-        System.out.println(booleanRule.test("qwer"));
+        map.put("true","是");
+        map.put("false","否");
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,null);
+        System.out.println(booleanRule.test("哈哈"));
     }
+
 }

@@ -21,7 +21,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.visitor.JQuickExcelExportComonVisitor;
+import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -64,7 +64,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
@@ -91,7 +91,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
@@ -118,7 +118,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//header.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
@@ -145,7 +145,7 @@ public class JSheetAndHeadTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//headerno.xlsx");
         JContext context=new JContext();
         context.put("fos", fileOutputStream);
-        JQuickExcelExportComonVisitor visitor = new JQuickExcelExportComonVisitor(context);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }

@@ -13,11 +13,11 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.importFile.string;
+package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
+import com.github.paohaijiao.validate.impl.string.JContainWithRule;
 import com.github.paohaijiao.validate.impl.string.JEndWithRule;
-import com.github.paohaijiao.validate.impl.string.JMaxLengthRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,32 +30,32 @@ import java.util.HashMap;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public class JMaxLengthTest {
+public class JEndsWithTest {
 
     @Test
-    public void maxLength1() throws IOException {
+    public void containWith1() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true,map,"不能为空");
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void maxLength2() throws IOException {
+    public void containWith2() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(false,map,"不能为空");
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(false,map,"不能为空");
         System.out.println(booleanRule.test(null));
     }
     @Test
-    public void maxLength3() throws IOException {
+    public void containWith3() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("maxLength",12);
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true,map,"不能为空");
+        map.put("endWith","qwe");
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true,map,"不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
     @Test
-    public void maxLength4() throws IOException {
+    public void containWith4() throws IOException {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("maxLength",1);
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true,map,"不能为空");
+        map.put("endWith","wer");
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true,map,"不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
 }

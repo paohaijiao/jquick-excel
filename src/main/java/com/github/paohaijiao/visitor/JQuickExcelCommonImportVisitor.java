@@ -15,7 +15,6 @@
  */
 package com.github.paohaijiao.visitor;
 
-import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
@@ -23,15 +22,15 @@ import com.github.paohaijiao.util.JStringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JQuickExcelImportVisitor extends JQuickExcelImportValidateVisitor {
+public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVisitor {
 
 
 
-    public JQuickExcelImportVisitor(JContext contextParams) {
+    public JQuickExcelCommonImportVisitor(JContext contextParams) {
         this.context = contextParams;
     }
 
-    public JQuickExcelImportVisitor() {
+    public JQuickExcelCommonImportVisitor() {
         this.context = new JContext();
     }
 
