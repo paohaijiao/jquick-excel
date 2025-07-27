@@ -46,10 +46,14 @@ public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVis
 
     @Override
     public Object visitSheetOption(JQuickExcelParser.SheetOptionContext ctx) {
-        Object sheetValue = ctx.STRING() != null ?
-                ctx.STRING().getText().replaceAll("\"", "") :
-                Integer.parseInt(ctx.NUMBER().getText());
-        config.setSheet(sheetValue);
+        if(ctx.STRING() != null) {
+            String  sheetValue=JStringUtils.trim(ctx.STRING().getText());
+            config.setSheet(sheetValue);
+        }
+        if(ctx.NUMBER() != null) {
+            Integer sheetValue=Integer.parseInt(ctx.NUMBER().getText());
+            config.setSheet(sheetValue);
+        }
         return null;
     }
 
@@ -71,9 +75,12 @@ public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVis
     public Object visitMappingOption(JQuickExcelParser.MappingOptionContext ctx) {
         Map<String, String> mappings = new HashMap<>();
         for (JQuickExcelParser.FieldMappingContext mapping : ctx.fieldMapping()) {
-            String source = JStringUtils.trim(mapping.STRING(0).getText());
-            String target = mapping.STRING(1) != null ? JStringUtils.trim(mapping.STRING(1).getText()) : mapping.functionCall().getText();
-            mappings.put(source, target);
+            if(null!=mapping.STRING()) {
+                String source = JStringUtils.trim(mapping.STRING(0).getText());
+                String target = mapping.STRING(1) != null ? JStringUtils.trim(mapping.STRING(1).getText()) : mapping.functionCall().getText();
+                mappings.put(source, target);
+            }
+
         }
         config.setMappings(mappings);
         return null;
@@ -83,9 +90,12 @@ public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVis
     public Object visitTransformOption(JQuickExcelParser.TransformOptionContext ctx) {
         Map<String, String> transforms = new HashMap<>();
         for (JQuickExcelParser.TransformRuleContext rule : ctx.transformRule()) {
-            String field = rule.STRING().getText().replaceAll("\"", "");
-            String transform = rule.transformValue().getText();
-            transforms.put(field, transform);
+            if(null!=rule.STRING()) {
+                String field = JStringUtils.trim(rule.STRING().getText());
+                String transform = rule.transformValue().getText();
+                transforms.put(field, transform);
+            }
+
         }
         config.setTransforms(transforms);
         return null;

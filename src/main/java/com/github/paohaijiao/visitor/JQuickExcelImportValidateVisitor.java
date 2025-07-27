@@ -20,20 +20,15 @@ import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.model.JRuleItem;
 import com.github.paohaijiao.model.JTargetSpec;
-import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
-import com.github.paohaijiao.validate.JExcelValidationRule;
-import com.github.paohaijiao.validate.impl.JCompositeRule;
-import com.github.paohaijiao.validate.impl.string.JEndWithRule;
-import com.github.paohaijiao.validate.impl.string.JMinLengthRule;
 
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class JQuickExcelImportValidateVisitor extends JFieldMapping {
+public class JQuickExcelImportValidateVisitor extends JFieldMappingVisitor {
 
     protected JExcelImportModel config = new JExcelImportModel();
 

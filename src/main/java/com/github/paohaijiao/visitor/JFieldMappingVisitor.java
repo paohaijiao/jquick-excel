@@ -20,7 +20,7 @@ import com.github.paohaijiao.model.JKeyValueModel;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
 
-public class JFieldMapping extends JFormatSpecVisitor {
+public class JFieldMappingVisitor extends JFormatSpecVisitor {
 
     @Override
     public JKeyValueModel visitFieldMapping(JQuickExcelParser.FieldMappingContext ctx) {

@@ -37,7 +37,7 @@ import java.util.Map;
  * @date 2025/6/18
  * @description
  */
-public class JQuickExcelExportFormulateVisitor extends JFieldMapping {
+public class JQuickExcelExportFormulateVisitor extends JFieldMappingVisitor {
 
     @Override
     public Void visitFormulaOption(JQuickExcelParser.FormulaOptionContext ctx) {
