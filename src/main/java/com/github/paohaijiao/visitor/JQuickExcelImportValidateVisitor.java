@@ -201,7 +201,13 @@ public class JQuickExcelImportValidateVisitor extends JFieldMappingVisitor {
     }
     @Override
     public String visitRuleMsg(JQuickExcelParser.RuleMsgContext ctx) {
-        return ctx.IDENTIFIER().getText();
+        if(null!=ctx.STRING()){
+            String string= ctx.STRING().getText();
+            return JStringUtils.trim(string);
+        }else {
+            return null;
+        }
+
     }
     protected JExcelImportModel performImport() {
         return config;

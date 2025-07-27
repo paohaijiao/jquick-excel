@@ -2207,7 +2207,7 @@ public class JQuickExcelParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RuleMsgContext extends ParserRuleContext {
-		public TerminalNode IDENTIFIER() { return getToken(JQuickExcelParser.IDENTIFIER, 0); }
+		public TerminalNode STRING() { return getToken(JQuickExcelParser.STRING, 0); }
 		public RuleMsgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2238,7 +2238,7 @@ public class JQuickExcelParser extends Parser {
 			setState(413);
 			match(T__16);
 			setState(414);
-			match(IDENTIFIER);
+			match(STRING);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5497,7 +5497,7 @@ public class JQuickExcelParser extends Parser {
 		"\u01979\u0001\u0000\u0000\u0000\u0198\u0199\u0005\u0014\u0000\u0000\u0199"+
 		"\u019a\u0005\u0011\u0000\u0000\u019a\u019b\u0005>\u0000\u0000\u019b;\u0001"+
 		"\u0000\u0000\u0000\u019c\u019d\u0005\u0015\u0000\u0000\u019d\u019e\u0005"+
-		"\u0011\u0000\u0000\u019e\u019f\u0005?\u0000\u0000\u019f=\u0001\u0000\u0000"+
+		"\u0011\u0000\u0000\u019e\u019f\u0005@\u0000\u0000\u019f=\u0001\u0000\u0000"+
 		"\u0000\u01a0\u01a1\u0005\u0016\u0000\u0000\u01a1\u01a2\u0005\u0011\u0000"+
 		"\u0000\u01a2\u01a3\u0005\n\u0000\u0000\u01a3\u01a8\u0003@ \u0000\u01a4"+
 		"\u01a5\u0005\u0003\u0000\u0000\u01a5\u01a7\u0003@ \u0000\u01a6\u01a4\u0001"+
