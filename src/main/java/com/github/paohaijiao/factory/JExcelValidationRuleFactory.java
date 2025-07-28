@@ -115,15 +115,6 @@ public class JExcelValidationRuleFactory {
     }
 
 
-
-
-
-
-
-
-
-
-
     public static JCompositeRule composite() {
         return new JCompositeRule();
     }

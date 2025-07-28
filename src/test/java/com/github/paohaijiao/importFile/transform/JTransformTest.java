@@ -19,11 +19,13 @@ import com.github.paohaijiao.executor.JQuickExcelCommonImportExecutor;
 import com.github.paohaijiao.handler.JExcelImportHandler;
 import com.github.paohaijiao.importFile.mapping.JMappingTest;
 import com.github.paohaijiao.model.JExcelImportModel;
+import com.github.paohaijiao.param.JContext;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,14 +51,20 @@ public class JTransformTest {
                 "\"出生日期\": \"birthday\"\n" +
                 "}," +
                 "TRANSFORM={" +
-//                    "\"birthday\":toUpper(birthday)"+
+                    "\"sex\":trans(${dict},${sex})"+
+                    "\"birthday\":dateFormat(${birthday},'yyyy-MM-dd')"+
                 "}";
         System.out.println(input);
         JQuickExcelCommonImportExecutor executor=new JQuickExcelCommonImportExecutor();
         JExcelImportModel model= (JExcelImportModel)executor.execute(input);
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
-        JExcelImportHandler handler=new JExcelImportHandler(workbook);
+        Map<String,Object> sex=new HashMap<>();
+        sex.put("男","1");
+        sex.put("女","2");
+        JContext context = new JContext();
+        context.put("dict",sex);
+        JExcelImportHandler handler=new JExcelImportHandler(workbook,context);
         List<Map<String, Object>> list= handler.importData(model);
         System.out.println(list);
 

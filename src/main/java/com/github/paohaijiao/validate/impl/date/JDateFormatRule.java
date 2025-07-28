@@ -48,7 +48,7 @@ public class JDateFormatRule extends JAbstractValidationRule {
             sdf.parse(value);
             return true;
         } catch (Exception e) {
-            JAssert.throwNewException(buildMsg());
+            JAssert.throwNewException(buildMsg()+value);
             return false;
         }
     }

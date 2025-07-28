@@ -15,21 +15,28 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import java.util.*;
 
 public class JExcelCommonHandler {
-
+    protected static final DataFormatter dataFormatter = new DataFormatter();
     protected Workbook workbook;
 
     protected Sheet currentSheet;
 
-    protected JContext contextParams = new JContext();
+    protected JContext context = new JContext();
+
+    protected void setContext(JContext context) {
+        this.context = context;
+    }
+    protected JContext getContext() {
+        return context;
+    }
 
     protected Object applyTransform(String key, Object value, String transform) {
-        this.contextParams.put(key, value);
+        this.context.put(key, value);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(transform));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.transformValue();
         List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(this.contextParams);
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(this.context);
         @SuppressWarnings("unchecked")
         JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
         List<Object> list = methodCallModel.getList();
@@ -90,6 +97,13 @@ public class JExcelCommonHandler {
         }
     }
     public static Object getCellValueByIndex(Sheet sheet, int rowIndex, int columnIndex) {
+        Cell cell =getCellByIndex(sheet,rowIndex,columnIndex);
+        if (cell == null) {
+            return null;
+        }
+        return getCellValue(cell);
+    }
+    public static Cell getCellByIndex(Sheet sheet, int rowIndex, int columnIndex) {
         if (sheet == null) {
             return null;
         }
@@ -101,24 +115,51 @@ public class JExcelCommonHandler {
         if (cell == null) {
             return null;
         }
-        return getCellValue(cell);
+        return cell;
     }
-
-    private static Object getCellValue(Cell cell) {
+    protected static  Object getCellValue(Cell cell){
+        if (cell == null){
+            return null;
+        }
+        Object cellValue = null;
         switch (cell.getCellType()) {
             case STRING:
-                return cell.getStringCellValue();
+                cellValue = cell.getStringCellValue();
+                break;
             case NUMERIC:
-                return cell.getNumericCellValue();
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    cellValue = cell.getDateCellValue();
+                } else {
+                    cellValue = cell.getNumericCellValue();
+                }
+                break;
             case BOOLEAN:
-                return cell.getBooleanCellValue();
+                cellValue = cell.getBooleanCellValue();
+                break;
             case FORMULA:
-                return cell.getCellFormula();
+                switch (cell.getCachedFormulaResultType()) {
+                    case NUMERIC:
+                        if (DateUtil.isCellDateFormatted(cell)) {
+                            cellValue = cell.getDateCellValue();
+                        } else {
+                            cellValue = cell.getNumericCellValue();
+                        }
+                        break;
+                    case STRING:
+                        cellValue = cell.getStringCellValue();
+                        break;
+                    case BOOLEAN:
+                        cellValue = cell.getBooleanCellValue();
+                        break;
+                    default:
+                        cellValue = dataFormatter.formatCellValue(cell);
+                }
+                break;
             case BLANK:
-                return "";
             default:
-                return null;
+                cellValue =  dataFormatter.formatCellValue(cell);
         }
+        return cellValue;
     }
     public static CellStyle buildDefaultHeaderStyle(Workbook wb){
         CellStyle headerStyle = wb.createCellStyle();

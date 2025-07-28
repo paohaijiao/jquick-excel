@@ -36,7 +36,7 @@ public enum JMethodValidationRuleType {
     MOBILE("mobile", JMobileRule.class),
     MAX_LENGTH("max_length",JMaxLengthRule.class),
     MIN_LENGTH("min_length", JMinLengthRule.class),
-    REGEX("min_length", JRegexRule.class),
+    REGEX("regex", JRegexRule.class),
     START_WITH("start_with", JStartWithRule.class),
     NOT_START_WITH("not_start_with", JNotStartWithRule.class),
     END_WITH("end_with", JEndWithRule.class),

@@ -26,6 +26,7 @@ import com.github.paohaijiao.jstyle.context.JStyleContext;
 import com.github.paohaijiao.merge.JMergeHandler;
 import com.github.paohaijiao.merge.context.JMergeHandlerContext;
 import com.github.paohaijiao.model.JExcelExportModel;
+import com.github.paohaijiao.param.JContext;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -37,14 +38,22 @@ import java.util.*;
 
 public class JExcelExportHandler extends JExcelCommonHandler{
 
-    private DataFormatter dataFormatter = new DataFormatter();
 
     private JExcelExportModel config=new JExcelExportModel();
 
-
+    public JExcelExportHandler(JExcelExportModel config, JContext context,List<Map<String, Object>> data) {
+        this.config = config;
+        this.context = context;
+        try {
+            this.exportData(config,data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public JExcelExportHandler(JExcelExportModel config,List<Map<String, Object>> data) {
         this.config = config;
+        this.context = new JContext();
         try {
             this.exportData(config,data);
         } catch (IOException e) {
@@ -163,8 +172,6 @@ public class JExcelExportHandler extends JExcelCommonHandler{
             currentSheet.autoSizeColumn(i);
         }
     }
-
-
 
     private void applyCellFormat(Cell cell, String formatSpec) {
         CellStyle style = workbook.createCellStyle();

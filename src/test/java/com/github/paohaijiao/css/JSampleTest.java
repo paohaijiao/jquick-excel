@@ -44,11 +44,8 @@ public class JSampleTest {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("业务数据报表");
         sheet.setDefaultColumnWidth(18);
-
-        // 创建专业配色样式
         Row headerRow = sheet.createRow(0);
         headerRow.setHeightInPoints(36);
-
         String[] headers = {"指标", "Q1", "Q2", "Q3", "Q4", "年度合计", "同比"};
         for (int i = 0; i < headers.length; i++) {
             Cell cell = headerRow.createCell(i);
@@ -62,7 +59,6 @@ public class JSampleTest {
                 {"净利润", 320000, 380000, 420000, 480000, "=SUM(B5:E5)", "15.2%"},
                 {"净利润率", "=B5/B2", "=C5/C2", "=D5/D2", "=E5/E2", "=F5/F2", "2.4%"}
         };
-
         for (int i = 0; i < data.length; i++) {
             Row row = sheet.createRow(i + 1);
             row.setHeightInPoints(24);
@@ -86,15 +82,10 @@ public class JSampleTest {
                 }
             }
         }
-
-        // 添加专业页脚
         addProfessionalFooter(workbook, sheet, data.length + 2,JExcelCommonHandler.buildDefaultFooterStyle(workbook));
-        // 写入文件
         try (FileOutputStream fileOut = new FileOutputStream("ProfessionalReport.xlsx")) {
             workbook.write(fileOut);
             System.out.println("专业Excel报表已生成!");
-
-            // 尝试自动打开(Windows)
             if (System.getProperty("os.name").toLowerCase().contains("win")) {
                 Runtime.getRuntime().exec("cmd /c start ProfessionalReport.xlsx");
             }
@@ -201,8 +192,6 @@ public class JSampleTest {
         Cell footerCell = footerRow.createCell(0);
         footerCell.setCellValue("数据来源: 财务部 | 生成时间: " + new java.util.Date() + " | 制表人: [请填写姓名]");
         footerCell.setCellStyle(style);
-
-        // 合并单元格
         sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, 6));
     }
 }

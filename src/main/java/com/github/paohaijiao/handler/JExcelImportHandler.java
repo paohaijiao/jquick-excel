@@ -19,9 +19,7 @@ import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -34,19 +32,14 @@ public class JExcelImportHandler extends JExcelCommonHandler {
 
 
 
-
-
-    private final DataFormatter dataFormatter = new DataFormatter();
-
-
     public JExcelImportHandler(XSSFWorkbook xssfWorkbook) {
         this.workbook = xssfWorkbook;
-        this.contextParams = new JContext();
+        this.context = new JContext();
     }
 
     public JExcelImportHandler(XSSFWorkbook xssfWorkbook,JContext contextParams) {
         this.workbook = xssfWorkbook;
-        this.contextParams = contextParams;
+        this.context = contextParams;
     }
 
     public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
@@ -76,7 +69,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
             for (int colNum = startCol; colNum <= endCol; colNum++) {
                 if (colNum >= headers.size()) break;
                 Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                Object value = dataFormatter.formatCellValue(cell);
+                Object value =getCellValue(cell);
                 Map<String, String> transforms = config.getTransforms();
                 String fieldName = headers.get(colNum);
                 if (transforms.containsKey(fieldName)) {
@@ -85,12 +78,12 @@ public class JExcelImportHandler extends JExcelCommonHandler {
                 if(StringUtils.isNotEmpty(headers.get(colNum))&&null!=value){
                     rowData.put(headers.get(colNum), value);
                 }
-
             }
             data.add(rowData);
         }
         return data;
     }
+
 
     private  void applyValidate(JExcelImportModel config){
         int maxCol=this.getUsedColumnCount(this.currentSheet);
@@ -127,10 +120,12 @@ public class JExcelImportHandler extends JExcelCommonHandler {
             }
 
         }
-
         Map<String, List<JAbstractValidationRule>>  coalValidate=config.getColValidate();
         for (Map.Entry<String, List<JAbstractValidationRule>> keyset : coalValidate.entrySet()) {
             String colNum = keyset.getKey();
+            if(StringUtils.isBlank(colNum)){
+                continue;
+            }
             List<JAbstractValidationRule> rules = keyset.getValue();
             if(colNum.contains("..")){
                 StringTokenizer tokenizer = new StringTokenizer(colNum, "..");
@@ -161,6 +156,10 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         }
         for (Map.Entry<String,  List<JAbstractValidationRule>> keyset : config.getCellValidate().entrySet()) {
             String key = keyset.getKey();
+            if(StringUtils.isBlank(key)){
+                continue;
+            }
+
             List<JAbstractValidationRule> rules = keyset.getValue();
             CellReference cellReference=new CellReference(key);
             String cellValue=getCellValueStringByIndex(this.currentSheet,cellReference.getRow(),cellReference.getCol());
@@ -170,6 +169,9 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         }
         for (Map.Entry<String,  List<JAbstractValidationRule>> keyset : config.getRangeValidate().entrySet()) {
             String key = keyset.getKey();
+            if(StringUtils.isBlank(key)){
+                continue;
+            }
             List<JAbstractValidationRule> rules = keyset.getValue();
             CellRangeAddress rangeRegion = CellRangeAddress.valueOf(key);
             int firstRow = rangeRegion.getFirstRow();
@@ -177,15 +179,16 @@ public class JExcelImportHandler extends JExcelCommonHandler {
             int firstCol = rangeRegion.getFirstColumn();
             int lastCol = rangeRegion.getLastColumn();
             for (int i = firstRow; i <= lastRow; i++) {
-                for (int j = firstCol; j < lastCol; j++) {
-                    String cellValue=getCellValueStringByIndex(this.currentSheet,i,j);
+                for (int j = firstCol; j <= lastCol; j++) {
+                    Cell cell=getCellByIndex(this.currentSheet,i,j);
+                    DataFormatter formatter = new DataFormatter();
+                    String cellValue=formatter.formatCellValue(cell);
                     for(JAbstractValidationRule rule:rules){
                         rule.test(cellValue);
                     }
                 }
             }
         }
-
     }
 
 }

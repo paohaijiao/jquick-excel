@@ -109,19 +109,36 @@ public class JQuickExcelImportValidateVisitor extends JFieldMappingVisitor {
     }
     @Override
     public String visitRowTarget(JQuickExcelParser.RowTargetContext ctx) {
-        return ctx.rowSpec().getText();
+        if(null!=ctx&&null!=ctx.rowSpec()){
+            return ctx.rowSpec().getText();
+        }else{
+            return null;
+        }
     }
     @Override
     public String visitColTarget(JQuickExcelParser.ColTargetContext ctx) {
-        return ctx.colSpec().getText();
+        if(null!=ctx&&null!=ctx.colSpec()){
+            return ctx.colSpec().getText();
+        }else{
+            return null;
+        }
+
     }
     @Override
     public String visitCellTarget(JQuickExcelParser.CellTargetContext ctx) {
-        return ctx.getText();
+        if(null!=ctx){
+            return ctx.getText();
+        }else{
+            return null;
+        }
     }
     @Override
     public String visitRangeTarget(JQuickExcelParser.RangeTargetContext ctx) {
-        return ctx.getText();
+        if(null!=ctx){
+            return ctx.getText();
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -148,7 +165,8 @@ public class JQuickExcelImportValidateVisitor extends JFieldMappingVisitor {
         for (JQuickExcelParser.MapItemContext mapItemContext:ctx.mapItem()){
             HashMap<String,Object>  value=  visitMapItem(mapItemContext);
             for (Map.Entry<String, Object> entry:value.entrySet()){
-                map.put(entry.getKey(),entry.getValue());
+                String key=JStringUtils.trim(entry.getKey());
+                map.put(key,entry.getValue());
             }
         }
         return map;
