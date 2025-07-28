@@ -140,6 +140,37 @@ public class JFormulateLogicalTest {
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+    @Test
+    public void LOOKUP() throws IOException {
+        String rule = "EXPORT  WITH\n" +
+                "SHEET=\"学生表\",\n" +
+                "HEADER=true,\n" +
+                "MAPPING={\n" +
+                "\t\"id\":\"主键\",\n" +
+                "\t\"name\":\"姓名\",\n" +
+                "\t\"gender\":\"性别\",\n" +
+                "\t\"age\":\"年龄\",\n" +
+                "\t\"enrollmentDate\":\"入学时间\",\n" +
+                "\t\"className\":\"班级\",\n" +
+                "\t\"ignoreField\":\"是否忽略\"\n" +
+                "},\n" +
+                "FORMULAS={\n" +
+                "D5:'LOOKUP(22, D2:D4, C2:C4)\t'"+
+                "}\n";
+        System.out.println(rule);
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
+        JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("1","男");
+        map.put("0","女");
+        JContext context = new JContext();
+        context.put("dict",map);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        Workbook workbook=handler.getWorkBook();
+        workbook.write(fileOutputStream);
+    }
 
 
 
