@@ -9,7 +9,7 @@ public class JIfFormula extends JAbstractExcelFormula {
     private final String otherValue;
 
     public JIfFormula(String condition, String value, String otherValue) {
-        super(String.format("IF(%s, %s, %s)", condition, value, otherValue));
+        super(String.format("IF(%s, \"%s\", \"%s\")", condition, value, otherValue));
         this.condition = condition;
         this.value = value;
         this.otherValue = otherValue;
