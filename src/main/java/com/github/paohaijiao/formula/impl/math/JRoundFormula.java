@@ -2,16 +2,12 @@ package com.github.paohaijiao.formula.impl.math;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 
+import java.math.BigDecimal;
+
 public class JRoundFormula extends JAbstractExcelFormula {
 
-    private final String range;
 
-    public JRoundFormula(String range) {
-        super("ROUND(" + range + ")");
-        this.range = range;
-    }
-
-    public String getRange() {
-        return range;
+    public JRoundFormula(BigDecimal a1,BigDecimal a2) {
+        super("ROUND(" + a1.toPlainString()+","+a2.toPlainString() + ")");
     }
 }
