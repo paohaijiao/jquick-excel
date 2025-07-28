@@ -34,7 +34,7 @@ public class JRightFormula extends JAbstractExcelFormula {
 
     public JRightFormula(String text, BigDecimal size) {
 
-        super("RIGHT(" + text +","+size.toPlainString()+ ")");
+        super("RIGHT(\"" + text +"\",\""+size.toPlainString()+ "\")");
     }
 
 }

@@ -34,7 +34,7 @@ public class JMidFormula extends JAbstractExcelFormula {
 
 
     public JMidFormula(String text, BigDecimal startNum, BigDecimal numChars) {
-        super("MID(" + text +","+startNum.toPlainString()+","+numChars.toPlainString()+")");
+        super("MID(\"" + text +"\","+startNum.toPlainString()+","+numChars.toPlainString()+")");
         System.out.println("MID(" + text +","+startNum.toPlainString()+","+numChars.toPlainString()+")");
         }
 

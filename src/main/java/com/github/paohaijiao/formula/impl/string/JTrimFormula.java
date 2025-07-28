@@ -9,7 +9,7 @@ public class JTrimFormula extends JAbstractExcelFormula {
     private final String text;
 
     public JTrimFormula(String text) {
-        super("TRIM(" + text + ")");
+        super("TRIM(\"" + text + "\")");
         this.text = text;
     }
     

@@ -9,7 +9,7 @@ public class JLowerFormula extends JAbstractExcelFormula {
     private final String text;
 
     public JLowerFormula(String text) {
-        super("LOWER(" + text + ")");
+        super("LOWER(\"" + text + "\")");
         this.text = text;
     }
     

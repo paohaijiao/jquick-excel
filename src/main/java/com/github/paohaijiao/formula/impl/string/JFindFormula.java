@@ -12,7 +12,7 @@ public class JFindFormula extends JAbstractExcelFormula {
     private  Integer startNum;
 
     public JFindFormula(String text,String withinText) {
-        super("FIND(" + text +", " + withinText + ")");
+        super("FIND(\"" +text +"\", \"" + withinText + "\")");
         System.out.println("FIND(" + text +", " + withinText + ")");
         this.text = text;
         this.withinText = withinText;

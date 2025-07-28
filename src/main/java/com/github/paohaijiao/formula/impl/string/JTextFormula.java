@@ -9,7 +9,7 @@ public class JTextFormula extends JAbstractExcelFormula {
 
 
     public JTextFormula(Object text,String format_text) {
-        super("TEXT(" + text.toString()+ ","+format_text+")");
+        super("TEXT(\"" + text.toString()+ "\",\""+format_text+"\")");
     }
     
 }

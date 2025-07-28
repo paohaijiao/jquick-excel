@@ -9,7 +9,7 @@ public class JupperFormula extends JAbstractExcelFormula {
     private final String text;
 
     public JupperFormula(String text) {
-        super("UPPER(" + text + ")");
+        super("UPPER(\"" + text + "\")");
         this.text = text;
     }
     

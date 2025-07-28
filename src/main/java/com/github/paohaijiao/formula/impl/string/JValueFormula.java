@@ -9,7 +9,7 @@ public class JValueFormula extends JAbstractExcelFormula {
     private final String text;
 
     public JValueFormula(String text) {
-        super("VALUE(" + text + ")");
+        super("VALUE(\"" + text + "\")");
         this.text = text;
     }
     

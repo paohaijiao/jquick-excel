@@ -31,7 +31,7 @@ public class JLenFormula extends JAbstractExcelFormula {
     private final String text;
 
     public JLenFormula(String text) {
-        super("LEN(" + text + ")");
+        super("LEN(\"" + text + "\")");
         this.text = text;
     }
 

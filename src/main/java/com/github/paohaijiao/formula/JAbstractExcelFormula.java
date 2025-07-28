@@ -1,5 +1,6 @@
 package com.github.paohaijiao.formula;
 
+import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.FormulaError;
@@ -10,6 +11,7 @@ public class JAbstractExcelFormula implements JExcelFormula {
     protected final String formula;
 
     protected JAbstractExcelFormula(String formula) {
+        System.out.println(formula);
         this.formula = formula;
     }
 
@@ -34,4 +36,5 @@ public class JAbstractExcelFormula implements JExcelFormula {
                 return null;
         }
     }
+
 }
