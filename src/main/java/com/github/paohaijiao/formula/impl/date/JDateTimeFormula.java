@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 public class JDateTimeFormula extends JAbstractExcelFormula {
 
     public JDateTimeFormula(BigDecimal year, BigDecimal month, BigDecimal day, BigDecimal hour , BigDecimal minute, BigDecimal second) {
-        super("DATETIME (" + year + "," + month + "," + day +","+hour+","+minute+","+second+ ")");
+        super("DATETIME (" + year.toPlainString() + "," + month.toPlainString() + "," + day.toPlainString()
+                +","+hour.toPlainString()+","+minute.toPlainString()+","+second.toPlainString()+ ")");
     }
 }

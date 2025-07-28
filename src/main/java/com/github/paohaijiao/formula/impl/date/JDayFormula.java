@@ -5,11 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class JDayFormula extends JAbstractExcelFormula {
-    private final String serial_number;
 
-    public JDayFormula(String serial_number) {
-        super("DAY(" + serial_number + ")");
-        this.serial_number = serial_number;
+    public JDayFormula(String date) {
+        super("DAY(" + date + ")");
     }
 
 }
