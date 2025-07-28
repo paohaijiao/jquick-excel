@@ -48,18 +48,18 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMappingVisitor {
             if (target.rowFormula() != null) {
                 JQuickExcelParser.RowFormulaContext rowCtx = target.rowFormula();
                 String rowSpec = rowCtx.rowSpec().getText();
-                String formula = rowCtx.formulaSpec().getText().replaceAll("\"", "");
-                rowFormulas.put(rowSpec, formula);
+                String formula = rowCtx.formulaSpec().getText();
+                rowFormulas.put(JStringUtils.trim(rowSpec), JStringUtils.trim(formula));
             } else if (target.colFormula() != null) {
                 JQuickExcelParser.ColFormulaContext colCtx = target.colFormula();
                 String colSpec = colCtx.colSpec().getText();
-                String formula = colCtx.formulaSpec().getText().replaceAll("\"", "");
-                colFormulas.put(colSpec, formula);
+                String formula = colCtx.formulaSpec().getText();
+                colFormulas.put(JStringUtils.trim(colSpec), JStringUtils.trim(formula));
             } else if (target.cellFormula() != null) {
                 JQuickExcelParser.CellFormulaContext cellCtx = target.cellFormula();
-                String cellRef = cellCtx.cellRef().getText().replaceAll("\"", "");
-                String formula = cellCtx.formulaSpec().getText().replaceAll("\"", "");
-                cellFormulas.put(cellRef, formula);
+                String cellRef = cellCtx.cellRef().getText();
+                String formula = cellCtx.formulaSpec().getText();
+                cellFormulas.put(JStringUtils.trim(cellRef), JStringUtils.trim(formula));
             }
         }
         config.setCellFormulas(cellFormulas);
@@ -144,8 +144,6 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMappingVisitor {
         if (ctx.STRING() != null) {
             String text = ctx.STRING().getText();
             return JStringUtils.trim(text);
-        } else if (ctx.functionCall() != null) {//SUM(A1:A10)
-            return ctx.functionCall().getText();
         }
         return "";
     }

@@ -54,7 +54,7 @@ public class JFormulateTest {
         return students;
     }
     @Test
-    public void testRowFormulas() throws IOException {
+    public void ABS() throws IOException {
         String rule = "EXPORT  WITH\n" +
                 "SHEET=\"学生表\",\n" +
                 "HEADER=true,\n" +
@@ -67,21 +67,8 @@ public class JFormulateTest {
                 "\t\"className\":\"班级\",\n" +
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
-                "FORMAT={\t\"enrollmentDate\":\"yyyy-MM-dd\"\n" +
-                "},\n" +
-                "TRANSFORM={\n" +
-                "\t\"name\": toUpper(${name}),\n" +
-                "\t\"enrollmentDate\": dateFormat(${enrollmentDate},'yyyy-MM-dd'),\n" +
-                "\t\"gender\": trans(${dict},${gender})\n" +
-                "},\n" +
                 "FORMULAS={\n" +
-                "    D5:'SUM(D2:D4)',\n" +
-                "  COL H: \"SUM(A1,B1)\",\n" +
-                "  COL I..J: \"SUM(A2,A4)\",\n" +
-                "  A11: \"SUM(A1:A10)\",\n" +
-                "  B11: \"AVERAGE(B1:B10)\",\n" +
-                "  C1: \"NOW()\",\n" +
-                "  D5: \"NOW()\"\n" +
+                "D5:'ABS(D2)'"+
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
@@ -98,55 +85,34 @@ public class JFormulateTest {
         workbook.write(fileOutputStream);
     }
     @Test
-    public void testColumnFormulas() throws IOException {
-        String config = "EXPORT WITH FORMULAS = {\n" +
-                "  COL G: \"SUM(A1,B1)\",\n" +
-                "  COL H..I: \"SUM(A2,B2)\"\n" +
-                "}";
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        for (int i = 0; i < 2; i++) {
-            Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
-        }
-        System.out.println(config);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.exportConfig();
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//testRowFormulas.xlsx");
-        JContext context=new JContext();
+    public void AVERAGE() throws IOException {
+        String rule = "EXPORT  WITH\n" +
+                "SHEET=\"学生表\",\n" +
+                "HEADER=true,\n" +
+                "MAPPING={\n" +
+                "\t\"id\":\"主键\",\n" +
+                "\t\"name\":\"姓名\",\n" +
+                "\t\"gender\":\"性别\",\n" +
+                "\t\"age\":\"年龄\",\n" +
+                "\t\"enrollmentDate\":\"入学时间\",\n" +
+                "\t\"className\":\"班级\",\n" +
+                "\t\"ignoreField\":\"是否忽略\"\n" +
+                "},\n" +
+                "FORMULAS={\n" +
+                "D5:'AVERAGE(D2:D4)'"+
+                "}\n";
+        System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        context.put("fos", fileOutputStream);
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
-        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
-    }
-    @Test
-    public void testCellFormulas() throws IOException {
-        String config = "EXPORT WITH FORMULAS = {\n" +
-                "  A11: \"SUM(A1:A10)\",\n" +
-                "  B11: \"AVERAGE(B1:B10)\",\n" +
-                "  C1: \"NOW()\",\n" +
-                "  D5: \"NOW()\"\n" +
-                "}";
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        for (int i = 0; i < 2; i++) {
-            Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
-        }
-        System.out.println(config);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.exportConfig();
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//testRowFormulas.xlsx");
-        JContext context=new JContext();
-        List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        context.put("fos", fileOutputStream);
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
-        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
+        JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("1","男");
+        map.put("0","女");
+        JContext context = new JContext();
+        context.put("dict",map);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        Workbook workbook=handler.getWorkBook();
+        workbook.write(fileOutputStream);
     }
 }
