@@ -141,7 +141,11 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
     }
     @Override
     public String visitSeriesName(JQuickExcelParser.SeriesNameContext ctx) {
-        return ctx.IDENTIFIER().getText();
+        if(ctx.IDENTIFIER()!=null) {
+            return ctx.IDENTIFIER().getText();
+        }
+        return null;
+
     }
     @Override
     public List<Double> visitSeriesData(JQuickExcelParser.SeriesDataContext ctx) {
