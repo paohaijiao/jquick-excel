@@ -1,4 +1,4 @@
-// Generated from D:/idea/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
+// Generated from D:/my/jthornruleGrammer/excel/JQuickExcel.g4 by ANTLR 4.13.2
 package com.github.paohaijiao.parser;
 
 import org.antlr.v4.runtime.*;
@@ -3815,7 +3815,7 @@ public class JQuickExcelParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ChartTitleContext extends ParserRuleContext {
-		public TerminalNode IDENTIFIER() { return getToken(JQuickExcelParser.IDENTIFIER, 0); }
+		public TerminalNode STRING() { return getToken(JQuickExcelParser.STRING, 0); }
 		public ChartTitleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3846,7 +3846,7 @@ public class JQuickExcelParser extends Parser {
 			setState(553);
 			match(T__5);
 			setState(554);
-			match(IDENTIFIER);
+			match(STRING);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5553,7 +5553,7 @@ public class JQuickExcelParser extends Parser {
 		"\u0000\u0224\u0225\u0003p8\u0000\u0225o\u0001\u0000\u0000\u0000\u0226"+
 		"\u0227\u0007\u0002\u0000\u0000\u0227q\u0001\u0000\u0000\u0000\u0228\u0229"+
 		"\u00050\u0000\u0000\u0229\u022a\u0005\u0006\u0000\u0000\u022a\u022b\u0005"+
-		"?\u0000\u0000\u022bs\u0001\u0000\u0000\u0000\u022c\u022d\u00051\u0000"+
+		"@\u0000\u0000\u022bs\u0001\u0000\u0000\u0000\u022c\u022d\u00051\u0000"+
 		"\u0000\u022d\u022e\u0005\u0006\u0000\u0000\u022e\u022f\u0005?\u0000\u0000"+
 		"\u022fu\u0001\u0000\u0000\u0000\u0230\u0231\u00052\u0000\u0000\u0231\u0232"+
 		"\u0005\u0006\u0000\u0000\u0232\u0233\u0005?\u0000\u0000\u0233w\u0001\u0000"+

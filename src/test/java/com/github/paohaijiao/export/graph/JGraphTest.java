@@ -16,10 +16,12 @@
 package com.github.paohaijiao.export.graph;
 
 import com.github.paohaijiao.enums.JExcelChartType;
+import com.github.paohaijiao.executor.JQuickExcelCommonExportExecutor;
 import com.github.paohaijiao.export.model.JDataModel;
 import com.github.paohaijiao.factory.JExcelChartFactory;
 import com.github.paohaijiao.graph.model.JChartData;
 import com.github.paohaijiao.graph.model.JSeriesData;
+import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
@@ -49,54 +51,7 @@ import java.util.*;
  * @description
  */
 public class JGraphTest {
-    public static List<JDataModel> getData() {
-        List<JDataModel> students = new ArrayList<>();
-        students.add(new JDataModel(1, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(2, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(3, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(4, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(5, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(6, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(7, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(8, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(9, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(10, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(11, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(12, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(13, 1, 1, 1, 1, 1, 1));
-        students.add(new JDataModel(14, 1, 1, 1, 1, 1, 1));
-        return students;
-    }
-    @Test
-    public void rangeMerge() throws IOException {
-        String config = "EXPORT WITH GRAPH = {\n" +
-                "    TYPE = LINE,\n" +
-                "    TITLE = SmartphoneMarketShare2023,\n" +
-                "    CATEGORIES = [\"Apple\", \"Samsung\", \"Xiaomi\", \"OPPO\", \"vivo\", \"Other\"],\n" +
-                "    SERIES = [{\n" +
-                "        NAME = MarketShare,\n" +
-                "        DATA = [38.5, 22.3, 15.7, 10.2, 8.5, 4.8]\n" +
-                "    }]\n" +
-                "}";
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        for (int i = 0; i < 2; i++) {
-            Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
-        }
-        System.out.println(config);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.exportConfig();
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//pie.xlsx");
-        JContext context=new JContext();
-        List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        context.put("fos", fileOutputStream);
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
-        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
-    }
+
     @Test
     public void column() {
         JChartData chartData = new JChartData();
@@ -146,6 +101,34 @@ public class JGraphTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    public void bar1() throws IOException {
+        String config = "EXPORT WITH GRAPH = {\n" +
+                "    TYPE = LINE,\n" +
+                "    TITLE = '2023年季度销售数据',\n" +
+                "    CATEGORIES = [\"第一季度\", \"第二季度\", \"第三季度\", \"第四季度\"],\n" +
+                "    SERIES = [{\n" +
+                "        NAME = 产品A,\n" +
+                "        DATA = [450, 520, 480, 600]\n" +
+                "    },\n" +
+                "   {" +
+                " NAME = 产品B,"+
+                "       DATA = [320, 380, 420, 500]" +
+                " }\n"+
+                ",\n" +
+        "   {" +
+                " NAME = 产品C,"+
+                "       DATA = [280, 310, 350, 400]" +
+                " }\n"+
+                "]\n" +
+                "}";
+        System.out.println(config);
+        JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
+        JExcelExportModel excelExportModel =(JExcelExportModel)executor.execute(config);
+        JExcelExportHandler handler=new JExcelExportHandler(excelExportModel,null,null);
+        System.out.println(handler);
+
     }
     @Test
     public void bar3d() {

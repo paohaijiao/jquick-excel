@@ -16,6 +16,7 @@
  */
 package com.github.paohaijiao.visitor;
 
+import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.graph.model.JSeriesData;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
@@ -62,6 +63,7 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Void visitChartType(JQuickExcelParser.ChartTypeContext ctx) {
+        JAssert.notNull(ctx.chartTypeValue(),"chartType not null");
         String chartType=ctx.chartTypeValue().getText();
         config.getGraph().setChartType(chartType);
         return null;
@@ -69,25 +71,33 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Object visitChartTitle(JQuickExcelParser.ChartTitleContext ctx) {
-        String title = ctx.IDENTIFIER().getText();
-        String titleString= JStringUtils.trim(title);
-        config.getGraph().setTitle(titleString);
+        if(null!=ctx.STRING()) {
+            String title = ctx.STRING().getText();
+            String titleString= JStringUtils.trim(title);
+            config.getGraph().setTitle(titleString);
+        }
         return null;
     }
 
     @Override
     public Object visitCategoryAxis(JQuickExcelParser.CategoryAxisContext ctx) {
-        String axis = ctx.IDENTIFIER().getText();
-        String titleString= JStringUtils.trim(axis);
-        config.getGraph().setCategoryAxisTitle(titleString);
+        if(null!=ctx.IDENTIFIER()) {
+            String axis = ctx.IDENTIFIER().getText();
+            String titleString= JStringUtils.trim(axis);
+            config.getGraph().setCategoryAxisTitle(titleString);
+        }
+
         return null;
     }
 
     @Override
     public Void visitValueAxis(JQuickExcelParser.ValueAxisContext ctx) {
-        String axis = ctx.IDENTIFIER().getText();
-        String titleString= JStringUtils.trim(axis);
-        config.getGraph().setValueAxisTitle(titleString);
+        if(null!=ctx.IDENTIFIER()) {
+            String axis = ctx.IDENTIFIER().getText();
+            String titleString= JStringUtils.trim(axis);
+            config.getGraph().setValueAxisTitle(titleString);
+        }
+
         return null;
     }
 

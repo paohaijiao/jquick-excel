@@ -2,6 +2,7 @@ package com.github.paohaijiao.merge.strategy;
 
 import com.github.paohaijiao.enums.JMergeValueType;
 import com.github.paohaijiao.merge.JMergeHandler;
+import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.util.JMergeUtil;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -14,9 +15,12 @@ public class JRowMergeHandler implements JMergeHandler {
 
     private final Sheet sheet;
 
-    public JRowMergeHandler(Workbook workbook, Sheet sheet) {
+    private JContext context;
+
+    public JRowMergeHandler(Workbook workbook, Sheet sheet, JContext context) {
         this.workbook = workbook;
         this.sheet = sheet;
+        this.context = context;
     }
 
     @Override
@@ -34,11 +38,10 @@ public class JRowMergeHandler implements JMergeHandler {
             throw new IllegalArgumentException(
                     "Invalid column range: startCol must be <= endCol");
         }
-        JMergeUtil.setMergedRegionValue(
-                workbook,
-                sheet,
+        JMergeUtil merge=new JMergeUtil(workbook,sheet,context);
+        merge.setMergedRegionValue(
                 rowIndex,
-                rowIndex,  // Same row for start and end since we're merging horizontally
+                rowIndex,
                 startCol,
                 endCol,
                 mergeType

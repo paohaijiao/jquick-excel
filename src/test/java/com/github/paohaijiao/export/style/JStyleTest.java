@@ -15,6 +15,7 @@
  */
 package com.github.paohaijiao.export.style;
 
+import com.github.paohaijiao.executor.JQuickExcelCommonExportExecutor;
 import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
@@ -34,10 +35,7 @@ import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * packageName com.github.paohaijiao.export.style
@@ -49,6 +47,7 @@ import java.util.Map;
  * @description
  */
 public class JStyleTest {
+
     public static List<JStudentModel> getData() {
         List<JStudentModel> students = new ArrayList<>();
         students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
@@ -57,100 +56,46 @@ public class JStyleTest {
         return students;
     }
     @Test
-    public void testRowFormulas() throws IOException {
-        String config = "EXPORT WITH\n" +
-                "  SHEET=\"销售报表\",\n" +
-                "  HEADER=true,\n" +
-                "  FOOTER=\"NIXSAXSAXSAXASXSAXSAXSA\",\n" +
+    public void ABS() throws IOException {
+        String rule = "EXPORT  WITH\n" +
+                "SHEET=\"学生表\",\n" +
+                "HEADER=true,\n" +
+                "MAPPING={\n" +
+                "\t\"id\":\"主键\",\n" +
+                "\t\"name\":\"姓名\",\n" +
+                "\t\"gender\":\"性别\",\n" +
+                "\t\"age\":\"年龄\",\n" +
+                "\t\"enrollmentDate\":\"入学时间\",\n" +
+                "\t\"className\":\"班级\",\n" +
+                "\t\"ignoreField\":\"是否忽略\"\n" +
+                "},\n" +
+                "FORMULAS={\n" +
+                "D5:'ABS(D2)'"+
+                "}," +
                 "  STYLE={\n" +
                 "    ROW 1: {\n" +
                 "      fontName: Arial,\n" +
                 "      fontHeightInPoints: 12,\n" +
                 "      italic: true,\n" +
+                "      color: yellow,\n" +
                 "      bold: true\n" +
-                "    },\n" +
-                "    ROW 2..5: {\n" +
-                "      fontName: Arial,\n" +
-                "      underLine: uSingle,\n" +
-                "      strikeout: true,\n" +
-                "      color: red\n" +
-                "    }\n" +
-                "}";
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        for (int i = 0; i < 2; i++) {
-            Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
-        }
-        System.out.println(config);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.exportConfig();
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//styleRow.xlsx");
-        JContext context=new JContext();
-        List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        context.put("fos", fileOutputStream);
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
-        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
-        System.out.println(result);
-    }
-    @Test
-    public void testCellFormulas() throws IOException {
-        String config = "EXPORT WITH  \n" +
-                "  STYLE={\n" +
-                "    C1: { " +
-                "color: red " +
-                "" +
-                "},\n" +
-                "    F1: { color: red }\n" +
-                "  }";
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        for (int i = 0; i < 2; i++) {
-            Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
-        }
-        System.out.println(config);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.exportConfig();
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//styleCell.xlsx");
-        JContext context=new JContext();
-        List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        context.put("fos", fileOutputStream);
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
-        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
-    }
-    @Test
-    public void testColFormulas() throws IOException {
-        String config = "EXPORT WITH  \n" +
-                "  STYLE={\n" +
-                "    COL A: { bottomBorderColor: black },\n" +
-                "    COL C..D: { topBorderColor: black }\n" +
-                "  }\n";
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        for (int i = 0; i < 2; i++) {
-            Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(i + 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((i + 1) * 10);  // B1:B10 = 10-100
-        }
-        System.out.println(config);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(config));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.exportConfig();
-        JContext context=new JContext();
-        List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
-        JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
-        JExcelExportHandler excelProcessor = new JExcelExportHandler(result,data);
-        Workbook workbook1=excelProcessor.getWorkBook();
-        workbook1.write(new FileOutputStream("d://test//haha.xlsx"));
+                "    }"+
 
+                "}"+
+                "" +
+                "\n";
+        System.out.println(rule);
+        List<Map<String, Object>> data = JObjectConverter.convert(getData());
+        FileOutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
+        JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
+        JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("1","男");
+        map.put("0","女");
+        JContext context = new JContext();
+        context.put("dict",map);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        Workbook workbook=handler.getWorkBook();
+        workbook.write(fileOutputStream);
     }
 }

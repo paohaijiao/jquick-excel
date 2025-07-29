@@ -5,6 +5,7 @@ import com.github.paohaijiao.merge.JMergeHandler;
 import com.github.paohaijiao.merge.strategy.JColumnMergeHandler;
 import com.github.paohaijiao.merge.strategy.JRangeMergeHandler;
 import com.github.paohaijiao.merge.strategy.JRowMergeHandler;
+import com.github.paohaijiao.param.JContext;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -13,20 +14,22 @@ public class JMergeHandlerContext {
 
     private final Workbook workbook;
     private final Sheet sheet;
+    private final JContext context;
 
-    public JMergeHandlerContext(Workbook workbook, Sheet sheet) {
+    public JMergeHandlerContext(Workbook workbook, Sheet sheet,JContext context) {
         this.workbook = workbook;
         this.sheet = sheet;
+        this.context = context;
     }
 
     public JMergeHandler createHandler(JMergeType mergeType) {
         switch (mergeType) {
             case ROW:
-                return new JRowMergeHandler(workbook, sheet);
+                return new JRowMergeHandler(workbook, sheet,context);
             case COLUMN:
-                return new JColumnMergeHandler(workbook, sheet);
+                return new JColumnMergeHandler(workbook, sheet,context);
             case RANGE:
-                return new JRangeMergeHandler(workbook, sheet);
+                return new JRangeMergeHandler(workbook, sheet,context);
             default:
                 throw new IllegalArgumentException("Unsupported merge type: " + mergeType);
         }
