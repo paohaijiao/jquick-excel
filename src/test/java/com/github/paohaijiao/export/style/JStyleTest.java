@@ -70,9 +70,9 @@ public class JStyleTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'ABS(D2)'"+
-                "}," +
-                "  STYLE={\n" +
+                "\tD5:'ABS(D2)'\n" +
+                "},  \n" +
+                "STYLE={\n" +
                 "    ROW 1: {\n" +
                 "      fontName: Arial,\n" +
                 "      fontHeightInPoints: 12,\n" +
