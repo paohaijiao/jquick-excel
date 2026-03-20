@@ -825,7 +825,7 @@ FORMULAS={
       </pre>
     </td>
     <td style="width: 48%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./images/column.svg" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <img src="./images/column.png" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
       <div style="font-size: 0.9em; color: #666; margin-top: 10px;">column</div>
     </td>
   </tr>
