@@ -790,22 +790,46 @@ FORMULAS={
 | 3D图表     | 地形高度示例   | 三维数据     |
 ### 基础结构
 #### 图表配置采用类 JSON 格式的领域特定语言 (DSL)，基础结构如下
-```string
-EXPORT WITH GRAPH = {
-    TYPE = 图表类型,
-    TITLE = "图表标题",
-    [CATEGORY_AXIS = "分类轴标题",]
-    [VALUE_AXIS = "数值轴标题",]
-    CATEGORIES = [分类值1, 分类值2, ...],
-    SERIES = [
-        {
-            NAME = "系列名称",
-            DATA = [数据值1, 数据值2, ...]
-        },
-        ...
-    ]
-}
+
+```string 
+// ============================================================================
+#  column chart
+// ============================================================================
 ```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 30%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>column</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+        JChartData chartData = new JChartData();
+        chartData.setTitle("销售数据统计");
+        chartData.setCategoryAxisTitle("产品");
+        chartData.setValueAxisTitle("销量");
+        chartData.setCategories(Arrays.asList("产品A", "产品B", "产品C", "产品D"));
+        JSeriesData series1 = new JSeriesData();
+        series1.setName("第一季度");
+        series1.setData(Arrays.asList(120, 200, 150, 180));
+        JSeriesData series2 = new JSeriesData();
+        series2.setName("第二季度");
+        series2.setData(Arrays.asList(180, 210, 190, 220));
+        chartData.setSeries(Arrays.asList(series1, series2));
+        XSSFWorkbook workbook = JExcelChartFactory.createWorkbookWithChart(chartData, JExcelChartType.COLUMN, "销售报表");
+        try (FileOutputStream out = new FileOutputStream("D://test//SalesReport.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+          </code>
+      </pre>
+    </td>
+    <td style="width: 48%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./images/column.svg" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">column</div>
+    </td>
+  </tr>
+</table>
 # 图表配置关键字说明
 
 ## 1. TYPE（必填）
