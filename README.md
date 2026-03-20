@@ -856,7 +856,8 @@ FORMULAS={
         chartData.setTitle("销售数据统计");
         chartData.setCategoryAxisTitle("产品");
         chartData.setValueAxisTitle("销量");
-        chartData.setCategories(Arrays.asList("产品A", "产品B", "产品C", "产品D"));
+        chartData.setCategories(Arrays.asList(
+        "产品A", "产品B", "产品C", "产品D"));
         JSeriesData series1 = new JSeriesData();
         series1.setName("第一季度");
         series1.setData(Arrays.asList(120, 200, 150, 180));
@@ -864,8 +865,12 @@ FORMULAS={
         series2.setName("第二季度");
         series2.setData(Arrays.asList(180, 210, 190, 220));
         chartData.setSeries(Arrays.asList(series1, series2));
-        XSSFWorkbook workbook = JExcelChartFactory.createWorkbookWithChart(chartData, JExcelChartType.COLUMN, "销售报表");
-        try (FileOutputStream out = new FileOutputStream("D://test//SalesReport.xlsx")) {
+        XSSFWorkbook workbook = JExcelChartFactory.
+        createWorkbookWithChart(chartData, JExcelChartType
+        .COLUMN, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+           "D://test//SalesReport.xlsx")
+        ) {
             JExcelChartFactory.writeWorkbookToStream(workbook, out);
         } catch (IOException e) {
             e.printStackTrace();
@@ -880,32 +885,6 @@ FORMULAS={
   </tr>
 </table>
 
-```java
-  String rule = "EXPORT WITH GRAPH = {\n" +
-  "    TYPE = SCATTER,\n" +
-  "    TITLE = \"身高体重分布\",\n" +
-  "    CATEGORY_AXIS = \"身高(cm)\",\n" +
-  "    VALUE_AXIS = \"体重(kg)\",\n" +
-  "    CATEGORIES = [\"160\", \"165\", \"170\", \"175\", \"180\", \"185\", \"190\"],\n" +
-  "    SERIES = [{\n" +
-  "        NAME = \"男性\",\n" +
-  "        DATA = [55, 60, 65, 70, 75, 80, 85]\n" +
-  "    }, {\n" +
-  "        NAME = \"女性\",\n" +
-  "        DATA = [50, 55, 58, 62, 65, 68, 70]\n" +
-  "    }]\n" +
-  "}";
-  JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-  JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-  JExcelExportHandler excelExportHandler = new JExcelExportHandler(config, new ArrayList<>());
-  excelExportHandler.exportData(config, new ArrayList<>());
-  try (FileOutputStream out = new FileOutputStream("D://test//scatter.xlsx")) {
-  excelExportHandler.getWorkBook().write(out);
-  System.out.println("Excel文件生成成功！");
-  } catch (IOException e) {
-  e.printStackTrace();
-  }
-```
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
