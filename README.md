@@ -1044,6 +1044,46 @@ FORMULAS={
   </tr>
 </table>
 
+```string 
+// ============================================================================
+#  饼状图 pie chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>饼状图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+           JChartData chartData = new JChartData();
+        chartData.setTitle("2023年智能手机市场份额");
+        JSeriesData marketShare = new JSeriesData();
+        marketShare.setName("市场份额");
+        marketShare.setData(Arrays.asList(38.5, 22.3,
+    15.7, 10.2, 8.5, 4.8));
+        chartData.setCategories(Arrays.asList(
+                "Apple", "Samsung", "Xiaomi", "OPPO", "vivo", "其他"
+        ));
+        chartData.setSeries(Collections.singletonList(marketShare));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.PIE, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+        "D://test//pie.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/pie.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">pie</div>
+    </td>
+  </tr>
+</table>
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
