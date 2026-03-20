@@ -790,61 +790,21 @@ FORMULAS={
 | 3D图表     | 地形高度示例   | 三维数据     |
 ### 基础结构
 #### 图表配置采用类 JSON 格式的领域特定语言 (DSL)，基础结构如下
-
-```string 
-// ============================================================================
-#  柱状图 column chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 30%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>柱状图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-        JChartData chartData = new JChartData();
-        chartData.setTitle("销售数据统计");
-        chartData.setCategoryAxisTitle("产品");
-        chartData.setValueAxisTitle("销量");
-        chartData.setCategories(Arrays.asList("产品A", "产品B", "产品C", "产品D"));
-        JSeriesData series1 = new JSeriesData();
-        series1.setName("第一季度");
-        series1.setData(Arrays.asList(120, 200, 150, 180));
-        JSeriesData series2 = new JSeriesData();
-        series2.setName("第二季度");
-        series2.setData(Arrays.asList(180, 210, 190, 220));
-        chartData.setSeries(Arrays.asList(series1, series2));
-        XSSFWorkbook workbook = JExcelChartFactory.createWorkbookWithChart(chartData, JExcelChartType.COLUMN, "销售报表");
-        try (FileOutputStream out = new FileOutputStream("D://test//SalesReport.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-          </code>
-      </pre>
-    </td>
-    <td style="width: 48%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/column.png" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">column</div>
-    </td>
-  </tr>
-</table>
 # 图表配置关键字说明
 
 ## 1. TYPE（必填）
 - **说明**：指定图表类型
 - **支持类型**：
-  - `LINE`（折线图）
-  - `COLUMN`（柱状图）
-  - `BAR`（条形图）
-  - `BAR3D`（3D 条形图）
-  - `PIE`（饼图）
-  - `AREA`（面积图）
-  - `AREA3D`（3D 面积图）
-  - `SCATTER`（散点图）
-  - `RADAR`（雷达图）
-  - `SURFACE`（曲面图）
+    - `LINE`（折线图）
+    - `COLUMN`（柱状图）
+    - `BAR`（条形图）
+    - `BAR3D`（3D 条形图）
+    - `PIE`（饼图）
+    - `AREA`（面积图）
+    - `AREA3D`（3D 面积图）
+    - `SCATTER`（散点图）
+    - `RADAR`（雷达图）
+    - `SURFACE`（曲面图）
 
 ## 2. TITLE（必填）
 - **说明**：图表的标题文本
@@ -871,15 +831,55 @@ FORMULAS={
 - **类型**：数组
 - **内容**：包含字符串或数值类型的分类值集合
 - **示例**：
-  - `CATEGORIES = ["1月", "2月", "3月", "4月"]`
-  - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
+    - `CATEGORIES = ["1月", "2月", "3月", "4月"]`
+    - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
 
 ## 6. SERIES（必填）
 - **说明**：图表的数据系列集合，每个系列代表一组相关数据
 - **类型**：数组，包含一个或多个数据系列对象
 - **每个系列对象包含**：
-  - `NAME`：系列名称（字符串类型，需用引号包裹）
-  - `DATA`：系列数据（数组类型，包含数值集合）
+    - `NAME`：系列名称（字符串类型，需用引号包裹）
+    - `DATA`：系列数据（数组类型，包含数值集合）
+```string 
+// ============================================================================
+#  柱状图 column chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>柱状图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+        JChartData chartData = new JChartData();
+        chartData.setTitle("销售数据统计");
+        chartData.setCategoryAxisTitle("产品");
+        chartData.setValueAxisTitle("销量");
+        chartData.setCategories(Arrays.asList("产品A", "产品B", "产品C", "产品D"));
+        JSeriesData series1 = new JSeriesData();
+        series1.setName("第一季度");
+        series1.setData(Arrays.asList(120, 200, 150, 180));
+        JSeriesData series2 = new JSeriesData();
+        series2.setName("第二季度");
+        series2.setData(Arrays.asList(180, 210, 190, 220));
+        chartData.setSeries(Arrays.asList(series1, series2));
+        XSSFWorkbook workbook = JExcelChartFactory.createWorkbookWithChart(chartData, JExcelChartType.COLUMN, "销售报表");
+        try (FileOutputStream out = new FileOutputStream("D://test//SalesReport.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+          </code>
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/column.png" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">column</div>
+    </td>
+  </tr>
+</table>
+
 ```java
   String rule = "EXPORT WITH GRAPH = {\n" +
   "    TYPE = SCATTER,\n" +
