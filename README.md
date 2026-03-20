@@ -793,14 +793,14 @@ FORMULAS={
 
 ```string 
 // ============================================================================
-#  column chart
+#  柱状图 column chart
 // ============================================================================
 ```
 
 <table style="width: 100%; border: none; border-collapse: collapse;">
   <tr>
     <td style="width: 30%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>column</strong><br>
+      <strong>柱状图</strong><br>
       <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
           <code class="language-java">
         JChartData chartData = new JChartData();
