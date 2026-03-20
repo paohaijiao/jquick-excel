@@ -1188,6 +1188,104 @@ FORMULAS={
   </tr>
 </table>
 
+```string 
+// ============================================================================
+#  散点图 scatter chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>散点图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+        JChartData chartData = new JChartData();
+        chartData.setTitle("身高体重分布");
+        chartData.setCategoryAxisTitle("身高(cm)");
+        chartData.setValueAxisTitle("体重(kg)");
+        chartData.setCategories(Arrays.asList(
+   "160", "165", "170", "175", "180", "185", "190"
+        ));
+        JSeriesData male = new JSeriesData();
+        male.setName("男性");
+        male.setData(Arrays.asList(55, 60, 65, 70, 
+        75, 80, 85));
+        JSeriesData female = new JSeriesData();
+        female.setName("女性");
+        female.setData(Arrays.asList(50, 55, 58, 
+        62, 65, 68, 70));
+        chartData.setSeries(Arrays.asList(male, female));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.SCATTER, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+        "D://test//scatter.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         </code>
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/scatter.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">scatter</div>
+    </td>
+  </tr>
+</table>
+
+
+```string 
+// ============================================================================
+#  雷达图 radar chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>雷达图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+       JChartData chartData = new JChartData();
+        chartData.setTitle("员工能力评估");
+        chartData.setCategories(Arrays.asList(
+                "编程能力", "沟通能力", "设计能力",
+                "解决问题", "团队合作", "学习能力"
+        ));
+        JSeriesData employeeA = new JSeriesData();
+        employeeA.setName("员工A");
+        employeeA.setData(Arrays.asList(90, 70,
+        85, 80, 75, 88));
+        JSeriesData employeeB = new JSeriesData();
+        employeeB.setName("员工B");
+        employeeB.setData(Arrays.asList(75, 85, 70,
+        90, 80, 75));
+        chartData.setSeries(Arrays.asList(employeeA, 
+        employeeB));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.RADAR, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+        "D://test//radar.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         </code>
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/radar.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">radar</div>
+    </td>
+  </tr>
+</table>
+
+
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
