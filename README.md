@@ -1286,6 +1286,66 @@ FORMULAS={
 </table>
 
 
+```string 
+// ============================================================================
+#  surface surface chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>surface</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+        JChartData chartData = new JChartData();
+        chartData.setTitle("地形高度示例");
+        chartData.setCategoryAxisTitle("X坐标");
+        chartData.setValueAxisTitle("Y坐标");
+        chartData.setCategories(Arrays.asList(
+        "1", "2", "3", "4", "5"));
+        JSeriesData row1 = new JSeriesData();
+        row1.setName("Y=1");
+        row1.setData(Arrays.asList(10, 15, 25, 
+        30, 25));
+        JSeriesData row2 = new JSeriesData();
+        row2.setName("Y=2");
+        row2.setData(Arrays.asList(15, 20, 35, 
+        40, 35));
+        JSeriesData row3 = new JSeriesData();
+        row3.setName("Y=3");
+        row3.setData(Arrays.asList(25, 35, 50, 
+        55, 50));
+        JSeriesData row4 = new JSeriesData();
+        row4.setName("Y=4");
+        row4.setData(Arrays.asList(20, 30, 45, 
+        50, 45));
+        JSeriesData row5 = new JSeriesData();
+        row5.setName("Y=5");
+        row5.setData(Arrays.asList(15, 25, 35, 
+        40, 35));
+        chartData.setSeries(Arrays.asList(row1, row2, 
+        row3, row4, row5));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.SURFACE, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+        "D://test//surface.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         </code>
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/surface.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">surface</div>
+    </td>
+  </tr>
+</table>
+
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
