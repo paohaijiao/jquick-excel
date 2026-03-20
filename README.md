@@ -937,6 +937,53 @@ FORMULAS={
   </tr>
 </table>
 
+```string 
+// ============================================================================
+#  条形图 bar3d chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>条形图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+        JChartData chartData = new JChartData();
+        chartData.setTitle("产品季度销售(3D)");
+        chartData.setCategoryAxisTitle("产品");
+        chartData.setValueAxisTitle("销售额(万元)");
+        chartData.setCategories(Arrays.asList("笔记本"
+        , "手机", "平板", "显示器", "配件"));
+        JSeriesData q1 = new JSeriesData();
+        q1.setName("第一季度");
+        q1.setData(Arrays.asList(450, 680, 320, 280, 190));
+        JSeriesData q2 = new JSeriesData();
+        q2.setName("第二季度");
+        q2.setData(Arrays.asList(520, 720, 380, 310, 210));
+        JSeriesData q3 = new JSeriesData();
+        q3.setName("第三季度");
+        q3.setData(Arrays.asList(480, 750, 350, 330, 230));
+        chartData.setSeries(Arrays.asList(q1, q2, q3));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.BAR3D, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+          "D://test//bar3D.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/bar3d.png" alt="bar3d " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">bar3d</div>
+    </td>
+  </tr>
+</table>
+
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
