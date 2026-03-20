@@ -840,6 +840,7 @@ FORMULAS={
 - **每个系列对象包含**：
     - `NAME`：系列名称（字符串类型，需用引号包裹）
     - `DATA`：系列数据（数组类型，包含数值集合）
+
 ```string 
 // ============================================================================
 #  柱状图 column chart
@@ -881,6 +882,57 @@ FORMULAS={
     <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
       <img src="./src/main/resources/images/column.png" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
       <div style="font-size: 0.9em; color: #666; margin-top: 10px;">column</div>
+    </td>
+  </tr>
+</table>
+
+```string 
+// ============================================================================
+#  条形图 bar chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>条形图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+       JChartData salesData = new JChartData();
+        salesData.setTitle("2023年季度销售数据");
+        salesData.setCategoryAxisTitle("季度");
+        salesData.setValueAxisTitle("销售额(万元)");
+        salesData.setCategories(Arrays.asList("第一季度",
+        "第二季度", "第三季度", "第四季度"));
+        JSeriesData productA = new JSeriesData();
+        productA.setName("产品A");
+        productA.setData(Arrays.asList(450, 520, 480, 600));
+        JSeriesData productB = new JSeriesData();
+        productB.setName("产品B");
+        productB.setData(Arrays.asList(320, 380, 420, 500));
+        JSeriesData productC = new JSeriesData();
+        productC.setName("产品C");
+        productC.setData(Arrays.asList(280, 310, 350, 400));
+        salesData.setSeries(Arrays.asList(productA, productB,
+        productC));
+        salesData.setSeries(Arrays.asList(productA, productB,
+         productC));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                salesData, JExcelChartType.BAR, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+         "D://test//bar.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook,
+           out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/bar.png" alt="bar " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">bar</div>
     </td>
   </tr>
 </table>
