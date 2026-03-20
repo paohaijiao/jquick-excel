@@ -984,6 +984,66 @@ FORMULAS={
   </tr>
 </table>
 
+
+```string 
+// ============================================================================
+#  折线图 line chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>折线图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+        JChartData chartData = new JChartData();
+        chartData.setTitle("2023年北京月平均温度变化");
+        chartData.setCategoryAxisTitle("月份");
+        chartData.setValueAxisTitle("温度(℃)");
+        chartData.setCategories(Arrays.asList(
+                "1月", "2月", "3月", "4月", "5月", "6月",
+                "7月", "8月", "9月", "10月", "11月", "12月"
+        ));
+        JSeriesData avgTemp = new JSeriesData();
+        avgTemp.setName("平均温度");
+        avgTemp.setData(Arrays.asList(
+                -3.2, 0.5, 7.8, 15.2, 21.3, 25.7,
+                27.9, 26.8, 21.5, 14.6, 6.3, -1.0
+        ));
+        JSeriesData maxTemp = new JSeriesData();
+        maxTemp.setName("最高温度");
+        maxTemp.setData(Arrays.asList(
+                2.1, 5.3, 12.7, 20.5, 26.8, 30.4,
+                32.6, 31.5, 27.2, 20.8, 12.5, 4.2
+        ));
+        JSeriesData minTemp = new JSeriesData();
+        minTemp.setName("最低温度");
+        minTemp.setData(Arrays.asList(
+                -8.5, -4.2, 2.9, 9.9, 15.8, 21.0,
+                23.2, 22.1, 15.8, 8.4, 0.1, -6.2
+        ));
+        chartData.setSeries(Arrays.asList(avgTemp,
+        maxTemp, minTemp));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.LINE, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+           "D://test//line.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/line.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">line</div>
+    </td>
+  </tr>
+</table>
+
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
