@@ -928,6 +928,7 @@ FORMULAS={
         } catch (IOException e) {
             e.printStackTrace();
         }
+         </code>
       </pre>
     </td>
     <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
@@ -975,6 +976,7 @@ FORMULAS={
         } catch (IOException e) {
             e.printStackTrace();
         }
+         </code>
       </pre>
     </td>
     <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
@@ -1035,6 +1037,7 @@ FORMULAS={
         } catch (IOException e) {
             e.printStackTrace();
         }
+         </code>
       </pre>
     </td>
     <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
@@ -1076,6 +1079,7 @@ FORMULAS={
         } catch (IOException e) {
             e.printStackTrace();
         }
+         </code>
       </pre>
     </td>
     <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
@@ -1124,6 +1128,7 @@ FORMULAS={
         } catch (IOException e) {
             e.printStackTrace();
         }
+         </code>
       </pre>
     </td>
     <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
