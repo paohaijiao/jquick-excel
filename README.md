@@ -1084,6 +1084,56 @@ FORMULAS={
     </td>
   </tr>
 </table>
+
+```string 
+// ============================================================================
+#  面积图 area chart
+// ============================================================================
+```
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr>
+    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
+      <strong>面积图</strong><br>
+      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
+          <code class="language-java">
+          JChartData chartData = new JChartData();
+        chartData.setTitle("季度销售趋势分析");
+        chartData.setCategoryAxisTitle("季度");
+        chartData.setValueAxisTitle("销售额(万元)");
+        chartData.setCategories(Arrays.asList("Q1", 
+        "Q2", "Q3", "Q4"));
+        JSeriesData productA = new JSeriesData();
+        productA.setName("产品线A");
+        productA.setData(Arrays.asList(120, 150, 180, 210));
+        JSeriesData productB = new JSeriesData();
+        productB.setName("产品线B");
+        productB.setData(Arrays.asList(80, 110, 130, 170));
+        JSeriesData productC = new JSeriesData();
+        productC.setName("产品线C");
+        productC.setData(Arrays.asList(60, 75, 90, 120));
+        chartData.setSeries(Arrays.asList(productA, 
+        productB, productC));
+        XSSFWorkbook workbook = JExcelChartFactory
+        .createWorkbookWithChart(
+                chartData, JExcelChartType.AREA, "销售报表");
+        try (FileOutputStream out = new FileOutputStream(
+        "D://test//area.xlsx")) {
+            JExcelChartFactory.writeWorkbookToStream(workbook, out);
+            System.out.println("Excel文件生成成功！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      </pre>
+    </td>
+    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
+      <img src="./src/main/resources/images/area.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
+      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">area</div>
+    </td>
+  </tr>
+</table>
+
+
 ## 🎨 样式配置
 ### 🎨 行 & 字体样式配置参数
 | 元素名称 | 描述 | 取值/格式 |
