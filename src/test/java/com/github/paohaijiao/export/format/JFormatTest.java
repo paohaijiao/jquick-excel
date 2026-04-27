@@ -21,6 +21,7 @@ import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.util.JObjectConverter;
+import com.github.paohaijiao.util.JRowsUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
@@ -71,7 +72,7 @@ public class JFormatTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context, JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }

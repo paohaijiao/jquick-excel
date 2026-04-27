@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<excels namespace="com.github.paohaijiao.xml.export.JQuickExcelExportService">
+
+    <excel name="exportExcel" returnClass="void">
+        <![CDATA[
+            EXPORT  WITH
+                SHEET="学生表",
+                HEADER=true,
+                MAPPING={
+                    "id":"主键",
+                    "name":"姓名",
+                    "gender":"性别",
+                    "age":"年龄",
+                    "enrollmentDate":"入学时间",
+                    "className":"班级",
+                    "ignoreField":"是否忽略"
+                },
+                FORMULAS={
+                    D5:'ABS(D2)'
+                },
+                STYLE={
+                    ROW 1: {
+                      fontName: Arial,
+                      fontHeightInPoints: 12,
+                      italic: true,
+                      color: yellow,
+                      bold: true
+                    }}
+        ]]>
+    </excel>
+
+
+
+</excels>

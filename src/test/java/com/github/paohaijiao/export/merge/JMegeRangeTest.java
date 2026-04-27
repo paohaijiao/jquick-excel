@@ -23,6 +23,7 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JObjectConverter;
+import com.github.paohaijiao.util.JRowsUtil;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -83,7 +84,7 @@ public class JMegeRangeTest {
         JContext context = new JContext();
         context.put("dict",map);
         context.put("value","汇总");
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context, JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -102,7 +103,7 @@ public class JMegeRangeTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -122,7 +123,7 @@ public class JMegeRangeTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -142,7 +143,7 @@ public class JMegeRangeTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -162,7 +163,7 @@ public class JMegeRangeTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }

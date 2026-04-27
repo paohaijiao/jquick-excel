@@ -27,6 +27,7 @@ import com.github.paohaijiao.merge.JMergeHandler;
 import com.github.paohaijiao.merge.context.JMergeHandlerContext;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.statement.JQuickRow;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -41,7 +42,7 @@ public class JExcelExportHandler extends JExcelCommonHandler{
 
     private JExcelExportModel config=new JExcelExportModel();
 
-    public JExcelExportHandler(JExcelExportModel config, JContext context,List<Map<String, Object>> data) {
+    public JExcelExportHandler(JExcelExportModel config, JContext context,List<JQuickRow> data) {
         this.config = config;
         this.context = context;
         try {
@@ -51,7 +52,7 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         }
     }
 
-    public JExcelExportHandler(JExcelExportModel config,List<Map<String, Object>> data) {
+    public JExcelExportHandler(JExcelExportModel config,List<JQuickRow> data) {
         this.config = config;
         this.context = new JContext();
         try {
@@ -62,7 +63,7 @@ public class JExcelExportHandler extends JExcelCommonHandler{
     }
 
 
-    public void exportData(JExcelExportModel config,List<Map<String, Object>> data) throws IOException {
+    public void exportData(JExcelExportModel config,List<JQuickRow> data) throws IOException {
         workbook = new XSSFWorkbook();
         Object sheet = config.getSheet();
         if (null != sheet) {

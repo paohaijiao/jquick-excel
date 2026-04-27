@@ -20,6 +20,7 @@ import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.util.JObjectConverter;
+import com.github.paohaijiao.util.JRowsUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
@@ -59,7 +60,7 @@ public class JMappingTest {
         FileOutputStream fileOutputStream=new FileOutputStream("d://test//format.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(input);
-        JExcelExportHandler handler = new JExcelExportHandler(config,data);
+        JExcelExportHandler handler = new JExcelExportHandler(config, JRowsUtil.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
