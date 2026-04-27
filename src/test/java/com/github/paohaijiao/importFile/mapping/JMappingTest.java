@@ -20,6 +20,7 @@ import com.github.paohaijiao.executor.JQuickExcelCommonImportExecutor;
 import com.github.paohaijiao.handler.JExcelImportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JExcelImportModel;
+import com.github.paohaijiao.statement.JQuickRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
@@ -54,7 +55,7 @@ public class JMappingTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }

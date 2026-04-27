@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
-<excels namespace="com.github.paohaijiao.xml.export.JQuickExcelExportService">
+<excels namespace="com.github.paohaijiao.xml.service.JQuickExcelExportService">
 
     <excel name="exportExcel" returnClass="void">
         <![CDATA[
@@ -28,6 +28,24 @@
                       color: yellow,
                       bold: true
                     }}
+        ]]>
+    </excel>
+    <excel name="importExcel" returnClass="jva.util.List">
+        <![CDATA[
+        IMPORT WITH
+            HEADER=true,
+            SHEET='Sheet1',
+            MAPPING = {
+                "学号": "no",
+                "姓名": "name",
+                "性别": "sex",
+                "年龄": "age",
+                "出生日期": "birthday"
+            },
+            TRANSFORM={
+                "sex":trans(${dict},${sex}),
+                "birthday":dateFormat(${birthday},'yyyy-MM-dd')
+                }
         ]]>
     </excel>
 

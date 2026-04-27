@@ -20,6 +20,7 @@ import com.github.paohaijiao.handler.JExcelImportHandler;
 import com.github.paohaijiao.importFile.mapping.JMappingTest;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.statement.JQuickRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
@@ -65,7 +66,7 @@ public class JTransformTest {
         JContext context = new JContext();
         context.put("dict",sex);
         JExcelImportHandler handler=new JExcelImportHandler(workbook,context);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }

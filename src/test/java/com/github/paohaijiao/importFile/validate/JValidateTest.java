@@ -5,6 +5,7 @@ import com.github.paohaijiao.handler.JExcelImportHandler;
 import com.github.paohaijiao.importFile.mapping.JMappingTest;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.statement.JQuickRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
@@ -42,7 +43,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -73,7 +74,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -104,7 +105,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -135,7 +136,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -166,7 +167,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -197,7 +198,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -228,7 +229,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
 
@@ -261,7 +262,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -291,7 +292,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
     }
     @Test
@@ -321,7 +322,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -352,7 +353,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -383,7 +384,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -414,7 +415,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -438,7 +439,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -462,7 +463,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -486,7 +487,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -510,7 +511,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -534,7 +535,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -558,7 +559,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }
@@ -582,7 +583,7 @@ public class JValidateTest {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         XSSFWorkbook workbook=new XSSFWorkbook(is);
         JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<Map<String, Object>> list= handler.importData(model);
+        List<JQuickRow> list= handler.importData(model);
         System.out.println(list);
 
     }

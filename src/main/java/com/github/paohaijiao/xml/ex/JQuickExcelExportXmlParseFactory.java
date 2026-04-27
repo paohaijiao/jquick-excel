@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class JQuickExcelXmlParseFactory implements JQuickParseHandler {
+public class JQuickExcelExportXmlParseFactory implements JQuickParseHandler {
 
     private JContext context=new JContext();
 
@@ -25,14 +25,14 @@ public class JQuickExcelXmlParseFactory implements JQuickParseHandler {
     private OutputStream outputStream;
 
 
-    public JQuickExcelXmlParseFactory(List<JQuickRow> rows,OutputStream os) {
+    public JQuickExcelExportXmlParseFactory(List<JQuickRow> rows, OutputStream os) {
         JAssert.notNull(rows,"rows required not null");
         JAssert.notNull(os,"OutputStream required not null");
         this.outputStream=os;
         this.data=rows;
     }
 
-    public JQuickExcelXmlParseFactory(JContext jcontext , List<JQuickRow> rows,OutputStream os) {
+    public JQuickExcelExportXmlParseFactory(JContext jcontext , List<JQuickRow> rows, OutputStream os) {
         JAssert.notNull(jcontext,"context required not null");
         JAssert.notNull(rows,"rows required not null");
         JAssert.notNull(os,"OutputStream required not null");

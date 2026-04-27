@@ -17,6 +17,7 @@ package com.github.paohaijiao.handler;
 
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
+import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
@@ -42,13 +43,13 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         this.context = contextParams;
     }
 
-    public List<Map<String, Object>> importData(JExcelImportModel config) throws IOException {
+    public List<JQuickRow> importData(JExcelImportModel config) throws IOException {
         setSheet(config.getSheet());
         applyValidate(config);
         boolean hasHeader = config.getHeader();
         List<String> headers = new ArrayList<>();
         Map<String, String> mappings = config.getMappings();
-        List<Map<String, Object>> data = new ArrayList<>();
+        List<JQuickRow> data = new ArrayList<>();
         int startCol=0;
          Row headerRow = currentSheet.getRow(0);
          int  endCol=getUsedColumnCount(currentSheet);
@@ -65,7 +66,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         for (int rowNum = startRow; rowNum <= lastRowNum; rowNum++) {
             Row row = currentSheet.getRow(rowNum);
             if (row == null) continue;
-            Map<String, Object> rowData = new LinkedHashMap<>();
+            JQuickRow rowData = new JQuickRow();
             for (int colNum = startCol; colNum <= endCol; colNum++) {
                 if (colNum >= headers.size()) break;
                 Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);

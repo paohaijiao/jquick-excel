@@ -20,6 +20,7 @@ import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
+import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.visitor.JQuickExcelCommonImportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -84,7 +85,7 @@ public class ImportG4Test {
         JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(context);
         JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
         JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
-        List<Map<String, Object>> list=handler.importData(result);
+        List<JQuickRow> list=handler.importData(result);
         System.out.println(list);
     }
     @Test
@@ -103,7 +104,7 @@ public class ImportG4Test {
         JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(context);
         JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
         JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
-        List<Map<String, Object>> list=handler.importData(result);
+        List<JQuickRow> list=handler.importData(result);
         System.out.println(list);
     }
 
