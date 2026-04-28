@@ -1,7 +1,8 @@
 # 🚀 jquick-excel: 轻量级、高性能的 Java Excel 操作框架
 简体中文 | [English](./README_EN.md)
 
-⚡ 一个简洁、强大且易于使用的 Java Excel 读写工具，支持 xls/xlsx 格式，提供丰富的 API 和灵活的配置语法
+⚡ JQuickExcel 是一款轻量级、高扩展性的 Java Excel 处理框架，支持 .xls 和 .xlsx 格式，无需复杂依赖。它提供基于 XML 配置的声明式导入/导出能力，适用于快速开发与复杂数据转换场景。
+
 
 ## 📦 项目简介
 jquick-excel 是一个专为 Java 开发者设计的轻量级 Excel 操作框架。它结合了 **易用性**、**灵活性** 和 **高性能**，支持主流 Excel 格式（xls/xlsx），并提供丰富的 API 帮助开发者快速实现复杂的 Excel 导入导出功能。
