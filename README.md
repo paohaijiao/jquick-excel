@@ -420,7 +420,7 @@ HashMap<String,Object> map = new HashMap<>();
   map.put("0","女");
 JContext context = new JContext();
 context.put("dict",map);
-JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
 Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
 ```
@@ -1535,7 +1535,7 @@ map.put("1","男");
 map.put("0","女");
 JContext context = new JContext();
 context.put("dict",map);
-JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
 Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
 ```

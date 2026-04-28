@@ -5,7 +5,6 @@ import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.util.JRowsUtil;
 import com.github.paohaijiao.xml.ex.JQuickExcelExportXmlParseFactory;
 import com.github.paohaijiao.xml.im.JQuickExcelImportXmlParseFactory;
 import com.github.paohaijiao.xml.service.JQuickExcelExportService;
@@ -27,7 +26,7 @@ public class JQuickExcelDemo {
     }
     @Test
     public void exportExcel() throws FileNotFoundException {
-        List<JQuickRow> rows= JRowsUtil.toRows( JObjectConverter.convert(getData()));
+        List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
         OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
         JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows,fileOutputStream);
         JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
@@ -38,7 +37,6 @@ public class JQuickExcelDemo {
     }
     @Test
     public void importExcel() throws FileNotFoundException {
-        List<JQuickRow> rows= JRowsUtil.toRows( JObjectConverter.convert(getData()));
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
         Map<String,Object> sex=new HashMap<>();
         sex.put("男","1");

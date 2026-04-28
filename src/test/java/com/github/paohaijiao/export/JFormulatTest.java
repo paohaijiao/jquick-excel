@@ -21,8 +21,8 @@ import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
+import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.util.JRowsUtil;
 import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -65,7 +65,7 @@ public class JFormulatTest {
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         List<Map<String, Object>> list = JObjectConverter.convert(getData());
-        JExcelExportHandler excelExportHandler=new JExcelExportHandler(result, JRowsUtil.toRows(list));
+        JExcelExportHandler excelExportHandler=new JExcelExportHandler(result, JQuickRow.toRows(list));
         Workbook wb=excelExportHandler.getWorkBook();
         wb.write(fileOutputStream);
     }

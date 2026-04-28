@@ -15,21 +15,13 @@
  */
 package com.github.paohaijiao.export.formulate;
 import com.github.paohaijiao.executor.JQuickExcelCommonExportExecutor;
-import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickExcelLexer;
-import com.github.paohaijiao.parser.JQuickExcelParser;
+import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.util.JRowsUtil;
-import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
@@ -81,7 +73,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context, JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context, JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -112,7 +104,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -143,7 +135,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -174,7 +166,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -205,7 +197,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -236,7 +228,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -267,7 +259,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -298,7 +290,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -329,7 +321,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -360,7 +352,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
@@ -391,7 +383,7 @@ public class JFormulateTest {
         map.put("0","女");
         JContext context = new JContext();
         context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JRowsUtil.toRows(data));
+        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
         Workbook workbook=handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
