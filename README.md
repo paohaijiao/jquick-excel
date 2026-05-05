@@ -40,6 +40,116 @@ jquick-excel 是一个专为 Java 开发者设计的轻量级 Excel 操作框架
 ```gradle
 implementation 'io.github.paohaijiao:jquick-excel:最新版本'
 ```
+#### 🚀 快速集成
+> 在项目的 resources 目录下创建 jquick-excel.xml 配置文件，这是整个 Excel 导入导出功能的“指挥中心”。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<excels namespace="com.github.paohaijiao.xml.service.JQuickExcelExportService">
+
+    <excel name="exportExcel" returnClass="void">
+        <![CDATA[
+            EXPORT  WITH
+                SHEET="学生表",
+                HEADER=true,
+                MAPPING={
+                    "id":"主键",
+                    "name":"姓名",
+                    "gender":"性别",
+                    "age":"年龄",
+                    "enrollmentDate":"入学时间",
+                    "className":"班级",
+                    "ignoreField":"是否忽略"
+                },
+                FORMULAS={
+                    D5:'ABS(D2)'
+                },
+                STYLE={
+                    ROW 1: {
+                      fontName: Arial,
+                      fontHeightInPoints: 12,
+                      italic: true,
+                      color: yellow,
+                      bold: true
+                    }}
+        ]]>
+    </excel>
+    <excel name="importExcel" returnClass="jva.util.List">
+        <![CDATA[
+        IMPORT WITH
+            HEADER=true,
+            SHEET='Sheet1',
+            MAPPING = {
+                "学号": "no",
+                "姓名": "name",
+                "性别": "sex",
+                "年龄": "age",
+                "出生日期": "birthday"
+            },
+            TRANSFORM={
+                "sex":trans(${dict},${sex}),
+                "birthday":dateFormat(${birthday},'yyyy-MM-dd')
+                }
+        ]]>
+    </excel>
+</excels>
+
+```
+> 服务接口是连接 XML 配置与实际业务逻辑的桥梁，通过接口方法声明，框架能够自动解析 XML 配置并生成对应的代理实现。接口方法使用 @Param 注解标注参数，这些参数可以在 XML 配置的动态 SQL 或条件查询中使用。
+```java
+import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.xml.param.Param;
+
+import java.util.List;
+
+public interface JQuickExcelExportService {
+
+    public void exportExcel(@Param("field")String field, @Param("value")String value);
+
+    public List<JQuickRow> importExcel(@Param("field")String field, @Param("value")String value);
+}
+
+```
+> 一切准备就绪，现在只需几行代码，就能让 Excel 导入导出功能“活”起来！
+> 框架会自动完成数据转换、样式渲染、文件生成等复杂操作
+```java
+ public static List<JStudentModel> getData() {
+        List<JStudentModel> students = new ArrayList<>();
+        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
+        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
+        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
+        return students;
+    }
+    @Test
+    public void exportExcel() throws FileNotFoundException {
+        List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
+        OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
+        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows,fileOutputStream);
+        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
+        System.out.println(factory);
+        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
+        excelExportService.exportExcel("1","2");
+        System.out.println("导出成功");
+    }
+    @Test
+    public void importExcel() throws FileNotFoundException {
+        InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
+        Map<String,Object> sex=new HashMap<>();
+        sex.put("男","1");
+        sex.put("女","2");
+        JContext context = new JContext();
+        context.put("dict",sex);
+        JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context,is);
+        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
+        System.out.println(factory);
+        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
+        List<JQuickRow> list=excelExportService.importExcel("1","2");
+        System.out.println("导入成功:"+list.size());
+    }
+```
+
 ## 📚 功能总览
 ### 🔄 导入功能
 - 智能映射 - 字段自动映射与转换
