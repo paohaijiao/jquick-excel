@@ -51,47 +51,12 @@ implementation 'io.github.paohaijiao:jquick-excel:最新版本'
 
     <excel name="exportExcel" returnClass="void">
         <![CDATA[
-            EXPORT  WITH
-                SHEET="学生表",
-                HEADER=true,
-                MAPPING={
-                    "id":"主键",
-                    "name":"姓名",
-                    "gender":"性别",
-                    "age":"年龄",
-                    "enrollmentDate":"入学时间",
-                    "className":"班级",
-                    "ignoreField":"是否忽略"
-                },
-                FORMULAS={
-                    D5:'ABS(D2)'
-                },
-                STYLE={
-                    ROW 1: {
-                      fontName: Arial,
-                      fontHeightInPoints: 12,
-                      italic: true,
-                      color: yellow,
-                      bold: true
-                    }}
+           语法内容
         ]]>
     </excel>
     <excel name="importExcel" returnClass="jva.util.List">
         <![CDATA[
-        IMPORT WITH
-            HEADER=true,
-            SHEET='Sheet1',
-            MAPPING = {
-                "学号": "no",
-                "姓名": "name",
-                "性别": "sex",
-                "年龄": "age",
-                "出生日期": "birthday"
-            },
-            TRANSFORM={
-                "sex":trans(${dict},${sex}),
-                "birthday":dateFormat(${birthday},'yyyy-MM-dd')
-                }
+            语法内容
         ]]>
     </excel>
 </excels>
