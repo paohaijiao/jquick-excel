@@ -1,6 +1,9 @@
 # 🚀 jquick-excel: 轻量级、高性能的 Java Excel 操作框架
 简体中文 | [English](./README_EN.md)
 
+[![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
+> 已被收录至 [Awesome Java](https://github.com/akullpp/awesome-java) 的 **Document Processing** 精选章节
+
 ⚡ JQuickExcel 是一款轻量级、高扩展性的 Java Excel 处理框架，支持 .xls 和 .xlsx 格式，无需复杂依赖。它提供基于 XML 配置的声明式导入/导出能力，适用于快速开发与复杂数据转换场景。
 
 
