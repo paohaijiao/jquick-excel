@@ -156,6 +156,7 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMappingVisitor {
             functionName = JStringUtils.trim(ctx.IDENTIFIER().getText());
         }
         JAssert.notNull(functionName, "Invalid functionName");
+        methodCallModel.setMethodName(functionName);
         methodCallModel.setMethod(JMethodEnums.methodOf(functionName));
         if (ctx.functionArg() != null) {
             for (JQuickExcelParser.FunctionArgContext functionArg : ctx.functionArg()) {

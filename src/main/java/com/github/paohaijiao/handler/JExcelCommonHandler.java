@@ -1,6 +1,9 @@
 package com.github.paohaijiao.handler;
 
 import com.github.paohaijiao.evalue.JEvaluator;
+import com.github.paohaijiao.exception.JAssert;
+import com.github.paohaijiao.function.core.JQuickMethodFunctionProvider;
+import com.github.paohaijiao.function.manager.JQuickMethodInvocationManager;
 import com.github.paohaijiao.model.JMethodCallModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
@@ -22,6 +25,9 @@ public class JExcelCommonHandler {
 
     protected JContext context = new JContext();
 
+    public JQuickMethodInvocationManager manager=JQuickMethodInvocationManager.getInstance();
+
+
     protected void setContext(JContext context) {
         this.context = context;
     }
@@ -40,8 +46,19 @@ public class JExcelCommonHandler {
         @SuppressWarnings("unchecked")
         JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
         List<Object> list = methodCallModel.getList();
-        Object object = JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(), list);
-        return object;
+        JAssert.notNull(methodCallModel,"methodCallModel required not null");
+        String functionName = methodCallModel.getMethodName().toLowerCase();
+        JAssert.notNull(functionName, "the function name  require not  null");
+        Optional<JQuickMethodFunctionProvider> provider = manager.getInvoker(functionName);
+        boolean exists=provider.isPresent();
+        if(exists) {
+            String msg=String.format("The function `%s` does not exist", functionName);
+            JAssert.isTrue(exists, msg);
+            return provider.get().invoke(list);
+        }else{
+            Object object = JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(), list);
+            return object;
+        }
     }
 
     protected void setSheet(Object sheetConfig) {
