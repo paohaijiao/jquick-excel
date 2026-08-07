@@ -36,6 +36,12 @@ public class JExcelExportModel {
 
     private String range = null;
 
+    /**
+     * 导出主题编码，对应 {@code JExcelThemeType#getCode()}，例如 "oceanBlue"、"royalGold"。
+     * 为 {@code null} 时使用 {@code JExcelCommonHandler} 中的默认样式（向后兼容）。
+     */
+    private String theme;
+
     Map<String, String> format = new HashMap<>();
 
     Map<String, String> cellFormulas = new HashMap<>();

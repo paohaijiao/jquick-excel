@@ -24,21 +24,26 @@ public class JQuickExcelExportXmlParseFactory implements JQuickParseHandler {
 
     private OutputStream outputStream;
 
+    private String theme=null;
+
 
     public JQuickExcelExportXmlParseFactory(List<JQuickRow> rows, OutputStream os) {
-        JAssert.notNull(rows,"rows required not null");
-        JAssert.notNull(os,"OutputStream required not null");
-        this.outputStream=os;
-        this.data=rows;
+        this(null,null,rows,os);
+    }
+    public JQuickExcelExportXmlParseFactory(String theme,List<JQuickRow> rows, OutputStream os) {
+        this(theme,null,rows,os);
+    }
+    public JQuickExcelExportXmlParseFactory(JContext jcontext,List<JQuickRow> rows, OutputStream os) {
+      this(null,jcontext,rows,os);
     }
 
-    public JQuickExcelExportXmlParseFactory(JContext jcontext , List<JQuickRow> rows, OutputStream os) {
-        JAssert.notNull(jcontext,"context required not null");
+    public JQuickExcelExportXmlParseFactory(String theme,JContext jcontext , List<JQuickRow> rows, OutputStream os) {
         JAssert.notNull(rows,"rows required not null");
         JAssert.notNull(os,"OutputStream required not null");
         this.outputStream=os;
         this.data=rows;
-        if (!jcontext.isEmpty()){
+        this.theme=theme;
+        if (null!=jcontext&&!jcontext.isEmpty()){
             context.putAll(jcontext);
         }
     }
@@ -50,7 +55,7 @@ public class JQuickExcelExportXmlParseFactory implements JQuickParseHandler {
 
     @Override
     public JQuickXmlInvocationHandler createlInvocationHandler() {
-        return new JQuickExcelExportXmlInvocationHandler(context,data,outputStream);
+        return new JQuickExcelExportXmlInvocationHandler(theme,context,data,outputStream);
     }
 }
 

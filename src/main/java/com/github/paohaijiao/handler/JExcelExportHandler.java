@@ -28,6 +28,8 @@ import com.github.paohaijiao.merge.context.JMergeHandlerContext;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.theme.JExcelTheme;
+import com.github.paohaijiao.theme.JExcelThemeFactory;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -79,6 +81,7 @@ public class JExcelExportHandler extends JExcelCommonHandler{
         boolean hasHeader = config.getHeader();
         Map<String, String> mappings = config.getMapping();
         Map<String, String> transforms = config.getTransforms();
+        JExcelTheme theme = resolveTheme(config);
         int rowNum = 0;
         if (hasHeader && !data.isEmpty()) {
             Row headerRow = currentSheet.createRow(rowNum++);
@@ -87,11 +90,12 @@ public class JExcelExportHandler extends JExcelCommonHandler{
             for (String header : data.get(0).keySet()) {
                 Cell cell = headerRow.createCell(colNum++);
                 cell.setCellValue(mappings.getOrDefault(header, header));
-                CellStyle cellStyle=buildDefaultHeaderStyle(workbook);
+                CellStyle cellStyle = theme != null ? theme.buildHeaderStyle(workbook) : buildDefaultHeaderStyle(workbook);
                 cell.setCellStyle(cellStyle);
             }
         }
 
+        int dataRowIndex = 0;
         for (Map<String, Object> rowData : data) {
             Row row = currentSheet.createRow(rowNum++);
             row.setHeightInPoints(24);
@@ -110,18 +114,41 @@ public class JExcelExportHandler extends JExcelCommonHandler{
                     Object value = entry.getValue() != null ? entry.getValue() : null;
                     setCellValue(cell, value);
                 }
-                CellStyle cellStyle=buildDefaultDataOddStyle(workbook);
+                CellStyle cellStyle = buildDataStyle(workbook, theme, dataRowIndex);
                 cell.setCellStyle(cellStyle);
             }
+            dataRowIndex++;
         }
         applyFormulate(config, currentSheet.getLastRowNum(), lastColNum);
         applyStyle(config);
         applyMerge(config, currentSheet.getLastRowNum(), lastColNum);
         applyGraph(config);
         if(config.getFooter()!=null){
-            buildDefaultFooter(workbook,currentSheet,this.getLastRowNum(currentSheet)-1,
-                    this.getUsedColumnCount(currentSheet)-1,config.getFooter());
+            int footerRowNum = this.getLastRowNum(currentSheet) - 1;
+            int footerMaxCol = this.getUsedColumnCount(currentSheet) - 1;
+            if (theme != null) {
+                theme.buildFooter(workbook, currentSheet, footerRowNum, footerMaxCol, config.getFooter());
+            } else {
+                buildDefaultFooter(workbook, currentSheet, footerRowNum, footerMaxCol, config.getFooter());
+            }
         }
+    }
+
+    private JExcelTheme resolveTheme(JExcelExportModel config) {
+        String code = config.getTheme();
+        if (code == null || code.trim().isEmpty()) {
+            return null;
+        }
+        return JExcelThemeFactory.create(code);
+    }
+
+    private CellStyle buildDataStyle(Workbook workbook, JExcelTheme theme, int dataRowIndex) {
+        if (theme == null) {
+            return buildDefaultDataOddStyle(workbook);
+        }
+        return (dataRowIndex & 1) == 0
+                ? theme.buildDataOddStyle(workbook)
+                : theme.buildDataEvenStyle(workbook);
     }
 
     private String getFormulaValue(String formula, int rowNum, int colNum) {

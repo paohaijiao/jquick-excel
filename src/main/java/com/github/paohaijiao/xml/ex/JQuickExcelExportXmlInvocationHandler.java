@@ -28,18 +28,18 @@ public class JQuickExcelExportXmlInvocationHandler extends JQuickXmlInvocationHa
 
     private JContext context=new JContext();
 
+    private  String theme=null;
+
     public JQuickExcelExportXmlInvocationHandler(List<JQuickRow> rows,OutputStream os) {
-        JAssert.notNull(rows,"rows required not null");
-        JAssert.notNull(os,"OutputStream required not null");
-        this.outputStream=os;
-        this.data=rows;
+        this(null, null, rows, os);
     }
 
-    public JQuickExcelExportXmlInvocationHandler(JContext jcontext , List<JQuickRow> rows,OutputStream os) {
+    public JQuickExcelExportXmlInvocationHandler(String theme,JContext jcontext , List<JQuickRow> rows,OutputStream os) {
         JAssert.notNull(jcontext,"context required not null");
         JAssert.notNull(rows,"rows required not null");
         JAssert.notNull(os,"OutputStream required not null");
         this.outputStream=os;
+        this.theme=theme;
         this.data=rows;
         this.context =jcontext;
         if (!jcontext.isEmpty()){
@@ -60,6 +60,7 @@ public class JQuickExcelExportXmlInvocationHandler extends JQuickXmlInvocationHa
         }
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(lexerStr);
+        config.setTheme(theme);
         JExcelExportHandler handler = new JExcelExportHandler(config,context, data);
         Workbook workbook=handler.getWorkBook();
         try {

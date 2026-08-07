@@ -28,7 +28,7 @@ public class JQuickExcelDemo {
     public void exportExcel() throws FileNotFoundException {
         List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
         OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
-        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows,fileOutputStream);
+        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory("forestGreen",rows,fileOutputStream);
         JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
         System.out.println(factory);
         JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);

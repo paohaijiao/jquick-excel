@@ -28,6 +28,10 @@
                       color: yellow,
                       bold: true
                     }}
+                    ,
+            TRANSFORM={
+                "age":add(${age},1)
+                }
         ]]>
     </excel>
     <excel name="importExcel" returnClass="jva.util.List">
