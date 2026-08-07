@@ -17,6 +17,53 @@ Excel 格式（xls/xlsx），并提供丰富的 API 帮助开发者快速实现�
 
 JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
 
+## 主题编码汇总 / Theme Code Summary
+
+| 序号 / No. | Code | 中文名称 / Chinese Name |
+|---------|------|----------------------|
+| 1 | `default` | 经典皇家蓝 |
+| 2 | `minimalistGrey` | 极简灰 |
+| 3 | `slate` | 板岩灰 |
+| 4 | `charcoal` | 炭灰 |
+| 5 | `navyBlue` | 海军蓝 |
+| 6 | `oceanBlue` | 海洋蓝 |
+| 7 | `skyBlue` | 天空蓝 |
+| 8 | `azure` | 蔚蓝 |
+| 9 | `steelBlue` | 钢蓝 |
+| 10 | `denim` | 牛仔蓝 |
+| 11 | `indigo` | 靛蓝 |
+| 12 | `periwinkle` | 长春花蓝 |
+| 13 | `forestGreen` | 森林绿 |
+| 14 | `emerald` | 祖母绿 |
+| 15 | `jade` | 翡翠绿 |
+| 16 | `mintFresh` | 清新薄荷 |
+| 17 | `sage` | 鼠尾草绿 |
+| 18 | `oliveGreen` | 橄榄绿 |
+| 19 | `tropicalTeal` | 热带青 |
+| 20 | `turquoise` | 绿松石 |
+| 21 | `cyan` | 青色 |
+| 22 | `sunsetOrange` | 落日橙 |
+| 23 | `coral` | 珊瑚 |
+| 24 | `peach` | 蜜桃 |
+| 25 | `crimsonRed` | 深红 |
+| 26 | `wineRed` | 酒红 |
+| 27 | `sakuraPink` | 樱花粉 |
+| 28 | `roseQuartz` | 粉晶 |
+| 29 | `lavenderPurple` | 薰衣草紫 |
+| 30 | `amethyst` | 紫水晶 |
+| 31 | `plum` | 紫梅 |
+| 32 | `royalGold` | 皇家金 |
+| 33 | `champagne` | 香槟金 |
+| 34 | `amber` | 琥珀 |
+| 35 | `mustard` | 芥末黄 |
+| 36 | `bronze` | 青铜 |
+| 37 | `vintageSepia` | 复古棕 |
+| 38 | `espresso` | 浓缩咖啡 |
+| 39 | `mahogany` | 红木 |
+| 40 | `terracotta` | 陶土 |
+| 41 | `midnightDark` | 午夜深色 |
+| 42 | `pearl` | 珍珠 |
+
 👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
 
 ```java
