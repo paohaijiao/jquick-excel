@@ -15,6 +15,20 @@ Jquick Excel is a lightweight Excel operating framework designed specifically fo
 supports mainstream Excel formats (xls/xlsx), and provides rich APIs to help developers quickly implement complex Excel
 import and export functions.
 
+## 🎨 Theme Templates
+
+JQuickExcel provides 42 built-in theme templates covering classic business, blue/green/teal/red-orange/pink-purple/gold-brown families and special styles, ready to use out of the box.
+
+JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
+
+👉 [View all theme template previews / 查看全部主题模板预览](./template.md)
+
+```java
+// Specify theme by code / 通过 code 指定主题
+JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, rows, fileOutputStream);
+
+```
+
 ## ✨ Core Features
 
 ✅ Dual format support - perfect compatibility with. xls and. xlsx formats
@@ -166,19 +180,6 @@ public interface JQuickExcelExportService {
 - Style Customization - Complete Cell Style Control
 - Data merging - multiple merging strategies (maximum, minimum, average, etc.)
 
-## 🎨 Theme Templates
-
-JQuickExcel provides 42 built-in theme templates covering classic business, blue/green/teal/red-orange/pink-purple/gold-brown families and special styles, ready to use out of the box.
-
-JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
-
-👉 [View all theme template previews / 查看全部主题模板预览](./template.md)
-
-```java
-// Specify theme by code / 通过 code 指定主题
-JExcelExportModel model = new JExcelExportModel();
-model.setTheme("royalGold");
-```
 
 ## 🎯 Usage example
 
