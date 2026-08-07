@@ -12,5 +12,5 @@ public class JTrimFormula extends JAbstractExcelFormula {
         super("TRIM(\"" + text + "\")");
         this.text = text;
     }
-    
+
 }

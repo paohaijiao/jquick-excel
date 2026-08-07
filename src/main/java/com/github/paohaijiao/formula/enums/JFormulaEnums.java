@@ -24,7 +24,7 @@ public enum JFormulaEnums {
     STDEV("STDEV(", JSTDEVFormula.class),
     SUM("SUM(", JSumFormula.class),
 
-//    DATEDIF("DATEDIF(", JDateDifFormula.class),
+    //    DATEDIF("DATEDIF(", JDateDifFormula.class),
 //    DATE("DATE(", JDateFormula.class),
     DATE_PLUS_TIME("DATE(", JDatePlusTimeFormula.class) {
         @Override
@@ -204,9 +204,6 @@ public enum JFormulaEnums {
         this.formulaClass = formulaClass;
     }
 
-    public boolean matches(String formulaContent) {
-        return formulaContent.startsWith(prefix);
-    }
     private static int countParams(String formulaContent) {
         int start = formulaContent.indexOf('(') + 1;
         int end = formulaContent.lastIndexOf(')');
@@ -214,16 +211,21 @@ public enum JFormulaEnums {
         String params = formulaContent.substring(start, end);
         return params.split(",").length;
     }
+
     public static JFormulaEnums getByFormulaContent(String formulaContent) {
-            if (formulaContent == null || formulaContent.isEmpty()) {
-                return null;
-            }
-            String upperContent = formulaContent.toUpperCase();
-            for (JFormulaEnums type : values()) {
-                if (type.matches(upperContent)) {
-                    return type;
-                }
-            }
+        if (formulaContent == null || formulaContent.isEmpty()) {
             return null;
         }
+        String upperContent = formulaContent.toUpperCase();
+        for (JFormulaEnums type : values()) {
+            if (type.matches(upperContent)) {
+                return type;
+            }
+        }
+        return null;
     }
+
+    public boolean matches(String formulaContent) {
+        return formulaContent.startsWith(prefix);
+    }
+}

@@ -1,35 +1,42 @@
 ﻿# 🚀 jquick-excel: Lightweight and high-performance Java Excel operating framework
+
 [简体中文](./README.md) | English
 
 [![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
 > Featured in the [Awesome Java](https://github.com/akullpp/awesome-java) curated list — **Document Processing**
 
-⚡ A concise, powerful, and easy-to-use Java Excel reading and writing tool that supports xls/xlsx formats, provides rich APIs, and flexible configuration syntax
+⚡ A concise, powerful, and easy-to-use Java Excel reading and writing tool that supports xls/xlsx formats, provides rich
+APIs, and flexible configuration syntax
 
 ## 📦 Project Introduction
-Jquick Excel is a lightweight Excel operating framework designed specifically for Java developers. It combines **usability**, **flexibility**, and **high performance**,
-supports mainstream Excel formats (xls/xlsx), and provides rich APIs to help developers quickly implement complex Excel import and export functions.
+
+Jquick Excel is a lightweight Excel operating framework designed specifically for Java developers. It combines *
+*usability**, **flexibility**, and **high performance**,
+supports mainstream Excel formats (xls/xlsx), and provides rich APIs to help developers quickly implement complex Excel
+import and export functions.
+
 ## ✨ Core Features
-✅ Dual format support - perfect compatibility with. xls and. xlsx formats  
 
-✅ Declarative configuration - Define import and export rules using concise DSL syntax  
+✅ Dual format support - perfect compatibility with. xls and. xlsx formats
 
-✅ High performance processing - optimized for reading and writing large amounts of data, with low memory usage  
+✅ Declarative configuration - Define import and export rules using concise DSL syntax
 
-✅ Rich Validation Rules - Built in 20+Data Validation Rules  
+✅ High performance processing - optimized for reading and writing large amounts of data, with low memory usage
 
-✅ Powerful Formula Support - Supports 50+Excel Formulas  
+✅ Rich Validation Rules - Built in 20+Data Validation Rules
 
-✅ Chart Generation - Supports one click generation of 10 chart types  
+✅ Powerful Formula Support - Supports 50+Excel Formulas
 
-✅ Style Customization - Complete Cell Style Control  
+✅ Chart Generation - Supports one click generation of 10 chart types
 
-✅ Cell Merge - Flexible Multidimensional Data Merge Strategy  
+✅ Style Customization - Complete Cell Style Control
 
-✅ Context conversion - supports dynamic data conversion and mapping  
+✅ Cell Merge - Flexible Multidimensional Data Merge Strategy
 
+✅ Context conversion - supports dynamic data conversion and mapping
 
 ## 🛠️ Tech Stack
+
 [![Java](https://img.shields.io/badge/Java-1.8+-blue.svg?style=for-the-badge&logo=openjdk)](https://www.java.com/)
 [![Apache POI](https://img.shields.io/badge/Apache%2520POI-5.2.3-green.svg?style=for-the-badge&logo=apache)](https://poi.apache.org/)
 [![Lombok](https://img.shields.io/badge/Lombok-1.18.24-red.svg?style=for-the-badge&logo=lombok)](https://projectlombok.org/)
@@ -39,7 +46,9 @@ supports mainstream Excel formats (xls/xlsx), and provides rich APIs to help dev
 [![Forks](https://img.shields.io/github/forks/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/network/members)
 
 ## 📥 Quick Start
+
 ### Maven Dependency
+
 ```xml
 <dependency>
   <groupId>io.github.paohaijiao</groupId>
@@ -47,14 +56,17 @@ supports mainstream Excel formats (xls/xlsx), and provides rich APIs to help dev
   <version>${latest.version}</version>
 </dependency>
 ```
+
 ### gradle Dependency
+
 ```gradle
 implementation 'io.github.paohaijiao:jquick-excel:${latest.version}'
 ```
+
 #### 🚀 Quick Integration
 
-> Create a jquick-excel.xml configuration file in the resources directory of the project, which serves as the "command center" for the entire Excel import and export function.
-
+> Create a jquick-excel.xml configuration file in the resources directory of the project, which serves as the "command
+> center" for the entire Excel import and export function.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -75,8 +87,11 @@ implementation 'io.github.paohaijiao:jquick-excel:${latest.version}'
 </excels>
 
 ```
-> The service interface is a bridge that connects XML configuration with actual business logic. Through interface method declarations, 
-> the framework can automatically parse XML configuration and generate corresponding proxy implementations. The interface method uses 
+
+> The service interface is a bridge that connects XML configuration with actual business logic. Through interface method
+> declarations,
+> the framework can automatically parse XML configuration and generate corresponding proxy implementations. The
+> interface method uses
 > @ Param annotation to annotate parameters, which can be used in dynamic SQL or conditional queries configured in XML.
 
 ```java
@@ -93,8 +108,11 @@ public interface JQuickExcelExportService {
 }
 
 ```
->Everything is ready, now with just a few lines of code, Excel's import and export functions can come to life!
->The framework will automatically complete complex operations such as data conversion, style rendering, and file generation
+
+> Everything is ready, now with just a few lines of code, Excel's import and export functions can come to life!
+> The framework will automatically complete complex operations such as data conversion, style rendering, and file
+> generation
+
 ```java
  public static List<JStudentModel> getData() {
         List<JStudentModel> students = new ArrayList<>();
@@ -132,14 +150,16 @@ public interface JQuickExcelExportService {
 ```
 
 ## 📚 Function Overview
+
 ### 🔄 Import function
+
 - Intelligent Mapping - Automatic Field Mapping and Conversion
 - Data Validation -20+validation rules (email, phone, regular, etc.)
 - Format Conversion - Date, Number, String Format
 - Batch processing - supports importing large amounts of data in batches
 
-
 ### 📤 Export function
+
 - Template Export - Quickly Export Based on Configuration Templates
 - Formula Calculation - Supports 50+Excel Formulas
 - Chart Generation -10 Chart Types
@@ -147,27 +167,37 @@ public interface JQuickExcelExportService {
 - Data merging - multiple merging strategies (maximum, minimum, average, etc.)
 
 ## 🎯 Usage example
+
 ### basic syntax
+
 ```string
 IMPORT [WITH option1, option2, ...]
 ```
+
 ### 配置项说明
-| rule         | syntax                       | desc                   |
-|--------------|------------------------------|------------------------|
-| `SHEET`      | `SHEET = (string \| number)` | Specify worksheet (name/index)|
+
+| rule         | syntax                       | desc                                      |
+|--------------|------------------------------|-------------------------------------------|
+| `SHEET`      | `SHEET = (string \| number)` | Specify worksheet (name/index)            |
 | `HEADER`     | `HEADER = boolean`           | Does it include a header (`true`/`false`) |
-| `MAPPING`    | `MAPPING = { rule }`         | Source field ↔  Target field mapping          |
-| `TRANSFORM`  | `TRANSFORM = { rule }`       | Data Conversion Rules|
-| `VALIDATION` | `VALIDATION = { rule }`      | Data Validation Rules                 |
+| `MAPPING`    | `MAPPING = { rule }`         | Source field ↔  Target field mapping      |
+| `TRANSFORM`  | `TRANSFORM = { rule }`       | Data Conversion Rules                     |
+| `VALIDATION` | `VALIDATION = { rule }`      | Data Validation Rules                     |
+
 ### SHEET syntax
+
 ```string
 IMPORT WITH SHEET="Sheet1"
 ```
+
 ### HEADER syntax
+
 ```string
 IMPORT WITH HEADER=true
 ```
+
 ### Field Mapping Syntax
+
 ```string
 IMPORT WITH MAPPING = {
 "学号": "no",
@@ -177,15 +207,20 @@ IMPORT WITH MAPPING = {
 "出生日期": "birthday"
 }
 ```
+
 ### TRANS MAPPING syntax（support JEvaluator all method）
+
 ```string
 IMPORT WITH TRANSFORM={
 "sex": trans(${dict},${sex}),
 "birthday": dateFormat(${birthday},'yyyy-MM-dd')
 }
 ```
+
 ### import validation
+
 ## 📊 Supported validation rules
+
 | rule type         | sample                           |
 |-------------------|----------------------------------|
 | boolean           | boolean{required:true}           | 
@@ -198,6 +233,7 @@ IMPORT WITH TRANSFORM={
 | phone validation  | mobile{}                         | 
 
 #### 验证规则语法
+
 ```string
 // Row Validation
 ROW 5 - Validate row 5
@@ -210,7 +246,9 @@ C1 - Validate cell C1 (row 1, column C)
 // Range Validation
 A1:B5 - Validate the range from A1 to B5
 ```
+
 #### Example of Verification Rule Configuration
+
 ```string
 IMPORT_WITH_VALIDATION = {
     ROW 1..10 {
@@ -244,31 +282,35 @@ IMPORT_WITH_VALIDATION = {
     }
 }
 ```
+
 ### Validation Rule Type
+
 #### Validation Rule List
-| Rule Name         | Parameter Keys      | Parameter Types       | Description                                                                 |
-|-------------------|---------------------|-----------------------|-----------------------------------------------------------------------------|
-| `boolean`         | -                   | -                     | Validates if the value is a boolean                                         |
-| `date_format`     | `format`            | `String`              | Validates if the string matches the specified date format                   |
-| `max_date`        | `maxDate`, `format` | `Date`, `String`      | Validates if the date does not exceed the specified maximum date            |
-| `min_date`        | `minDate`, `format` | `Date`, `String`      | Validates if the date is not less than the specified minimum date           |
-| `integer`         | -                   | -                     | Validates if the value is an integer                                        |
-| `decimal`         | -                   | -                     | Validates if the value is a decimal number                                  |
-| `max_value`       | `maxValue`          | `BigDecimal`          | Validates if the numeric value does not exceed the specified maximum value  |
-| `min_value`       | `minValue`          | `BigDecimal`          | Validates if the numeric value is not less than the specified minimum value |
-| `dict`            | key-value pairs     | `Map`                 | Validates if the value exists in the provided dictionary                    |
-| `email`           | -                   | -                     | Validates if the string is a valid email address format                     |
-| `mobile`          | -                   | -                     | Validates if the string is a valid Chinese mobile phone number format       |
-| `max_length`      | `maxLength`         | `BigDecimal`          | Validates if the string length does not exceed the specified maximum length |
-| `min_length`      | `minLength`         | `BigDecimal`          | Validates if the string length is not less than the specified minimum length |
-| `regex`           | `pattern`           | `String`              | Validates if the string matches the specified regular expression            |
-| `start_with`      | `startWith`         | `String`              | Validates if the string starts with the specified substring                 |
-| `not_start_with`  | `notStartWith`      | `String`              | Validates if the string does not start with the specified substring         |
-| `end_with`        | `endWith`           | `String`              | Validates if the string ends with the specified substring                   |
-| `not_end_with`    | `notEndWith`        | `String`              | Validates if the string does not end with the specified substring           |
-| `contain`         | `contains`          | `String`              | Validates if the string contains the specified substring                    |
-| `not_contain`     | `notContain`        | `String`              | Validates if the string does not contain the specified substring            |
-#####   Verification With Boolean
+
+| Rule Name        | Parameter Keys      | Parameter Types  | Description                                                                  |
+|------------------|---------------------|------------------|------------------------------------------------------------------------------|
+| `boolean`        | -                   | -                | Validates if the value is a boolean                                          |
+| `date_format`    | `format`            | `String`         | Validates if the string matches the specified date format                    |
+| `max_date`       | `maxDate`, `format` | `Date`, `String` | Validates if the date does not exceed the specified maximum date             |
+| `min_date`       | `minDate`, `format` | `Date`, `String` | Validates if the date is not less than the specified minimum date            |
+| `integer`        | -                   | -                | Validates if the value is an integer                                         |
+| `decimal`        | -                   | -                | Validates if the value is a decimal number                                   |
+| `max_value`      | `maxValue`          | `BigDecimal`     | Validates if the numeric value does not exceed the specified maximum value   |
+| `min_value`      | `minValue`          | `BigDecimal`     | Validates if the numeric value is not less than the specified minimum value  |
+| `dict`           | key-value pairs     | `Map`            | Validates if the value exists in the provided dictionary                     |
+| `email`          | -                   | -                | Validates if the string is a valid email address format                      |
+| `mobile`         | -                   | -                | Validates if the string is a valid Chinese mobile phone number format        |
+| `max_length`     | `maxLength`         | `BigDecimal`     | Validates if the string length does not exceed the specified maximum length  |
+| `min_length`     | `minLength`         | `BigDecimal`     | Validates if the string length is not less than the specified minimum length |
+| `regex`          | `pattern`           | `String`         | Validates if the string matches the specified regular expression             |
+| `start_with`     | `startWith`         | `String`         | Validates if the string starts with the specified substring                  |
+| `not_start_with` | `notStartWith`      | `String`         | Validates if the string does not start with the specified substring          |
+| `end_with`       | `endWith`           | `String`         | Validates if the string ends with the specified substring                    |
+| `not_end_with`   | `notEndWith`        | `String`         | Validates if the string does not end with the specified substring            |
+| `contain`        | `contains`          | `String`         | Validates if the string contains the specified substring                     |
+| `not_contain`    | `notContain`        | `String`         | Validates if the string does not contain the specified substring             |
+
+##### Verification With Boolean
 
 ```string
 IMPORT WITH VALIDATION={   
@@ -277,122 +319,163 @@ IMPORT WITH VALIDATION={
     }
 }
 ```
-#####  Verification With date_format
+
+##### Verification With date_format
+
 ```string
 IMPORT WITH VALIDATION={   E2:E4:{
 date_format{required:true,msg:'不符合日期格式',map:{'format':'yyyy-MM-dd'}   }
 }
 ```
-#####   Verification With max_date
+
+##### Verification With max_date
+
 ```string
 IMPORT WITH VALIDATION={   E2:E4:{
     max_date{required:true,msg:'超过最大日期',map:{'format':'yyyy-MM-dd',maxDate:2025-01-01}   }
 }
 ```
-#####  Verification With min_date
+
+##### Verification With min_date
+
 ```string
 IMPORT WITH VALIDATION={   E2:E4:{
     min_date{required:true,msg:'不能小于最小日期',map:{'format':'yyyy-MM-dd',minDate:2022-01-01}   }
 }
 ```
-#####  Verification With integer
+
+##### Verification With integer
+
 ```string
 IMPORT WITH VALIDATION={   D2:D4:{
     integer{required:true,msg:'要求该字段是整形'   }
 }
 ```
-#####  Verification With decimal
+
+##### Verification With decimal
+
 ```string
 IMPORT WITH VALIDATION={   D2:D4:{
     decimal{required:true,msg:'要求该字段是整形'   }
 }
 ```
-#####   Verification With max_value
+
+##### Verification With max_value
+
 ```string
 IMPORT WITH VALIDATION={   D2:D4:{
     max_value{required:true,msg:'年龄不能超过最大值',map:{'maxValue':50}   }
 }
 ```
-#####  Verification With min_value
+
+##### Verification With min_value
+
 ```string
 IMPORT WITH VALIDATION={   D2:D4:{
     min_value{required:true,msg:'年龄不能小于xx',map:{'minValue':2}   }
 }
 ```
-#####   Verification With dict
+
+##### Verification With dict
+
 ```string
 IMPORT WITH VALIDATION={   C2:C4:{
     dict{required:true,msg:'性别非法',map:{'1':'男','2':'女'}   }
 }
 ```
-#####   Verification With email
+
+##### Verification With email
+
 ```string
 IMPORT WITH VALIDATION={   C2:C4:{
     email{required:true,msg:'邮箱格式不正确'   }
 }
 ```
-#####    Verification With mobile
+
+##### Verification With mobile
+
 ```string
 IMPORT WITH VALIDATION={   C2:C4:{
     mobile{required:true,msg:'手机格式不正确'   }
 }
 ```
-#####    Verification With max_length
+
+##### Verification With max_length
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
     max_length{required:true,msg:'最大长度有误',map:{'maxLength':7}   }
 }
 ```
-#####    Verification With min_length
+
+##### Verification With min_length
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
     min_length{required:true,msg:'最小长度有误',map:{'minLength':1}   }
 }
 ```
-#####   Verification With regex
+
+##### Verification With regex
+
 ```string
 IMPORT WITH VALIDATION={   D2:D4:{
     regex{required:true,msg:'不符合正则表达式',map:{pattern:'^\d+$'}   }
 }
 ```
-#####   Verification With start_with
+
+##### Verification With start_with
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
    start_with{required:true,msg:'开始字符串有误',map:{startWith:'张三'}   }
 }
 ```
-#####   Verification With not_start_with
+
+##### Verification With not_start_with
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
    not_start_with{required:true,msg:'不能以该字符串开始',map:{notStartWith:'张三'}   }
 }
 ```
-#####   Verification With end_with
+
+##### Verification With end_with
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
    end_with{required:true,msg:'不符合以张三结束的字符',map:{endWith:'张三'}   }
 }
 ```
-#####   Verification With not_end_with
+
+##### Verification With not_end_with
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
    not_end_with{required:true,msg:'不符合表达式',map:{notEndWith:'张三'}   }
 }
 ```
-#####    Verification With not_end_with
+
+##### Verification With not_end_with
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
    not_end_with{required:true,msg:'不符合表达式',map:{notEndWith:'张三'}   }
 }
 ```
-#####   Verification With not_contain
+
+##### Verification With not_contain
+
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
    not_contain{required:true,msg:'不应该包含该关键字',map:{notContain:'张三'}   }
 }
 ```
+
 ### Basic Import Example
+
 ## 🔧 Import configuration
+
 ```java
 String rule = """
     IMPORT WITH 
@@ -412,7 +495,9 @@ XSSFWorkbook workbook = new XSSFWorkbook(is);
 JExcelImportHandler handler = new JExcelImportHandler(workbook);
 List<Map<String, Object>> data = handler.importData(model);
 ```
+
 ### Basic export example
+
 ```java
 String rule = """
 EXPORT WITH
@@ -437,34 +522,44 @@ Workbook workbook = handler.getWorkBook();
 workbook.write(fos);
 fos.close();
 ```
+
 ## 📤 Export Configuration
+
 ### basic grammar
+
 ```string
 EXPORT [WITH option1, option2, ...]
 ```
+
 ### Export Options Description
 
-| Configuration Item | Syntax Format                                             | Description                             |
-|--------------------|-----------------------------------------------------------|-----------------------------------------|
-| 📑 `SHEET`         | `SHEET '=' (STRING \| NUMBER)`                           | Specify the target worksheet by name or index |
-| 📋 `HEADER`        | `HEADER '=' BOOLEAN`                                     | Control whether to include header (`true`/`false`) |
-| 🎨 `FORMAT`        | `FORMAT '=' '{' cellFormat (',' cellFormat)* '}'`        | Define cell formatting rules            |
-| 🗺️ `MAPPING`       | `MAPPING '=' '{' fieldMapping (',' fieldMapping)* '}'`    | Configure field mapping relationship between source data and exported data |
-| 🔄 `TRANSFORM`     | `TRANSFORM '=' '{' transformRule (',' transformRule)* '}'`| Set data transformation rules before export |
-| 🧮 `FORMULAS`      | `FORMULAS '=' '{' formulaTarget (',' formulaTarget)* '}'` | Configure calculation formulas to be applied during export |
-| ✨ `STYLE`         | `STYLE '=' '{' styleTarget (',' styleTarget)* '}'`        | Define cell style rules                 |
-| 🧩 `MERGE`         | `MERGE '=' '{' mergeSpec (',' mergeSpec)* '}'`            | Set cell merging rules                  |
-| 📊 `GRAPH`         | `GRAPH '=' '{' graphSpec (',' graphSpec)* '}'`            | Configure generation parameters for charts/graphs |
-| 📝 `FOOTER`        | `FOOTER '=' (STRING \| IDENTIFIER)`                      | Set footer text or reference variables  |
+| Configuration Item | Syntax Format                                              | Description                                                                |
+|--------------------|------------------------------------------------------------|----------------------------------------------------------------------------|
+| 📑 `SHEET`         | `SHEET '=' (STRING \| NUMBER)`                             | Specify the target worksheet by name or index                              |
+| 📋 `HEADER`        | `HEADER '=' BOOLEAN`                                       | Control whether to include header (`true`/`false`)                         |
+| 🎨 `FORMAT`        | `FORMAT '=' '{' cellFormat (',' cellFormat)* '}'`          | Define cell formatting rules                                               |
+| 🗺️ `MAPPING`      | `MAPPING '=' '{' fieldMapping (',' fieldMapping)* '}'`     | Configure field mapping relationship between source data and exported data |
+| 🔄 `TRANSFORM`     | `TRANSFORM '=' '{' transformRule (',' transformRule)* '}'` | Set data transformation rules before export                                |
+| 🧮 `FORMULAS`      | `FORMULAS '=' '{' formulaTarget (',' formulaTarget)* '}'`  | Configure calculation formulas to be applied during export                 |
+| ✨ `STYLE`          | `STYLE '=' '{' styleTarget (',' styleTarget)* '}'`         | Define cell style rules                                                    |
+| 🧩 `MERGE`         | `MERGE '=' '{' mergeSpec (',' mergeSpec)* '}'`             | Set cell merging rules                                                     |
+| 📊 `GRAPH`         | `GRAPH '=' '{' graphSpec (',' graphSpec)* '}'`             | Configure generation parameters for charts/graphs                          |
+| 📝 `FOOTER`        | `FOOTER '=' (STRING \| IDENTIFIER)`                        | Set footer text or reference variables                                     |
+
 ### SHEET OPTION
+
 ```string
 EXPORT WITH SHEET="Report"
 ```
+
 ### HEADER OPTION
+
 ```string
 EXPORT WITH HEADER=true
 ```
+
 ### Mapping OPTION
+
 ```string
 EXPORT  WITH MAPPING={
 	"id":"主键",
@@ -476,6 +571,7 @@ EXPORT  WITH MAPPING={
 	"ignoreField":"是否忽略"
 }
 ```
+
 ```java
 public static List<JStudentModel> getData() {
   List<JStudentModel> students = new ArrayList<>();
@@ -492,7 +588,9 @@ JExcelExportHandler handler = new JExcelExportHandler(config,data);
 Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
 ```
+
 ### FORMAT OPTION
+
 ```string
 EXPORT  WITH MAPPING={
 	"id":"主键",
@@ -504,7 +602,9 @@ EXPORT  WITH MAPPING={
 	"ignoreField":"是否忽略"
 },FORMAT={"enrollmentDate":"yyyy-MM-dd"}
 ```
+
 ### TRANSFORM OPTION
+
 ```string
 EXPORT  WITH MAPPING={
 	"id":"主键",
@@ -524,6 +624,7 @@ TRANSFORM={
   "gender": trans(${dict},${gender})
 }
 ```
+
 ``` java
 List<Map<String, Object>> data = JObjectConverter.convert(getData());
 FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
@@ -538,9 +639,13 @@ JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.t
 Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
 ```
-###  Formula Options
+
+### Formula Options
+
 #### Apply scope support
+
 Supports four types: **Row**, **Column**, **Cell**, and **Range**:
+
 1. **Row**
    `ROW 5` - Applies to row 5
    `ROW 1..10` - Applies to rows 1 to 10
@@ -551,22 +656,26 @@ Supports four types: **Row**, **Column**, **Cell**, and **Range**:
    `C1:` - Applies to the cell at column C, row 1
 4. **Range**
    `A1:B5` - Represents the rectangular area from cell A1 to cell B5
+
 ## 🔢 Supported formula types
+
 ### 📈 Mathematical formulas (16)
-| Formula Name | Syntax Example | Parameter Count | Description                          | Corresponding Class Name |
-|--------------|----------------|-----------------|--------------------------------------|--------------------------|
-| 📏 `ABS`     | `ABS(D2)`      | 1               | Absolute value                       | `JABSFormula`            |
-| 📊 `AVERAGE` | `AVERAGE(D2:D4)` | ≥1            | Arithmetic mean                      | `JAverageFormula`        |
-| 🔢 `COUNT`   | `COUNT(D2:D4)` | ≥1              | Count of numeric values              | `JCountFormula`          |
-| ⬆️ `MAX`     | `MAX(D2:D4)`   | ≥1              | Maximum value                        | `JMaxFormula`            |
-| ⬇️ `MIN`     | `MIN(D2:D4)`   | ≥1              | Minimum value                        | `JMinFormula`            |
-| ⚡ `POWER`   | `POWER(2,3)`   | 2               | Exponentiation                       | `JPowerFormula`          |
-| 🎲 `RAND`    | `RAND()`       | 0               | Random number [0,1)                  | `JRandFormula`           |
-| 🏆 `RANK`    | `RANK(20,D2:D4)` | 2             | Rank in list                         | `JRankFormula`           |
-| 🎯 `ROUND`   | `ROUND(3.1415926,3)` | 2          | Round to specified decimal places    | `JRoundFormula`          |
-| √️ `SQRT`    | `SQRT(4)`      | 1               | Square root                          | `JSQRTFormula`           |
-| 📈 `STDEV`   | `STDEV(D2:D4)` | ≥1              | Standard deviation                   | `JSTDEVFormula`          |
-| ➕ `SUM`     | `SUM(D2:D4)`   | ≥1              | Sum of values                        | `JSumFormula`            |
+
+| Formula Name | Syntax Example       | Parameter Count | Description                       | Corresponding Class Name |
+|--------------|----------------------|-----------------|-----------------------------------|--------------------------|
+| 📏 `ABS`     | `ABS(D2)`            | 1               | Absolute value                    | `JABSFormula`            |
+| 📊 `AVERAGE` | `AVERAGE(D2:D4)`     | ≥1              | Arithmetic mean                   | `JAverageFormula`        |
+| 🔢 `COUNT`   | `COUNT(D2:D4)`       | ≥1              | Count of numeric values           | `JCountFormula`          |
+| ⬆️ `MAX`     | `MAX(D2:D4)`         | ≥1              | Maximum value                     | `JMaxFormula`            |
+| ⬇️ `MIN`     | `MIN(D2:D4)`         | ≥1              | Minimum value                     | `JMinFormula`            |
+| ⚡ `POWER`    | `POWER(2,3)`         | 2               | Exponentiation                    | `JPowerFormula`          |
+| 🎲 `RAND`    | `RAND()`             | 0               | Random number [0,1)               | `JRandFormula`           |
+| 🏆 `RANK`    | `RANK(20,D2:D4)`     | 2               | Rank in list                      | `JRankFormula`           |
+| 🎯 `ROUND`   | `ROUND(3.1415926,3)` | 2               | Round to specified decimal places | `JRoundFormula`          |
+| √️ `SQRT`    | `SQRT(4)`            | 1               | Square root                       | `JSQRTFormula`           |
+| 📈 `STDEV`   | `STDEV(D2:D4)`       | ≥1              | Standard deviation                | `JSTDEVFormula`          |
+| ➕ `SUM`      | `SUM(D2:D4)`         | ≥1              | Sum of values                     | `JSumFormula`            |
+
 ```string
 # Mathematical Formula Configuration Example (Integrated Version)
 # Format Description: FORMULAS = { Target Cell: 'Formula Expression' }
@@ -597,29 +706,34 @@ D5:'STDEV(D2:D4)',
 # 12. Sum: Calculate the total sum of values in cells D2 to D4
 D5:'SUM(D2:D4)'
 ```
+
 ### 📅 Date formulas (15)
-| Formula Name | Syntax Example | Special Rules | Corresponding Class Name |
-|--------------|----------------|---------------|--------------------------|
-| 🕒 `DATETIME` | `DATETIME(2023,5,15,14,30,0)` | Returns the specified date and time | `JDateTimeFormula` |
-| 📆 `DAY` | `DAY("2025-01-23")` | Extracts the day of the month (1-31) from a date | `JDayFormula` |
-| 📊 `DAYS` | `DAYS("2025-01-23","2025-01-28")` | Calculates the number of days between two dates | `JDaysFormula` |
-| 📈 `EDATE` | `EDATE(start,months)` | Adds the specified number of months to a date | `JEDATEFormula` |
-| 🗓️ `EOMONTH` | `EOMONTH("2025-01-23",3)` | Returns the last day of the month that is the specified number of months before/after a date | `JEOMONTHFormula` |
-| ⏰ `HOUR` | `HOUR('2025-01-23')` | Extracts the hour (0-23) from a time value | `JHourFormula` |
-| 💼 `NETWORKDAYS` | `NETWORKDAYS(s,e,[h])` | 2-3 parameters (calculates the number of working days between two dates) | `JNetworkDayFormula` |
-| 🕒 `NOW` | `NOW()` | Exact syntax match required; returns the current timestamp | `JNowFormula` |
-| 📅 `TODAY` | `TODAY()` | Exact syntax match required; returns the current date | `JTodayFormula` |
-| 🛠️ `WORKDAY` | `WORKDAY(s,days,[h])` | 2-3 parameters (calculates the date that is the specified number of working days before/after a start date) | `JWorkDayFormula` |
-| ⏱️ `MINUTE` | `MINUTE(time_value)` | 1 time series parameter; extracts the minute (0-59) from a time value | - |
-| 📍 `MONTH` | `MONTH(date_value)` | 1 date series parameter; extracts the month (1-12) from a date | - |
-| 🎯 `SECOND` | `SECOND(time_value)` | 1 time series parameter; extracts the second (0-59) from a time value | - |
-| ⏲️ `TIME` | `TIME(hour,min,sec)` | 3 parameters (hour/minute/second); returns an Excel time serial number (0-0.999) | - |
-| 📆 `TODAY` | `TODAY()` | Exact syntax match required; returns the current date serial number | - |
-| 📝 `WEEKDAY` | `WEEKDAY(date,[type])` | 1-2 parameters; returns the day of the week (configurable) | - |
-| 📊 `WEEKNUM` | `WEEKNUM(date,[type])` | 1-2 parameters; returns the week number of the year | - |
-| 📅 `YEAR` | `YEAR(date_value)` | 1 date series parameter; extracts the year (1900-9999) from a date | - |
+
+| Formula Name     | Syntax Example                    | Special Rules                                                                                               | Corresponding Class Name |
+|------------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------|--------------------------|
+| 🕒 `DATETIME`    | `DATETIME(2023,5,15,14,30,0)`     | Returns the specified date and time                                                                         | `JDateTimeFormula`       |
+| 📆 `DAY`         | `DAY("2025-01-23")`               | Extracts the day of the month (1-31) from a date                                                            | `JDayFormula`            |
+| 📊 `DAYS`        | `DAYS("2025-01-23","2025-01-28")` | Calculates the number of days between two dates                                                             | `JDaysFormula`           |
+| 📈 `EDATE`       | `EDATE(start,months)`             | Adds the specified number of months to a date                                                               | `JEDATEFormula`          |
+| 🗓️ `EOMONTH`    | `EOMONTH("2025-01-23",3)`         | Returns the last day of the month that is the specified number of months before/after a date                | `JEOMONTHFormula`        |
+| ⏰ `HOUR`         | `HOUR('2025-01-23')`              | Extracts the hour (0-23) from a time value                                                                  | `JHourFormula`           |
+| 💼 `NETWORKDAYS` | `NETWORKDAYS(s,e,[h])`            | 2-3 parameters (calculates the number of working days between two dates)                                    | `JNetworkDayFormula`     |
+| 🕒 `NOW`         | `NOW()`                           | Exact syntax match required; returns the current timestamp                                                  | `JNowFormula`            |
+| 📅 `TODAY`       | `TODAY()`                         | Exact syntax match required; returns the current date                                                       | `JTodayFormula`          |
+| 🛠️ `WORKDAY`    | `WORKDAY(s,days,[h])`             | 2-3 parameters (calculates the date that is the specified number of working days before/after a start date) | `JWorkDayFormula`        |
+| ⏱️ `MINUTE`      | `MINUTE(time_value)`              | 1 time series parameter; extracts the minute (0-59) from a time value                                       | -                        |
+| 📍 `MONTH`       | `MONTH(date_value)`               | 1 date series parameter; extracts the month (1-12) from a date                                              | -                        |
+| 🎯 `SECOND`      | `SECOND(time_value)`              | 1 time series parameter; extracts the second (0-59) from a time value                                       | -                        |
+| ⏲️ `TIME`        | `TIME(hour,min,sec)`              | 3 parameters (hour/minute/second); returns an Excel time serial number (0-0.999)                            | -                        |
+| 📆 `TODAY`       | `TODAY()`                         | Exact syntax match required; returns the current date serial number                                         | -                        |
+| 📝 `WEEKDAY`     | `WEEKDAY(date,[type])`            | 1-2 parameters; returns the day of the week (configurable)                                                  | -                        |
+| 📊 `WEEKNUM`     | `WEEKNUM(date,[type])`            | 1-2 parameters; returns the week number of the year                                                         | -                        |
+| 📅 `YEAR`        | `YEAR(date_value)`                | 1 date series parameter; extracts the year (1900-9999) from a date                                          | -                        |
+
 ### 📅 Date formula configuration&equivalent Java code (integrated version)
+
 #### 1. Basic date and time formula
+
 ```string
 # -------------------------- 1. DATETIME - Construct Date and Time --------------------------
 # Configuration Format: FORMULAS = { Target Cell: 'Formula Expression' }
@@ -793,27 +907,31 @@ JAbstractExcelFormula formula = factory.createFormulaInstance("WEEKNUM(A1,1)");
 sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
 JAbstractExcelFormula formula = factory.createFormulaInstance("YEAR(A1)");
 ```
+
 ### 🔤 17 string formulas
-| Formula Name | Syntax Format | Parameter Rules | Example & Result | Corresponding Class Name |
-|--------------|---------------|-----------------|------------------|-------------------------|
-| 🧩 `CONCAT`  | `CONCAT(s1,s2...)` | ≥1 parameter(s) | `CONCAT("A","B")` → "AB" | `JConcatFormula` |
-| 🆚 `EXACT`   | `EXACT(s1,s2)` | 2 parameters (case-sensitive) | `EXACT("a","A")` → FALSE | `JExactFormula` |
-| 🔍 `FIND`    | `FIND(sub,str,[pos])` | 2-3 parameters | `FIND("n","apple")` → 0 | `JFindFormula` |
-| ← `LEFT`/→ `RIGHT` | `LEFT(text,len)`/`RIGHT(text,len)` | 2 parameters | `LEFT("hello",2)` → "he" | `JLeftFormula`/`JRightFormula` |
-| 📏 `LEN`     | `LEN(text)` | 1 parameter | `LEN("text")` → 4 | `JLenFormula` |
-| 🔪 `MID`     | `MID(text,start,len)` | 3 parameters | `MID("apple",2,3)` → "ppl" | `JMIDFormula` |
-| 🔄 `SUBSTITUTE` | `SUBSTITUTE(s,o,n,[i])` | 3-4 parameters | `SUBSTITUTE("a-a","a","b")` → "b-b" | `JSubstituteFormula` |
-| 🧹 `TRIM`    | `TRIM(text)` | 1 parameter | `TRIM(" a ")` → "a" | `JTrimFormula` |
-| 📝 `CONCATENATE` | `CONCATENATE(text1, [text2]...)` | ≥1 parameter(s) | `CONCATENATE("A",1,TRUE)` → "A1TRUE" | `JConcatenateFormula` |
-| 📉 `LOWER`   | `LOWER(text)` | 1 parameter | `LOWER("ExCeL")` → "excel" | `JLowerFormula` |
-| 🎩 `PROPER`  | `PROPER(text)` | 1 parameter | `PROPER("john o'reilly")` → "John O'Reilly" | `JProperFormula` |
-| ✏️ `REPLACE` | `REPLACE(old,start,num,new)` | 4 parameters | `REPLACE("ABCD",2,2,"XY")` → "AXYD" | `JReplaceFormula` |
-| 🔎 `SEARCH`  | `SEARCH(find,within,[start])` | 2-3 parameters | `SEARCH("n","Banana",3)` → 5 | `JSearchFormula` |
-| 🔁 `SUBSTITUTE` | `SUBSTITUTE(text,old,new,[nth])` | 3-4 parameters | `SUBSTITUTE("A-A-A","A","B",2)` → "A-B-A" | `JSubstituteFormula` |
-| 🎨 `TEXT`    | `TEXT(value,format)` | 2 parameters | `TEXT(0.25,"0.0%")` → "25.0%" | `JTextFormula` |
-| 📈 `UPPER`   | `UPPER(text)` | 1 parameter | `UPPER("email")` → "EMAIL" | `JUpperFormula` |
-| 🔢 `VALUE`   | `VALUE(text)` | 1 parameter | `VALUE("¥1,000")` → 1000.0 | `JValueFormula` |
+
+| Formula Name       | Syntax Format                      | Parameter Rules               | Example & Result                            | Corresponding Class Name       |
+|--------------------|------------------------------------|-------------------------------|---------------------------------------------|--------------------------------|
+| 🧩 `CONCAT`        | `CONCAT(s1,s2...)`                 | ≥1 parameter(s)               | `CONCAT("A","B")` → "AB"                    | `JConcatFormula`               |
+| 🆚 `EXACT`         | `EXACT(s1,s2)`                     | 2 parameters (case-sensitive) | `EXACT("a","A")` → FALSE                    | `JExactFormula`                |
+| 🔍 `FIND`          | `FIND(sub,str,[pos])`              | 2-3 parameters                | `FIND("n","apple")` → 0                     | `JFindFormula`                 |
+| ← `LEFT`/→ `RIGHT` | `LEFT(text,len)`/`RIGHT(text,len)` | 2 parameters                  | `LEFT("hello",2)` → "he"                    | `JLeftFormula`/`JRightFormula` |
+| 📏 `LEN`           | `LEN(text)`                        | 1 parameter                   | `LEN("text")` → 4                           | `JLenFormula`                  |
+| 🔪 `MID`           | `MID(text,start,len)`              | 3 parameters                  | `MID("apple",2,3)` → "ppl"                  | `JMIDFormula`                  |
+| 🔄 `SUBSTITUTE`    | `SUBSTITUTE(s,o,n,[i])`            | 3-4 parameters                | `SUBSTITUTE("a-a","a","b")` → "b-b"         | `JSubstituteFormula`           |
+| 🧹 `TRIM`          | `TRIM(text)`                       | 1 parameter                   | `TRIM(" a ")` → "a"                         | `JTrimFormula`                 |
+| 📝 `CONCATENATE`   | `CONCATENATE(text1, [text2]...)`   | ≥1 parameter(s)               | `CONCATENATE("A",1,TRUE)` → "A1TRUE"        | `JConcatenateFormula`          |
+| 📉 `LOWER`         | `LOWER(text)`                      | 1 parameter                   | `LOWER("ExCeL")` → "excel"                  | `JLowerFormula`                |
+| 🎩 `PROPER`        | `PROPER(text)`                     | 1 parameter                   | `PROPER("john o'reilly")` → "John O'Reilly" | `JProperFormula`               |
+| ✏️ `REPLACE`       | `REPLACE(old,start,num,new)`       | 4 parameters                  | `REPLACE("ABCD",2,2,"XY")` → "AXYD"         | `JReplaceFormula`              |
+| 🔎 `SEARCH`        | `SEARCH(find,within,[start])`      | 2-3 parameters                | `SEARCH("n","Banana",3)` → 5                | `JSearchFormula`               |
+| 🔁 `SUBSTITUTE`    | `SUBSTITUTE(text,old,new,[nth])`   | 3-4 parameters                | `SUBSTITUTE("A-A-A","A","B",2)` → "A-B-A"   | `JSubstituteFormula`           |
+| 🎨 `TEXT`          | `TEXT(value,format)`               | 2 parameters                  | `TEXT(0.25,"0.0%")` → "25.0%"               | `JTextFormula`                 |
+| 📈 `UPPER`         | `UPPER(text)`                      | 1 parameter                   | `UPPER("email")` → "EMAIL"                  | `JUpperFormula`                |
+| 🔢 `VALUE`         | `VALUE(text)`                      | 1 parameter                   | `VALUE("¥1,000")` → 1000.0                  | `JValueFormula`                |
+
 ### 🔤 Example of string formula configuration (integrated version)
+
 ```string
 # String Formula Configuration Instructions: FORMULAS = { Target Cell: 'Formula Expression' }
 # All formulas are mapped to cell D5; modify the target cell as needed
@@ -863,15 +981,21 @@ FORMULAS={
     D5:'VALUE("¥1,000")'       # Convert amount string to numeric value → 1000.0
 }
 ```
+
 ### 🔍 Logical formulas (3)
+
 IF、AND、OR
+
 ### 🧠 Logical formula
-| Formula Name | Syntax Format | Parameter Rules | Example & Result | Corresponding Class Name |
-|--------------|---------------|-----------------|------------------|-------------------------|
-| 🎯 `IF`      | `IF(cond,t,f)` | 3 parameters | `IF(A1>0,"Yes","No")` → Returns "Yes" if A1>0, otherwise returns "No" | `JIfFormula` |
-| ✅ `AND`     | `AND(b1,b2...)` | ≥1 parameter(s) | `AND(TRUE,FALSE)` → FALSE | `JAndFormula` |
-| 🟡 `OR`      | `OR(b1,b2...)` | ≥1 parameter(s) | `OR(TRUE,FALSE)` → TRUE | `JORFormula` |
+
+| Formula Name | Syntax Format   | Parameter Rules | Example & Result                                                      | Corresponding Class Name |
+|--------------|-----------------|-----------------|-----------------------------------------------------------------------|--------------------------|
+| 🎯 `IF`      | `IF(cond,t,f)`  | 3 parameters    | `IF(A1>0,"Yes","No")` → Returns "Yes" if A1>0, otherwise returns "No" | `JIfFormula`             |
+| ✅ `AND`      | `AND(b1,b2...)` | ≥1 parameter(s) | `AND(TRUE,FALSE)` → FALSE                                             | `JAndFormula`            |
+| 🟡 `OR`      | `OR(b1,b2...)`  | ≥1 parameter(s) | `OR(TRUE,FALSE)` → TRUE                                               | `JORFormula`             |
+
 ### 🧠 Logic&Search Formula Configuration Example (Integrated Version)
+
 ```string
 # Formula Configuration Instructions: FORMULAS = { Target Cell: 'Formula Expression' }
 # All formulas are mapped to cell D5; modify the target cell as needed
@@ -891,19 +1015,24 @@ FORMULAS={
     D5:'LOOKUP(22, D2:D4, C2:C4)'  # Looks up 22 in the range D2:D4 and returns the value at the corresponding position in C2:C4
 }
 ```
+
 ## 📊 Chart type support
-| Chart Type       | Example               | Purpose               |
-|------------------|-----------------------|-----------------------|
-| Column Chart     | Sales Data Comparison | Data Comparison       |
-| Bar Chart        | Quarterly Sales Rank | Ranking Display       |
-| Line Chart       | Temperature Trend     | Trend Analysis        |
-| Pie Chart        | Market Share Distribution | Proportion Display |
-| Area Chart       | Sales Trend Analysis  | Cumulative Trend      |
-| Scatter Chart    | Height-Weight Distribution | Correlation Analysis |
-| Radar Chart      | Competency Assessment | Multi-dimensional Evaluation |
-| 3D Chart         | Terrain Height Example | 3D Data Presentation  |
+
+| Chart Type    | Example                    | Purpose                      |
+|---------------|----------------------------|------------------------------|
+| Column Chart  | Sales Data Comparison      | Data Comparison              |
+| Bar Chart     | Quarterly Sales Rank       | Ranking Display              |
+| Line Chart    | Temperature Trend          | Trend Analysis               |
+| Pie Chart     | Market Share Distribution  | Proportion Display           |
+| Area Chart    | Sales Trend Analysis       | Cumulative Trend             |
+| Scatter Chart | Height-Weight Distribution | Correlation Analysis         |
+| Radar Chart   | Competency Assessment      | Multi-dimensional Evaluation |
+| 3D Chart      | Terrain Height Example     | 3D Data Presentation         |
+
 ### basic structure
+
 #### The chart configuration adopts Domain Specific Language (DSL) in JSON like format, and the basic structure is as follows
+
 ```string
 EXPORT WITH GRAPH = {
     TYPE = Chart Type,
@@ -920,8 +1049,11 @@ EXPORT WITH GRAPH = {
     ]
 }
 ```
+
 # Explanation of Chart Configuration Keywords
+
 ## 1. TYPE
+
 - **Description**: Specify the chart type
 - **Supported Types**:
     - `LINE` (Line Chart)
@@ -936,12 +1068,14 @@ EXPORT WITH GRAPH = {
     - `SURFACE` (Surface Chart)
 
 ## 2. TITLE (Required)
+
 - **Description**: Title text of the chart
 - **Type**: String
 - **Format Requirement**: Must be enclosed in double quotes `"` or single quotes `'`
 - **Example**: `TITLE = "2023 Sales Data Statistics"`
 
 ## 3. CATEGORY_AXIS (Optional)
+
 - **Description**: Title text of the category axis (usually the X-axis)
 - **Applicable Scope**: Most chart types except Pie Chart
 - **Type**: String
@@ -949,6 +1083,7 @@ EXPORT WITH GRAPH = {
 - **Example**: `CATEGORY_AXIS = "Product Category"`
 
 ## 4. VALUE_AXIS (Optional)
+
 - **Description**: Title text of the value axis (usually the Y-axis)
 - **Applicable Scope**: Chart types except Pie Chart and Radar Chart
 - **Type**: String
@@ -956,6 +1091,7 @@ EXPORT WITH GRAPH = {
 - **Example**: `VALUE_AXIS = "Sales Volume (10,000 CNY)"`
 
 ## 5. CATEGORIES (Required)
+
 - **Description**: Categorical dimension data of the chart (X-axis data or grouping basis)
 - **Type**: Array
 - **Content**: A collection of categorical values containing string or numeric types
@@ -964,6 +1100,7 @@ EXPORT WITH GRAPH = {
     - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
 
 ## 6. SERIES (Required)
+
 - **Description**: Collection of data series for the chart, where each series represents a set of related data
 - **Type**: Array containing one or more data series objects
 - **Each series object includes**:
@@ -971,6 +1108,7 @@ EXPORT WITH GRAPH = {
     - `DATA`: Series data (array type, containing a collection of numeric values)
 
 ## 1. TYPE（必填）
+
 - **说明**：指定图表类型
 - **支持类型**：
     - `LINE`（折线图）
@@ -985,12 +1123,14 @@ EXPORT WITH GRAPH = {
     - `SURFACE`（曲面图）
 
 ## 2. TITLE（必填）
+
 - **说明**：图表的标题文本
 - **类型**：字符串
 - **格式要求**：需用双引号`"`或单引号`'`包裹
 - **示例**：`TITLE = "2023年销售数据统计"`
 
 ## 3. CATEGORY_AXIS（可选）
+
 - **说明**：分类轴（通常为X轴）的标题文本
 - **适用范围**：除饼图外的大多数图表类型
 - **类型**：字符串
@@ -998,6 +1138,7 @@ EXPORT WITH GRAPH = {
 - **示例**：`CATEGORY_AXIS = "产品类别"`
 
 ## 4. VALUE_AXIS（可选）
+
 - **说明**：数值轴（通常为Y轴）的标题文本
 - **适用范围**：除饼图、雷达图外的图表类型
 - **类型**：字符串
@@ -1005,6 +1146,7 @@ EXPORT WITH GRAPH = {
 - **示例**：`VALUE_AXIS = "销售额(万元)"`
 
 ## 5. CATEGORIES（必填）
+
 - **说明**：图表的分类维度数据（X轴数据或分组依据）
 - **类型**：数组
 - **内容**：包含字符串或数值类型的分类值集合
@@ -1013,6 +1155,7 @@ EXPORT WITH GRAPH = {
     - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
 
 ## 6. SERIES（必填）
+
 - **说明**：图表的数据系列集合，每个系列代表一组相关数据
 - **类型**：数组，包含一个或多个数据系列对象
 - **每个系列对象包含**：
@@ -1163,7 +1306,6 @@ EXPORT WITH GRAPH = {
     </td>
   </tr>
 </table>
-
 
 ```string 
 // ============================================================================
@@ -1316,7 +1458,6 @@ EXPORT WITH GRAPH = {
   </tr>
 </table>
 
-
 ```string 
 // ============================================================================
 #  面积图 area3d chart
@@ -1414,7 +1555,6 @@ EXPORT WITH GRAPH = {
   </tr>
 </table>
 
-
 ```string 
 // ============================================================================
 #  雷达图 radar chart
@@ -1462,7 +1602,6 @@ EXPORT WITH GRAPH = {
     </td>
   </tr>
 </table>
-
 
 ```string 
 // ============================================================================
@@ -1525,163 +1664,170 @@ EXPORT WITH GRAPH = {
 </table>
 
 ## 🎨 Style Configuration
+
 ### 🎨 Row & Font Style Configuration Parameters
-| Element Name | Description | Value/Format |
-|--------------|-------------|--------------|
-| 📏 `height` | Row height | Pixel value (integer) |
-| 🔢 `rowNum` | Row number | Integer (0-indexed) |
-| 🎨 `rowStyle` | Associated cell style | `JCellStyle` object |
-| 📐 `heightInPoints` | Row height (in points) | High-precision decimal (1 point = 1/72 inch) |
-| 🙈 `zeroHeight` | Whether the row is hidden | `true`/`false` |
-| 🔤 `fontHeightInPoints` | Font size (in points) | High-precision decimal (e.g., 12.0) / integer (e.g., 3) |
-| ✍️ `fontName` | Font name | String (e.g., "Arial") |
-| 📏 `fontHeight` | Font height | Integer (e.g., 3) |
-| 📝 `underLine` | Underline | Refer to `JFont` enumeration |
-| 𝗕 `bold` | Bold | `true`/`false` |
-| ⁱ `italic` | Italic | `true`/`false` |
-| 🌈 `color` | Font color | Refer to `JColorEnum` enumeration |
-| 🚫 `strikeout` | Strike-through | `true`/`false` |
+
+| Element Name            | Description               | Value/Format                                            |
+|-------------------------|---------------------------|---------------------------------------------------------|
+| 📏 `height`             | Row height                | Pixel value (integer)                                   |
+| 🔢 `rowNum`             | Row number                | Integer (0-indexed)                                     |
+| 🎨 `rowStyle`           | Associated cell style     | `JCellStyle` object                                     |
+| 📐 `heightInPoints`     | Row height (in points)    | High-precision decimal (1 point = 1/72 inch)            |
+| 🙈 `zeroHeight`         | Whether the row is hidden | `true`/`false`                                          |
+| 🔤 `fontHeightInPoints` | Font size (in points)     | High-precision decimal (e.g., 12.0) / integer (e.g., 3) |
+| ✍️ `fontName`           | Font name                 | String (e.g., "Arial")                                  |
+| 📏 `fontHeight`         | Font height               | Integer (e.g., 3)                                       |
+| 📝 `underLine`          | Underline                 | Refer to `JFont` enumeration                            |
+| 𝗕 `bold`               | Bold                      | `true`/`false`                                          |
+| ⁱ `italic`              | Italic                    | `true`/`false`                                          |
+| 🌈 `color`              | Font color                | Refer to `JColorEnum` enumeration                       |
+| 🚫 `strikeout`          | Strike-through            | `true`/`false`                                          |
 
 ### 📋 Table Element Configuration Parameters
-| Constant Name | Description | Value/Format |
-|---------------|-------------|--------------|
-| 🔢 `index` | Style index identifier | High-precision decimal |
-| 📊 `dataFormat` | Data format code | High-precision decimal format code |
-| 📝 `dataFormatString` | Data format string | Format string (e.g., "yyyy-MM-dd") |
-| ✍️ `font` | Font object reference | Font object |
-| 🔖 `fontIndex` | Font index reference | High-precision decimal index value |
-| 🙈 `hidden` | Cell visibility | true/false |
-| 🔒 `locked` | Cell protection | true/false |
-| 📜 `quotePrefixed` | Quote prefix display | true/false |
-| 🧭 `alignment` | Horizontal alignment | left/right/center/center-section/general/fill/justify/distributed |
-| 📥 `wrapText` | Text wrap | true/false |
-| 🧱 `verticalAlignment` | Vertical alignment | top/bottom/center/justify/distributed |
-| 🔄 `rotation` | Text rotation angle | High-precision decimal (0-180 degrees) |
-| 📏 `indention` | Text indentation level | High-precision decimal (indentation level) |
-| 📐 `borderLeft` | Left border style | Border style constant |
-| 📐 `borderRight` | Right border style | Border style constant |
-| 📐 `borderTop` | Top border style | Border style constant |
-| 📐 `borderBottom` | Bottom border style | Border style constant |
-| 🌈 `leftBorderColor` | Left border color | Color code/hexadecimal value |
-| 🌈 `rightBorderColor` | Right border color | Color code/hexadecimal value |
-| 🌈 `topBorderColor` | Top border color | Color code/hexadecimal value |
-| 🌈 `bottomBorderColor` | Bottom border color | Color code/hexadecimal value |
-| 🎨 `fillPattern` | Cell fill pattern | Fill pattern constant |
-| 🎨 `fillBackgroundColor` | Background fill color | Color code/hexadecimal value |
-| 🎨 `fillForegroundColor` | Foreground fill color | Color code/hexadecimal value |
-| 🪄 `shrinkToFit` | Text shrink to fit cell | true/false |
-| 𝗕 `bold` | Font bold style | Boolean (true/false) |
-| 📛 `fontName` | Font family name | String (e.g., "Arial", "Times New Roman") |
-| 📏 `fontHeightInPoints` | Font size (in points) | High-precision decimal (e.g., 12.0, 14.5) |
-| 📏 `fontHeight` | Font height (in twips) | High-precision decimal (e.g., 240, 280) |
-| ⁱ `italic` | Font italic style | Boolean (true/false) |
-| 📝 `underLine` | Underline type | String (mapped via JFont.nameOf()) |
-| 🌈 `color` | Font color | String (mapped via JColorEnum.codeOf()) |
-| 🚫 `strikeout` | Strike-through text | Boolean (true/false) |
+
+| Constant Name            | Description             | Value/Format                                                      |
+|--------------------------|-------------------------|-------------------------------------------------------------------|
+| 🔢 `index`               | Style index identifier  | High-precision decimal                                            |
+| 📊 `dataFormat`          | Data format code        | High-precision decimal format code                                |
+| 📝 `dataFormatString`    | Data format string      | Format string (e.g., "yyyy-MM-dd")                                |
+| ✍️ `font`                | Font object reference   | Font object                                                       |
+| 🔖 `fontIndex`           | Font index reference    | High-precision decimal index value                                |
+| 🙈 `hidden`              | Cell visibility         | true/false                                                        |
+| 🔒 `locked`              | Cell protection         | true/false                                                        |
+| 📜 `quotePrefixed`       | Quote prefix display    | true/false                                                        |
+| 🧭 `alignment`           | Horizontal alignment    | left/right/center/center-section/general/fill/justify/distributed |
+| 📥 `wrapText`            | Text wrap               | true/false                                                        |
+| 🧱 `verticalAlignment`   | Vertical alignment      | top/bottom/center/justify/distributed                             |
+| 🔄 `rotation`            | Text rotation angle     | High-precision decimal (0-180 degrees)                            |
+| 📏 `indention`           | Text indentation level  | High-precision decimal (indentation level)                        |
+| 📐 `borderLeft`          | Left border style       | Border style constant                                             |
+| 📐 `borderRight`         | Right border style      | Border style constant                                             |
+| 📐 `borderTop`           | Top border style        | Border style constant                                             |
+| 📐 `borderBottom`        | Bottom border style     | Border style constant                                             |
+| 🌈 `leftBorderColor`     | Left border color       | Color code/hexadecimal value                                      |
+| 🌈 `rightBorderColor`    | Right border color      | Color code/hexadecimal value                                      |
+| 🌈 `topBorderColor`      | Top border color        | Color code/hexadecimal value                                      |
+| 🌈 `bottomBorderColor`   | Bottom border color     | Color code/hexadecimal value                                      |
+| 🎨 `fillPattern`         | Cell fill pattern       | Fill pattern constant                                             |
+| 🎨 `fillBackgroundColor` | Background fill color   | Color code/hexadecimal value                                      |
+| 🎨 `fillForegroundColor` | Foreground fill color   | Color code/hexadecimal value                                      |
+| 🪄 `shrinkToFit`         | Text shrink to fit cell | true/false                                                        |
+| 𝗕 `bold`                | Font bold style         | Boolean (true/false)                                              |
+| 📛 `fontName`            | Font family name        | String (e.g., "Arial", "Times New Roman")                         |
+| 📏 `fontHeightInPoints`  | Font size (in points)   | High-precision decimal (e.g., 12.0, 14.5)                         |
+| 📏 `fontHeight`          | Font height (in twips)  | High-precision decimal (e.g., 240, 280)                           |
+| ⁱ `italic`               | Font italic style       | Boolean (true/false)                                              |
+| 📝 `underLine`           | Underline type          | String (mapped via JFont.nameOf())                                |
+| 🌈 `color`               | Font color              | String (mapped via JColorEnum.codeOf())                           |
+| 🚫 `strikeout`           | Strike-through text     | Boolean (true/false)                                              |
 
 ### 📐 Border Style Value Description
-| Input String Value | Border Style Constant | Description |
-|--------------------|-----------------------|-------------|
-| `"none"`           | `NONE`                | No border |
-| `"thin"`           | `THIN`                | Thin line border |
-| `"medium"`         | `MEDIUM`              | Medium thickness border |
-| `"dashed"`         | `DASHED`              | Dashed border |
-| `"dotted"`         | `DOTTED`              | Dotted border |
-| `"thick"`          | `THICK`               | Thick line border |
-| `"double"`         | `DOUBLE`              | Double line border |
-| `"hair"`           | `HAIR`                | Hairline border (ultra-thin) |
-| `"medium_dashed"`  | `MEDIUM_DASHED`       | Medium thickness dashed border |
-| `"dash_dot"`       | `DASH_DOT`            | Dash-dot alternating border |
-| `"medium_dash_dot"`| `MEDIUM_DASH_DOT`     | Medium thickness dash-dot border |
-| `"dash_dot_dot"`   | `DASH_DOT_DOT`        | Dash-dot-dot alternating border |
+
+| Input String Value      | Border Style Constant | Description                          |
+|-------------------------|-----------------------|--------------------------------------|
+| `"none"`                | `NONE`                | No border                            |
+| `"thin"`                | `THIN`                | Thin line border                     |
+| `"medium"`              | `MEDIUM`              | Medium thickness border              |
+| `"dashed"`              | `DASHED`              | Dashed border                        |
+| `"dotted"`              | `DOTTED`              | Dotted border                        |
+| `"thick"`               | `THICK`               | Thick line border                    |
+| `"double"`              | `DOUBLE`              | Double line border                   |
+| `"hair"`                | `HAIR`                | Hairline border (ultra-thin)         |
+| `"medium_dashed"`       | `MEDIUM_DASHED`       | Medium thickness dashed border       |
+| `"dash_dot"`            | `DASH_DOT`            | Dash-dot alternating border          |
+| `"medium_dash_dot"`     | `MEDIUM_DASH_DOT`     | Medium thickness dash-dot border     |
+| `"dash_dot_dot"`        | `DASH_DOT_DOT`        | Dash-dot-dot alternating border      |
 | `"medium_dash_dot_dot"` | `MEDIUM_DASH_DOT_DOT` | Medium thickness dash-dot-dot border |
-| `"slanted_dash_dot"` | `SLANTED_DASH_DOT`   | Slanted dash-dot border |
+| `"slanted_dash_dot"`    | `SLANTED_DASH_DOT`    | Slanted dash-dot border              |
 
 ### 🎨 Fill Pattern Value Description
-| Constant Name      | Description | Value/Format |
-|--------------------|-------------|--------------|
-| `no_fill`          | No fill pattern | `FillPatternType.NO_FILL` |
-| `solid_foreground` | Solid foreground fill | `FillPatternType.SOLID_FOREGROUND` |
-| `fine_dots`        | Fine dot fill pattern | `FillPatternType.FINE_DOTS` |
-| `alt_bars`         | Alternating bars fill | `FillPatternType.ALT_BARS` |
-| `sparse_dots`      | Sparse dot fill pattern | `FillPatternType.SPARSE_DOTS` |
-| `thick_horz_bands` | Thick horizontal bands | `FillPatternType.THICK_HORZ_BANDS` |
-| `thick_vert_bands` | Thick vertical bands | `FillPatternType.THICK_VERT_BANDS` |
-| `thick_backward_diag` | Thick backward diagonal | `FillPatternType.THICK_BACKWARD_DIAG` |
-| `thick_forward_diag` | Thick forward diagonal | `FillPatternType.THICK_FORWARD_DIAG` |
-| `big_spots`        | Large spot fill pattern | `FillPatternType.BIG_SPOTS` |
-| `bricks`           | Brick texture fill | `FillPatternType.BRICKS` |
-| `thin_horz_bands`  | Thin horizontal bands | `FillPatternType.THIN_HORZ_BANDS` |
-| `thin_vert_bands`  | Thin vertical bands | `FillPatternType.THIN_VERT_BANDS` |
-| `thin_backward_diag` | Thin backward diagonal | `FillPatternType.THIN_BACKWARD_DIAG` |
-| `thin_forward_diag` | Thin forward diagonal | `FillPatternType.THIN_FORWARD_DIAG` |
-| `squares`          | Square texture fill | `FillPatternType.SQUARES` |
-| `diamonds`         | Diamond texture fill | `FillPatternType.DIAMONDS` |
-| `less_dots`        | Low-density dot fill | `FillPatternType.LESS_DOTS` |
-| `least_dots`       | Minimum-density dot fill | `FillPatternType.LEAST_DOTS` |
+
+| Constant Name         | Description              | Value/Format                          |
+|-----------------------|--------------------------|---------------------------------------|
+| `no_fill`             | No fill pattern          | `FillPatternType.NO_FILL`             |
+| `solid_foreground`    | Solid foreground fill    | `FillPatternType.SOLID_FOREGROUND`    |
+| `fine_dots`           | Fine dot fill pattern    | `FillPatternType.FINE_DOTS`           |
+| `alt_bars`            | Alternating bars fill    | `FillPatternType.ALT_BARS`            |
+| `sparse_dots`         | Sparse dot fill pattern  | `FillPatternType.SPARSE_DOTS`         |
+| `thick_horz_bands`    | Thick horizontal bands   | `FillPatternType.THICK_HORZ_BANDS`    |
+| `thick_vert_bands`    | Thick vertical bands     | `FillPatternType.THICK_VERT_BANDS`    |
+| `thick_backward_diag` | Thick backward diagonal  | `FillPatternType.THICK_BACKWARD_DIAG` |
+| `thick_forward_diag`  | Thick forward diagonal   | `FillPatternType.THICK_FORWARD_DIAG`  |
+| `big_spots`           | Large spot fill pattern  | `FillPatternType.BIG_SPOTS`           |
+| `bricks`              | Brick texture fill       | `FillPatternType.BRICKS`              |
+| `thin_horz_bands`     | Thin horizontal bands    | `FillPatternType.THIN_HORZ_BANDS`     |
+| `thin_vert_bands`     | Thin vertical bands      | `FillPatternType.THIN_VERT_BANDS`     |
+| `thin_backward_diag`  | Thin backward diagonal   | `FillPatternType.THIN_BACKWARD_DIAG`  |
+| `thin_forward_diag`   | Thin forward diagonal    | `FillPatternType.THIN_FORWARD_DIAG`   |
+| `squares`             | Square texture fill      | `FillPatternType.SQUARES`             |
+| `diamonds`            | Diamond texture fill     | `FillPatternType.DIAMONDS`            |
+| `less_dots`           | Low-density dot fill     | `FillPatternType.LESS_DOTS`           |
+| `least_dots`          | Minimum-density dot fill | `FillPatternType.LEAST_DOTS`          |
 
 ### 🌈 JColorEnum Color Constants (by Code Name)
-| Code Name          | Description | Index Value | Mapped Color |
-|--------------------|-------------|-------------|--------------|
-| `black1`           | Black (Variant 1) | 0 | `IndexedColors.BLACK` |
-| `white1`           | White (Variant 1) | 1 | `IndexedColors.WHITE` |
-| `red1`             | Red (Variant 1) | 2 | `IndexedColors.RED` |
-| `brightGreen1`     | Bright Green (Variant 1) | 3 | `IndexedColors.BRIGHT_GREEN` |
-| `blue1`            | Blue (Variant 1) | 4 | `IndexedColors.BLUE` |
-| `yellow1`          | Yellow (Variant 1) | 5 | `IndexedColors.YELLOW` |
-| `pink1`            | Pink (Variant 1) | 6 | `IndexedColors.PINK` |
-| `turquoise1`       | Turquoise (Variant 1) | 7 | `IndexedColors.TURQUOISE` |
-| `black`            | Standard Black | 8 | `IndexedColors.BLACK` |
-| `white`            | Standard White | 9 | `IndexedColors.WHITE` |
-| `red`              | Standard Red | 10 | `IndexedColors.RED` |
-| `brightGreen`      | Standard Bright Green | 11 | `IndexedColors.BRIGHT_GREEN` |
-| `blue`             | Standard Blue | 12 | `IndexedColors.BLUE` |
-| `yellow`           | Standard Yellow | 13 | `IndexedColors.YELLOW` |
-| `pink`             | Standard Pink | 14 | `IndexedColors.PINK` |
-| `turquoise`        | Standard Turquoise | 15 | `IndexedColors.TURQUOISE` |
-| `darkRed`          | Dark Red | 16 | `IndexedColors.DARK_RED` |
-| `green`            | Green | 17 | `IndexedColors.GREEN` |
-| `darkBlue`         | Dark Blue | 18 | `IndexedColors.DARK_BLUE` |
-| `darkYellow`       | Dark Yellow | 19 | `IndexedColors.DARK_YELLOW` |
-| `violet`           | Violet | 20 | `IndexedColors.VIOLET` |
-| `teal`             | Teal | 21 | `IndexedColors.TEAL` |
-| `grey25Percent`    | 25% Grey | 22 | `IndexedColors.GREY_25_PERCENT` |
-| `grey50Percent`    | 50% Grey | 23 | `IndexedColors.GREY_50_PERCENT` |
-| `cornflowerBlue`   | Cornflower Blue | 24 | `IndexedColors.CORNFLOWER_BLUE` |
-| `maroon`           | Maroon | 25 | `IndexedColors.MAROON` |
-| `lemonChiffon`     | Lemon Chiffon | 26 | `IndexedColors.LEMON_CHIFFON` |
-| `lightTurquoise1`  | Light Turquoise (Variant 1) | 27 | `IndexedColors.LIGHT_TURQUOISE` |
-| `orchid`           | Orchid | 28 | `IndexedColors.ORCHID` |
-| `coral`            | Coral | 29 | `IndexedColors.CORAL` |
-| `royalBlue`        | Royal Blue | 30 | `IndexedColors.ROYAL_BLUE` |
-| `lightCornflowerBlue` | Light Cornflower Blue | 31 | `IndexedColors.LIGHT_CORNFLOWER_BLUE` |
-| `skyBlue`          | Sky Blue | 40 | `IndexedColors.SKY_BLUE` |
-| `lightTurquoise`   | Light Turquoise | 41 | `IndexedColors.LIGHT_TURQUOISE` |
-| `lightGreen`       | Light Green | 42 | `IndexedColors.LIGHT_GREEN` |
-| `lightYellow`      | Light Yellow | 43 | `IndexedColors.LIGHT_YELLOW` |
-| `paleBlue`         | Pale Blue | 44 | `IndexedColors.PALE_BLUE` |
-| `rose`             | Rose | 45 | `IndexedColors.ROSE` |
-| `lavender`         | Lavender | 46 | `IndexedColors.LAVENDER` |
-| `tan`              | Tan | 47 | `IndexedColors.TAN` |
-| `lightBlue`        | Light Blue | 48 | `IndexedColors.LIGHT_BLUE` |
-| `aqua`             | Aqua | 49 | `IndexedColors.AQUA` |
-| `lime`             | Lime | 50 | `IndexedColors.LIME` |
-| `gold`             | Gold | 51 | `IndexedColors.GOLD` |
-| `lightOrange`      | Light Orange | 52 | `IndexedColors.LIGHT_ORANGE` |
-| `orange`           | Orange | 53 | `IndexedColors.ORANGE` |
-| `blueGrey`         | Blue-Grey | 54 | `IndexedColors.BLUE_GREY` |
-| `grey40Percent`    | 40% Grey | 55 | `IndexedColors.GREY_40_PERCENT` |
-| `darkTeal`         | Dark Teal | 56 | `IndexedColors.DARK_TEAL` |
-| `seaGreen`         | Sea Green | 57 | `IndexedColors.SEA_GREEN` |
-| `darkGreen`        | Dark Green | 58 | `IndexedColors.DARK_GREEN` |
-| `oliveGreen`       | Olive Green | 59 | `IndexedColors.OLIVE_GREEN` |
-| `brown`            | Brown | 60 | `IndexedColors.BROWN` |
-| `plum`             | Plum | 61 | `IndexedColors.PLUM` |
-| `indigo`           | Indigo | 62 | `IndexedColors.INDIGO` |
-| `grey80Percent`    | 80% Grey | 63 | `IndexedColors.GREY_80_PERCENT` |
-| `automatic`        | Automatic Color | 64 | `IndexedColors.AUTOMATIC` |
+
+| Code Name             | Description                 | Index Value | Mapped Color                          |
+|-----------------------|-----------------------------|-------------|---------------------------------------|
+| `black1`              | Black (Variant 1)           | 0           | `IndexedColors.BLACK`                 |
+| `white1`              | White (Variant 1)           | 1           | `IndexedColors.WHITE`                 |
+| `red1`                | Red (Variant 1)             | 2           | `IndexedColors.RED`                   |
+| `brightGreen1`        | Bright Green (Variant 1)    | 3           | `IndexedColors.BRIGHT_GREEN`          |
+| `blue1`               | Blue (Variant 1)            | 4           | `IndexedColors.BLUE`                  |
+| `yellow1`             | Yellow (Variant 1)          | 5           | `IndexedColors.YELLOW`                |
+| `pink1`               | Pink (Variant 1)            | 6           | `IndexedColors.PINK`                  |
+| `turquoise1`          | Turquoise (Variant 1)       | 7           | `IndexedColors.TURQUOISE`             |
+| `black`               | Standard Black              | 8           | `IndexedColors.BLACK`                 |
+| `white`               | Standard White              | 9           | `IndexedColors.WHITE`                 |
+| `red`                 | Standard Red                | 10          | `IndexedColors.RED`                   |
+| `brightGreen`         | Standard Bright Green       | 11          | `IndexedColors.BRIGHT_GREEN`          |
+| `blue`                | Standard Blue               | 12          | `IndexedColors.BLUE`                  |
+| `yellow`              | Standard Yellow             | 13          | `IndexedColors.YELLOW`                |
+| `pink`                | Standard Pink               | 14          | `IndexedColors.PINK`                  |
+| `turquoise`           | Standard Turquoise          | 15          | `IndexedColors.TURQUOISE`             |
+| `darkRed`             | Dark Red                    | 16          | `IndexedColors.DARK_RED`              |
+| `green`               | Green                       | 17          | `IndexedColors.GREEN`                 |
+| `darkBlue`            | Dark Blue                   | 18          | `IndexedColors.DARK_BLUE`             |
+| `darkYellow`          | Dark Yellow                 | 19          | `IndexedColors.DARK_YELLOW`           |
+| `violet`              | Violet                      | 20          | `IndexedColors.VIOLET`                |
+| `teal`                | Teal                        | 21          | `IndexedColors.TEAL`                  |
+| `grey25Percent`       | 25% Grey                    | 22          | `IndexedColors.GREY_25_PERCENT`       |
+| `grey50Percent`       | 50% Grey                    | 23          | `IndexedColors.GREY_50_PERCENT`       |
+| `cornflowerBlue`      | Cornflower Blue             | 24          | `IndexedColors.CORNFLOWER_BLUE`       |
+| `maroon`              | Maroon                      | 25          | `IndexedColors.MAROON`                |
+| `lemonChiffon`        | Lemon Chiffon               | 26          | `IndexedColors.LEMON_CHIFFON`         |
+| `lightTurquoise1`     | Light Turquoise (Variant 1) | 27          | `IndexedColors.LIGHT_TURQUOISE`       |
+| `orchid`              | Orchid                      | 28          | `IndexedColors.ORCHID`                |
+| `coral`               | Coral                       | 29          | `IndexedColors.CORAL`                 |
+| `royalBlue`           | Royal Blue                  | 30          | `IndexedColors.ROYAL_BLUE`            |
+| `lightCornflowerBlue` | Light Cornflower Blue       | 31          | `IndexedColors.LIGHT_CORNFLOWER_BLUE` |
+| `skyBlue`             | Sky Blue                    | 40          | `IndexedColors.SKY_BLUE`              |
+| `lightTurquoise`      | Light Turquoise             | 41          | `IndexedColors.LIGHT_TURQUOISE`       |
+| `lightGreen`          | Light Green                 | 42          | `IndexedColors.LIGHT_GREEN`           |
+| `lightYellow`         | Light Yellow                | 43          | `IndexedColors.LIGHT_YELLOW`          |
+| `paleBlue`            | Pale Blue                   | 44          | `IndexedColors.PALE_BLUE`             |
+| `rose`                | Rose                        | 45          | `IndexedColors.ROSE`                  |
+| `lavender`            | Lavender                    | 46          | `IndexedColors.LAVENDER`              |
+| `tan`                 | Tan                         | 47          | `IndexedColors.TAN`                   |
+| `lightBlue`           | Light Blue                  | 48          | `IndexedColors.LIGHT_BLUE`            |
+| `aqua`                | Aqua                        | 49          | `IndexedColors.AQUA`                  |
+| `lime`                | Lime                        | 50          | `IndexedColors.LIME`                  |
+| `gold`                | Gold                        | 51          | `IndexedColors.GOLD`                  |
+| `lightOrange`         | Light Orange                | 52          | `IndexedColors.LIGHT_ORANGE`          |
+| `orange`              | Orange                      | 53          | `IndexedColors.ORANGE`                |
+| `blueGrey`            | Blue-Grey                   | 54          | `IndexedColors.BLUE_GREY`             |
+| `grey40Percent`       | 40% Grey                    | 55          | `IndexedColors.GREY_40_PERCENT`       |
+| `darkTeal`            | Dark Teal                   | 56          | `IndexedColors.DARK_TEAL`             |
+| `seaGreen`            | Sea Green                   | 57          | `IndexedColors.SEA_GREEN`             |
+| `darkGreen`           | Dark Green                  | 58          | `IndexedColors.DARK_GREEN`            |
+| `oliveGreen`          | Olive Green                 | 59          | `IndexedColors.OLIVE_GREEN`           |
+| `brown`               | Brown                       | 60          | `IndexedColors.BROWN`                 |
+| `plum`                | Plum                        | 61          | `IndexedColors.PLUM`                  |
+| `indigo`              | Indigo                      | 62          | `IndexedColors.INDIGO`                |
+| `grey80Percent`       | 80% Grey                    | 63          | `IndexedColors.GREY_80_PERCENT`       |
+| `automatic`           | Automatic Color             | 64          | `IndexedColors.AUTOMATIC`             |
 
 ### cell style
+
 ```string
 EXPORT  WITH SHEET="学生表",HEADER=true,
 MAPPING={
@@ -1703,6 +1849,7 @@ D5:'ABS(D2)'},  STYLE={
       bold: true
     }}
 ```
+
 ```java
 List<Map<String, Object>> data = JObjectConverter.convert(getData());
 FileOutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
@@ -1717,25 +1864,29 @@ JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.t
 Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
 ```
-## 🔄 Merge Strategy
-| Strategy         | Description       | Applicable Scenarios               |
-|------------------|-------------------|------------------------------------|
-| MERGE_WITH_MAX   | Take the maximum value | Score statistics, sales volume statistics |
-| MERGE_WITH_MIN   | Take the minimum value | Minimum price, minimum score       |
-| MERGE_WITH_AVG   | Take the average value | Average score, average salary      |
-| MERGE_WITH_SUM   | Sum values        | Total amount, summary calculation  |
-| MERGE_WITH_FIRST | Take the first value | Master data retention              |
-| MERGE_WITH_LAST  | Take the last value  | Latest data retention              |
-| MERGE_WITH_CONCAT | Concatenate strings | Name merging                       |
-| MERGE_WITH_COUNT | Count values      | Quantity statistics                |
-| MERGE_WITH_VALUE | Fixed value       | Summary label                      |
 
+## 🔄 Merge Strategy
+
+| Strategy          | Description            | Applicable Scenarios                      |
+|-------------------|------------------------|-------------------------------------------|
+| MERGE_WITH_MAX    | Take the maximum value | Score statistics, sales volume statistics |
+| MERGE_WITH_MIN    | Take the minimum value | Minimum price, minimum score              |
+| MERGE_WITH_AVG    | Take the average value | Average score, average salary             |
+| MERGE_WITH_SUM    | Sum values             | Total amount, summary calculation         |
+| MERGE_WITH_FIRST  | Take the first value   | Master data retention                     |
+| MERGE_WITH_LAST   | Take the last value    | Latest data retention                     |
+| MERGE_WITH_CONCAT | Concatenate strings    | Name merging                              |
+| MERGE_WITH_COUNT  | Count values           | Quantity statistics                       |
+| MERGE_WITH_VALUE  | Fixed value            | Summary label                             |
 
 ### footer Option
+
 ```string
 EXPORT WITH FOOTER="Generated by JQuickExcel on ${current_date()}"
 ```
+
 #### Comprehensive Export Test
+
 ```string
 EXPORT WITH
 SHEET="AnnualReport",
@@ -1768,19 +1919,23 @@ SERIES=[{NAME="2023", DATA=[45000, 52000, 48000, 51000]}]
 },
 FOOTER="Confidential - Internal Use Only"
 ```
+
 ## **How to Support Us**
 
 1. **Buy Me a Coffee**  
    If this project has saved you time or money, please consider supporting me with a small donation.
 
 2. **Where Your Donation Goes**
+
 - Covering server costs to keep the project running.
 - Developing new features to deliver more value.
 - Optimizing documentation to enhance user experience.
 
 3. **Every Penny Counts**  
    Even a donation of just one cent can motivate me to debug code late into the night!
+
 ## **Why Donate?**
+
 ✔️ Keep the project forever free and ad-free.  
 ✔️ Support timely responses to issues and community inquiries.  
 ✔️ Realize planned future features.
@@ -1790,12 +1945,16 @@ Thank you for being a partner in making the open-source world better!
 --- 
 
 ### **Additional Notes**
+
 - Maintenance of this project and related products.
 - Your support ensures its sustainability and growth.
+
 ---
 
 ## **🌟 Support Us Now**
-Feel free to leave a message via [email](mailto:goudingcheng@gmail.com) when making a donation. Your name will be listed in the **"Special Thanks"** section of the project's README file!
+
+Feel free to leave a message via [email](mailto:goudingcheng@gmail.com) when making a donation. Your name will be listed
+in the **"Special Thanks"** section of the project's README file!
 ![Pay Now](./src/main/resources/pay/paynow.jpg)
 ![TNG go](./src/main/resources/pay/tngGo.jpg)
 

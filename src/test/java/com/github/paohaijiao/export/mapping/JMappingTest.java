@@ -44,24 +44,24 @@ public class JMappingTest {
     @Test
     public void mapping() throws IOException {
         String input = "EXPORT  WITH\n" +
-                     "SHEET=\"学生表\",\n"+
-                    "HEADER=true,\n"+
-                    "MAPPING={\n" +
-                        "\t\"id\":\"主键\",\n"+
-                        "\t\"name\":\"姓名\",\n"+
-                        "\t\"gender\":\"性别\",\n"+
-                        "\t\"age\":\"年龄\",\n"+
-                        "\t\"enrollmentDate\":\"入学时间\",\n"+
-                        "\t\"className\":\"班级\",\n"+
-                        "\t\"ignoreField\":\"是否忽略\"\n"+
-                    "}";
+                "SHEET=\"学生表\",\n" +
+                "HEADER=true,\n" +
+                "MAPPING={\n" +
+                "\t\"id\":\"主键\",\n" +
+                "\t\"name\":\"姓名\",\n" +
+                "\t\"gender\":\"性别\",\n" +
+                "\t\"age\":\"年龄\",\n" +
+                "\t\"enrollmentDate\":\"入学时间\",\n" +
+                "\t\"className\":\"班级\",\n" +
+                "\t\"ignoreField\":\"是否忽略\"\n" +
+                "}";
         System.out.println(input);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//format.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//format.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(input);
         JExcelExportHandler handler = new JExcelExportHandler(config, JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 

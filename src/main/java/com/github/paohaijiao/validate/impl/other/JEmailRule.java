@@ -30,7 +30,7 @@ public class JEmailRule extends JAbstractValidationRule {
 
     private static final String EMAIL_REGEX = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
-    public JEmailRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JEmailRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
     }
 

@@ -1,7 +1,6 @@
 package com.github.paohaijiao.xml;
 
 
-
 import com.github.paohaijiao.xml.element.JQuickXmlElement;
 
 import java.util.Arrays;

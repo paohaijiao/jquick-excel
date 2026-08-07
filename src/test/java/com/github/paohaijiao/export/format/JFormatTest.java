@@ -42,38 +42,38 @@ public class JFormatTest {
     @Test
     public void transform() throws IOException {
         String input = "EXPORT  WITH\n" +
-                     "SHEET=\"学生表\",\n"+
-                    "HEADER=true,\n"+
-                    "MAPPING={\n" +
-                        "\t\"id\":\"主键\",\n"+
-                        "\t\"name\":\"姓名\",\n"+
-                        "\t\"gender\":\"性别\",\n"+
-                        "\t\"age\":\"年龄\",\n"+
-                        "\t\"enrollmentDate\":\"入学时间\",\n"+
-                        "\t\"className\":\"班级\",\n"+
-                        "\t\"ignoreField\":\"是否忽略\"\n"+
-                    "}," +
-                    "FORMAT={"+
-                    "\t\"enrollmentDate\":\"yyyy-MM-dd\"\n"+
+                "SHEET=\"学生表\",\n" +
+                "HEADER=true,\n" +
+                "MAPPING={\n" +
+                "\t\"id\":\"主键\",\n" +
+                "\t\"name\":\"姓名\",\n" +
+                "\t\"gender\":\"性别\",\n" +
+                "\t\"age\":\"年龄\",\n" +
+                "\t\"enrollmentDate\":\"入学时间\",\n" +
+                "\t\"className\":\"班级\",\n" +
+                "\t\"ignoreField\":\"是否忽略\"\n" +
+                "}," +
+                "FORMAT={" +
+                "\t\"enrollmentDate\":\"yyyy-MM-dd\"\n" +
                 "},\n" +
                 "\n" +
                 "TRANSFORM={\n"
-                +"\"name\": toUpper(${name}),\n"+
-                "\"enrollmentDate\": dateFormat(${enrollmentDate},'yyyy-MM-dd'),\n"+
-                "\"gender\": trans(${dict},${gender})\n"+
+                + "\"name\": toUpper(${name}),\n" +
+                "\"enrollmentDate\": dateFormat(${enrollmentDate},'yyyy-MM-dd'),\n" +
+                "\"gender\": trans(${dict},${gender})\n" +
                 "}";
         System.out.println(input);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(input);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context, JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 

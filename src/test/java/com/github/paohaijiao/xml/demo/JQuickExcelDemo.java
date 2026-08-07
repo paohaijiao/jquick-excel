@@ -4,16 +4,20 @@ import com.github.paohaijiao.importFile.mapping.JMappingTest;
 import com.github.paohaijiao.model.JStudentModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.theme.enums.JExcelThemeType;
 import com.github.paohaijiao.util.JObjectConverter;
 import com.github.paohaijiao.xml.ex.JQuickExcelExportXmlParseFactory;
-import com.github.paohaijiao.xml.im.JQuickExcelImportXmlParseFactory;
-import com.github.paohaijiao.xml.service.JQuickExcelExportService;
 import com.github.paohaijiao.xml.factory.JQuickFactory;
 import com.github.paohaijiao.xml.factory.JQuickXmlFactory;
 import com.github.paohaijiao.xml.handler.JQuickParseHandler;
+import com.github.paohaijiao.xml.im.JQuickExcelImportXmlParseFactory;
+import com.github.paohaijiao.xml.service.JQuickExcelExportService;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 public class JQuickExcelDemo {
@@ -24,30 +28,37 @@ public class JQuickExcelDemo {
         students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
         return students;
     }
+
     @Test
     public void exportExcel() throws FileNotFoundException {
-        List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
-        OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
-        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory("forestGreen",rows,fileOutputStream);
-        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
-        System.out.println(factory);
-        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
-        excelExportService.exportExcel("1","2");
-        System.out.println("导出成功");
+        JExcelThemeType[] themeTypes=JExcelThemeType.values();
+        for (int i=0;i<themeTypes.length;i++) {
+            JExcelThemeType themeType=themeTypes[i];
+            List<JQuickRow> rows = JQuickRow.toRows(JObjectConverter.convert(getData()));
+            OutputStream fileOutputStream = new FileOutputStream("d://test//"+i+themeType.getCode()+".xlsx");
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(themeType.getCode(), rows, fileOutputStream);
+            JQuickFactory factory = new JQuickXmlFactory(parser, "jquick-excel.xml");
+            JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
+            excelExportService.exportExcel("1", "2");
+            System.out.println("导出成功");
+
+        }
+
     }
+
     @Test
     public void importExcel() throws FileNotFoundException {
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
-        Map<String,Object> sex=new HashMap<>();
-        sex.put("男","1");
-        sex.put("女","2");
+        Map<String, Object> sex = new HashMap<>();
+        sex.put("男", "1");
+        sex.put("女", "2");
         JContext context = new JContext();
-        context.put("dict",sex);
-        JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context,is);
-        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
+        context.put("dict", sex);
+        JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context, is);
+        JQuickFactory factory = new JQuickXmlFactory(parser, "jquick-excel.xml");
         System.out.println(factory);
         JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
-        List<JQuickRow> list=excelExportService.importExcel("1","2");
-        System.out.println("导入成功:"+list.size());
+        List<JQuickRow> list = excelExportService.importExcel("1", "2");
+        System.out.println("导入成功:" + list.size());
     }
 }

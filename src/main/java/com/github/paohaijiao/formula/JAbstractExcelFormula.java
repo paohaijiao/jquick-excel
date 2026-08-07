@@ -1,6 +1,5 @@
 package com.github.paohaijiao.formula;
 
-import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.FormulaError;

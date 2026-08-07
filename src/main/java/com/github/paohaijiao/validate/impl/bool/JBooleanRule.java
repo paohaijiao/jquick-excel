@@ -19,8 +19,6 @@ import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,25 +31,25 @@ import java.util.Map;
 public class JBooleanRule extends JAbstractValidationRule {
 
 
-    public JBooleanRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JBooleanRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
     }
 
-        @Override
+    @Override
     protected boolean doValidate(String value) {
-        boolean bool=this.map.containsValue(value);
-        if(bool){
+        boolean bool = this.map.containsValue(value);
+        if (bool) {
             return true;
         }
-        JAssert.throwNewException(this.buildMsg() );
+        JAssert.throwNewException(this.buildMsg());
         return false;
 
     }
 
     @Override
     public String getDefaultMsg() {
-        String scope=StringUtils.join(map.values(),",");
+        String scope = StringUtils.join(map.values(), ",");
         return String.format("it must be a boolean value scope is:%s", scope);
     }
 }

@@ -64,8 +64,8 @@ public class JMappingTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//format.xlsx");
-        JContext context=new JContext();
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//format.xlsx");
+        JContext context = new JContext();
         context.put("fos", fileOutputStream);
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor();
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);

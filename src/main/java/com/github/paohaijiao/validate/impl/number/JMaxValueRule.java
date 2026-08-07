@@ -19,7 +19,6 @@ import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -31,9 +30,9 @@ import java.util.Map;
  */
 public class JMaxValueRule extends JAbstractValidationRule {
 
-    private  double maxValue;
+    private double maxValue;
 
-    public JMaxValueRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMaxValueRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
 
     }
@@ -41,10 +40,10 @@ public class JMaxValueRule extends JAbstractValidationRule {
     @Override
     protected boolean doValidate(String value) {
         JAssert.notNull(map, "the map must not be null");
-        Object maxValueObject=map.get("maxValue");
+        Object maxValueObject = map.get("maxValue");
         JAssert.notNull(maxValueObject, "the maxValue Value must not be null");
-        BigDecimal bigDecimal=(BigDecimal) maxValueObject;
-        this.maxValue =bigDecimal.doubleValue();
+        BigDecimal bigDecimal = (BigDecimal) maxValueObject;
+        this.maxValue = bigDecimal.doubleValue();
         try {
             double num = Double.parseDouble(value);
             return num <= maxValue;
@@ -53,6 +52,7 @@ public class JMaxValueRule extends JAbstractValidationRule {
             return false;
         }
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the value cannot be greater than %s", maxValue);

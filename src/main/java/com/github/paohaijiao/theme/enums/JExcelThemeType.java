@@ -15,8 +15,10 @@
  */
 package com.github.paohaijiao.theme.enums;
 
-import com.github.paohaijiao.theme.*;
+
+import com.github.paohaijiao.theme.JExcelTheme;
 import com.github.paohaijiao.theme.impl.*;
+import com.github.paohaijiao.theme.impl.JAmberTheme;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,11 +54,72 @@ public enum JExcelThemeType {
 
     ROYAL_GOLD("royalGold", "皇家金", JRoyalGoldTheme::new),
 
-    MINT_FRESH("mintFresh", "清新薄荷", JMintFreshTheme::new);
+    MINT_FRESH("mintFresh", "清新薄荷", JMintFreshTheme::new),
+
+    AMBER("amber", "琥珀", com.github.paohaijiao.theme.impl.JAmberTheme::new),
+
+    AMETHYST("amethyst", "紫水晶", JAmethystTheme::new),
+
+    AZURE("azure", "蔚蓝", JAzureTheme::new),
+
+    CHARCOAL("charcoal", "炭灰", JCharcoalTheme::new),
+
+    CORAL("coral", "珊瑚", JCoralTheme::new),
+
+    CRIMSON_RED("crimsonRed", "深红", JCrimsonRedTheme::new),
+
+    CYAN("cyan", "青色", JCyanTheme::new),
+
+    EMERALD("emerald", "祖母绿", JEmeraldTheme::new),
+
+    ESPRESSO("espresso", "浓缩咖啡", JEspressoTheme::new),
+
+    INDIGO("indigo", "靛蓝", JIndigoTheme::new),
+
+    MUSTARD("mustard", "芥末黄", JMustardTheme::new),
+
+    NAVY_BLUE("navyBlue", "海军蓝", JNavyBlueTheme::new),
+
+    OLIVE_GREEN("oliveGreen", "橄榄绿", JOliveGreenTheme::new),
+
+    PEACH("peach", "蜜桃", JPeachTheme::new),
+
+    SAGE("sage", "鼠尾草绿", JSageTheme::new),
+
+    SKY_BLUE("skyBlue", "天空蓝", JSkyBlueTheme::new),
+
+    STEEL_BLUE("steelBlue", "钢蓝", JSteelBlueTheme::new),
+
+    TERRACOTTA("terracotta", "陶土", JTerracottaTheme::new),
+
+    TURQUOISE("turquoise", "绿松石", JTurquoiseTheme::new),
+
+    WINE_RED("wineRed", "酒红", JWineRedTheme::new),
+
+    PLUM("plum", "紫梅", JPlumTheme::new),
+
+    SLATE("slate", "板岩灰", JSlateTheme::new),
+
+    PEARL("pearl", "珍珠白", JPearlTheme::new),
+
+    BRONZE("bronze", "青铜", JBronzeTheme::new),
+
+    ROSE_QUARTZ("roseQuartz", "粉晶", JRoseQuartzTheme::new),
+
+    JADE("jade", "翡翠绿", JJadeTheme::new),
+    CHAMPAGNE("champagne", "香槟金", JChampagneTheme::new),
+
+    DENIM("denim", "牛仔蓝", JDenimTheme::new),
+
+    MAHOGANY("mahogany", "红木", JMahoganyTheme::new),
+
+    PERIWINKLE("periwinkle", "长春花蓝", JPeriwinkleTheme::new);
 
 
     private final String code;
+
     private final String label;
+
     private final Supplier<JExcelTheme> supplier;
 
     JExcelThemeType(String code, String label, Supplier<JExcelTheme> supplier) {

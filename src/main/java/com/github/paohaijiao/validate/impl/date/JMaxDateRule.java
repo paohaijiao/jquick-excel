@@ -18,7 +18,6 @@ package com.github.paohaijiao.validate.impl.date;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -32,10 +31,10 @@ import java.util.Map;
  */
 public class JMaxDateRule extends JAbstractValidationRule {
 
-    private  Date maxDate;
-    private  String format;
+    private Date maxDate;
+    private String format;
 
-    public JMaxDateRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMaxDateRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
 
     }
@@ -43,10 +42,10 @@ public class JMaxDateRule extends JAbstractValidationRule {
     @Override
     protected boolean doValidate(String value) {
         JAssert.notNull(map, "the map must not be null");
-        Object maxDateObject=map.get("maxDate");
+        Object maxDateObject = map.get("maxDate");
         JAssert.notNull(maxDateObject, "the maxDate Value must not be null");
-        this.maxDate =(Date) maxDateObject;
-        Object formatValue=map.get("format");
+        this.maxDate = (Date) maxDateObject;
+        Object formatValue = map.get("format");
         JAssert.notNull(formatValue, "the format Value must not be null");
         this.format = formatValue.toString();
         try {
@@ -58,6 +57,7 @@ public class JMaxDateRule extends JAbstractValidationRule {
             return false;
         }
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the date cannot be later than %s", maxDate);

@@ -7,7 +7,6 @@ import com.github.paohaijiao.jstyle.strategry.impl.JRowStyleStrategy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class JStyleContext {
@@ -34,25 +33,25 @@ public class JStyleContext {
         strategy.applyStyle(workbook, sheet, style);
     }
 
-    public  JStyleContext forRow( int rowNum) {
+    public JStyleContext forRow(int rowNum) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JRowStyleStrategy(rowNum));
         return context;
     }
 
-    public  JStyleContext forColumn( int colNum) {
+    public JStyleContext forColumn(int colNum) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JColumnStyleStrategy(colNum));
         return context;
     }
 
-    public  JStyleContext forCell( String cellRef) {
+    public JStyleContext forCell(String cellRef) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JCellStyleStrategy(cellRef));
         return context;
     }
 
-    public  JStyleContext forCell( int rowNum, int colNum) {
+    public JStyleContext forCell(int rowNum, int colNum) {
         JStyleContext context = new JStyleContext(workbook, sheet);
         context.setStrategy(new JCellStyleStrategy(rowNum, colNum));
         return context;

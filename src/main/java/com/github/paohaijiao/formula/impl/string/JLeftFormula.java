@@ -34,8 +34,8 @@ public class JLeftFormula extends JAbstractExcelFormula {
 
 
     public JLeftFormula(String text, BigDecimal size) {
-        super("LEFT(\"" + text +"\",\""+size.toPlainString()+ "\")");
-        System.out.println("LEFT(" + text +","+size.toPlainString()+ ")");
+        super("LEFT(\"" + text + "\",\"" + size.toPlainString() + "\")");
+        System.out.println("LEFT(" + text + "," + size.toPlainString() + ")");
 
     }
 }

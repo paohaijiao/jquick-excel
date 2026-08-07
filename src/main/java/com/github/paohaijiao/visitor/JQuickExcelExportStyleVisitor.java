@@ -18,7 +18,6 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.util.JStringUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -111,14 +110,14 @@ public class JQuickExcelExportStyleVisitor extends JQuickExcelExportFormulateVis
     @Override
     public Map<String, Object> visitStyleProperty(JQuickExcelParser.StylePropertyContext ctx) {
         Map<String, Object> style = new HashMap<>();
-        String key=null;
-        if (ctx.IDENTIFIER() != null ) {
-             key = JStringUtils.trim(ctx.IDENTIFIER().getText());
+        String key = null;
+        if (ctx.IDENTIFIER() != null) {
+            key = JStringUtils.trim(ctx.IDENTIFIER().getText());
 
         }
-        Object value =null;
-        if(null!=ctx.functionArg()){
-            value=visitFunctionArg(ctx.functionArg());
+        Object value = null;
+        if (null != ctx.functionArg()) {
+            value = visitFunctionArg(ctx.functionArg());
         }
         style.put(key, value);
         return style;

@@ -29,9 +29,9 @@ import java.util.Map;
  */
 public class JRegexRule extends JAbstractValidationRule {
 
-    private  String pattern;
+    private String pattern;
 
-    public JRegexRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JRegexRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -39,9 +39,9 @@ public class JRegexRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object patternObject=map.get("pattern");
+        Object patternObject = map.get("pattern");
         JAssert.notNull(patternObject, "the pattern Value must not be null");
-        this.pattern =(String) patternObject;
+        this.pattern = (String) patternObject;
         return value.matches(pattern);
     }
 

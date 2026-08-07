@@ -18,7 +18,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JNotEndWithRule;
 import com.github.paohaijiao.validate.impl.string.JNotStartWithRule;
 import org.junit.Test;
 
@@ -36,28 +35,31 @@ public class JNotStartWidthTest {
 
     @Test
     public void notStart1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void notStart2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void notStart3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("notStartWith", "2");
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void notStart4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("notStartWith", "8");
-        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true,map,"不能为空");
+        JNotStartWithRule booleanRule = JExcelValidationRuleFactory.notStart(true, map, "不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

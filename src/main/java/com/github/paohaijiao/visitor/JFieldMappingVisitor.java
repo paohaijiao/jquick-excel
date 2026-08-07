@@ -44,7 +44,6 @@ public class JFieldMappingVisitor extends JFormatSpecVisitor {
     }
 
 
-
     @Override
     public JKeyValueModel visitTransformRule(JQuickExcelParser.TransformRuleContext ctx) {
         JKeyValueModel jKeyValueModel = new JKeyValueModel();

@@ -31,7 +31,7 @@ public class JStartWithRule extends JAbstractValidationRule {
 
     private String startWith;
 
-    public JStartWithRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JStartWithRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -39,9 +39,9 @@ public class JStartWithRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object startWithObject=map.get("startWith");
+        Object startWithObject = map.get("startWith");
         JAssert.notNull(startWithObject, "the startWith Value must not be null");
-        this.startWith =(String) startWithObject;
+        this.startWith = (String) startWithObject;
         return value.startsWith(startWith);
     }
 

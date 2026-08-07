@@ -17,12 +17,10 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JMinValueRule;
 import com.github.paohaijiao.validate.impl.string.JNotContainWithRule;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -36,28 +34,31 @@ public class JNotContainWidthTest {
 
     @Test
     public void notContainWidth1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void notContainWidth2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void notContainWidth3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("notContain", "2");
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true,map,"不能为空");
+        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void notContainWidth4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("notContain", "cdscds2");
-        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true,map,"不能为空");
+        JNotContainWithRule booleanRule = JExcelValidationRuleFactory.notContainWith(true, map, "不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

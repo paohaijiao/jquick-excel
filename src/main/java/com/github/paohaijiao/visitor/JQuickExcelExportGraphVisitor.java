@@ -38,21 +38,22 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
     @Override
     public Void visitGraphOption(JQuickExcelParser.GraphOptionContext ctx) {
         for (JQuickExcelParser.GraphSpecContext specCtx : ctx.graphSpec()) {
-           visit(specCtx);
+            visit(specCtx);
         }
         return null;
     }
+
     @Override
     public Void visitGraphSpec(JQuickExcelParser.GraphSpecContext ctx) {
         if (ctx.chartType() != null) {
             visitChartType(ctx.chartType());
-        }else if(ctx.chartTitle() != null) {
+        } else if (ctx.chartTitle() != null) {
             visitChartTitle(ctx.chartTitle());
         } else if (ctx.categoryAxis() != null) {
             visitCategoryAxis(ctx.categoryAxis());
         } else if (ctx.valueAxis() != null) {
             visitValueAxis(ctx.valueAxis());
-        } else if (ctx.categories()!=null) {
+        } else if (ctx.categories() != null) {
             visitCategories(ctx.categories());
         } else if (ctx.series() != null) {
             visitSeries(ctx.series());
@@ -63,17 +64,17 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Void visitChartType(JQuickExcelParser.ChartTypeContext ctx) {
-        JAssert.notNull(ctx.chartTypeValue(),"chartType not null");
-        String chartType=ctx.chartTypeValue().getText();
+        JAssert.notNull(ctx.chartTypeValue(), "chartType not null");
+        String chartType = ctx.chartTypeValue().getText();
         config.getGraph().setChartType(chartType);
         return null;
     }
 
     @Override
     public Object visitChartTitle(JQuickExcelParser.ChartTitleContext ctx) {
-        if(null!=ctx.STRING()) {
+        if (null != ctx.STRING()) {
             String title = ctx.STRING().getText();
-            String titleString= JStringUtils.trim(title);
+            String titleString = JStringUtils.trim(title);
             config.getGraph().setTitle(titleString);
         }
         return null;
@@ -81,9 +82,9 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Object visitCategoryAxis(JQuickExcelParser.CategoryAxisContext ctx) {
-        if(null!=ctx.IDENTIFIER()) {
+        if (null != ctx.IDENTIFIER()) {
             String axis = ctx.IDENTIFIER().getText();
-            String titleString= JStringUtils.trim(axis);
+            String titleString = JStringUtils.trim(axis);
             config.getGraph().setCategoryAxisTitle(titleString);
         }
 
@@ -92,9 +93,9 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public Void visitValueAxis(JQuickExcelParser.ValueAxisContext ctx) {
-        if(null!=ctx.IDENTIFIER()) {
+        if (null != ctx.IDENTIFIER()) {
             String axis = ctx.IDENTIFIER().getText();
-            String titleString= JStringUtils.trim(axis);
+            String titleString = JStringUtils.trim(axis);
             config.getGraph().setValueAxisTitle(titleString);
         }
 
@@ -105,7 +106,7 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
     public Void visitCategories(JQuickExcelParser.CategoriesContext ctx) {
         List<String> categories = new ArrayList<>();
         for (JQuickExcelParser.FunctionArgContext functionArgContext : ctx.functionArg()) {
-            Object object=visitFunctionArg(functionArgContext);
+            Object object = visitFunctionArg(functionArgContext);
             categories.add(object.toString());
         }
         config.getGraph().setCategories(categories);
@@ -116,7 +117,7 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
     public Void visitSeries(JQuickExcelParser.SeriesContext ctx) {
         List<JSeriesData> seriesList = new ArrayList<>();
         for (JQuickExcelParser.SeriesSpecContext seriesSpecCtx : ctx.seriesSpec()) {
-            JSeriesData seriesData=visitSeriesSpec(seriesSpecCtx);
+            JSeriesData seriesData = visitSeriesSpec(seriesSpecCtx);
             seriesList.add(seriesData);
         }
 
@@ -126,32 +127,34 @@ public class JQuickExcelExportGraphVisitor extends JQuickExcelExportMergeVisitor
 
     @Override
     public JSeriesData visitSeriesSpec(JQuickExcelParser.SeriesSpecContext ctx) {
-        JSeriesData data=new JSeriesData();
-        String seriName=null;
-        List<Double> seriesDataList=new ArrayList<>();
-        if(ctx.seriesName()!=null) {
-            seriName=visitSeriesName(ctx.seriesName());
+        JSeriesData data = new JSeriesData();
+        String seriName = null;
+        List<Double> seriesDataList = new ArrayList<>();
+        if (ctx.seriesName() != null) {
+            seriName = visitSeriesName(ctx.seriesName());
         }
-        if(ctx.seriesData()!=null) {
-            seriesDataList=visitSeriesData(ctx.seriesData());
+        if (ctx.seriesData() != null) {
+            seriesDataList = visitSeriesData(ctx.seriesData());
         }
         data.setName(seriName);
         data.setData(seriesDataList);
         return data;
     }
+
     @Override
     public String visitSeriesName(JQuickExcelParser.SeriesNameContext ctx) {
-        if(ctx.IDENTIFIER()!=null) {
+        if (ctx.IDENTIFIER() != null) {
             return ctx.IDENTIFIER().getText();
         }
         return null;
 
     }
+
     @Override
     public List<Double> visitSeriesData(JQuickExcelParser.SeriesDataContext ctx) {
-        List<Double> list=new ArrayList<>();
-        for (TerminalNode context:ctx.NUMBER()){
-           String string= context.getText();
+        List<Double> list = new ArrayList<>();
+        for (TerminalNode context : ctx.NUMBER()) {
+            String string = context.getText();
             list.add(Double.parseDouble(JStringUtils.trim(string)));
         }
         return list;

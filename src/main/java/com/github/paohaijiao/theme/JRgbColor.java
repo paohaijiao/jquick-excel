@@ -27,7 +27,9 @@ package com.github.paohaijiao.theme;
 public final class JRgbColor {
 
     private final int r;
+
     private final int g;
+
     private final int b;
 
     public JRgbColor(int r, int g, int b) {
@@ -54,6 +56,10 @@ public final class JRgbColor {
         return new JRgbColor(r, g, b);
     }
 
+    private static int clamp(int v) {
+        return v < 0 ? 0 : (v > 255 ? 255 : v);
+    }
+
     public int getR() {
         return r;
     }
@@ -68,9 +74,5 @@ public final class JRgbColor {
 
     public byte[] toBytes() {
         return new byte[]{(byte) r, (byte) g, (byte) b};
-    }
-
-    private static int clamp(int v) {
-        return v < 0 ? 0 : (v > 255 ? 255 : v);
     }
 }

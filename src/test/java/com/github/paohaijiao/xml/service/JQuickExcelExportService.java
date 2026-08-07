@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface JQuickExcelExportService {
 
-    public void exportExcel(@Param("field")String field, @Param("value")String value);
+    public void exportExcel(@Param("field") String field, @Param("value") String value);
 
-    public List<JQuickRow> importExcel(@Param("field")String field, @Param("value")String value);
+    public List<JQuickRow> importExcel(@Param("field") String field, @Param("value") String value);
 }

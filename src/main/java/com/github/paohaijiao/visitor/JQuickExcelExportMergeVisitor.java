@@ -20,9 +20,7 @@ package com.github.paohaijiao.visitor;
 import com.github.paohaijiao.enums.JMergeValueType;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.util.JStringUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -57,14 +55,14 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
 
     @Override
     public Void visitRowMerge(JQuickExcelParser.RowMergeContext ctx) {
-        Map<String, Object> rowMerge =config.getRowMerge();
+        Map<String, Object> rowMerge = config.getRowMerge();
         Object range = visitRowRange(ctx.rowRange());
-        JMergeValueType policy =null;
+        JMergeValueType policy = null;
         if (ctx.mergePolicy() != null) {
-             policy = visitMergePolicy(ctx.mergePolicy());
+            policy = visitMergePolicy(ctx.mergePolicy());
             JAssert.notNull(policy, "policy is null");
         }
-        rowMerge.put(range.toString(),policy);
+        rowMerge.put(range.toString(), policy);
         config.setRowMerge(rowMerge);
         return null;
     }
@@ -72,10 +70,10 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
     @Override
     public Object visitRowRange(JQuickExcelParser.RowRangeContext ctx) {
         if (ctx.singleRow() != null) {
-            String number=ctx.singleRow().getText();
-           return  Integer.parseInt(number);
+            String number = ctx.singleRow().getText();
+            return Integer.parseInt(number);
         } else if (ctx.multiRowRange() != null) {
-            String string=ctx.multiRowRange().getText();
+            String string = ctx.multiRowRange().getText();
             return string;
         }
         return null;
@@ -83,13 +81,13 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
 
     @Override
     public Void visitColMerge(JQuickExcelParser.ColMergeContext ctx) {
-        Map<String, Object> colMerge =config.getColMerge();
+        Map<String, Object> colMerge = config.getColMerge();
         Object range = visitColRange(ctx.colRange());
-        JMergeValueType policy =null;
+        JMergeValueType policy = null;
         if (ctx.mergePolicy() != null) {
             policy = visitMergePolicy(ctx.mergePolicy());
         }
-        colMerge.put(range.toString(),policy);
+        colMerge.put(range.toString(), policy);
         config.setColMerge(colMerge);
         return null;
     }
@@ -97,10 +95,10 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
     @Override
     public Object visitColRange(JQuickExcelParser.ColRangeContext ctx) {
         if (ctx.singleCol() != null) {
-            String text=ctx.singleCol().getText();
-            return  text;
+            String text = ctx.singleCol().getText();
+            return text;
         } else if (ctx.multiColRange() != null) {
-            String string=ctx.multiColRange().getText();
+            String string = ctx.multiColRange().getText();
             return string;
         }
         return null;
@@ -112,7 +110,7 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
         String rangeRef = ctx.rangeRef().getText();
         if (ctx.mergePolicy() != null) {
             JMergeValueType properties = visitMergePolicy(ctx.mergePolicy());
-            rangeMerge.put(rangeRef,properties);
+            rangeMerge.put(rangeRef, properties);
         }
         config.setRangeMerge(rangeMerge);
         return null;
@@ -120,7 +118,7 @@ public class JQuickExcelExportMergeVisitor extends JQuickExcelExportStyleVisitor
 
     @Override
     public JMergeValueType visitMergePolicy(JQuickExcelParser.MergePolicyContext ctx) {
-       String text= ctx.getText();
-       return JMergeValueType.codeOf(text);
+        String text = ctx.getText();
+        return JMergeValueType.codeOf(text);
     }
 }

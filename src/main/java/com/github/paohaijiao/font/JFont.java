@@ -1,6 +1,5 @@
 package com.github.paohaijiao.font;
 
-import com.github.paohaijiao.color.JColorEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -32,14 +31,6 @@ public enum JFont {
         this.name = name;
     }
 
-    public Number getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public static JFont codeOf(Number code) {
         for (JFont value : values()) {
             if (value.code.equals(code)) {
@@ -55,7 +46,15 @@ public enum JFont {
                 return value;
             }
         }
-        List<String> colorList= Arrays.stream(values()).map(JFont::getName).collect(Collectors.toList());
-        throw new IllegalArgumentException("font code should be one of : " + StringUtils.join(colorList,","));
+        List<String> colorList = Arrays.stream(values()).map(JFont::getName).collect(Collectors.toList());
+        throw new IllegalArgumentException("font code should be one of : " + StringUtils.join(colorList, ","));
+    }
+
+    public Number getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
     }
 }

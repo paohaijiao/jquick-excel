@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.date;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.JRequiredRule;
 import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
 import org.junit.Test;
 
@@ -34,30 +33,33 @@ public class JDateTest {
 
     @Test
     public void boolRequire() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("format", "yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void boolRequire1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("format", "yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void boolRequire2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("format", "yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true, map, "不能为空");
         System.out.println(booleanRule.test("2020-01-01"));
     }
+
     @Test
     public void boolRequire3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("format","yyyy-MM-dd");
-        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("format", "yyyy-MM-dd");
+        JDateFormatRule booleanRule = JExcelValidationRuleFactory.dateFormat(true, map, "不能为空");
         System.out.println(booleanRule.test("2010x-01-01"));
     }
 }

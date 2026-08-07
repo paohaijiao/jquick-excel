@@ -18,7 +18,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JRegexRule;
 import com.github.paohaijiao.validate.impl.string.JStartWithRule;
 import org.junit.Test;
 
@@ -36,28 +35,31 @@ public class JStartWithTest {
 
     @Test
     public void startWith1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void startWith2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void startWith3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("startWith", "2");
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true,map,"不能为空");
+        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void startWith4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("startWith", "[0-9]*");
-        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true,map,"不能为空");
+        JStartWithRule booleanRule = JExcelValidationRuleFactory.startWith(true, map, "不能为空");
         System.out.println(booleanRule.test("a"));
     }
 }

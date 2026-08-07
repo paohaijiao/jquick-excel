@@ -29,7 +29,8 @@ import java.io.IOException;
 
 public class JFormulaStringTest {
 
-    private static String fileDir ="d://test";
+    private static String fileDir = "d://test";
+
     @Test
     public void concatenate() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -45,8 +46,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("SUM result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/concatenate.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/concatenate.xlsx"));
     }
+
     @Test
     public void concat() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -62,8 +64,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("concat result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/concat.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/concat.xlsx"));
     }
+
     @Test
     public void exact() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -79,8 +82,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("exact result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/exact.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/exact.xlsx"));
     }
+
     @Test
     public void find() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -96,8 +100,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/find.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/find.xlsx"));
     }
+
     @Test
     public void left() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -113,8 +118,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/left.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/left.xlsx"));
     }
+
     @Test
     public void length() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -130,8 +136,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find length: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/length.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/length.xlsx"));
     }
+
     @Test
     public void lower() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -147,7 +154,7 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find lower: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/lower.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/lower.xlsx"));
     }
 
     @Test
@@ -165,8 +172,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find MID: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/mid.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/mid.xlsx"));
     }
+
     @Test
     public void proper() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -182,8 +190,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find proper: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/proper.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/proper.xlsx"));
     }
+
     @Test
     public void replace() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -199,8 +208,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find proper: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/proper.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/proper.xlsx"));
     }
+
     @Test
     public void right() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -216,8 +226,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find proper: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/proper.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/proper.xlsx"));
     }
+
     @Test
     public void search() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -233,8 +244,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find proper: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/search.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/search.xlsx"));
     }
+
     @Test
     public void substitute() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -250,8 +262,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find proper: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/search.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/search.xlsx"));
     }
+
     @Test
     public void text() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -267,8 +280,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find text: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/text.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/text.xlsx"));
     }
+
     @Test
     public void trim() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -284,8 +298,9 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find text: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/trim.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/trim.xlsx"));
     }
+
     @Test
     public void upper() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -301,8 +316,10 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find text: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/upper.xlsx"));
-    }    @Test
+        workbook.write(new FileOutputStream(fileDir + "/upper.xlsx"));
+    }
+
+    @Test
     public void value() throws IOException {
         Workbook workbook = new XSSFWorkbook();
         JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
@@ -317,7 +334,7 @@ public class JFormulaStringTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("find text: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/value.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/value.xlsx"));
     }
 
 

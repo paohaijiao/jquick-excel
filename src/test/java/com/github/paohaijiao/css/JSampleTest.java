@@ -14,6 +14,7 @@
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
 package com.github.paohaijiao.css;
+
 import com.github.paohaijiao.handler.JExcelCommonHandler;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -23,11 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * packageName com.github.paohaijiao.export.formulate
@@ -67,7 +63,7 @@ public class JSampleTest {
 
                 if (data[i][j] instanceof String) {
                     cell.setCellValue((String) data[i][j]);
-                    if (((String)data[i][j]).startsWith("=")) {
+                    if (((String) data[i][j]).startsWith("=")) {
                         cell.setCellStyle(JExcelCommonHandler.buildDefaultFormulaCellStyle(workbook));
                     }
                 } else if (data[i][j] instanceof Integer) {
@@ -82,7 +78,7 @@ public class JSampleTest {
                 }
             }
         }
-        addProfessionalFooter(workbook, sheet, data.length + 2,JExcelCommonHandler.buildDefaultFooterStyle(workbook));
+        addProfessionalFooter(workbook, sheet, data.length + 2, JExcelCommonHandler.buildDefaultFooterStyle(workbook));
         try (FileOutputStream fileOut = new FileOutputStream("ProfessionalReport.xlsx")) {
             workbook.write(fileOut);
             System.out.println("专业Excel报表已生成!");

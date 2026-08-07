@@ -18,7 +18,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JNotContainWithRule;
 import com.github.paohaijiao.validate.impl.string.JNotEndWithRule;
 import org.junit.Test;
 
@@ -36,28 +35,31 @@ public class JNotEndWidthTest {
 
     @Test
     public void notCEndWith1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void notCEndWith2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void notCEndWith3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("notEndWith", "2");
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void notCEndWith4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("notEndWith", "8");
-        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true,map,"不能为空");
+        JNotEndWithRule booleanRule = JExcelValidationRuleFactory.notEndWith(true, map, "不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

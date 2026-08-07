@@ -29,15 +29,15 @@ import java.util.Map;
  */
 public class JRequiredRule extends JAbstractValidationRule {
 
-    public JRequiredRule(boolean required, Map<String,Object> map, String customMessage) {
-        super(required, map , customMessage);
+    public JRequiredRule(boolean required, Map<String, Object> map, String customMessage) {
+        super(required, map, customMessage);
     }
 
     @Override
     protected boolean doValidate(String value) {
-        if(value != null&&required){
+        if (value != null && required) {
             return true;
-        }else{
+        } else {
             JAssert.throwNewException(buildMsg());
             return false;
         }

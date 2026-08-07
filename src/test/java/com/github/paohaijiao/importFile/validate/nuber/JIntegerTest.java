@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.nuber;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JDecimalRule;
 import com.github.paohaijiao.validate.impl.number.JIntegerRule;
 import org.junit.Test;
 
@@ -34,26 +33,29 @@ public class JIntegerTest {
 
     @Test
     public void integer1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void integer2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void integer3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true, map, "不能为空");
         System.out.println(booleanRule.test("2020-01-01"));
     }
+
     @Test
     public void integer4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JIntegerRule booleanRule = JExcelValidationRuleFactory.integer(true, map, "不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

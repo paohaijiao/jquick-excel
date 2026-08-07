@@ -31,7 +31,7 @@ public class JNotEndWithRule extends JAbstractValidationRule {
 
     private String notEndWith;
 
-    public JNotEndWithRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JNotEndWithRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -39,9 +39,9 @@ public class JNotEndWithRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object notEndWithObject=map.get("notEndWith");
+        Object notEndWithObject = map.get("notEndWith");
         JAssert.notNull(notEndWithObject, "the notEndWith Value must not be null");
-        this.notEndWith =(String) notEndWithObject;
+        this.notEndWith = (String) notEndWithObject;
         return !value.endsWith(notEndWith);
     }
 

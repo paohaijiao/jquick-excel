@@ -12,5 +12,5 @@ public class JupperFormula extends JAbstractExcelFormula {
         super("UPPER(\"" + text + "\")");
         this.text = text;
     }
-    
+
 }

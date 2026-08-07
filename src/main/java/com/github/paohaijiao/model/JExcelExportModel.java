@@ -24,50 +24,30 @@ import java.util.Map;
 @Data
 public class JExcelExportModel {
 
+    Map<String, String> format = new HashMap<>();
+    Map<String, String> cellFormulas = new HashMap<>();
+    Map<String, String> rowFormulas = new HashMap<>();
+    Map<String, String> colFormulas = new HashMap<>();
+    Map<String, String> mapping = new HashMap<>();
+    Map<String, String> transforms = new HashMap<>();
+    Map<String, Map<String, Object>> rowStyles = new HashMap<>();
+    Map<String, Map<String, Object>> colStyles = new HashMap<>();
+    Map<String, Map<String, Object>> cellStyles = new HashMap<>();
+    Map<String, Map<String, Object>> rangeStyles = new HashMap<>();
+    Map<String, Object> rowMerge = new HashMap<>();
+    Map<String, Object> colMerge = new HashMap<>();
+    Map<String, Object> rangeMerge = new HashMap<>();
+    JChartData graph = new JChartData();
     private String source;
-
     private String outputFile;
-
     private String footer;
-
     private Object sheet;
-
     private Boolean header = true;
-
     private String range = null;
-
     /**
      * 导出主题编码，对应 {@code JExcelThemeType#getCode()}，例如 "oceanBlue"、"royalGold"。
      * 为 {@code null} 时使用 {@code JExcelCommonHandler} 中的默认样式（向后兼容）。
      */
     private String theme;
-
-    Map<String, String> format = new HashMap<>();
-
-    Map<String, String> cellFormulas = new HashMap<>();
-
-    Map<String, String> rowFormulas = new HashMap<>();
-
-    Map<String, String> colFormulas = new HashMap<>();
-
-    Map<String, String> mapping = new HashMap<>();
-
-    Map<String, String> transforms = new HashMap<>();
-
-    Map<String, Map<String, Object>> rowStyles = new HashMap<>();
-
-    Map<String, Map<String, Object>> colStyles = new HashMap<>();
-
-    Map<String, Map<String, Object>> cellStyles = new HashMap<>();
-
-    Map<String, Map<String, Object>> rangeStyles = new HashMap<>();
-
-    Map<String, Object> rowMerge = new HashMap<>();
-
-    Map<String, Object> colMerge = new HashMap<>();
-
-    Map<String, Object> rangeMerge = new HashMap<>();
-
-    JChartData graph =new JChartData();
 
 }

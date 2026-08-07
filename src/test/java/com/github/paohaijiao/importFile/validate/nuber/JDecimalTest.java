@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.nuber;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
 import com.github.paohaijiao.validate.impl.number.JDecimalRule;
 import org.junit.Test;
 
@@ -34,26 +33,29 @@ public class JDecimalTest {
 
     @Test
     public void decimal1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void decimal2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void decimal3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true, map, "不能为空");
         System.out.println(booleanRule.test("2020-01-01"));
     }
+
     @Test
     public void decimal4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JDecimalRule booleanRule = JExcelValidationRuleFactory.decimal(true, map, "不能为空");
         System.out.println(booleanRule.test("18.9"));
     }
 }

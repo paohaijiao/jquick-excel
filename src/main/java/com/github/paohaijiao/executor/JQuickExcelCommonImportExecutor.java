@@ -23,7 +23,6 @@ import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.parser.JQuickExcelLexer;
 import com.github.paohaijiao.parser.JQuickExcelParser;
 import com.github.paohaijiao.visitor.JQuickExcelCommonImportVisitor;
-import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
@@ -43,12 +42,12 @@ public class JQuickExcelCommonImportExecutor extends JAbstractAntlrExecutor<Stri
 
     @Override
     protected JExcelImportModel parse(Parser parser) throws JAntlrExecutionException {
-        JQuickBanner banner= JQuickBannerImpl.getInstance();
+        JQuickBanner banner = JQuickBannerImpl.getInstance();
         banner.printBanner();
         JQuickExcelParser calcParser = (JQuickExcelParser) parser;
         JQuickExcelParser.ImportConfigContext tree = calcParser.importConfig();
         JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor();
-        return (JExcelImportModel)visitor.visit(tree);
+        return (JExcelImportModel) visitor.visit(tree);
     }
 
 }

@@ -12,5 +12,5 @@ public class JLowerFormula extends JAbstractExcelFormula {
         super("LOWER(\"" + text + "\")");
         this.text = text;
     }
-    
+
 }

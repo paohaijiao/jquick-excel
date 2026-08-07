@@ -17,5 +17,5 @@ public class JConcatFormula extends JAbstractExcelFormula {
         }
         return "CONCAT(" + String.join(",", text) + ")";
     }
-    
+
 }

@@ -31,7 +31,8 @@ import java.util.HashMap;
 
 public class JRowStyleTest {
 
-    private static String fileDir ="d://test";
+    private static String fileDir = "d://test";
+
     @Test
     public void height() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -42,12 +43,13 @@ public class JRowStyleTest {
             row.createCell(0).setCellValue(-1);  // A1:A10 = 1-10
             row.createCell(1).setCellValue((1) * 10);  // B1:B10 = 10-100
         }
-        JStyleContext context=new JStyleContext(workbook,sheet).forRow(1);
-        HashMap<String,Object> map=new HashMap<>();
-        map.put("height",new BigDecimal("800"));
+        JStyleContext context = new JStyleContext(workbook, sheet).forRow(1);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("height", new BigDecimal("800"));
         context.applyStyle(map);
-        workbook.write(new FileOutputStream(fileDir+"/height.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/height.xlsx"));
     }
+
     @Test
     public void heightInPoints() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -58,12 +60,13 @@ public class JRowStyleTest {
             row.createCell(0).setCellValue(-1);  // A1:A10 = 1-10
             row.createCell(1).setCellValue((1) * 10);  // B1:B10 = 10-100
         }
-        JStyleContext context=new JStyleContext(workbook,sheet).forRow(1);
-        HashMap<String,Object> map=new HashMap<>();
-        map.put("heightInPoints",new BigDecimal("80"));
+        JStyleContext context = new JStyleContext(workbook, sheet).forRow(1);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("heightInPoints", new BigDecimal("80"));
         context.applyStyle(map);
-        workbook.write(new FileOutputStream(fileDir+"/heightInPoints.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/heightInPoints.xlsx"));
     }
+
     @Test
     public void zeroHeight() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -74,15 +77,15 @@ public class JRowStyleTest {
             row.createCell(0).setCellValue(-1);  // A1:A10 = 1-10
             row.createCell(1).setCellValue((1) * 10);  // B1:B10 = 10-100
         }
-        JStyleContext context=new JStyleContext(workbook,sheet).forRow(1);
-        HashMap<String,Object> map=new HashMap<>();
-        map.put("zeroHeight",true);
-        HashMap<String,Object> rowStyle=new HashMap<>();
+        JStyleContext context = new JStyleContext(workbook, sheet).forRow(1);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("zeroHeight", true);
+        HashMap<String, Object> rowStyle = new HashMap<>();
         short colorIndex = IndexedColors.RED.getIndex();
-        rowStyle.put("fillBackgroundColor",new BigDecimal(colorIndex));
-        map.put("rowStyle",rowStyle);
+        rowStyle.put("fillBackgroundColor", new BigDecimal(colorIndex));
+        map.put("rowStyle", rowStyle);
         context.applyStyle(map);
 
-        workbook.write(new FileOutputStream(fileDir+"/zeroHeight.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/zeroHeight.xlsx"));
     }
 }

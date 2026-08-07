@@ -9,9 +9,8 @@ import java.math.BigDecimal;
 public class JTimeFormula extends JAbstractExcelFormula {
 
 
-
     public JTimeFormula(BigDecimal hour, BigDecimal minute, BigDecimal second) {
-        super("TIME(" + hour.toPlainString() +","+minute.toPlainString()+","+second.toPlainString() +")");
+        super("TIME(" + hour.toPlainString() + "," + minute.toPlainString() + "," + second.toPlainString() + ")");
     }
 
 }

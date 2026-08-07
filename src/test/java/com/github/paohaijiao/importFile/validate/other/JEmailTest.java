@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.other;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.JRequiredRule;
 import com.github.paohaijiao.validate.impl.other.JEmailRule;
 import org.junit.Test;
 
@@ -34,20 +33,22 @@ public class JEmailTest {
 
     @Test
     public void email1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JEmailRule booleanRule = JExcelValidationRuleFactory.email(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JEmailRule booleanRule = JExcelValidationRuleFactory.email(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void email2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JEmailRule booleanRule = JExcelValidationRuleFactory.email(false,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JEmailRule booleanRule = JExcelValidationRuleFactory.email(false, map, null);
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void email3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JEmailRule booleanRule = JExcelValidationRuleFactory.email(true,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JEmailRule booleanRule = JExcelValidationRuleFactory.email(true, map, null);
         System.out.println(booleanRule.test("xsa@qq.com"));
     }
 

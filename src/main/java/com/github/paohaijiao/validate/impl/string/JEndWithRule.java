@@ -31,7 +31,7 @@ public class JEndWithRule extends JAbstractValidationRule {
 
     private String endWith;
 
-    public JEndWithRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JEndWithRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -39,11 +39,12 @@ public class JEndWithRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object endWithObject=map.get("endWith");
+        Object endWithObject = map.get("endWith");
         JAssert.notNull(endWithObject, "the endWith Value must not be null");
-        this.endWith =(String) endWithObject;
+        this.endWith = (String) endWithObject;
         return value.endsWith(endWith);
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the value should ends with %s characters\n", endWith);

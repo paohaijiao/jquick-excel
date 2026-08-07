@@ -17,29 +17,18 @@ package com.github.paohaijiao.export.graph;
 
 import com.github.paohaijiao.enums.JExcelChartType;
 import com.github.paohaijiao.executor.JQuickExcelCommonExportExecutor;
-import com.github.paohaijiao.export.model.JDataModel;
 import com.github.paohaijiao.factory.JExcelChartFactory;
 import com.github.paohaijiao.graph.model.JChartData;
 import com.github.paohaijiao.graph.model.JSeriesData;
 import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
-import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickExcelLexer;
-import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.util.JObjectConverter;
-import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * packageName com.github.paohaijiao.export.graph
@@ -102,6 +91,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void bar1() throws IOException {
         String config = "EXPORT WITH GRAPH = {\n" +
@@ -113,23 +103,24 @@ public class JGraphTest {
                 "        DATA = [450, 520, 480, 600]\n" +
                 "    },\n" +
                 "   {" +
-                " NAME = 产品B,"+
+                " NAME = 产品B," +
                 "       DATA = [320, 380, 420, 500]" +
-                " }\n"+
+                " }\n" +
                 ",\n" +
-        "   {" +
-                " NAME = 产品C,"+
+                "   {" +
+                " NAME = 产品C," +
                 "       DATA = [280, 310, 350, 400]" +
-                " }\n"+
+                " }\n" +
                 "]\n" +
                 "}";
         System.out.println(config);
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-        JExcelExportModel excelExportModel =(JExcelExportModel)executor.execute(config);
-        JExcelExportHandler handler=new JExcelExportHandler(excelExportModel,null,null);
+        JExcelExportModel excelExportModel = (JExcelExportModel) executor.execute(config);
+        JExcelExportHandler handler = new JExcelExportHandler(excelExportModel, null, null);
         System.out.println(handler);
 
     }
+
     @Test
     public void bar3d() {
         JChartData chartData = new JChartData();
@@ -156,6 +147,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void line() {
         JChartData chartData = new JChartData();
@@ -215,6 +207,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void area() {
         JChartData chartData = new JChartData();
@@ -242,6 +235,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void area3d() {
         JChartData chartData = new JChartData();
@@ -268,6 +262,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void scatter() {
         JChartData chartData = new JChartData();
@@ -318,6 +313,7 @@ public class JGraphTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void surface() {
         JChartData chartData = new JChartData();

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class JEOMONTHFormula extends JAbstractExcelFormula {
 
     public JEOMONTHFormula(String start_date, BigDecimal months) {
-        super("EOMONTH(" + start_date +","+months.toPlainString()+ ")");
+        super("EOMONTH(" + start_date + "," + months.toPlainString() + ")");
     }
 
 }

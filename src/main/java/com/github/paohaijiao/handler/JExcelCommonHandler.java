@@ -19,76 +19,11 @@ import java.util.*;
 
 public class JExcelCommonHandler {
     protected static final DataFormatter dataFormatter = new DataFormatter();
+    public JQuickMethodInvocationManager manager = JQuickMethodInvocationManager.getInstance();
     protected Workbook workbook;
-
     protected Sheet currentSheet;
-
     protected JContext context = new JContext();
 
-    public JQuickMethodInvocationManager manager=JQuickMethodInvocationManager.getInstance();
-
-
-    protected void setContext(JContext context) {
-        this.context = context;
-    }
-    protected JContext getContext() {
-        return context;
-    }
-
-    protected Object applyTransform(String key, Object value, String transform) {
-        this.context.put(key, value);
-        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(transform));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        JQuickExcelParser parser = new JQuickExcelParser(tokens);
-        ParseTree tree = parser.transformValue();
-        List<Map<String, Object>> data = new ArrayList<>();
-        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(this.context);
-        @SuppressWarnings("unchecked")
-        JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
-        List<Object> list = methodCallModel.getList();
-        JAssert.notNull(methodCallModel,"methodCallModel required not null");
-        String functionName = methodCallModel.getMethodName().toLowerCase();
-        JAssert.notNull(functionName, "the function name  require not  null");
-        Optional<JQuickMethodFunctionProvider> provider = manager.getInvoker(functionName);
-        boolean exists=provider.isPresent();
-        if(exists) {
-            String msg=String.format("The function `%s` does not exist", functionName);
-            JAssert.isTrue(exists, msg);
-            return provider.get().invoke(list);
-        }else{
-            Object object = JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(), list);
-            return object;
-        }
-    }
-
-    protected void setSheet(Object sheetConfig) {
-        if (sheetConfig == null) {
-            currentSheet = workbook.getSheetAt(0);
-        } else if (sheetConfig instanceof Integer) {
-            currentSheet = workbook.getSheetAt((Integer) sheetConfig - 1);
-        } else if (sheetConfig instanceof String) {
-            currentSheet = workbook.getSheet((String) sheetConfig);
-            if (currentSheet == null) {
-                currentSheet = workbook.createSheet((String) sheetConfig);
-            }
-        }
-    }
-    protected int getUsedColumnCount(Sheet sheet) {
-        if (sheet == null || sheet.getPhysicalNumberOfRows() == 0) {
-            return 0;
-        }
-        Set<Integer> usedColumns = new HashSet<>();
-        for (Row row : sheet) {
-            if (row != null) {
-                for (Cell cell : row) {
-                    if (cell != null && !isCellEmpty(cell)) {
-                        usedColumns.add(cell.getColumnIndex());
-                    }
-                }
-            }
-        }
-        return usedColumns.size();
-    }
     private static boolean isCellEmpty(Cell cell) {
         if (cell == null) {
             return true;
@@ -102,24 +37,24 @@ public class JExcelCommonHandler {
                 return false;
         }
     }
-    protected int getLastRowNum(Sheet sheet) {
-        return sheet.getLastRowNum() + 1;
-    }
+
     public static String getCellValueStringByIndex(Sheet sheet, int rowIndex, int columnIndex) {
         Object object = getCellValueByIndex(sheet, rowIndex, columnIndex);
         if (object == null) {
             return null;
-        }else{
+        } else {
             return object.toString();
         }
     }
+
     public static Object getCellValueByIndex(Sheet sheet, int rowIndex, int columnIndex) {
-        Cell cell =getCellByIndex(sheet,rowIndex,columnIndex);
+        Cell cell = getCellByIndex(sheet, rowIndex, columnIndex);
         if (cell == null) {
             return null;
         }
         return getCellValue(cell);
     }
+
     public static Cell getCellByIndex(Sheet sheet, int rowIndex, int columnIndex) {
         if (sheet == null) {
             return null;
@@ -134,8 +69,9 @@ public class JExcelCommonHandler {
         }
         return cell;
     }
-    protected static  Object getCellValue(Cell cell){
-        if (cell == null){
+
+    protected static Object getCellValue(Cell cell) {
+        if (cell == null) {
             return null;
         }
         Object cellValue = null;
@@ -174,11 +110,12 @@ public class JExcelCommonHandler {
                 break;
             case BLANK:
             default:
-                cellValue =  dataFormatter.formatCellValue(cell);
+                cellValue = dataFormatter.formatCellValue(cell);
         }
         return cellValue;
     }
-    public static CellStyle buildDefaultHeaderStyle(Workbook wb){
+
+    public static CellStyle buildDefaultHeaderStyle(Workbook wb) {
         CellStyle headerStyle = wb.createCellStyle();
         Font headerFont = wb.createFont();
         headerFont.setBold(true);
@@ -196,7 +133,7 @@ public class JExcelCommonHandler {
         return headerStyle;
     }
 
-    public static CellStyle buildDefaultDataEvenStyle(Workbook wb){
+    public static CellStyle buildDefaultDataEvenStyle(Workbook wb) {
         CellStyle dataEven = wb.createCellStyle();
         dataEven.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         dataEven.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -209,7 +146,8 @@ public class JExcelCommonHandler {
         dataEven.setDataFormat(wb.createDataFormat().getFormat("#,##0"));
         return dataEven;
     }
-    public static CellStyle buildDefaultDataOddStyle(Workbook wb){
+
+    public static CellStyle buildDefaultDataOddStyle(Workbook wb) {
         CellStyle dataOdd = wb.createCellStyle();
         dataOdd.setFillForegroundColor(IndexedColors.WHITE.getIndex());
         dataOdd.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -219,11 +157,11 @@ public class JExcelCommonHandler {
         dataOdd.setBorderLeft(BorderStyle.THIN);
         dataOdd.setAlignment(HorizontalAlignment.RIGHT);
         dataOdd.setVerticalAlignment(VerticalAlignment.CENTER);
-       // dataOdd.setDataFormat(wb.createDataFormat().getFormat("#,##0"));
+        // dataOdd.setDataFormat(wb.createDataFormat().getFormat("#,##0"));
         return dataOdd;
     }
 
-    public static CellStyle buildDefaultFooterStyle(Workbook wb){
+    public static CellStyle buildDefaultFooterStyle(Workbook wb) {
         CellStyle footerStyle = wb.createCellStyle();
         Font footerFont = wb.createFont();
         footerFont.setItalic(true);
@@ -234,7 +172,7 @@ public class JExcelCommonHandler {
         return footerStyle;
     }
 
-    public static CellStyle buildDefaultFormulaCellStyle(Workbook wb){
+    public static CellStyle buildDefaultFormulaCellStyle(Workbook wb) {
         CellStyle formulaCell = wb.createCellStyle();
         //formulaCell.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
         formulaCell.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -249,12 +187,81 @@ public class JExcelCommonHandler {
         formulaCell.setFont(formulaFont);
         return formulaCell;
     }
-    public static void buildDefaultFooter(Workbook workbook, Sheet sheet, int rowNum,int maxColumn, String label) {
-        CellStyle cellStyle= buildDefaultFormulaCellStyle(workbook);
+
+    public static void buildDefaultFooter(Workbook workbook, Sheet sheet, int rowNum, int maxColumn, String label) {
+        CellStyle cellStyle = buildDefaultFormulaCellStyle(workbook);
         Row footerRow = sheet.createRow(rowNum);
         Cell footerCell = footerRow.createCell(0);
         footerCell.setCellValue(label);
         footerCell.setCellStyle(cellStyle);
         sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, maxColumn));
+    }
+
+    protected JContext getContext() {
+        return context;
+    }
+
+    protected void setContext(JContext context) {
+        this.context = context;
+    }
+
+    protected Object applyTransform(String key, Object value, String transform) {
+        this.context.put(key, value);
+        JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(transform));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JQuickExcelParser parser = new JQuickExcelParser(tokens);
+        ParseTree tree = parser.transformValue();
+        List<Map<String, Object>> data = new ArrayList<>();
+        JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(this.context);
+        @SuppressWarnings("unchecked")
+        JMethodCallModel methodCallModel = (JMethodCallModel) visitor.visit(tree);
+        List<Object> list = methodCallModel.getList();
+        JAssert.notNull(methodCallModel, "methodCallModel required not null");
+        String functionName = methodCallModel.getMethodName().toLowerCase();
+        JAssert.notNull(functionName, "the function name  require not  null");
+        Optional<JQuickMethodFunctionProvider> provider = manager.getInvoker(functionName);
+        boolean exists = provider.isPresent();
+        if (exists) {
+            String msg = String.format("The function `%s` does not exist", functionName);
+            JAssert.isTrue(exists, msg);
+            return provider.get().invoke(list);
+        } else {
+            Object object = JEvaluator.evaluateFunction(methodCallModel.getMethod().getMethod(), list);
+            return object;
+        }
+    }
+
+    protected void setSheet(Object sheetConfig) {
+        if (sheetConfig == null) {
+            currentSheet = workbook.getSheetAt(0);
+        } else if (sheetConfig instanceof Integer) {
+            currentSheet = workbook.getSheetAt((Integer) sheetConfig - 1);
+        } else if (sheetConfig instanceof String) {
+            currentSheet = workbook.getSheet((String) sheetConfig);
+            if (currentSheet == null) {
+                currentSheet = workbook.createSheet((String) sheetConfig);
+            }
+        }
+    }
+
+    protected int getUsedColumnCount(Sheet sheet) {
+        if (sheet == null || sheet.getPhysicalNumberOfRows() == 0) {
+            return 0;
+        }
+        Set<Integer> usedColumns = new HashSet<>();
+        for (Row row : sheet) {
+            if (row != null) {
+                for (Cell cell : row) {
+                    if (cell != null && !isCellEmpty(cell)) {
+                        usedColumns.add(cell.getColumnIndex());
+                    }
+                }
+            }
+        }
+        return usedColumns.size();
+    }
+
+    protected int getLastRowNum(Sheet sheet) {
+        return sheet.getLastRowNum() + 1;
     }
 }

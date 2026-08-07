@@ -21,7 +21,10 @@ import com.github.paohaijiao.anno.JExcelSheet;
 import com.github.paohaijiao.converter.JConverterRegistry;
 import com.github.paohaijiao.converter.JCustomConverter;
 import com.github.paohaijiao.listener.JWriteListener;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
@@ -33,11 +36,11 @@ import java.util.*;
 
 public class JExcelExporter<T> {
     private final Class<T> clazz;
+    private final List<Field> fields = new ArrayList<>();
+    private final Map<Field, JExcelColumn> fieldAnnotations = new HashMap<>();
     private JWriteListener listener;
     private int headRowNumber = 1;
     private String sheetName;
-    private final List<Field> fields = new ArrayList<>();
-    private final Map<Field, JExcelColumn> fieldAnnotations = new HashMap<>();
 
     public JExcelExporter(Class<T> clazz) {
         this.clazz = clazz;

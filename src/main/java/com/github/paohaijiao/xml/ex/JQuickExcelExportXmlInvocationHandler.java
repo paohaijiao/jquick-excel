@@ -20,58 +20,57 @@ import java.util.Map;
 
 public class JQuickExcelExportXmlInvocationHandler extends JQuickXmlInvocationHandler {
 
-    private JConsole console=new JConsole();
+    private JConsole console = new JConsole();
 
-    private  List<JQuickRow> data=new ArrayList<>();
+    private List<JQuickRow> data = new ArrayList<>();
 
     private OutputStream outputStream;
 
-    private JContext context=new JContext();
+    private JContext context = new JContext();
 
-    private  String theme=null;
+    private String theme = null;
 
-    public JQuickExcelExportXmlInvocationHandler(List<JQuickRow> rows,OutputStream os) {
+    public JQuickExcelExportXmlInvocationHandler(List<JQuickRow> rows, OutputStream os) {
         this(null, null, rows, os);
     }
 
-    public JQuickExcelExportXmlInvocationHandler(String theme,JContext jcontext , List<JQuickRow> rows,OutputStream os) {
-        JAssert.notNull(jcontext,"context required not null");
-        JAssert.notNull(rows,"rows required not null");
-        JAssert.notNull(os,"OutputStream required not null");
-        this.outputStream=os;
-        this.theme=theme;
-        this.data=rows;
-        this.context =jcontext;
-        if (!jcontext.isEmpty()){
+    public JQuickExcelExportXmlInvocationHandler(String theme, JContext jcontext, List<JQuickRow> rows, OutputStream os) {
+        JAssert.notNull(jcontext, "context required not null");
+        JAssert.notNull(rows, "rows required not null");
+        JAssert.notNull(os, "OutputStream required not null");
+        this.outputStream = os;
+        this.theme = theme;
+        this.data = rows;
+        this.context = jcontext;
+        if (!jcontext.isEmpty()) {
             context.putAll(jcontext);
         }
     }
-
 
 
     @Override
     protected Object loadResult(String lexerStr, JContext jcontext, Method method, Object[] args) {
-        if(!jcontext.isEmpty()){
+        if (!jcontext.isEmpty()) {
             context.putAll(jcontext);
         }
-        Map<String, Object> map= ParamUtil.bindParams(method,args);
-        if(!map.isEmpty()){
+        Map<String, Object> map = ParamUtil.bindParams(method, args);
+        if (!map.isEmpty()) {
             context.putAll(jcontext);
         }
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(lexerStr);
         config.setTheme(theme);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context, data);
-        Workbook workbook=handler.getWorkBook();
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, data);
+        Workbook workbook = handler.getWorkBook();
         try {
             workbook.write(outputStream);
         } catch (IOException e) {
-            console.error("write excel workbook error",e);
+            console.error("write excel workbook error", e);
         }
         try {
             workbook.close();
         } catch (IOException e) {
-            console.error("write excel workbook io error",e);
+            console.error("write excel workbook io error", e);
         }
         return null;
 

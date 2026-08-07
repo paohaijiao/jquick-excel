@@ -78,27 +78,16 @@ public enum JColorEnum {
         this.indexedColor = indexedColor;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public IndexedColors getIndexedColor() {
-        return indexedColor;
-    }
-
     public static JColorEnum codeOf(String code) {
         for (JColorEnum color : values()) {
             if (color.code.equalsIgnoreCase(code)) {
                 return color;
             }
         }
-        List<String> colorList=Arrays.stream(values()).map(JColorEnum::getCode).collect(Collectors.toList());
-        throw new IllegalArgumentException("color code should be one of : " + StringUtils.join(colorList,","));
+        List<String> colorList = Arrays.stream(values()).map(JColorEnum::getCode).collect(Collectors.toList());
+        throw new IllegalArgumentException("color code should be one of : " + StringUtils.join(colorList, ","));
     }
+
     public static JColorEnum fromIndexedColor(IndexedColors indexedColor) {
         for (JColorEnum color : values()) {
             if (color.indexedColor == indexedColor) {
@@ -115,6 +104,18 @@ public enum JColorEnum {
             }
         }
         throw new IllegalArgumentException("Invalid ColorEnum index: " + index);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public IndexedColors getIndexedColor() {
+        return indexedColor;
     }
 
 }

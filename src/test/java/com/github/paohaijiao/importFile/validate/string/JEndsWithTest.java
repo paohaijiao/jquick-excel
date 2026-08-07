@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JContainWithRule;
 import com.github.paohaijiao.validate.impl.string.JEndWithRule;
 import org.junit.Test;
 
@@ -34,28 +33,31 @@ public class JEndsWithTest {
 
     @Test
     public void containWith1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void containWith2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void containWith3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("endWith","qwe");
-        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("endWith", "qwe");
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
+
     @Test
     public void containWith4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("endWith","wer");
-        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("endWith", "wer");
+        JEndWithRule booleanRule = JExcelValidationRuleFactory.endsWith(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
 }

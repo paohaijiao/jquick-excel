@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class JRoundFormula extends JAbstractExcelFormula {
 
 
-    public JRoundFormula(BigDecimal a1,BigDecimal a2) {
-        super("ROUND(" + a1.toPlainString()+","+a2.toPlainString() + ")");
+    public JRoundFormula(BigDecimal a1, BigDecimal a2) {
+        super("ROUND(" + a1.toPlainString() + "," + a2.toPlainString() + ")");
     }
 }

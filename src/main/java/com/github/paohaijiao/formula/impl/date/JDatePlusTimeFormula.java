@@ -33,8 +33,9 @@ public class JDatePlusTimeFormula extends JAbstractExcelFormula {
     private String hour;
     private String minute;
     private String second;
-    public JDatePlusTimeFormula(String year, String month, String day, String hour , String minute, String second) {
-        super(String.format("DATE(%s,%s,%s) + TIME(%s,%s,%s)",year,month,day,hour,minute,second));
+
+    public JDatePlusTimeFormula(String year, String month, String day, String hour, String minute, String second) {
+        super(String.format("DATE(%s,%s,%s) + TIME(%s,%s,%s)", year, month, day, hour, minute, second));
         this.year = year;
         this.month = month;
         this.day = day;

@@ -17,7 +17,6 @@ package com.github.paohaijiao.visitor;
 
 import com.github.paohaijiao.date.JDateUtil;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.parser.JQuickExcelBaseVisitor;
@@ -72,12 +71,12 @@ public class JQuickExcelCoreVisitor extends JQuickExcelBaseVisitor {
     @Override
     public Date visitDate(JQuickExcelParser.DateContext ctx) {
         if (ctx.DATE() != null) {
-           String string= ctx.DATE().getText();
-           String str = string.replaceAll("[-/]", "");
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-           return JDateUtil.parse(sdf, str);
-        }else{
-            String string= ctx.DATETIMETYPE().getText();
+            String string = ctx.DATE().getText();
+            String str = string.replaceAll("[-/]", "");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return JDateUtil.parse(sdf, str);
+        } else {
+            String string = ctx.DATETIMETYPE().getText();
             String str = string.replaceAll("[-/:Tt]", "");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
             return JDateUtil.parse(sdf, str);

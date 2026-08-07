@@ -60,103 +60,108 @@ public class JMegeRangeTest {
         students.add(new JDataModel(14, 1, 1, 1, 1, 1, 1));
         return students;
     }
+
     @Test
     public void value() throws IOException {
         String rule = "EXPORT WITH MERGE: {\n" +
-                "    ROWS 1 WITH MERGE_WITH_VALUE"+
+                "    ROWS 1 WITH MERGE_WITH_VALUE" +
                 "}";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//merge.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//merge.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        context.put("value","汇总");
-        JExcelExportHandler handler = new JExcelExportHandler(config,context, JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        context.put("value", "汇总");
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void concat() throws IOException {
         String rule = "EXPORT WITH MERGE: {\n" +
-                "    ROWS 1 WITH MERGE_WITH_CONCAT"+
+                "    ROWS 1 WITH MERGE_WITH_CONCAT" +
                 "}";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//merge.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//merge.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void firstAndLast() throws IOException {
         String rule = "EXPORT WITH MERGE: {\n" +
-                "    ROWS 1 WITH MERGE_WITH_FIRST,"+
-                "    ROWS 2..3 WITH MERGE_WITH_LAST"+
+                "    ROWS 1 WITH MERGE_WITH_FIRST," +
+                "    ROWS 2..3 WITH MERGE_WITH_LAST" +
                 "}";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//merge.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//merge.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void avgAndCount() throws IOException {
         String rule = "EXPORT WITH MERGE: {\n" +
-                "    ROWS 1 WITH MERGE_WITH_AVG,"+
-                "    ROWS 2..3 WITH MERGE_WITH_COUNT"+
+                "    ROWS 1 WITH MERGE_WITH_AVG," +
+                "    ROWS 2..3 WITH MERGE_WITH_COUNT" +
                 "}";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//merge.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//merge.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void maxandMin() throws IOException {
         String rule = "EXPORT WITH MERGE: {\n" +
-                "    ROWS 1 WITH MERGE_WITH_MAX,"+
-                "    ROWS 2..3 WITH MERGE_WITH_MIN"+
+                "    ROWS 1 WITH MERGE_WITH_MAX," +
+                "    ROWS 2..3 WITH MERGE_WITH_MIN" +
                 "}";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//merge.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//merge.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 

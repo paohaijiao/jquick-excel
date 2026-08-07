@@ -17,12 +17,10 @@ package com.github.paohaijiao.util;
 
 import com.github.paohaijiao.enums.JMergeValueType;
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.merge.JMergeHandler;
 import com.github.paohaijiao.param.JContext;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -42,12 +40,14 @@ public class JMergeUtil {
 
     private Sheet sheet;
     private Workbook workbook;
+
     public JMergeUtil(Workbook workbook, Sheet sheet, JContext context) {
         this.workbook = workbook;
         this.sheet = sheet;
         this.context = context;
     }
-    public  List<Object> flapTheList(List<List<Object>> data) {
+
+    public List<Object> flapTheList(List<List<Object>> data) {
         if (null == data || data.isEmpty()) {
             return new ArrayList<>();
         }
@@ -57,16 +57,17 @@ public class JMergeUtil {
         });
         return result;
     }
-    public  boolean filterDouble(Object obj) {
+
+    public boolean filterDouble(Object obj) {
         if (null == obj || !(obj instanceof Number)) {
             return false;
-        }else {
+        } else {
             return true;
         }
 
     }
 
-    public  Object buildResult(JMergeValueType type, List<List<Object>> data) {
+    public Object buildResult(JMergeValueType type, List<List<Object>> data) {
         List<Object> list = flapTheList(data);
         if (null == list || list.isEmpty()) {
             return null;
@@ -78,33 +79,33 @@ public class JMergeUtil {
             return list.get(list.size() - 1);
         }
         if (JMergeValueType.MERGE_WITH_CONCAT.getCode().equals(type.getCode())) {
-            return list.stream().filter(e->filterDouble(e)).map(String::valueOf).collect(Collectors.joining(","));
+            return list.stream().filter(e -> filterDouble(e)).map(String::valueOf).collect(Collectors.joining(","));
         }
 
         if (JMergeValueType.MERGE_WITH_MAX.getCode().equals(type.getCode())) {
-            OptionalDouble d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).max();
+            OptionalDouble d = list.stream().filter(e -> filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).max();
             return d.isPresent() ? d.getAsDouble() : 0d;
         }
         if (JMergeValueType.MERGE_WITH_MIN.getCode().equals(type.getCode())) {
-            OptionalDouble d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).min();
+            OptionalDouble d = list.stream().filter(e -> filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).min();
             return d.isPresent() ? d.getAsDouble() : 0d;
         }
         if (JMergeValueType.MERGE_WITH_AVG.getCode().equals(type.getCode())) {
-            OptionalDouble d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).average();
+            OptionalDouble d = list.stream().filter(e -> filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).average();
             return d.isPresent() ? d.getAsDouble() : 0d;
         }
         if (JMergeValueType.MERGE_WITH_COUNT.getCode().equals(type.getCode())) {
-            Long d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).count();
+            Long d = list.stream().filter(e -> filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).count();
             return d;
         }
         if (JMergeValueType.MERGE_WITH_SUM.getCode().equals(type.getCode())) {
-            double d = list.stream().filter(e->filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).sum();
+            double d = list.stream().filter(e -> filterDouble(e)).mapToDouble(e -> Double.valueOf(e.toString())).sum();
             return d;
         }
         if (JMergeValueType.MERGE_WITH_VALUE.getCode().equals(type.getCode())) {
-            if(context!=null&&context.get("value")!=null) {
+            if (context != null && context.get("value") != null) {
                 return context.get("value");
-            }else{
+            } else {
                 return "";
             }
         }
@@ -112,7 +113,7 @@ public class JMergeUtil {
     }
 
 
-    public  void setMergedRegionValue( int firstRow, int lastRow, int firstCol, int lastCol, JMergeValueType mergeType) {
+    public void setMergedRegionValue(int firstRow, int lastRow, int firstCol, int lastCol, JMergeValueType mergeType) {
         JAssert.notNull(mergeType, "invalid mergeType ");
         CellRangeAddress mergedRegion = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
         sheet.addMergedRegion(mergedRegion);
@@ -138,7 +139,7 @@ public class JMergeUtil {
         cell.setCellStyle(style);
     }
 
-    public  List<List<Object>> getRangeValues(Sheet sheet, CellRangeAddress range) {
+    public List<List<Object>> getRangeValues(Sheet sheet, CellRangeAddress range) {
         List<List<Object>> data = new ArrayList<>();
         for (int rowNum = range.getFirstRow(); rowNum <= range.getLastRow(); rowNum++) {
             Row row = sheet.getRow(rowNum);
@@ -161,7 +162,7 @@ public class JMergeUtil {
      * @param cell
      * @return
      */
-    public  Object getCellValue(Cell cell) {
+    public Object getCellValue(Cell cell) {
         if (cell == null) {
             return null;
         }

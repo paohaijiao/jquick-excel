@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JDecimalRule;
 import com.github.paohaijiao.validate.impl.string.JContainWithRule;
 import org.junit.Test;
 
@@ -34,28 +33,31 @@ public class JContainWithTest {
 
     @Test
     public void containWith1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void containWith2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void containWith3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("contains","qwe");
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("contains", "qwe");
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
+
     @Test
     public void containWith4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("contains","qwer1");
-        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("contains", "qwer1");
+        JContainWithRule booleanRule = JExcelValidationRuleFactory.containWith(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
 }

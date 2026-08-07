@@ -18,7 +18,6 @@ package com.github.paohaijiao.importFile.validate.other;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
 import com.github.paohaijiao.validate.impl.other.JDictRule;
-import com.github.paohaijiao.validate.impl.other.JMobileRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,21 +34,23 @@ public class JDictTest {
 
     @Test
     public void dict1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDictRule booleanRule = JExcelValidationRuleFactory.dict(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JDictRule booleanRule = JExcelValidationRuleFactory.dict(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void mobile2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JDictRule booleanRule = JExcelValidationRuleFactory.dict(false,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JDictRule booleanRule = JExcelValidationRuleFactory.dict(false, map, null);
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void mobile3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","13198001111");
-        JDictRule booleanRule = JExcelValidationRuleFactory.dict(true,map,"xasxajiayuo");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "13198001111");
+        JDictRule booleanRule = JExcelValidationRuleFactory.dict(true, map, "xasxajiayuo");
         System.out.println(booleanRule.test("13198001111"));
     }
 

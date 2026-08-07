@@ -15,10 +15,8 @@
  */
 package com.github.paohaijiao.importFile.mapping;
 
-import com.github.paohaijiao.executor.JQuickExcelCommonExportExecutor;
 import com.github.paohaijiao.executor.JQuickExcelCommonImportExecutor;
 import com.github.paohaijiao.handler.JExcelImportHandler;
-import com.github.paohaijiao.model.JExcelExportModel;
 import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.statement.JQuickRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -27,7 +25,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.importFile.mapping
@@ -41,7 +38,7 @@ public class JMappingTest {
     public void boolRequire() throws IOException {
         String input = " \n" +
                 "IMPORT WITH " +
-                "HEADER=true,"+
+                "HEADER=true," +
                 "MAPPING = {\n" +
                 "    \"学号\": \"no\",\n" +
                 "    \"姓名\": \"name\",\n" +
@@ -50,12 +47,12 @@ public class JMappingTest {
                 "    \"出生日期\": \"birthday\"\n" +
                 "}";
         System.out.println(input);
-        JQuickExcelCommonImportExecutor executor=new JQuickExcelCommonImportExecutor();
-        JExcelImportModel model= (JExcelImportModel)executor.execute(input);
+        JQuickExcelCommonImportExecutor executor = new JQuickExcelCommonImportExecutor();
+        JExcelImportModel model = (JExcelImportModel) executor.execute(input);
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
-        XSSFWorkbook workbook=new XSSFWorkbook(is);
-        JExcelImportHandler handler=new JExcelImportHandler(workbook);
-        List<JQuickRow> list= handler.importData(model);
+        XSSFWorkbook workbook = new XSSFWorkbook(is);
+        JExcelImportHandler handler = new JExcelImportHandler(workbook);
+        List<JQuickRow> list = handler.importData(model);
         System.out.println(list);
 
     }

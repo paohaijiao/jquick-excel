@@ -29,7 +29,8 @@ import java.io.IOException;
 
 public class JFormulaMathValueTest {
 
-    private static String fileDir ="d://test";
+    private static String fileDir = "d://test";
+
     @Test
     public void abs() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -37,16 +38,17 @@ public class JFormulaMathValueTest {
         Sheet sheet = workbook.createSheet("Data");
         for (int i = 0; i < 10; i++) {
             Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(- 1);  // A1:A10 = 1-10
-            row.createCell(1).setCellValue((- 1) * 10);  // B1:B10 = 10-100
+            row.createCell(0).setCellValue(-1);  // A1:A10 = 1-10
+            row.createCell(1).setCellValue((-1) * 10);  // B1:B10 = 10-100
         }
         JAbstractExcelFormula formula = factory.createFormulaInstance("ABS(-2)");
         factory.applyFormula(sheet, 10, 0, formula);  // A11
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("SUM result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/abs.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/abs.xlsx"));
     }
+
     @Test
     public void avg() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -62,8 +64,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("avg result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/avg.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/avg.xlsx"));
     }
+
     @Test
     public void count() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -79,8 +82,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("count result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/count.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/count.xlsx"));
     }
+
     @Test
     public void max() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -96,8 +100,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("count result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/max.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/max.xlsx"));
     }
+
     @Test
     public void min() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -113,8 +118,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("min result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/min.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/min.xlsx"));
     }
+
     @Test
     public void power() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -130,8 +136,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("power result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/power.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/power.xlsx"));
     }
+
     @Test
     public void rand() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -147,8 +154,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("power result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/rand.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/rand.xlsx"));
     }
+
     @Test
     public void range() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -164,8 +172,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("rank result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/rank.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/rank.xlsx"));
     }
+
     @Test
     public void sqrt() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -181,8 +190,9 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("rank result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/sqrt.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/sqrt.xlsx"));
     }
+
     @Test
     public void stdev() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -198,7 +208,7 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("rank result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/stdev.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/stdev.xlsx"));
     }
 
     @Test
@@ -216,11 +226,8 @@ public class JFormulaMathValueTest {
         Cell sumCell = sheet.getRow(10).getCell(0);
         Object sumResult = factory.evaluateFormula(sumCell);
         System.out.println("SUM result: " + sumResult);
-        workbook.write(new FileOutputStream(fileDir+"/sum.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/sum.xlsx"));
     }
-
-
-
 
 
 }

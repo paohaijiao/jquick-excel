@@ -16,7 +16,6 @@
 package com.github.paohaijiao.model;
 
 import com.github.paohaijiao.validate.JAbstractValidationRule;
-import com.github.paohaijiao.validate.JExcelValidationRule;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -27,23 +26,18 @@ import java.util.Map;
 public class JExcelImportModel {
 
 
-    private Object sheet;
-
-    private Boolean header = true;
-
-    private String range = null;
-
     Map<String, String> mappings = new HashMap<>();
-
     Map<String, String> transforms = new HashMap<>();
-
+    private Object sheet;
+    private Boolean header = true;
+    private String range = null;
     private Map<String, List<JAbstractValidationRule>> rowValidate = new HashMap<>();
 
-    private Map<String, List<JAbstractValidationRule >> colValidate = new HashMap<>();
+    private Map<String, List<JAbstractValidationRule>> colValidate = new HashMap<>();
 
-    private Map<String, List<JAbstractValidationRule >> cellValidate = new HashMap<>();
+    private Map<String, List<JAbstractValidationRule>> cellValidate = new HashMap<>();
 
-    private Map<String, List<JAbstractValidationRule >> rangeValidate = new HashMap<>();
+    private Map<String, List<JAbstractValidationRule>> rangeValidate = new HashMap<>();
 
 
 }

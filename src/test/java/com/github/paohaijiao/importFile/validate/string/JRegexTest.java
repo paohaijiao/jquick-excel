@@ -18,7 +18,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JNotStartWithRule;
 import com.github.paohaijiao.validate.impl.string.JRegexRule;
 import org.junit.Test;
 
@@ -36,28 +35,31 @@ public class JRegexTest {
 
     @Test
     public void regex1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void regex2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void regex3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("pattern", "[0-9]*");
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void regex4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("pattern", "[0-9]*");
-        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true,map,"不能为空");
+        JRegexRule booleanRule = JExcelValidationRuleFactory.regex(true, map, "不能为空");
         System.out.println(booleanRule.test("a"));
     }
 }

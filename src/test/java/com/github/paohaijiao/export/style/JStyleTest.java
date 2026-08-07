@@ -47,6 +47,7 @@ public class JStyleTest {
         students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
         return students;
     }
+
     @Test
     public void ABS() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -71,23 +72,23 @@ public class JStyleTest {
                 "      italic: true,\n" +
                 "      color: yellow,\n" +
                 "      bold: true\n" +
-                "    }"+
+                "    }" +
 
-                "}"+
+                "}" +
                 "" +
                 "\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//style.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context, JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 }

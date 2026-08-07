@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JEndWithRule;
 import com.github.paohaijiao.validate.impl.string.JMaxLengthRule;
 import org.junit.Test;
 
@@ -34,28 +33,31 @@ public class JMaxLengthTest {
 
     @Test
     public void maxLength1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void maxLength2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void maxLength3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("maxLength",12);
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("maxLength", 12);
+        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
+
     @Test
     public void maxLength4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("maxLength",1);
-        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("maxLength", 1);
+        JMaxLengthRule booleanRule = JExcelValidationRuleFactory.maxLength(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
 }

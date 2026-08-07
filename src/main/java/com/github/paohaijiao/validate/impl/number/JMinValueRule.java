@@ -30,9 +30,9 @@ import java.util.Map;
  */
 public class JMinValueRule extends JAbstractValidationRule {
 
-    private  double minValue;
+    private double minValue;
 
-    public JMinValueRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMinValueRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
 
     }
@@ -40,10 +40,10 @@ public class JMinValueRule extends JAbstractValidationRule {
     @Override
     protected boolean doValidate(String value) {
         JAssert.notNull(map, "the map must not be null");
-        Object minValueObject=map.get("minValue");
+        Object minValueObject = map.get("minValue");
         JAssert.notNull(minValueObject, "the minValue Value must not be null");
-        BigDecimal bigDecimal=(BigDecimal) minValueObject;
-        this.minValue =bigDecimal.doubleValue();
+        BigDecimal bigDecimal = (BigDecimal) minValueObject;
+        this.minValue = bigDecimal.doubleValue();
         try {
             double num = Double.parseDouble(value);
             return num >= minValue;
@@ -51,6 +51,7 @@ public class JMinValueRule extends JAbstractValidationRule {
             return false;
         }
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the value cannot be less than%.2f", minValue);

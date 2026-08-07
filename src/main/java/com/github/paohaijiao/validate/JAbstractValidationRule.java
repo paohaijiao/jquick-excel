@@ -27,18 +27,17 @@ import java.util.Map;
  * @version 1.0.0
  * @since 2025/7/6
  */
-public abstract class JAbstractValidationRule implements JExcelValidationRule{
+public abstract class JAbstractValidationRule implements JExcelValidationRule {
 
 
     protected final boolean required;
 
-    protected final Map<String,Object> map;
+    protected final Map<String, Object> map;
 
     protected final String customMessage;
 
 
-
-    protected JAbstractValidationRule(boolean required, Map<String,Object> map,String customMessage) {
+    protected JAbstractValidationRule(boolean required, Map<String, Object> map, String customMessage) {
         this.required = required;
         this.map = map;
         this.customMessage = customMessage;
@@ -53,25 +52,25 @@ public abstract class JAbstractValidationRule implements JExcelValidationRule{
         if (!required) {
             return true;
         }
-        if (null==value&&required) {
+        if (null == value && required) {
             JAssert.throwNewException(this.buildMsg());
         }
-        boolean bool= doValidate(value);
+        boolean bool = doValidate(value);
 
-        if(!bool){
-            if(customMessage != null){
+        if (!bool) {
+            if (customMessage != null) {
                 JAssert.throwNewException(customMessage);
-            }else{
+            } else {
                 JAssert.throwNewException(getDefaultMsg());
             }
         }
         return bool;
     }
 
-    public String buildMsg(){
-        if(StringUtils.isNotEmpty(customMessage)){
+    public String buildMsg() {
+        if (StringUtils.isNotEmpty(customMessage)) {
             return customMessage;
-        }else{
+        } else {
             return getDefaultMsg();
         }
 

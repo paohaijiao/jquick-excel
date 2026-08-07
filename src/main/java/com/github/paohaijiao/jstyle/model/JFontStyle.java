@@ -17,7 +17,6 @@ package com.github.paohaijiao.jstyle.model;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.jstyle.model
@@ -41,20 +40,20 @@ public class JFontStyle extends HashMap<String, Object> {
     public static final String color = "color";
     public static final String underLine = "underLine";
 
-    public void setFontHeightInPoints(BigDecimal v) {
-        put(fontHeightInPoints, v);
-    }
-
     public BigDecimal getFontHeightInPoints() {
         return containsKey(fontHeightInPoints) ? (BigDecimal) get(fontHeightInPoints) : null;
     }
 
-    public void setFontName(String name) {
-        put(fontName, name);
+    public void setFontHeightInPoints(BigDecimal v) {
+        put(fontHeightInPoints, v);
     }
 
     public String getFontName() {
         return containsKey(fontName) ? (String) get(fontName) : null;
+    }
+
+    public void setFontName(String name) {
+        put(fontName, name);
     }
 
     public void setBold(Boolean b) {
@@ -76,10 +75,12 @@ public class JFontStyle extends HashMap<String, Object> {
     public void setColor(String c) {
         put(color, c);
     }
-    public void setUnderLine(Boolean line) {
-        put(underLine, line);
-    }
+
     public Boolean getUnderLine() {
         return containsKey(underLine) ? (Boolean) get(underLine) : null;
+    }
+
+    public void setUnderLine(Boolean line) {
+        put(underLine, line);
     }
 }

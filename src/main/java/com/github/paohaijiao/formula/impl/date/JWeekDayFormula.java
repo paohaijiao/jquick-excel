@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class JWeekDayFormula extends JAbstractExcelFormula {
 
     public JWeekDayFormula(String serial_number, BigDecimal num) {
-        super("WEEKDAY(" + serial_number +","+num.toPlainString()+ ")");
+        super("WEEKDAY(" + serial_number + "," + num.toPlainString() + ")");
     }
 
 }

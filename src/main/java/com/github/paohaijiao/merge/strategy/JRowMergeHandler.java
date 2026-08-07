@@ -38,7 +38,7 @@ public class JRowMergeHandler implements JMergeHandler {
             throw new IllegalArgumentException(
                     "Invalid column range: startCol must be <= endCol");
         }
-        JMergeUtil merge=new JMergeUtil(workbook,sheet,context);
+        JMergeUtil merge = new JMergeUtil(workbook, sheet, context);
         merge.setMergedRegionValue(
                 rowIndex,
                 rowIndex,

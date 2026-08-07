@@ -1,8 +1,6 @@
 package com.github.paohaijiao.formula.impl.judge;
 
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 public class JAndFormula extends JAbstractExcelFormula {
     private final String[] conditions;

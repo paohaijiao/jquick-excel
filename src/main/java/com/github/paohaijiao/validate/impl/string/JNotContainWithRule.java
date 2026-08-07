@@ -31,7 +31,7 @@ public class JNotContainWithRule extends JAbstractValidationRule {
 
     private String notContain;
 
-    public JNotContainWithRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JNotContainWithRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -39,9 +39,9 @@ public class JNotContainWithRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object notContainObject=map.get("notContain");
+        Object notContainObject = map.get("notContain");
         JAssert.notNull(notContainObject, "the notContain Value must not be null");
-        this.notContain =(String) notContainObject;
+        this.notContain = (String) notContainObject;
         return !value.contains(notContain);
     }
 

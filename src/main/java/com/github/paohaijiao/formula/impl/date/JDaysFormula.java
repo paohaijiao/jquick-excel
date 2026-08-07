@@ -31,7 +31,7 @@ public class JDaysFormula extends JAbstractExcelFormula {
     private String end_date;
 
     public JDaysFormula(String end_date, String start_date) {
-        super("DAYS(" + end_date + "," + start_date  + ")");
+        super("DAYS(" + end_date + "," + start_date + ")");
         this.start_date = start_date;
         this.end_date = end_date;
     }

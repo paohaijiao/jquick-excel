@@ -30,14 +30,16 @@ public class JYearFracFormula extends JAbstractExcelFormula {
     private String start_date;
     private String end_date;
     private String basis;
+
     public JYearFracFormula(String start_date, String end_date, String basis) {
         super("YEARFRAC(" + start_date + "," + end_date + "," + basis + ")");
         this.start_date = start_date;
         this.end_date = end_date;
         this.basis = basis;
     }
+
     public JYearFracFormula(String start_date, String end_date) {
-        super("YEARFRAC(" + start_date + "," + end_date  + ")");
+        super("YEARFRAC(" + start_date + "," + end_date + ")");
         this.start_date = start_date;
         this.end_date = end_date;
     }

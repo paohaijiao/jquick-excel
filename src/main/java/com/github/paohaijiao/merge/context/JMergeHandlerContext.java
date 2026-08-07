@@ -16,7 +16,7 @@ public class JMergeHandlerContext {
     private final Sheet sheet;
     private final JContext context;
 
-    public JMergeHandlerContext(Workbook workbook, Sheet sheet,JContext context) {
+    public JMergeHandlerContext(Workbook workbook, Sheet sheet, JContext context) {
         this.workbook = workbook;
         this.sheet = sheet;
         this.context = context;
@@ -25,11 +25,11 @@ public class JMergeHandlerContext {
     public JMergeHandler createHandler(JMergeType mergeType) {
         switch (mergeType) {
             case ROW:
-                return new JRowMergeHandler(workbook, sheet,context);
+                return new JRowMergeHandler(workbook, sheet, context);
             case COLUMN:
-                return new JColumnMergeHandler(workbook, sheet,context);
+                return new JColumnMergeHandler(workbook, sheet, context);
             case RANGE:
-                return new JRangeMergeHandler(workbook, sheet,context);
+                return new JRangeMergeHandler(workbook, sheet, context);
             default:
                 throw new IllegalArgumentException("Unsupported merge type: " + mergeType);
         }

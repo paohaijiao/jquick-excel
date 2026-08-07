@@ -47,6 +47,7 @@ public class JFormulateStringTest {
         students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
         return students;
     }
+
     @Test
     public void DATETIME() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -62,22 +63,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'DATETIME(2023,5,15,14,30,0)'"+
+                "D5:'DATETIME(2023,5,15,14,30,0)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context, JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void DAY() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -93,22 +95,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'DAY(\"2025-01-23\")'"+
+                "D5:'DAY(\"2025-01-23\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void DAYS() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -124,22 +127,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'DAYS(\"2025-01-23\",\"2025-01-28\")'"+
+                "D5:'DAYS(\"2025-01-23\",\"2025-01-28\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void EOMONTH() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -155,22 +159,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'EOMONTH(\"2025-01-23\",3)'"+
+                "D5:'EOMONTH(\"2025-01-23\",3)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void EDATE() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -186,22 +191,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'EDATE(\"2025-01-23\",3)'"+
+                "D5:'EDATE(\"2025-01-23\",3)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void HOUR() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -217,22 +223,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'HOUR(\"2025-01-23\")'"+
+                "D5:'HOUR(\"2025-01-23\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void CONCATENATE() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -248,22 +255,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'CONCATENATE(A1, B1)'"+
+                "D5:'CONCATENATE(A1, B1)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void CONCAT() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -279,22 +287,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'CONCAT(A1, B1)'"+
+                "D5:'CONCAT(A1, B1)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void EXACT() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -310,22 +319,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'EXACT(\"A1\", \"B1\")'"+
+                "D5:'EXACT(\"A1\", \"B1\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void FIND() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -341,22 +351,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'FIND(\"o\", \"Microsoft\")'"+
+                "D5:'FIND(\"o\", \"Microsoft\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void LEFT() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -372,22 +383,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'LEFT(\"hello world\", 3)'"+
+                "D5:'LEFT(\"hello world\", 3)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void RIGHT() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -403,22 +415,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'RIGHT(\"hello world\", 3)'"+
+                "D5:'RIGHT(\"hello world\", 3)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void LEN() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -434,22 +447,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'LEN(\"hello world\")'"+
+                "D5:'LEN(\"hello world\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void MID() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -465,22 +479,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'MID(\"hello world\",1,2)'"+
+                "D5:'MID(\"hello world\",1,2)'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void SUBSTITUTE() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -496,22 +511,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'SUBSTITUTE(\"hello world\",\"hello\",\"new\")'"+
+                "D5:'SUBSTITUTE(\"hello world\",\"hello\",\"new\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void TRIM() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -527,22 +543,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'TRIM(\"hello world\")'"+
+                "D5:'TRIM(\"hello world\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void LOWER() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -558,22 +575,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'LOWER(\"hello world\")'"+
+                "D5:'LOWER(\"hello world\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void PROPER() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -589,22 +607,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'PROPER(\"hello world\")'"+
+                "D5:'PROPER(\"hello world\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void REPLACE() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -620,20 +639,20 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'REPLACE(\"ABCD\",2,2,\"XY\")'"+
+                "D5:'REPLACE(\"ABCD\",2,2,\"XY\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 
@@ -652,20 +671,20 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'TEXT(0.25,\"0.0%\")'"+
+                "D5:'TEXT(0.25,\"0.0%\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 
@@ -684,20 +703,20 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'UPPER(\"email\")'"+
+                "D5:'UPPER(\"email\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
 
@@ -716,22 +735,23 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'VALUE(\"¥1,000\")'"+
+                "D5:'VALUE(\"¥1,000\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
+
     @Test
     public void SEARCH() throws IOException {
         String rule = "EXPORT  WITH\n" +
@@ -747,24 +767,22 @@ public class JFormulateStringTest {
                 "\t\"ignoreField\":\"是否忽略\"\n" +
                 "},\n" +
                 "FORMULAS={\n" +
-                "D5:'SEARCH(\"e\",\"Excel\")'"+
+                "D5:'SEARCH(\"e\",\"Excel\")'" +
                 "}\n";
         System.out.println(rule);
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//transform.xlsx");
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
         JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("1","男");
-        map.put("0","女");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("1", "男");
+        map.put("0", "女");
         JContext context = new JContext();
-        context.put("dict",map);
-        JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-        Workbook workbook=handler.getWorkBook();
+        context.put("dict", map);
+        JExcelExportHandler handler = new JExcelExportHandler(config, context, JQuickRow.toRows(data));
+        Workbook workbook = handler.getWorkBook();
         workbook.write(fileOutputStream);
     }
-
-
 
 
 }

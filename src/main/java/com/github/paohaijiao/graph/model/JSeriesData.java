@@ -33,15 +33,8 @@ public class JSeriesData extends HashMap<String, Object> {
     private static final String DATA = "data";
 
     /**
-     * Sets the series name.
-     * @param name The name of the series
-     */
-    public void setName(String name) {
-        this.put(NAME, name);
-    }
-
-    /**
      * Gets the series name.
+     *
      * @return The name of the series
      */
     public String getName() {
@@ -49,19 +42,30 @@ public class JSeriesData extends HashMap<String, Object> {
     }
 
     /**
-     * Sets the data points for the series.
-     * @param data List of data points (supports Number types)
+     * Sets the series name.
+     *
+     * @param name The name of the series
      */
-    public void setData(List<? extends Number> data) {
-        this.put(DATA, new ArrayList<>(data));
+    public void setName(String name) {
+        this.put(NAME, name);
     }
 
     /**
      * Gets the data points for the series.
+     *
      * @return List of data points
      */
     @SuppressWarnings("unchecked")
     public List<Number> getData() {
         return (List<Number>) this.get(DATA);
+    }
+
+    /**
+     * Sets the data points for the series.
+     *
+     * @param data List of data points (supports Number types)
+     */
+    public void setData(List<? extends Number> data) {
+        this.put(DATA, new ArrayList<>(data));
     }
 }

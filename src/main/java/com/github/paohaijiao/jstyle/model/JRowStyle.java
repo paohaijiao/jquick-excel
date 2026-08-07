@@ -16,7 +16,6 @@
 package com.github.paohaijiao.jstyle.model;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +27,7 @@ import java.util.Map;
  * @date 2025/7/4
  * @description
  */
-public class JRowStyle extends JFontStyle{
+public class JRowStyle extends JFontStyle {
 
     public static final String height = "height";
     public static final String rowNum = "rowNum";
@@ -45,41 +44,41 @@ public class JRowStyle extends JFontStyle{
     public static final String color = "color";
     public static final String underLine = "underLine";
 
-    public void setHeight(BigDecimal i) {
-        put(height, i);
-    }
-
     public BigDecimal getHeight() {
         return containsKey(height) ? (BigDecimal) get(height) : null;
     }
 
-    public void setRowNum(int i) {
-        put(rowNum, i);
+    public void setHeight(BigDecimal i) {
+        put(height, i);
     }
 
     public Integer getRowNum() {
         return containsKey(rowNum) ? (int) get(rowNum) : 0;
     }
 
-    public void setRowStyle(JCellStyle cellStyle) {
-        put(rowStyle, cellStyle);
+    public void setRowNum(int i) {
+        put(rowNum, i);
     }
 
     public JCellStyle getRowStyle() {
-        Map<String, Object> map=(Map<String, Object>) get(rowStyle);
-        if(null==map)return new JCellStyle();
-        JCellStyle cellStyle=new JCellStyle();
+        Map<String, Object> map = (Map<String, Object>) get(rowStyle);
+        if (null == map) return new JCellStyle();
+        JCellStyle cellStyle = new JCellStyle();
         cellStyle.putAll(map);
         return cellStyle;
 
     }
 
-    public void setHeightInPoints(BigDecimal v) {
-        put(heightInPoints, v);
+    public void setRowStyle(JCellStyle cellStyle) {
+        put(rowStyle, cellStyle);
     }
 
     public BigDecimal getHeightInPoints() {
         return containsKey(heightInPoints) ? (BigDecimal) get(heightInPoints) : null;
+    }
+
+    public void setHeightInPoints(BigDecimal v) {
+        put(heightInPoints, v);
     }
 
     public void setZeroHeight(boolean b) {
@@ -89,20 +88,21 @@ public class JRowStyle extends JFontStyle{
     public Boolean isZeroHeight() {
         return containsKey(zeroHeight) ? (boolean) get(zeroHeight) : null;
     }
-    public void setFontHeightInPoints(BigDecimal v) {
-        put(fontHeightInPoints, v);
-    }
 
     public BigDecimal getFontHeightInPoints() {
         return containsKey(fontHeightInPoints) ? (BigDecimal) get(fontHeightInPoints) : null;
     }
 
-    public void setFontName(String name) {
-        put(fontName, name);
+    public void setFontHeightInPoints(BigDecimal v) {
+        put(fontHeightInPoints, v);
     }
 
     public String getFontName() {
         return containsKey(fontName) ? (String) get(fontName) : null;
+    }
+
+    public void setFontName(String name) {
+        put(fontName, name);
     }
 
     public void setBold(Boolean b) {
@@ -124,10 +124,12 @@ public class JRowStyle extends JFontStyle{
     public void setColor(String c) {
         put(color, c);
     }
-    public void setUnderLine(Boolean line) {
-        put(underLine, line);
-    }
+
     public Boolean getUnderLine() {
         return containsKey(underLine) ? (Boolean) get(underLine) : null;
+    }
+
+    public void setUnderLine(Boolean line) {
+        put(underLine, line);
     }
 }

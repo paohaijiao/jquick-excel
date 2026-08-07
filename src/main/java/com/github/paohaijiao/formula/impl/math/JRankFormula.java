@@ -30,11 +30,12 @@ import java.math.BigDecimal;
  */
 public class JRankFormula extends JAbstractExcelFormula {
 
-    public JRankFormula(BigDecimal num,String range) {
-        super("RANK(" +num.toPlainString()+","+ range + ")");
+    public JRankFormula(BigDecimal num, String range) {
+        super("RANK(" + num.toPlainString() + "," + range + ")");
     }
-    public JRankFormula(BigDecimal num,String range,BigDecimal  ascOrDesc) {
-        super("RANK(" +num.toPlainString()+","+ range +","+ascOrDesc+ ")");
+
+    public JRankFormula(BigDecimal num, String range, BigDecimal ascOrDesc) {
+        super("RANK(" + num.toPlainString() + "," + range + "," + ascOrDesc + ")");
     }
 
 }

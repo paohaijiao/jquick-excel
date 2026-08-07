@@ -29,49 +29,29 @@ public class JExcelFormulaContext {
         this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
     }
 
-    public Cell applyFormula(Sheet sheet, int rowNum, int colNum, JExcelFormula formula) {
-        Row row = sheet.getRow(rowNum) != null ? sheet.getRow(rowNum) : sheet.createRow(rowNum);
-        Cell cell = row.getCell(colNum) != null ? row.getCell(colNum) : row.createCell(colNum);
-        cell.setCellFormula(formula.getFormula());
-        return cell;
-    }
-
-    public Cell applyFormula(Sheet sheet, String cellRef, JExcelFormula formula) {
-        CellReference ref = new CellReference(cellRef);
-        return applyFormula(sheet, ref.getRow(), ref.getCol(), formula);
-    }
-
-    public Object evaluateFormula(Cell cell) {
-        if (cell.getCellType() != CellType.FORMULA) {
-            throw new IllegalArgumentException("Cell does not contain a formula");
-        }
-        CellValue cellValue = evaluator.evaluate(cell);
-        return new JAbstractExcelFormula("") {
-        }.evaluate(evaluator, cell);
-    }
-
-    public static JAbstractExcelFormula createFormulaInstance(String formulaContent)  {
+    public static JAbstractExcelFormula createFormulaInstance(String formulaContent) {
         JFormulaEnums type = JFormulaEnums.getByFormulaContent(formulaContent);
         if (type == null) {
-          return new JCustomFormula(formulaContent);
+            return new JCustomFormula(formulaContent);
         }
-        Class<? extends JAbstractExcelFormula> clazz=type.getFormulaClass();
+        Class<? extends JAbstractExcelFormula> clazz = type.getFormulaClass();
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(formulaContent));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         JQuickExcelParser.FormulateCallContext tree = parser.formulateCall();
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor();
-        JFormulateCallModel result =(JFormulateCallModel) visitor.visit(tree);
-        if(result.getList().isEmpty()){
-           return createInstance(clazz);
-        }else if(result.getList().size() == 1){
+        JFormulateCallModel result = (JFormulateCallModel) visitor.visit(tree);
+        if (result.getList().isEmpty()) {
+            return createInstance(clazz);
+        } else if (result.getList().size() == 1) {
             return createInstance(clazz, result.getList().get(0));
-        }else{
+        } else {
             Object[] params = result.getList().toArray(new Object[0]);
             return createInstance(clazz, params);
         }
 
     }
+
     public static JAbstractExcelFormula createInstance(Class<? extends JAbstractExcelFormula> clazz, Object... params) {
         try {
             Constructor<?>[] constructors = clazz.getDeclaredConstructors();
@@ -100,6 +80,7 @@ public class JExcelFormulaContext {
             throw new RuntimeException("failed to create  instance: " + clazz.getName(), e);
         }
     }
+
     private static Object[] adaptParameters(Object[] params, Class<?>[] paramTypes, boolean isVarArgs) {
         if (!isVarArgs) {
             if (params.length != paramTypes.length) {
@@ -142,5 +123,26 @@ public class JExcelFormulaContext {
             return !targetType.isPrimitive();
         }
         return targetType.isAssignableFrom(value.getClass());
+    }
+
+    public Cell applyFormula(Sheet sheet, int rowNum, int colNum, JExcelFormula formula) {
+        Row row = sheet.getRow(rowNum) != null ? sheet.getRow(rowNum) : sheet.createRow(rowNum);
+        Cell cell = row.getCell(colNum) != null ? row.getCell(colNum) : row.createCell(colNum);
+        cell.setCellFormula(formula.getFormula());
+        return cell;
+    }
+
+    public Cell applyFormula(Sheet sheet, String cellRef, JExcelFormula formula) {
+        CellReference ref = new CellReference(cellRef);
+        return applyFormula(sheet, ref.getRow(), ref.getCol(), formula);
+    }
+
+    public Object evaluateFormula(Cell cell) {
+        if (cell.getCellType() != CellType.FORMULA) {
+            throw new IllegalArgumentException("Cell does not contain a formula");
+        }
+        CellValue cellValue = evaluator.evaluate(cell);
+        return new JAbstractExcelFormula("") {
+        }.evaluate(evaluator, cell);
     }
 }

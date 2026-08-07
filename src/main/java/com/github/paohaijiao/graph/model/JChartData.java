@@ -15,12 +15,11 @@
  */
 package com.github.paohaijiao.graph.model;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 /**
  * packageName com.github.paohaijiao.graph.model
  *
@@ -37,16 +36,10 @@ public class JChartData extends HashMap<String, Object> {
     private static final String CATEGORIES = "categories";
     private static final String SERIES = "series";
     private static final String chartType = "chartType";
-    /**
-     * Sets the chart title.
-     * @param title The title of the chart
-     */
-    public void setTitle(String title) {
-        this.put(TITLE, title);
-    }
 
     /**
      * Gets the chart title.
+     *
      * @return The title of the chart
      */
     public String getTitle() {
@@ -54,15 +47,17 @@ public class JChartData extends HashMap<String, Object> {
     }
 
     /**
-     * Sets the category axis title.
-     * @param categoryAxisTitle The title for the category axis
+     * Sets the chart title.
+     *
+     * @param title The title of the chart
      */
-    public void setCategoryAxisTitle(String categoryAxisTitle) {
-        this.put(CATEGORY_AXIS_TITLE, categoryAxisTitle);
+    public void setTitle(String title) {
+        this.put(TITLE, title);
     }
 
     /**
      * Gets the category axis title.
+     *
      * @return The title for the category axis
      */
     public String getCategoryAxisTitle() {
@@ -70,15 +65,17 @@ public class JChartData extends HashMap<String, Object> {
     }
 
     /**
-     * Sets the value axis title.
-     * @param valueAxisTitle The title for the value axis
+     * Sets the category axis title.
+     *
+     * @param categoryAxisTitle The title for the category axis
      */
-    public void setValueAxisTitle(String valueAxisTitle) {
-        this.put(VALUE_AXIS_TITLE, valueAxisTitle);
+    public void setCategoryAxisTitle(String categoryAxisTitle) {
+        this.put(CATEGORY_AXIS_TITLE, categoryAxisTitle);
     }
 
     /**
      * Gets the value axis title.
+     *
      * @return The title for the value axis
      */
     public String getValueAxisTitle() {
@@ -86,23 +83,17 @@ public class JChartData extends HashMap<String, Object> {
     }
 
     /**
-     * Sets the categories for the chart.
-     * @param categories List of category names
+     * Sets the value axis title.
+     *
+     * @param valueAxisTitle The title for the value axis
      */
-    public void setCategories(List<String> categories) {
-        this.put(CATEGORIES, new ArrayList<>(categories));
-    }
-
-    /**
-     * Sets the categories for the chart using varargs.
-     * @param categories Array of category names
-     */
-    public void setCategories(String... categories) {
-        setCategories(Arrays.asList(categories));
+    public void setValueAxisTitle(String valueAxisTitle) {
+        this.put(VALUE_AXIS_TITLE, valueAxisTitle);
     }
 
     /**
      * Gets the categories for the chart.
+     *
      * @return List of category names
      */
     @SuppressWarnings("unchecked")
@@ -111,15 +102,26 @@ public class JChartData extends HashMap<String, Object> {
     }
 
     /**
-     * Sets the series data for the chart.
-     * @param series List of series data
+     * Sets the categories for the chart.
+     *
+     * @param categories List of category names
      */
-    public void setSeries(List<JSeriesData> series) {
-        this.put(SERIES, new ArrayList<>(series));
+    public void setCategories(List<String> categories) {
+        this.put(CATEGORIES, new ArrayList<>(categories));
+    }
+
+    /**
+     * Sets the categories for the chart using varargs.
+     *
+     * @param categories Array of category names
+     */
+    public void setCategories(String... categories) {
+        setCategories(Arrays.asList(categories));
     }
 
     /**
      * Gets the series data for the chart.
+     *
      * @return List of series data
      */
     @SuppressWarnings("unchecked")
@@ -128,7 +130,17 @@ public class JChartData extends HashMap<String, Object> {
     }
 
     /**
+     * Sets the series data for the chart.
+     *
+     * @param series List of series data
+     */
+    public void setSeries(List<JSeriesData> series) {
+        this.put(SERIES, new ArrayList<>(series));
+    }
+
+    /**
      * Adds a single series to the chart.
+     *
      * @param series The series data to add
      */
     public void addSeries(JSeriesData series) {
@@ -137,10 +149,12 @@ public class JChartData extends HashMap<String, Object> {
         }
         this.getSeries().add(series);
     }
-    public void setChartType(String type) {
-        this.put(chartType, type);
-    }
+
     public String getChartType() {
         return (String) this.get(chartType);
+    }
+
+    public void setChartType(String type) {
+        this.put(chartType, type);
     }
 }

@@ -16,7 +16,6 @@
 package com.github.paohaijiao.validate.impl.other;
 
 import com.github.paohaijiao.validate.JAbstractValidationRule;
-import com.github.paohaijiao.validate.JExcelValidationRule;
 
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class JMobileRule extends JAbstractValidationRule {
     private static final String CHINA_MOBILE_REGEX = "^1[3-9]\\d{9}$";
 
 
-    public JMobileRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMobileRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
     }
 
@@ -40,6 +39,7 @@ public class JMobileRule extends JAbstractValidationRule {
     protected boolean doValidate(String value) {
         return value.matches(CHINA_MOBILE_REGEX);
     }
+
     @Override
     public String getDefaultMsg() {
         return "invalid mobile number";

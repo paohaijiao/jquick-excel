@@ -32,21 +32,21 @@ import java.util.Map;
  */
 public class JMinDateRule extends JAbstractValidationRule {
 
-    private  Date minDate;
+    private Date minDate;
 
-    private  String format;
+    private String format;
 
-    public JMinDateRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMinDateRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
     }
 
     @Override
     protected boolean doValidate(String value) {
         JAssert.notNull(map, "the map must not be null");
-        Object minDateObject=map.get("minDate");
+        Object minDateObject = map.get("minDate");
         JAssert.notNull(minDateObject, "the minDate Value must not be null");
-        this.minDate =(Date) minDateObject;
-        Object formatValue=map.get("format");
+        this.minDate = (Date) minDateObject;
+        Object formatValue = map.get("format");
         JAssert.notNull(formatValue, "the format Value must not be null");
         this.format = formatValue.toString();
         try {
@@ -58,6 +58,7 @@ public class JMinDateRule extends JAbstractValidationRule {
             return false;
         }
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the date cannot be earlier than %s", minDate);

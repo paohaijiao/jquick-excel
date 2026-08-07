@@ -13,7 +13,8 @@ public class JColumnMergeHandler implements JMergeHandler {
     private final Workbook workbook;
     private final Sheet sheet;
     private JContext context;
-    public JColumnMergeHandler(Workbook workbook, Sheet sheet,JContext context) {
+
+    public JColumnMergeHandler(Workbook workbook, Sheet sheet, JContext context) {
         this.workbook = workbook;
         this.sheet = sheet;
         this.context = context;
@@ -28,7 +29,7 @@ public class JColumnMergeHandler implements JMergeHandler {
         if (columnIndex == null || startRow == null || endRow == null || mergeType == null) {
             throw new IllegalArgumentException("Missing required merge properties: columnIndex, startRow, endRow, mergeType");
         }
-        JMergeUtil merge=new JMergeUtil(workbook,sheet,context);
+        JMergeUtil merge = new JMergeUtil(workbook, sheet, context);
         merge.setMergedRegionValue(
                 startRow,
                 endRow,

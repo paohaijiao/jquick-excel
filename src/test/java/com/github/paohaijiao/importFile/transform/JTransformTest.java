@@ -42,8 +42,8 @@ public class JTransformTest {
     public void boolRequire() throws IOException {
         String input = " \n" +
                 "IMPORT WITH " +
-                "HEADER=true,"+
-                "SHEET='Sheet1',"+
+                "HEADER=true," +
+                "SHEET='Sheet1'," +
                 "MAPPING = {\n" +
                 "\"学号\": \"no\",\n" +
                 "\"姓名\": \"name\",\n" +
@@ -52,21 +52,21 @@ public class JTransformTest {
                 "\"出生日期\": \"birthday\"\n" +
                 "}," +
                 "TRANSFORM={" +
-                    "\"sex\":trans(${dict},${sex})"+
-                    "\"birthday\":dateFormat(${birthday},'yyyy-MM-dd')"+
+                "\"sex\":trans(${dict},${sex})" +
+                "\"birthday\":dateFormat(${birthday},'yyyy-MM-dd')" +
                 "}";
         System.out.println(input);
-        JQuickExcelCommonImportExecutor executor=new JQuickExcelCommonImportExecutor();
-        JExcelImportModel model= (JExcelImportModel)executor.execute(input);
+        JQuickExcelCommonImportExecutor executor = new JQuickExcelCommonImportExecutor();
+        JExcelImportModel model = (JExcelImportModel) executor.execute(input);
         InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
-        XSSFWorkbook workbook=new XSSFWorkbook(is);
-        Map<String,Object> sex=new HashMap<>();
-        sex.put("男","1");
-        sex.put("女","2");
+        XSSFWorkbook workbook = new XSSFWorkbook(is);
+        Map<String, Object> sex = new HashMap<>();
+        sex.put("男", "1");
+        sex.put("女", "2");
         JContext context = new JContext();
-        context.put("dict",sex);
-        JExcelImportHandler handler=new JExcelImportHandler(workbook,context);
-        List<JQuickRow> list= handler.importData(model);
+        context.put("dict", sex);
+        JExcelImportHandler handler = new JExcelImportHandler(workbook, context);
+        List<JQuickRow> list = handler.importData(model);
         System.out.println(list);
 
     }

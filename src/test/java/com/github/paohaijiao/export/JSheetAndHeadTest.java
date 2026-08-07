@@ -29,7 +29,10 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class JSheetAndHeadTest {
 
@@ -61,13 +64,14 @@ public class JSheetAndHeadTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
-        JContext context=new JContext();
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//sheet1.xlsx");
+        JContext context = new JContext();
         context.put("fos", fileOutputStream);
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
+
     @Test
     public void sheet1() throws FileNotFoundException {
         String input = "EXPORT   WITH\n" +
@@ -88,13 +92,14 @@ public class JSheetAndHeadTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//sheet1.xlsx");
-        JContext context=new JContext();
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//sheet1.xlsx");
+        JContext context = new JContext();
         context.put("fos", fileOutputStream);
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
+
     @Test
     public void header() throws FileNotFoundException {
         String input = "EXPORT   WITH\n" +
@@ -115,13 +120,14 @@ public class JSheetAndHeadTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//header.xlsx");
-        JContext context=new JContext();
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//header.xlsx");
+        JContext context = new JContext();
         context.put("fos", fileOutputStream);
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
 
     }
+
     @Test
     public void header1() throws FileNotFoundException {
         String input = "EXPORT   WITH\n" +
@@ -142,8 +148,8 @@ public class JSheetAndHeadTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//headerno.xlsx");
-        JContext context=new JContext();
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//headerno.xlsx");
+        JContext context = new JContext();
         context.put("fos", fileOutputStream);
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);

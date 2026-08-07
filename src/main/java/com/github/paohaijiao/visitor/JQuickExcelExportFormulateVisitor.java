@@ -147,6 +147,7 @@ public class JQuickExcelExportFormulateVisitor extends JFieldMappingVisitor {
         }
         return "";
     }
+
     @Override
     public JMethodCallModel visitFunctionCall(JQuickExcelParser.FunctionCallContext ctx) {
         JMethodCallModel methodCallModel = new JMethodCallModel();

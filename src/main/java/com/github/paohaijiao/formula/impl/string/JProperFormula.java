@@ -12,5 +12,5 @@ public class JProperFormula extends JAbstractExcelFormula {
         super("PROPER(\"" + text + "\")");
         this.text = text;
     }
-    
+
 }

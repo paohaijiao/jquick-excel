@@ -22,7 +22,7 @@ public enum JMergeValueType {
         this.name = name;
     }
 
-    public  static JMergeValueType codeOf(String code) {
+    public static JMergeValueType codeOf(String code) {
         for (JMergeValueType jMergeValueType : JMergeValueType.values()) {
             if (jMergeValueType.code.equals(code)) {
                 return jMergeValueType;

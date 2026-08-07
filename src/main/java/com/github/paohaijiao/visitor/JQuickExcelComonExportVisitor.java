@@ -64,16 +64,16 @@ public class JQuickExcelComonExportVisitor extends JQuickExcelExportGraphVisitor
         config.setMapping(mapping);
         return null;
     }
+
     @Override
     public Void visitFooterOption(JQuickExcelParser.FooterOptionContext ctx) {
-        if(ctx.STRING()!=null){
+        if (ctx.STRING() != null) {
             this.config.setFooter(JStringUtils.trim(ctx.STRING().getText()));
-        }else if(ctx.IDENTIFIER()!=null){
+        } else if (ctx.IDENTIFIER() != null) {
             this.config.setFooter(JStringUtils.trim(ctx.STRING().getText()));
         }
         return null;
     }
-
 
 
     @Override
@@ -85,15 +85,12 @@ public class JQuickExcelComonExportVisitor extends JQuickExcelExportGraphVisitor
     }
 
 
-
     @Override
     public Void visitRangeOption(JQuickExcelParser.RangeOptionContext ctx) {
         String range = JStringUtils.trim(ctx.STRING().getText());
         config.setRange(range);
         return null;
     }
-
-
 
 
     @Override

@@ -35,18 +35,19 @@ public class JFormatSpecVisitor extends JQuickExcelFunctionVisitor {
     @Override
     public Map<String, String> visitCellFormat(JQuickExcelParser.CellFormatContext ctx) {
         Map<String, String> formats = new HashMap<>();
-        if(ctx.STRING() != null&&ctx.STRING().size()==2) {
-            String  key=JStringUtils.trim(ctx.STRING().get(0).getText());
-            String  value=JStringUtils.trim(ctx.STRING().get(1).getText());
-            formats.put(key,value);
+        if (ctx.STRING() != null && ctx.STRING().size() == 2) {
+            String key = JStringUtils.trim(ctx.STRING().get(0).getText());
+            String value = JStringUtils.trim(ctx.STRING().get(1).getText());
+            formats.put(key, value);
         }
         return formats;
     }
+
     @Override
     public Void visitFormatOption(JQuickExcelParser.FormatOptionContext ctx) {
         Map<String, String> formats = new HashMap<>();
         for (JQuickExcelParser.CellFormatContext cells : ctx.cellFormat()) {
-            Map<String, String> formatSpec=  visitCellFormat(cells);
+            Map<String, String> formatSpec = visitCellFormat(cells);
             formats.putAll(formatSpec);
         }
         config.setFormat(formats);

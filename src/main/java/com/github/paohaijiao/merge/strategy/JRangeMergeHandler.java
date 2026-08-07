@@ -13,14 +13,15 @@ public class JRangeMergeHandler implements JMergeHandler {
     private final Workbook workbook;
     private final Sheet sheet;
     private JContext context;
-    public JRangeMergeHandler(Workbook workbook, Sheet sheet,JContext context) {
+
+    public JRangeMergeHandler(Workbook workbook, Sheet sheet, JContext context) {
         this.workbook = workbook;
         this.sheet = sheet;
         this.context = context;
     }
 
     @Override
-    public void merge( Map<String, Object> mergeProperties) {
+    public void merge(Map<String, Object> mergeProperties) {
         Integer firstRow = (Integer) mergeProperties.get("firstRow");
         Integer lastRow = (Integer) mergeProperties.get("lastRow");
         Integer firstCol = (Integer) mergeProperties.get("firstCol");
@@ -34,7 +35,7 @@ public class JRangeMergeHandler implements JMergeHandler {
             throw new IllegalArgumentException(
                     "Invalid range: firstRow must be <= lastRow and firstCol must be <= lastCol");
         }
-        JMergeUtil merge=new JMergeUtil(workbook,sheet,context);
+        JMergeUtil merge = new JMergeUtil(workbook, sheet, context);
         merge.setMergedRegionValue(
                 firstRow,
                 lastRow,

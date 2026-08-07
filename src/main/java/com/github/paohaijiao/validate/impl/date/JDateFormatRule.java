@@ -18,7 +18,6 @@ package com.github.paohaijiao.validate.impl.date;
 import com.github.paohaijiao.exception.JAssert;
 import com.github.paohaijiao.validate.JAbstractValidationRule;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -33,10 +32,10 @@ public class JDateFormatRule extends JAbstractValidationRule {
 
     private String format;
 
-    public JDateFormatRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JDateFormatRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
-        Object formatValue=map.get("format");
+        Object formatValue = map.get("format");
         JAssert.notNull(formatValue, "the format Value must not be null");
         this.format = formatValue.toString();
     }
@@ -48,10 +47,11 @@ public class JDateFormatRule extends JAbstractValidationRule {
             sdf.parse(value);
             return true;
         } catch (Exception e) {
-            JAssert.throwNewException(buildMsg()+value);
+            JAssert.throwNewException(buildMsg() + value);
             return false;
         }
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the date format must be: %s", format);

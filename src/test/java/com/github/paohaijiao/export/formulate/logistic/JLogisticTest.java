@@ -84,12 +84,12 @@ public class JLogisticTest {
         workbook.write(new FileOutputStream(TEST_OUTPUT_DIR + "/nested_if_test.xlsx"));
 
     }
+
     @Test
     public void testOrFormulaCreation() {
         JORFormula formula = new JORFormula("A1>10", "B1<5");
         System.out.println(formula.getFormula());
     }
-
 
 
     @Test

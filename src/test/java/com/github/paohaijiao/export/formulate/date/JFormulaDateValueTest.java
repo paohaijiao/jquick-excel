@@ -18,7 +18,6 @@ package com.github.paohaijiao.export.formulate.date;
 import com.github.paohaijiao.formula.JAbstractExcelFormula;
 import com.github.paohaijiao.formula.context.JExcelFormulaContext;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,7 +28,8 @@ import java.io.IOException;
 
 public class JFormulaDateValueTest {
 
-    private static String fileDir ="d://test";
+    private static String fileDir = "d://test";
+
     @Test
     public void dateDif() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -42,8 +42,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(2).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/datedif.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/datedif.xlsx"));
     }
+
     @Test
     public void date() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -54,8 +55,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(0).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/date.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/date.xlsx"));
     }
+
     @Test
     public void dateTime() throws IOException {//NOT SUPPORT
         Workbook workbook = new XSSFWorkbook();
@@ -66,8 +68,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(0).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/datetime.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/datetime.xlsx"));
     }
+
     @Test
     public void day() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -79,8 +82,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/day.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/day.xlsx"));
     }
+
     @Test
     public void days() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -93,8 +97,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(2).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/days.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/days.xlsx"));
     }
+
     @Test
     public void edate() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -106,8 +111,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/edate.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/edate.xlsx"));
     }
+
     @Test
     public void eomonth() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -119,8 +125,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/eomonth.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/eomonth.xlsx"));
     }
+
     @Test
     public void hour() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -132,8 +139,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/hour.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/hour.xlsx"));
     }
+
     @Test
     public void minute() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -145,8 +153,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/minute.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/minute.xlsx"));
     }
+
     @Test
     public void month() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -158,8 +167,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/month.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/month.xlsx"));
     }
+
     @Test
     public void networkDays() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -172,8 +182,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(2).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/networkdays.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/networkdays.xlsx"));
     }
+
     @Test
     public void now() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -184,8 +195,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(0).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/now.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/now.xlsx"));
     }
+
     @Test
     public void second() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -197,8 +209,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/second.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/second.xlsx"));
     }
+
     @Test
     public void time() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -209,8 +222,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(0).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/time.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/time.xlsx"));
     }
+
     @Test
     public void today() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -221,8 +235,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(0).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/today.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/today.xlsx"));
     }
+
     @Test
     public void weekday() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -234,8 +249,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/weekday.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/weekday.xlsx"));
     }
+
     @Test
     public void weeknum() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -247,8 +263,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/weeknum.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/weeknum.xlsx"));
     }
+
     @Test
     public void workday() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -261,8 +278,9 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(2).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/workday.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/workday.xlsx"));
     }
+
     @Test
     public void year() throws IOException {
         Workbook workbook = new XSSFWorkbook();
@@ -274,8 +292,10 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/year.xlsx"));
-    }    @Test
+        workbook.write(new FileOutputStream(fileDir + "/year.xlsx"));
+    }
+
+    @Test
     public void custom() throws IOException {
         Workbook workbook = new XSSFWorkbook();
         JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
@@ -286,11 +306,8 @@ public class JFormulaDateValueTest {
         Cell resultCell = sheet.getRow(1).getCell(0);
         Object result = factory.evaluateFormula(resultCell);
         System.out.println(result);
-        workbook.write(new FileOutputStream(fileDir+"/year.xlsx"));
+        workbook.write(new FileOutputStream(fileDir + "/year.xlsx"));
     }
-
-
-
 
 
 }

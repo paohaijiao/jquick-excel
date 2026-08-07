@@ -32,6 +32,6 @@ import java.math.BigDecimal;
 public class JPowerFormula extends JAbstractExcelFormula {
 
     public JPowerFormula(BigDecimal num, BigDecimal num1) {
-        super("POWER(" + num.toPlainString()+","+num1.toPlainString() + ")");
+        super("POWER(" + num.toPlainString() + "," + num1.toPlainString() + ")");
     }
 }

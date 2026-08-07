@@ -42,12 +42,12 @@ public class JQuickExcelCommonExportExecutor extends JAbstractAntlrExecutor<Stri
 
     @Override
     protected JExcelExportModel parse(Parser parser) throws JAntlrExecutionException {
-        JQuickBanner banner= JQuickBannerImpl.getInstance();
+        JQuickBanner banner = JQuickBannerImpl.getInstance();
         banner.printBanner();
         JQuickExcelParser calcParser = (JQuickExcelParser) parser;
         JQuickExcelParser.ExportConfigContext tree = calcParser.exportConfig();
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor();
-        return (JExcelExportModel)visitor.visit(tree);
+        return (JExcelExportModel) visitor.visit(tree);
     }
 
 }

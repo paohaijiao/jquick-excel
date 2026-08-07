@@ -32,11 +32,11 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
             String string = ctx.STRING().getText();
             String value = JStringUtils.trim(string);
             return value;
-        } else if(ctx.IDENTIFIER() != null){
+        } else if (ctx.IDENTIFIER() != null) {
             String string = ctx.IDENTIFIER().getText();
             String value = JStringUtils.trim(string);
             return value;
-        }else if (ctx.NUMBER() != null) {
+        } else if (ctx.NUMBER() != null) {
             String number = ctx.NUMBER().getText();
             String value = JStringUtils.trim(number);
             return new BigDecimal(value);
@@ -50,17 +50,18 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
             Object object = visitVariable(ctx.variable());
             JAssert.notNull(object, "the variable is not initialized");
             return object;
-        }else if (ctx.range() != null) {
+        } else if (ctx.range() != null) {
             Object object = visitRange(ctx.range());
             JAssert.notNull(object, "the variable is not initialized");
             return object;
-        }else if (ctx.date() != null) {
+        } else if (ctx.date() != null) {
             Date object = visitDate(ctx.date());
             return object;
         }
         JAssert.throwNewException("Invalid FunctionArg");
         return null;
     }
+
     @Override
     public JFormulateCallModel visitFormulateCall(JQuickExcelParser.FormulateCallContext ctx) {
         JFormulateCallModel methodCallModel = new JFormulateCallModel();
@@ -80,12 +81,11 @@ public class JQuickExcelFunctionVisitor extends JQuickExcelCoreVisitor {
         methodCallModel.setList(list);
         return methodCallModel;
     }
+
     @Override
     public String visitRange(JQuickExcelParser.RangeContext ctx) {
         return ctx.getText();
     }
-
-
 
 
 }

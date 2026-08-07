@@ -46,13 +46,14 @@ public class JFormulatTest {
         students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
         return students;
     }
+
     @Test
     public void formulat() throws IOException {
         String input = "EXPORT  WITH\n" +
                 "    SHEET=\"年度汇总\",\n" +
                 "    HEADER=true,\n" +
                 "    ROW 5 = {\n" +
-                "        \"YTDTotal\": \"SUM(D4:D15)\""+
+                "        \"YTDTotal\": \"SUM(D4:D15)\"" +
                 "    }\n";
         System.out.println(input);
         JQuickExcelLexer lexer = new JQuickExcelLexer(CharStreams.fromString(input));
@@ -60,13 +61,13 @@ public class JFormulatTest {
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.exportConfig();
         List<Map<String, Object>> data = JObjectConverter.convert(getData());
-        FileOutputStream fileOutputStream=new FileOutputStream("d://test//formulat.xlsx");
-        JContext context=new JContext();
+        FileOutputStream fileOutputStream = new FileOutputStream("d://test//formulat.xlsx");
+        JContext context = new JContext();
         JQuickExcelComonExportVisitor visitor = new JQuickExcelComonExportVisitor(context);
         JExcelExportModel result = (JExcelExportModel) visitor.visit(tree);
         List<Map<String, Object>> list = JObjectConverter.convert(getData());
-        JExcelExportHandler excelExportHandler=new JExcelExportHandler(result, JQuickRow.toRows(list));
-        Workbook wb=excelExportHandler.getWorkBook();
+        JExcelExportHandler excelExportHandler = new JExcelExportHandler(result, JQuickRow.toRows(list));
+        Workbook wb = excelExportHandler.getWorkBook();
         wb.write(fileOutputStream);
     }
 

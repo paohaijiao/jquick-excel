@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.nuber;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JIntegerRule;
 import com.github.paohaijiao.validate.impl.number.JMaxValueRule;
 import org.junit.Test;
 
@@ -35,28 +34,31 @@ public class JMaxValueTest {
 
     @Test
     public void maxValue1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void maxValue2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void maxValue3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("maxValue", BigDecimal.valueOf(22));
-        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(true,map,"不能为空");
+        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void maxValue4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("maxValue", BigDecimal.valueOf(22));
-        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(true,map,"不能为空");
+        JMaxValueRule booleanRule = JExcelValidationRuleFactory.maxValue(true, map, "不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

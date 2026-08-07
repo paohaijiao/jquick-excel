@@ -15,32 +15,16 @@
  */
 package com.github.paohaijiao.export.graph;
 
-import com.github.paohaijiao.enums.JExcelChartType;
 import com.github.paohaijiao.executor.JQuickExcelCommonExportExecutor;
-import com.github.paohaijiao.factory.JExcelChartFactory;
-import com.github.paohaijiao.graph.model.JChartData;
-import com.github.paohaijiao.graph.model.JSeriesData;
 import com.github.paohaijiao.handler.JExcelExportHandler;
 import com.github.paohaijiao.model.JExcelExportModel;
-import com.github.paohaijiao.param.JContext;
-import com.github.paohaijiao.parser.JQuickExcelLexer;
-import com.github.paohaijiao.parser.JQuickExcelParser;
-import com.github.paohaijiao.visitor.JQuickExcelComonExportVisitor;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * packageName com.github.paohaijiao.export.graph
@@ -66,12 +50,13 @@ public class JGraphDrawTest {
                 "}";
         System.out.println(rule);
         JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-        JExcelExportModel config=(JExcelExportModel)executor.execute(rule);
-        JExcelExportHandler excelExportHandler=new JExcelExportHandler(config,new ArrayList<>());
-        excelExportHandler.exportData(config,new ArrayList<>());
-        Workbook workbook= excelExportHandler.getWorkBook();
+        JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+        JExcelExportHandler excelExportHandler = new JExcelExportHandler(config, new ArrayList<>());
+        excelExportHandler.exportData(config, new ArrayList<>());
+        Workbook workbook = excelExportHandler.getWorkBook();
         workbook.write(new FileOutputStream(new File("D:\\test\\line.xls")));
     }
+
     @Test
     public void column() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -99,6 +84,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void barChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -131,6 +117,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void bar3dChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -162,6 +149,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void lineChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -197,6 +185,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void pieChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -220,6 +209,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void areaChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -251,6 +241,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void area3dChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -283,6 +274,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void scatterChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -311,6 +303,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void radarChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +
@@ -338,6 +331,7 @@ public class JGraphDrawTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void surfaceChart() throws IOException {
         String rule = "EXPORT WITH GRAPH = {\n" +

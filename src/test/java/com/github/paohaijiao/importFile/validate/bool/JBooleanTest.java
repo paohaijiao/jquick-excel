@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.bool;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.bool.JBooleanRule;
 import org.junit.Test;
 
@@ -34,31 +33,33 @@ public class JBooleanTest {
 
     @Test
     public void boolRequire() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,"");
+        HashMap<String, Object> map = new HashMap<>();
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true, map, "");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void boolRequire1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(false,map,"");
+        HashMap<String, Object> map = new HashMap<>();
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(false, map, "");
         System.out.println(booleanRule.test(null));
     }
 
     @Test
     public void boolRequire2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("true","是");
-        map.put("false","否");
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,"没有该字典");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("true", "是");
+        map.put("false", "否");
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true, map, "没有该字典");
         System.out.println(booleanRule.test("是"));
     }
+
     @Test
     public void boolRequire3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("true","是");
-        map.put("false","否");
-        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("true", "是");
+        map.put("false", "否");
+        JBooleanRule booleanRule = JExcelValidationRuleFactory.booleanRule(true, map, null);
         System.out.println(booleanRule.test("哈哈"));
     }
 

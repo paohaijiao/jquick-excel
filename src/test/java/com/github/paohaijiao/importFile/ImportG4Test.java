@@ -25,13 +25,14 @@ import com.github.paohaijiao.visitor.JQuickExcelCommonImportVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * packageName com.github.paohaijiao.importFile
@@ -61,19 +62,20 @@ public class ImportG4Test {
                     cell.setCellValue(data[i][j].toString());
                 }
             }
-          //  Cell gradeCell = row.createCell(3);
-           // gradeCell.setCellFormula("IF(C" + (i + 2) + ">=90, \"A\", IF(C" + (i + 2) + ">=80, \"B\", IF(C" + (i + 2) + ">=70, \"C\", \"D\")))");
+            //  Cell gradeCell = row.createCell(3);
+            // gradeCell.setCellFormula("IF(C" + (i + 2) + ">=90, \"A\", IF(C" + (i + 2) + ">=80, \"B\", IF(C" + (i + 2) + ">=70, \"C\", \"D\")))");
         }
         for (int i = 0; i < headers.length; i++) {
             sheet.autoSizeColumn(i);
         }
         return workbook;
     }
+
     @Test
     public void boolRequire() throws IOException {
         String input = "IMPORT WITH VALIDATION={\n" +
                 "   ROW 1:{\n" +
-                    "    MAX_LENGTH{required:true,msg:'你好',map:{maxLength:1,minLength:12}}\n" +
+                "    MAX_LENGTH{required:true,msg:'你好',map:{maxLength:1,minLength:12}}\n" +
                 "   }\n" +
                 "}";
         System.out.println(input);
@@ -81,13 +83,14 @@ public class ImportG4Test {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.importConfig();
-        JContext context=new JContext();
+        JContext context = new JContext();
         JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(context);
         JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
-        JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
-        List<JQuickRow> list=handler.importData(result);
+        JExcelImportHandler handler = new JExcelImportHandler(testGenerateExcelFile());
+        List<JQuickRow> list = handler.importData(result);
         System.out.println(list);
     }
+
     @Test
     public void rows() throws IOException {
         String input = "IMPORT WITH VALIDATION={\n" +
@@ -100,11 +103,11 @@ public class ImportG4Test {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JQuickExcelParser parser = new JQuickExcelParser(tokens);
         ParseTree tree = parser.importConfig();
-        JContext context=new JContext();
+        JContext context = new JContext();
         JQuickExcelCommonImportVisitor visitor = new JQuickExcelCommonImportVisitor(context);
         JExcelImportModel result = (JExcelImportModel) visitor.visit(tree);
-        JExcelImportHandler handler=new JExcelImportHandler(testGenerateExcelFile());
-        List<JQuickRow> list=handler.importData(result);
+        JExcelImportHandler handler = new JExcelImportHandler(testGenerateExcelFile());
+        List<JQuickRow> list = handler.importData(result);
         System.out.println(list);
     }
 

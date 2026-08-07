@@ -1,7 +1,7 @@
 package com.github.paohaijiao.jstyle.strategry.impl;
 
-import com.github.paohaijiao.jstyle.strategry.IStyleStrategy;
 import com.github.paohaijiao.jstyle.model.JCellStyle;
+import com.github.paohaijiao.jstyle.strategry.IStyleStrategy;
 import com.github.paohaijiao.util.JStyleHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 
 import java.util.Map;
 
-public class JColumnStyleStrategy extends  JFontBuilder implements IStyleStrategy {
+public class JColumnStyleStrategy extends JFontBuilder implements IStyleStrategy {
 
     private int colNum;
 
@@ -27,9 +27,9 @@ public class JColumnStyleStrategy extends  JFontBuilder implements IStyleStrateg
                 cell = row.createCell(colNum);
             }
             CellStyle cellStyle = JStyleHelper.applyCellStyle(cell.getCellStyle(), jCellStyle);
-            XSSFCellStyle xssfCellStyle =(XSSFCellStyle) cellStyle;
+            XSSFCellStyle xssfCellStyle = (XSSFCellStyle) cellStyle;
             XSSFFont font = xssfCellStyle.getFont();
-            buildFont(cellStyle,font, jCellStyle);
+            buildFont(cellStyle, font, jCellStyle);
             cell.setCellStyle(cellStyle);
         }
     }

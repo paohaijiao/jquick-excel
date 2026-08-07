@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class JIntegerRule extends JAbstractValidationRule {
 
-    public JIntegerRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JIntegerRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
     }
 
@@ -43,6 +43,7 @@ public class JIntegerRule extends JAbstractValidationRule {
             return false;
         }
     }
+
     @Override
     public String getDefaultMsg() {
         return "it must be an integer\n";

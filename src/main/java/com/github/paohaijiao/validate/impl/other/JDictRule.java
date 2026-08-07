@@ -21,7 +21,6 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * packageName com.github.paohaijiao.validate.impl.other
@@ -34,7 +33,7 @@ public class JDictRule extends JAbstractValidationRule {
 
     private Set<String> dict;
 
-    public JDictRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JDictRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -42,8 +41,8 @@ public class JDictRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Set<String> set=new HashSet<>();
-        for (Map.Entry<String,Object> entry : map.entrySet()) {
+        Set<String> set = new HashSet<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             String v = entry.getValue().toString();
             set.add(v);
         }

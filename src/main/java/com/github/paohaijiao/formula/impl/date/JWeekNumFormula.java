@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class JWeekNumFormula extends JAbstractExcelFormula {
 
     public JWeekNumFormula(String serial_number, BigDecimal num) {
-        super("WEEKNUM(" + serial_number +","+num.toPlainString()+ ")");
+        super("WEEKNUM(" + serial_number + "," + num.toPlainString() + ")");
     }
 
 }

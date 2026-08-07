@@ -2,7 +2,6 @@ package com.github.paohaijiao.enums;
 
 
 import com.github.paohaijiao.exception.JAssert;
-import com.github.paohaijiao.validate.JAbstractValidationRule;
 import com.github.paohaijiao.validate.impl.JCompositeRule;
 import com.github.paohaijiao.validate.impl.bool.JBooleanRule;
 import com.github.paohaijiao.validate.impl.date.JDateFormatRule;
@@ -21,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 public enum JMethodValidationRuleType {
     BOOLEAN("boolean", JBooleanRule.class),
@@ -34,7 +34,7 @@ public enum JMethodValidationRuleType {
     DICT("dict", JDictRule.class),
     EMAIL("email", JEmailRule.class),
     MOBILE("mobile", JMobileRule.class),
-    MAX_LENGTH("max_length",JMaxLengthRule.class),
+    MAX_LENGTH("max_length", JMaxLengthRule.class),
     MIN_LENGTH("min_length", JMinLengthRule.class),
     REGEX("regex", JRegexRule.class),
     START_WITH("start_with", JStartWithRule.class),
@@ -43,27 +43,28 @@ public enum JMethodValidationRuleType {
     NOT_END_WITH("not_end_with", JNotEndWithRule.class),
     CONTAIN("contain", JContainWithRule.class),
     NOTCONTAIN("not_contain", JNotContainWithRule.class),
-    COMPOSITE("composite",JCompositeRule .class);
+    COMPOSITE("composite", JCompositeRule.class);
 
     private String key;
 
     private Class clazz;
 
     private JMethodValidationRuleType(String key, Class clazz) {
-        this.key=key;
-        this.clazz=clazz;
+        this.key = key;
+        this.clazz = clazz;
     }
+
     public static JMethodValidationRuleType codeOf(String code) {
         for (JMethodValidationRuleType type : values()) {
             if (type.key.equalsIgnoreCase(code)) {
                 return type;
             }
         }
-        List<String> method=new ArrayList<String>();
+        List<String> method = new ArrayList<String>();
         for (JMethodValidationRuleType type : values()) {
             method.add(type.key);
         }
-        JAssert.throwNewException("only follow method code is supported:"+ StringUtils.join(method,","));
+        JAssert.throwNewException("only follow method code is supported:" + StringUtils.join(method, ","));
         return null;
     }
 }

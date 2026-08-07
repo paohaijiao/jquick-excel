@@ -30,9 +30,9 @@ import java.util.Map;
  */
 public class JMinLengthRule extends JAbstractValidationRule {
 
-    private  int minLength;
+    private int minLength;
 
-    public JMinLengthRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMinLengthRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -40,10 +40,10 @@ public class JMinLengthRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object minLengthObject=map.get("minLength");
+        Object minLengthObject = map.get("minLength");
         JAssert.notNull(minLengthObject, "the minLength Value must not be null");
-        BigDecimal bigDecimal=(BigDecimal) minLengthObject;
-        this.minLength =bigDecimal.intValue();
+        BigDecimal bigDecimal = (BigDecimal) minLengthObject;
+        this.minLength = bigDecimal.intValue();
         return value.length() >= minLength;
     }
 

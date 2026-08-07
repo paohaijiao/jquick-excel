@@ -12,5 +12,5 @@ public class JValueFormula extends JAbstractExcelFormula {
         super("VALUE(\"" + text + "\")");
         this.text = text;
     }
-    
+
 }

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class JEDATEFormula extends JAbstractExcelFormula {
 
     public JEDATEFormula(String start_date, BigDecimal months) {
-        super("EDATE(" + start_date +","+months.toPlainString()+ ")");
+        super("EDATE(" + start_date + "," + months.toPlainString() + ")");
 
     }
 

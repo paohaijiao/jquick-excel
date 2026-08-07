@@ -33,10 +33,10 @@ import java.util.*;
 
 public class ExcelImporter<T> {
     private final Class<T> clazz;
+    private final Map<Integer, Field> fieldMap = new HashMap<>();
     private JReadListener<T> listener;
     private int headRowNumber = 1;
     private String sheetName;
-    private final Map<Integer, Field> fieldMap = new HashMap<>();
 
     public ExcelImporter(Class<T> clazz) {
         this.clazz = clazz;

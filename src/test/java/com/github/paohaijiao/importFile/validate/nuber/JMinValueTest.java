@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.nuber;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.number.JMaxValueRule;
 import com.github.paohaijiao.validate.impl.number.JMinValueRule;
 import org.junit.Test;
 
@@ -35,28 +34,31 @@ public class JMinValueTest {
 
     @Test
     public void minValue1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void minValue2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void minValue3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("minValue", BigDecimal.valueOf(22));
-        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true,map,"不能为空");
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true, map, "不能为空");
         System.out.println(booleanRule.test("28"));
     }
+
     @Test
     public void minValue4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("minValue", BigDecimal.valueOf(22));
-        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true,map,"不能为空");
+        JMinValueRule booleanRule = JExcelValidationRuleFactory.minValue(true, map, "不能为空");
         System.out.println(booleanRule.test("18"));
     }
 }

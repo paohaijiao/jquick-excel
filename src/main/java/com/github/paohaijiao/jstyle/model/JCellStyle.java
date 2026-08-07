@@ -18,7 +18,6 @@ package com.github.paohaijiao.jstyle.model;
 import org.apache.poi.ss.usermodel.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 
 /**
  * packageName com.github.paohaijiao.jstyle.model
@@ -29,7 +28,7 @@ import java.util.HashMap;
  * @date 2025/7/4
  * @description
  */
-public class JCellStyle extends JFontStyle{
+public class JCellStyle extends JFontStyle {
 
     private static final String INDEX = "index";
     private static final String DATA_FORMAT = "dataFormat";
@@ -61,12 +60,12 @@ public class JCellStyle extends JFontStyle{
         return containsKey(INDEX) ? (BigDecimal) get(INDEX) : null;
     }
 
-    public void setDataFormat(BigDecimal var1) {
-        put(DATA_FORMAT, var1);
-    }
-
     public BigDecimal getDataFormat() {
         return containsKey(DATA_FORMAT) ? (BigDecimal) get(DATA_FORMAT) : null;
+    }
+
+    public void setDataFormat(BigDecimal var1) {
+        put(DATA_FORMAT, var1);
     }
 
     public String getDataFormatString() {
@@ -86,32 +85,28 @@ public class JCellStyle extends JFontStyle{
         return getFontIndex();
     }
 
-    public void setHidden(Boolean var1) {
-        put(HIDDEN, var1);
-    }
-
     public Boolean getHidden() {
         return containsKey(HIDDEN) ? (boolean) get(HIDDEN) : null;
     }
 
-    public void setLocked(boolean var1) {
-        put(LOCKED, var1);
+    public void setHidden(Boolean var1) {
+        put(HIDDEN, var1);
     }
 
     public Boolean getLocked() {
         return containsKey(LOCKED) ? (boolean) get(LOCKED) : null;
     }
 
-    public void setQuotePrefixed(boolean var1) {
-        put(QUOTE_PREFIXED, var1);
+    public void setLocked(boolean var1) {
+        put(LOCKED, var1);
     }
 
     public Boolean getQuotePrefixed() {
         return containsKey(QUOTE_PREFIXED) ? (boolean) get(QUOTE_PREFIXED) : null;
     }
 
-    public void setAlignment(HorizontalAlignment var1) {
-        put(ALIGNMENT, var1);
+    public void setQuotePrefixed(boolean var1) {
+        put(QUOTE_PREFIXED, var1);
     }
 
     public HorizontalAlignment getAlignment() {
@@ -142,16 +137,16 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-    public void setWrapText(boolean var1) {
-        put(WRAP_TEXT, var1);
+    public void setAlignment(HorizontalAlignment var1) {
+        put(ALIGNMENT, var1);
     }
 
     public Boolean getWrapText() {
         return containsKey(WRAP_TEXT) ? (boolean) get(WRAP_TEXT) : null;
     }
 
-    public void setVerticalAlignment(VerticalAlignment var1) {
-        put(VERTICAL_ALIGNMENT, var1);
+    public void setWrapText(boolean var1) {
+        put(WRAP_TEXT, var1);
     }
 
     public VerticalAlignment getVerticalAlignment() {
@@ -174,24 +169,24 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-    public void setRotation(BigDecimal var1) {
-        put(ROTATION, var1);
+    public void setVerticalAlignment(VerticalAlignment var1) {
+        put(VERTICAL_ALIGNMENT, var1);
     }
 
     public BigDecimal getRotation() {
         return containsKey(ROTATION) ? (BigDecimal) get(ROTATION) : null;
     }
 
-    public void setIndention(BigDecimal var1) {
-        put(INDENTION, var1);
+    public void setRotation(BigDecimal var1) {
+        put(ROTATION, var1);
     }
 
     public BigDecimal getIndention() {
         return containsKey(INDENTION) ? (BigDecimal) get(INDENTION) : null;
     }
 
-    public void setBorderLeft(BorderStyle var1) {
-        put(BORDER_LEFT, var1);
+    public void setIndention(BigDecimal var1) {
+        put(INDENTION, var1);
     }
 
     public BorderStyle getBorderLeft() {
@@ -232,8 +227,8 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-    public void setBorderRight(BorderStyle var1) {
-        put(BORDER_RIGHT, var1);
+    public void setBorderLeft(BorderStyle var1) {
+        put(BORDER_LEFT, var1);
     }
 
     public BorderStyle getBorderRight() {
@@ -274,8 +269,8 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-    public void setBorderTop(BorderStyle var1) {
-        put(BORDER_TOP, var1);
+    public void setBorderRight(BorderStyle var1) {
+        put(BORDER_RIGHT, var1);
     }
 
     public BorderStyle getBorderTop() {
@@ -316,8 +311,8 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-    public void setBorderBottom(BorderStyle var1) {
-        put(BORDER_BOTTOM, var1);
+    public void setBorderTop(BorderStyle var1) {
+        put(BORDER_TOP, var1);
     }
 
     public BorderStyle getBorderBottom() {
@@ -358,40 +353,40 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-    public void setLeftBorderColor(String var1) {
-        put(LEFT_BORDER_COLOR, var1);
+    public void setBorderBottom(BorderStyle var1) {
+        put(BORDER_BOTTOM, var1);
     }
 
     public String getLeftBorderColor() {
         return containsKey(LEFT_BORDER_COLOR) ? (String) get(LEFT_BORDER_COLOR) : null;
     }
 
-    public void setRightBorderColor(String var1) {
-        put(RIGHT_BORDER_COLOR, var1);
+    public void setLeftBorderColor(String var1) {
+        put(LEFT_BORDER_COLOR, var1);
     }
 
     public String getRightBorderColor() {
         return containsKey(RIGHT_BORDER_COLOR) ? (String) get(RIGHT_BORDER_COLOR) : null;
     }
 
-    public void setTopBorderColor(String var1) {
-        put(TOP_BORDER_COLOR, var1);
+    public void setRightBorderColor(String var1) {
+        put(RIGHT_BORDER_COLOR, var1);
     }
 
     public String getTopBorderColor() {
         return containsKey(TOP_BORDER_COLOR) ? (String) get(TOP_BORDER_COLOR) : null;
     }
 
-    public void setBottomBorderColor(String var1) {
-        put(BOTTOM_BORDER_COLOR, var1);
+    public void setTopBorderColor(String var1) {
+        put(TOP_BORDER_COLOR, var1);
     }
 
     public String getBottomBorderColor() {
         return containsKey(BOTTOM_BORDER_COLOR) ? (String) get(BOTTOM_BORDER_COLOR) : null;
     }
 
-    public void setFillPattern(FillPatternType var1) {
-        put(FILL_PATTERN, var1);
+    public void setBottomBorderColor(String var1) {
+        put(BOTTOM_BORDER_COLOR, var1);
     }
 
     public FillPatternType getFillPattern() {
@@ -444,10 +439,8 @@ public class JCellStyle extends JFontStyle{
         }
     }
 
-
-
-    public void setFillBackgroundColor(String var1) {
-        put(FILL_BACKGROUND_COLOR, var1);
+    public void setFillPattern(FillPatternType var1) {
+        put(FILL_PATTERN, var1);
     }
 
     public String getFillBackgroundColor() {
@@ -455,11 +448,8 @@ public class JCellStyle extends JFontStyle{
                 ? (String) get(FILL_BACKGROUND_COLOR) : null;
     }
 
-
-
-
-    public void setFillForegroundColor(String var1) {
-        put(FILL_FOREGROUND_COLOR, var1);
+    public void setFillBackgroundColor(String var1) {
+        put(FILL_BACKGROUND_COLOR, var1);
     }
 
     public String getFillForegroundColor() {
@@ -468,16 +458,20 @@ public class JCellStyle extends JFontStyle{
                 ) get(FILL_FOREGROUND_COLOR) : null;
     }
 
+    public void setFillForegroundColor(String var1) {
+        put(FILL_FOREGROUND_COLOR, var1);
+    }
+
     public void cloneStyleFrom(JCellStyle var1) {
         clear();
         putAll(var1);
     }
 
-    public void setShrinkToFit(boolean var1) {
-        put(SHRINK_TO_FIT, var1);
-    }
-
     public Boolean getShrinkToFit() {
         return containsKey(SHRINK_TO_FIT) ? (boolean) get(SHRINK_TO_FIT) : null;
+    }
+
+    public void setShrinkToFit(boolean var1) {
+        put(SHRINK_TO_FIT, var1);
     }
 }

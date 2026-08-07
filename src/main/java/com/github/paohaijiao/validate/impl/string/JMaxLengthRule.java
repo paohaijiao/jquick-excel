@@ -30,9 +30,9 @@ import java.util.Map;
  */
 public class JMaxLengthRule extends JAbstractValidationRule {
 
-    private  int maxLength;
+    private int maxLength;
 
-    public JMaxLengthRule(boolean required, Map<String,Object> map, String customMessage) {
+    public JMaxLengthRule(boolean required, Map<String, Object> map, String customMessage) {
         super(required, map, customMessage);
         JAssert.notNull(map, "the map must not be null");
 
@@ -40,12 +40,13 @@ public class JMaxLengthRule extends JAbstractValidationRule {
 
     @Override
     protected boolean doValidate(String value) {
-        Object maxLengthObject=map.get("maxLength");
+        Object maxLengthObject = map.get("maxLength");
         JAssert.notNull(maxLengthObject, "the maxLength Value must not be null");
-        BigDecimal bigDecimal=(BigDecimal) maxLengthObject;
-        this.maxLength =bigDecimal.intValue();
+        BigDecimal bigDecimal = (BigDecimal) maxLengthObject;
+        this.maxLength = bigDecimal.intValue();
         return value.length() <= maxLength;
     }
+
     @Override
     public String getDefaultMsg() {
         return String.format("the length cannot exceed% d characters", maxLength);

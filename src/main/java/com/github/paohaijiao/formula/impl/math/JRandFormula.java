@@ -29,6 +29,6 @@ import com.github.paohaijiao.formula.JAbstractExcelFormula;
 public class JRandFormula extends JAbstractExcelFormula {
 
     public JRandFormula() {
-        super("RAND("  + ")");
+        super("RAND(" + ")");
     }
 }

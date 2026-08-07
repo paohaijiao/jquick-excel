@@ -25,7 +25,6 @@ import java.util.Map;
 public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVisitor {
 
 
-
     public JQuickExcelCommonImportVisitor(JContext contextParams) {
         this.context = contextParams;
     }
@@ -46,12 +45,12 @@ public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVis
 
     @Override
     public Object visitSheetOption(JQuickExcelParser.SheetOptionContext ctx) {
-        if(ctx.STRING() != null) {
-            String  sheetValue=JStringUtils.trim(ctx.STRING().getText());
+        if (ctx.STRING() != null) {
+            String sheetValue = JStringUtils.trim(ctx.STRING().getText());
             config.setSheet(sheetValue);
         }
-        if(ctx.NUMBER() != null) {
-            Integer sheetValue=Integer.parseInt(ctx.NUMBER().getText());
+        if (ctx.NUMBER() != null) {
+            Integer sheetValue = Integer.parseInt(ctx.NUMBER().getText());
             config.setSheet(sheetValue);
         }
         return null;
@@ -75,7 +74,7 @@ public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVis
     public Object visitMappingOption(JQuickExcelParser.MappingOptionContext ctx) {
         Map<String, String> mappings = new HashMap<>();
         for (JQuickExcelParser.FieldMappingContext mapping : ctx.fieldMapping()) {
-            if(null!=mapping.STRING()) {
+            if (null != mapping.STRING()) {
                 String source = JStringUtils.trim(mapping.STRING(0).getText());
                 String target = mapping.STRING(1) != null ? JStringUtils.trim(mapping.STRING(1).getText()) : mapping.functionCall().getText();
                 mappings.put(source, target);
@@ -90,7 +89,7 @@ public class JQuickExcelCommonImportVisitor extends JQuickExcelImportValidateVis
     public Object visitTransformOption(JQuickExcelParser.TransformOptionContext ctx) {
         Map<String, String> transforms = new HashMap<>();
         for (JQuickExcelParser.TransformRuleContext rule : ctx.transformRule()) {
-            if(null!=rule.STRING()) {
+            if (null != rule.STRING()) {
                 String field = JStringUtils.trim(rule.STRING().getText());
                 String transform = rule.transformValue().getText();
                 transforms.put(field, transform);

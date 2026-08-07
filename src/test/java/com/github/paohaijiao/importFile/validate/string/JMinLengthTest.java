@@ -16,7 +16,6 @@
 package com.github.paohaijiao.importFile.validate.string;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.string.JMaxLengthRule;
 import com.github.paohaijiao.validate.impl.string.JMinLengthRule;
 import org.junit.Test;
 
@@ -34,28 +33,31 @@ public class JMinLengthTest {
 
     @Test
     public void minLength1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void minLength2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(false,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(false, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void minLength3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("minLength",12);
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("minLength", 12);
+        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
+
     @Test
     public void minLength4() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("minLength",1);
-        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("minLength", 1);
+        JMinLengthRule booleanRule = JExcelValidationRuleFactory.minLength(true, map, "不能为空");
         System.out.println(booleanRule.test("qwer"));
     }
 }

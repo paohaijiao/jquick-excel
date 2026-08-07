@@ -33,20 +33,22 @@ public class JCompositTest {
 
     @Test
     public void boolRequire() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JRequiredRule booleanRule = JExcelValidationRuleFactory.required(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JRequiredRule booleanRule = JExcelValidationRuleFactory.required(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void boolRequire1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JRequiredRule booleanRule = JExcelValidationRuleFactory.required(true,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JRequiredRule booleanRule = JExcelValidationRuleFactory.required(true, map, null);
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void boolRequire2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JRequiredRule booleanRule = JExcelValidationRuleFactory.required(true,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JRequiredRule booleanRule = JExcelValidationRuleFactory.required(true, map, null);
         System.out.println(booleanRule.test("xsa"));
     }
 

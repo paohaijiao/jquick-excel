@@ -17,7 +17,6 @@
 package com.github.paohaijiao.importFile.validate.other;
 
 import com.github.paohaijiao.factory.JExcelValidationRuleFactory;
-import com.github.paohaijiao.validate.impl.other.JEmailRule;
 import com.github.paohaijiao.validate.impl.other.JMobileRule;
 import org.junit.Test;
 
@@ -35,20 +34,22 @@ public class JPhoneTest {
 
     @Test
     public void mobile1() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(true,map,"不能为空");
+        HashMap<String, Object> map = new HashMap<>();
+        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(true, map, "不能为空");
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void mobile2() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(false,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(false, map, null);
         System.out.println(booleanRule.test(null));
     }
+
     @Test
     public void mobile3() throws IOException {
-        HashMap<String,Object> map = new HashMap<>();
-        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(true,map,null);
+        HashMap<String, Object> map = new HashMap<>();
+        JMobileRule booleanRule = JExcelValidationRuleFactory.mobile(true, map, null);
         System.out.println(booleanRule.test("13198001111"));
     }
 

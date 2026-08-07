@@ -24,5 +24,5 @@ public class JORFormula extends JAbstractExcelFormula {
     public String getCondition(int index) {
         return conditions[index];
     }
-    
+
 }

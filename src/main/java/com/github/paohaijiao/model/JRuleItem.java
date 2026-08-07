@@ -34,5 +34,5 @@ public class JRuleItem {
 
     private String customMessage;
 
-    private Map<String,Object> map=new HashMap<>();
+    private Map<String, Object> map = new HashMap<>();
 }
