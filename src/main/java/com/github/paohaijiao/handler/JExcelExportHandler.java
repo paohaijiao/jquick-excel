@@ -16,6 +16,7 @@
 package com.github.paohaijiao.handler;
 
 import cn.hutool.core.util.NumberUtil;
+import com.github.paohaijiao.config.JQuickExcelConfig;
 import com.github.paohaijiao.enums.JExcelChartType;
 import com.github.paohaijiao.enums.JMergeType;
 import com.github.paohaijiao.enums.JMergeValueType;
@@ -30,12 +31,15 @@ import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.theme.JExcelTheme;
 import com.github.paohaijiao.theme.factory.JExcelThemeFactory;
+import com.github.paohaijiao.util.JCellStyleCache;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
@@ -44,12 +48,24 @@ import java.util.*;
 
 public class JExcelExportHandler extends JExcelCommonHandler {
 
-
     private JExcelExportModel config = new JExcelExportModel();
+
+    /**
+     * 是否偏好流式写入：true 时，当数据量 ≥ {@link JQuickExcelConfig#getStreamingExportThreshold()}
+     * 会自动升级为 SXSSFWorkbook 流式写入，降低 OOM 风险。默认跟随全局配置。
+     */
+    private boolean preferStreaming;
+
+    /**
+     * 流式窗口（SXSSF rowAccessWindowSize），<=0 表示采用全局默认。
+     */
+    private int streamingWindowSize;
 
     public JExcelExportHandler(JExcelExportModel config, JContext context, List<JQuickRow> data) {
         this.config = config;
         this.context = context;
+        this.preferStreaming = JQuickExcelConfig.getInstance().isStreamingExportEnabled();
+        this.streamingWindowSize = JQuickExcelConfig.getInstance().getStreamingRowAccessWindowSize();
         try {
             this.exportData(config, data);
         } catch (IOException e) {
@@ -60,6 +76,8 @@ public class JExcelExportHandler extends JExcelCommonHandler {
     public JExcelExportHandler(JExcelExportModel config, List<JQuickRow> data) {
         this.config = config;
         this.context = new JContext();
+        this.preferStreaming = JQuickExcelConfig.getInstance().isStreamingExportEnabled();
+        this.streamingWindowSize = JQuickExcelConfig.getInstance().getStreamingRowAccessWindowSize();
         try {
             this.exportData(config, data);
         } catch (IOException e) {
@@ -67,16 +85,62 @@ public class JExcelExportHandler extends JExcelCommonHandler {
         }
     }
 
+    public boolean isPreferStreaming() {
+        return preferStreaming;
+    }
+
+    public JExcelExportHandler setPreferStreaming(boolean preferStreaming) {
+        this.preferStreaming = preferStreaming;
+        return this;
+    }
+
+    public int getStreamingWindowSize() {
+        return streamingWindowSize;
+    }
+
+    public JExcelExportHandler setStreamingWindowSize(int streamingWindowSize) {
+        this.streamingWindowSize = streamingWindowSize;
+        return this;
+    }
+
+    /**
+     * 清理 SXSSF 临时磁盘文件。若导出时采用流式，写入结束后建议调用本方法。
+     */
+    public void dispose() {
+        if (this.workbook instanceof SXSSFWorkbook) {
+            ((SXSSFWorkbook) this.workbook).dispose();
+        }
+    }
 
     public void exportData(JExcelExportModel config, List<JQuickRow> data) throws IOException {
-        workbook = new XSSFWorkbook();
-        Object sheet = config.getSheet();
-        if (null != sheet) {
-            currentSheet = workbook.createSheet((String) sheet);
+        int size = data == null ? 0 : data.size();
+        JQuickExcelConfig global = JQuickExcelConfig.getInstance();
+        boolean useStreaming = preferStreaming && global.shouldUseStreaming(size);
+
+        Workbook nativeWorkbook;
+        if (useStreaming) {
+            int window = streamingWindowSize > 0
+                    ? streamingWindowSize
+                    : global.getStreamingRowAccessWindowSize();
+            SXSSFWorkbook sxssf = new SXSSFWorkbook(new XSSFWorkbook(), window);
+            sxssf.setCompressTempFiles(global.isStreamingCompressTempFiles());
+            nativeWorkbook = sxssf;
+        } else {
+            nativeWorkbook = new XSSFWorkbook();
+        }
+        this.workbook = nativeWorkbook;
+
+        Object sheetObj = config.getSheet();
+        if (null != sheetObj) {
+            currentSheet = workbook.createSheet((String) sheetObj);
         } else {
             currentSheet = workbook.createSheet();
         }
         currentSheet.setDefaultColumnWidth(18);
+        if (currentSheet instanceof SXSSFSheet) {
+            ((SXSSFSheet) currentSheet).trackAllColumnsForAutoSizing();
+        }
+
         int lastColNum = 0;
         if (null != data && !data.isEmpty()) {
             lastColNum = data.get(0).size();
@@ -154,21 +218,6 @@ public class JExcelExportHandler extends JExcelCommonHandler {
                 : theme.buildDataEvenStyle(workbook);
     }
 
-    private String getFormulaValue(String formula, int rowNum, int colNum) {
-        if (null == formula) {
-            return null;
-        }
-        if (formula.contains("${rowNum}")) {
-            String value = formula.replaceAll("\\$\\{rowNum\\}", rowNum + "");
-            return value;
-        } else if (formula.contains("${colNum}")) {
-            String value = formula.replaceAll("\\$\\{colNum\\}", colNum + "");
-            return value;
-        } else {
-            return formula;
-        }
-    }
-
     private void setCellValue(Cell cell, Object value) {
         if (value != null) {
             if (value instanceof Number) {
@@ -198,15 +247,14 @@ public class JExcelExportHandler extends JExcelCommonHandler {
         }
     }
 
-    private void autoSizeColumns(int columnCount) {
-        for (int i = 0; i < columnCount; i++) {
-            currentSheet.autoSizeColumn(i);
-        }
-    }
-
     private void applyCellFormat(Cell cell, String formatSpec) {
-        CellStyle style = workbook.createCellStyle();
-        style.setDataFormat(workbook.createDataFormat().getFormat(formatSpec));
+        CellStyle style;
+        if (JQuickExcelConfig.getInstance().isCellStyleCacheEnabled()) {
+            style = JCellStyleCache.getFormatStyle(workbook, formatSpec);
+        } else {
+            style = workbook.createCellStyle();
+            style.setDataFormat(workbook.createDataFormat().getFormat(formatSpec));
+        }
         cell.setCellStyle(style);
     }
 
@@ -285,7 +333,7 @@ public class JExcelExportHandler extends JExcelCommonHandler {
 
     private void applyMerge(JExcelExportModel config, Integer maxRow, Integer maxCol) {
         if (config == null) {
-            return; // No merge configurations to apply
+            return;
         }
         Map<String, Object> rowMerge = config.getRowMerge();
         if (rowMerge != null) {
@@ -447,7 +495,15 @@ public class JExcelExportHandler extends JExcelCommonHandler {
     public void applyGraph(JExcelExportModel config) {
         if (config.getGraph() != null && 0 != config.getGraph().size()) {
             JExcelChartType excelChartType = JExcelChartType.codeOf(config.getGraph().getChartType());
-            JExcelChartFactory.createChart((XSSFWorkbook) workbook, config.getGraph(), excelChartType, config.getGraph().getTitle());
+            XSSFWorkbook nativeXssf;
+            if (workbook instanceof SXSSFWorkbook) {
+                nativeXssf = ((SXSSFWorkbook) workbook).getXSSFWorkbook();
+            } else if (workbook instanceof XSSFWorkbook) {
+                nativeXssf = (XSSFWorkbook) workbook;
+            } else {
+                return;
+            }
+            JExcelChartFactory.createChart(nativeXssf, config.getGraph(), excelChartType, config.getGraph().getTitle());
         }
     }
 

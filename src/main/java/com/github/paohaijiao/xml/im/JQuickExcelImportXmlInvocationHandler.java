@@ -8,7 +8,6 @@ import com.github.paohaijiao.model.JExcelImportModel;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.xml.invocation.JQuickXmlInvocationHandler;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,10 +44,9 @@ public class JQuickExcelImportXmlInvocationHandler extends JQuickXmlInvocationHa
     protected Object loadResult(String lexerStr, JContext jcontext, Method method, Object[] args) {
         JQuickExcelCommonImportExecutor executor = new JQuickExcelCommonImportExecutor();
         JExcelImportModel model = (JExcelImportModel) executor.execute(lexerStr);
-        XSSFWorkbook workbook = null;
         try {
-            workbook = new XSSFWorkbook(inputStream);
-            JExcelImportHandler handler = new JExcelImportHandler(workbook, context);
+            // 大数据量导入：JExcelImportHandler 内部已根据 JQuickExcelConfig 自动采用 OPCPackage 共享解析
+            JExcelImportHandler handler = new JExcelImportHandler(inputStream, context);
             List<JQuickRow> list = handler.importData(model);
             console.info("完成导入:" + list.size() + "项数据");
             return list;
