@@ -17,8 +17,6 @@ Excel 格式（xls/xlsx），并提供丰富的 API 帮助开发者快速实现�
 
 JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
 
-JQuickExcel provides 42 built-in theme templates covering classic business, blue/green/teal/red-orange/pink-purple/gold-brown families and special styles, ready to use out of the box.
-
 👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
 
 ```java
