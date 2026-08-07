@@ -7,7 +7,7 @@
         <version>2.1.1</version>
     </parent>
     <artifactId>jquick-excel</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <properties>
         <javelin.version>2.1.1</javelin.version>
     </properties>
