@@ -32,7 +32,11 @@ JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, 
 
 Consistent with default export style: royal blue header, grey zebra stripes, thousand-separator number format. Suitable for general business report exports.
 
+<br>
+
 ![default](template/default.png)
+
+<br>
 
 ---
 
@@ -42,7 +46,11 @@ Consistent with default export style: royal blue header, grey zebra stripes, tho
 
 Charcoal header with light grey zebra stripes, left-aligned text. Suitable for formal document exports.
 
+<br>
+
 ![minimalistGrey](template/minimalistGrey.png)
+
+<br>
 
 ---
 
@@ -52,7 +60,11 @@ Charcoal header with light grey zebra stripes, left-aligned text. Suitable for f
 
 Slate header with light grey-blue stripes, calm business style. Suitable for consulting and legal reports.
 
+<br>
+
 ![slate](template/slate.png)
+
+<br>
 
 ---
 
@@ -62,7 +74,11 @@ Slate header with light grey-blue stripes, calm business style. Suitable for con
 
 Charcoal header with light grey stripes, understated. Suitable for formal administrative exports.
 
+<br>
+
 ![charcoal](template/charcoal.png)
+
+<br>
 
 ---
 
@@ -72,7 +88,11 @@ Charcoal header with light grey stripes, understated. Suitable for formal admini
 
 Navy blue header with light blue stripes, professional. Suitable for enterprise and compliance reports.
 
+<br>
+
 ![navyBlue](template/navyBlue.png)
+
+<br>
 
 ---
 
@@ -84,7 +104,11 @@ Navy blue header with light blue stripes, professional. Suitable for enterprise 
 
 Deep blue header with light blue stripes, fresh and transparent. Suitable for financial and sales reports.
 
+<br>
+
 ![oceanBlue](template/oceanBlue.png)
+
+<br>
 
 ---
 
@@ -94,7 +118,11 @@ Deep blue header with light blue stripes, fresh and transparent. Suitable for fi
 
 Sky blue header with light blue stripes, bright and fresh. Suitable for Internet and SaaS reports.
 
+<br>
+
 ![skyBlue](template/skyBlue.png)
+
+<br>
 
 ---
 
@@ -104,7 +132,11 @@ Sky blue header with light blue stripes, bright and fresh. Suitable for Internet
 
 Azure header with ice-blue stripes, vast and transparent. Suitable for meteorological and logistics data.
 
+<br>
+
 ![azure](template/azure.png)
+
+<br>
 
 ---
 
@@ -114,7 +146,11 @@ Azure header with ice-blue stripes, vast and transparent. Suitable for meteorolo
 
 Steel blue header with light grey-blue stripes, rational. Suitable for manufacturing and engineering data.
 
+<br>
+
 ![steelBlue](template/steelBlue.png)
+
+<br>
 
 ---
 
@@ -124,7 +160,11 @@ Steel blue header with light grey-blue stripes, rational. Suitable for manufactu
 
 Denim blue header with light blue-grey stripes, casual and capable. Suitable for retail and e-commerce.
 
+<br>
+
 ![denim](template/denim.png)
+
+<br>
 
 ---
 
@@ -134,7 +174,11 @@ Denim blue header with light blue-grey stripes, casual and capable. Suitable for
 
 Indigo header with light blue-purple stripes, deep and calm. Suitable for tech and R&D data.
 
+<br>
+
 ![indigo](template/indigo.png)
+
+<br>
 
 ---
 
@@ -144,7 +188,11 @@ Indigo header with light blue-purple stripes, deep and calm. Suitable for tech a
 
 Periwinkle header with light purple-blue stripes, soft and dreamy. Suitable for design and creative industries.
 
+<br>
+
 ![periwinkle](template/periwinkle.png)
+
+<br>
 
 ---
 
@@ -156,7 +204,11 @@ Periwinkle header with light purple-blue stripes, soft and dreamy. Suitable for 
 
 Deep green header with light green stripes, natural and steady. Suitable for inventory, agriculture, and environmental data.
 
+<br>
+
 ![forestGreen](template/forestGreen.png)
+
+<br>
 
 ---
 
@@ -166,7 +218,11 @@ Deep green header with light green stripes, natural and steady. Suitable for inv
 
 Emerald header with light green stripes, gem-like texture. Suitable for financial and wealth management reports.
 
+<br>
+
 ![emerald](template/emerald.png)
+
+<br>
 
 ---
 
@@ -176,7 +232,11 @@ Emerald header with light green stripes, gem-like texture. Suitable for financia
 
 Jade green header with light mint stripes, clear and transparent. Suitable for environmental and health exports.
 
+<br>
+
 ![jade](template/jade.png)
+
+<br>
 
 ---
 
@@ -186,7 +246,11 @@ Jade green header with light mint stripes, clear and transparent. Suitable for e
 
 Sea green header with mint stripes, light and transparent. Suitable for education, public welfare, and lifestyle services.
 
+<br>
+
 ![mintFresh](template/mintFresh.png)
+
+<br>
 
 ---
 
@@ -196,7 +260,11 @@ Sea green header with mint stripes, light and transparent. Suitable for educatio
 
 Sage green header with light green stripes, soft and soothing. Suitable for health and wellness data.
 
+<br>
+
 ![sage](template/sage.png)
+
+<br>
 
 ---
 
@@ -206,7 +274,11 @@ Sage green header with light green stripes, soft and soothing. Suitable for heal
 
 Olive green header with light yellow-green stripes, rustic and natural. Suitable for agriculture and outdoor data.
 
+<br>
+
 ![oliveGreen](template/oliveGreen.png)
+
+<br>
 
 ---
 
@@ -218,7 +290,11 @@ Olive green header with light yellow-green stripes, rustic and natural. Suitable
 
 Teal header with mint stripes, fresh and bright. Suitable for medical, health, and travel data.
 
+<br>
+
 ![tropicalTeal](template/tropicalTeal.png)
+
+<br>
 
 ---
 
@@ -228,7 +304,11 @@ Teal header with mint stripes, fresh and bright. Suitable for medical, health, a
 
 Turquoise header with mint stripes, vivid and agile. Suitable for jewelry and travel data.
 
+<br>
+
 ![turquoise](template/turquoise.png)
+
+<br>
 
 ---
 
@@ -238,7 +318,11 @@ Turquoise header with mint stripes, vivid and agile. Suitable for jewelry and tr
 
 Cyan header with light cyan stripes, fresh and transparent. Suitable for water and environmental data.
 
+<br>
+
 ![cyan](template/cyan.png)
+
+<br>
 
 ---
 
@@ -250,7 +334,11 @@ Cyan header with light cyan stripes, fresh and transparent. Suitable for water a
 
 Warm orange header with apricot stripes, passionate and bright. Suitable for marketing and operations reports.
 
+<br>
+
 ![sunsetOrange](template/sunsetOrange.png)
+
+<br>
 
 ---
 
@@ -260,7 +348,11 @@ Warm orange header with apricot stripes, passionate and bright. Suitable for mar
 
 Coral red header with pink-white stripes, lively. Suitable for promotions and event data.
 
+<br>
+
 ![coral](template/coral.png)
+
+<br>
 
 ---
 
@@ -270,7 +362,11 @@ Coral red header with pink-white stripes, lively. Suitable for promotions and ev
 
 Peach orange header with pink-orange stripes, sweet and soft. Suitable for maternal and lifestyle services.
 
+<br>
+
 ![peach](template/peach.png)
+
+<br>
 
 ---
 
@@ -280,7 +376,11 @@ Peach orange header with pink-orange stripes, sweet and soft. Suitable for mater
 
 Crimson header with light red stripes, solemn. Suitable for alerts, risk control, and key metrics.
 
+<br>
+
 ![crimsonRed](template/crimsonRed.png)
+
+<br>
 
 ---
 
@@ -290,7 +390,11 @@ Crimson header with light red stripes, solemn. Suitable for alerts, risk control
 
 Wine red header with light red stripes, mellow and elegant. Suitable for high-end dining and gift data.
 
+<br>
+
 ![wineRed](template/wineRed.png)
+
+<br>
 
 ---
 
@@ -302,7 +406,11 @@ Wine red header with light red stripes, mellow and elegant. Suitable for high-en
 
 Sakura red header with pink-white stripes, gentle and beautiful. Suitable for e-commerce, beauty, and user operations.
 
+<br>
+
 ![sakuraPink](template/sakuraPink.png)
+
+<br>
 
 ---
 
@@ -312,7 +420,11 @@ Sakura red header with pink-white stripes, gentle and beautiful. Suitable for e-
 
 Rose pink header with light pink stripes, soft and gentle. Suitable for beauty and maternal exports.
 
+<br>
+
 ![roseQuartz](template/roseQuartz.png)
+
+<br>
 
 ---
 
@@ -322,7 +434,11 @@ Rose pink header with light pink stripes, soft and gentle. Suitable for beauty a
 
 Deep purple header with light lavender stripes, elegant. Suitable for design and creative data.
 
+<br>
+
 ![lavenderPurple](template/lavenderPurple.png)
+
+<br>
 
 ---
 
@@ -332,7 +448,11 @@ Deep purple header with light lavender stripes, elegant. Suitable for design and
 
 Amethyst header with light purple stripes, mysterious and elegant. Suitable for design and luxury exports.
 
+<br>
+
 ![amethyst](template/amethyst.png)
+
+<br>
 
 ---
 
@@ -342,7 +462,11 @@ Amethyst header with light purple stripes, mysterious and elegant. Suitable for 
 
 Deep plum purple header with light purple stripes, mysterious and elegant. Suitable for luxury and creative exports.
 
+<br>
+
 ![plum](template/plum.png)
+
+<br>
 
 ---
 
@@ -354,7 +478,11 @@ Deep plum purple header with light purple stripes, mysterious and elegant. Suita
 
 Black header with gold font and gold border, beige stripes, luxurious. Suitable for annual reports, finance, and luxury exports.
 
+<br>
+
 ![royalGold](template/royalGold.png)
+
+<br>
 
 ---
 
@@ -364,7 +492,11 @@ Black header with gold font and gold border, beige stripes, luxurious. Suitable 
 
 Champagne header with cream stripes, understated luxury. Suitable for finance and ceremonial exports.
 
+<br>
+
 ![champagne](template/champagne.png)
+
+<br>
 
 ---
 
@@ -374,7 +506,11 @@ Champagne header with cream stripes, understated luxury. Suitable for finance an
 
 Amber gold header with light yellow stripes, warm luster. Suitable for jewelry and collectibles data.
 
+<br>
+
 ![amber](template/amber.png)
+
+<br>
 
 ---
 
@@ -384,7 +520,11 @@ Amber gold header with light yellow stripes, warm luster. Suitable for jewelry a
 
 Mustard yellow header with cream-yellow stripes, retro and warm. Suitable for creative and handcraft data.
 
+<br>
+
 ![mustard](template/mustard.png)
+
+<br>
 
 ---
 
@@ -394,7 +534,11 @@ Mustard yellow header with cream-yellow stripes, retro and warm. Suitable for cr
 
 Bronze header with light brown stripes, antique and heavy. Suitable for museum and cultural relic data.
 
+<br>
+
 ![bronze](template/bronze.png)
+
+<br>
 
 ---
 
@@ -404,7 +548,11 @@ Bronze header with light brown stripes, antique and heavy. Suitable for museum a
 
 Coffee header with cream stripes and cream text, left-aligned, nostalgic. Suitable for archival and historical exports.
 
+<br>
+
 ![vintageSepia](template/vintageSepia.png)
+
+<br>
 
 ---
 
@@ -414,7 +562,11 @@ Coffee header with cream stripes and cream text, left-aligned, nostalgic. Suitab
 
 Espresso header with cream-white stripes and cream text, rich and mellow. Suitable for coffee and baking data.
 
+<br>
+
 ![espresso](template/espresso.png)
+
+<br>
 
 ---
 
@@ -424,7 +576,11 @@ Espresso header with cream-white stripes and cream text, rich and mellow. Suitab
 
 Mahogany header with light brown stripes, steady and grand. Suitable for real estate and classical exports.
 
+<br>
+
 ![mahogany](template/mahogany.png)
+
+<br>
 
 ---
 
@@ -434,7 +590,11 @@ Mahogany header with light brown stripes, steady and grand. Suitable for real es
 
 Terracotta brown header with light brown stripes, rustic and warm. Suitable for handcraft and home data.
 
+<br>
+
 ![terracotta](template/terracotta.png)
+
+<br>
 
 ---
 
@@ -446,7 +606,11 @@ Terracotta brown header with light brown stripes, rustic and warm. Suitable for 
 
 Dark background with light text, eye-friendly and tech-savvy. Suitable for dashboards and monitoring data.
 
+<br>
+
 ![midnightDark](template/midnightDark.png)
+
+<br>
 
 ---
 
@@ -456,7 +620,11 @@ Dark background with light text, eye-friendly and tech-savvy. Suitable for dashb
 
 Pearl grey-purple header with pearlescent stripes, warm and elegant. Suitable for beauty and wedding data.
 
+<br>
+
 ![pearl](template/pearl.png)
+
+<br>
 
 ---
 
