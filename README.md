@@ -183,6 +183,20 @@ public interface JQuickExcelExportService {
 - 样式定制 - 完整的单元格样式控制
 - 数据合并 - 多种合并策略（最大、最小、平均等）
 
+## 🎨 主题模板 / Theme Templates
+
+JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
+
+JQuickExcel provides 42 built-in theme templates covering classic business, blue/green/teal/red-orange/pink-purple/gold-brown families and special styles, ready to use out of the box.
+
+👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
+
+```java
+// 通过 code 指定主题 / Specify theme by code
+JExcelExportModel model = new JExcelExportModel();
+model.setTheme("royalGold");
+```
+
 ## 🎯 使用示例
 
 ### 基础语法
@@ -1793,20 +1807,6 @@ context.put("dict",map);
 JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
 Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
-```
-
-## 🎨 主题模板 / Theme Templates
-
-JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
-
-JQuickExcel provides 42 built-in theme templates covering classic business, blue/green/teal/red-orange/pink-purple/gold-brown families and special styles, ready to use out of the box.
-
-👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
-
-```java
-// 通过 code 指定主题 / Specify theme by code
-JExcelExportModel model = new JExcelExportModel();
-model.setTheme("royalGold");
 ```
 
 ## 🔄 合并策略
