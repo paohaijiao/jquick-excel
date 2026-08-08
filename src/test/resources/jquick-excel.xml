@@ -30,6 +30,7 @@
                     }}
                     ,
             TRANSFORM={
+                "gender":trans(${dict},${gender}),
                 "age":add(${age},1)
                 }
         ]]>

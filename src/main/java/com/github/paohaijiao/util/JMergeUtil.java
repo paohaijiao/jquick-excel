@@ -133,10 +133,7 @@ public class JMergeUtil {
         } else {
             cell.setCellValue(object.toString());
         }
-        CellStyle style = sheet.getWorkbook().createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        cell.setCellStyle(style);
+        cell.setCellStyle(JCellStyleCache.getMergeCenterStyle(sheet.getWorkbook()));
     }
 
     public List<List<Object>> getRangeValues(Sheet sheet, CellRangeAddress range) {

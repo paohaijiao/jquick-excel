@@ -13,6 +13,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -125,8 +128,35 @@ public class JExcelFormulaContext {
         return targetType.isAssignableFrom(value.getClass());
     }
 
+    private static final Pattern SXSSF_RANGE_PATTERN = Pattern.compile("in the range \\[(\\d+),(\\d+)\\]");
+
     public Cell applyFormula(Sheet sheet, int rowNum, int colNum, JExcelFormula formula) {
-        Row row = sheet.getRow(rowNum) != null ? sheet.getRow(rowNum) : sheet.createRow(rowNum);
+        Row row = sheet.getRow(rowNum);
+        if (row == null) {
+            try {
+                row = sheet.createRow(rowNum);
+            } catch (IllegalArgumentException e) {
+                String msg = e.getMessage() == null ? "" : e.getMessage();
+                if (msg.contains("already written to disk")) {
+                    String windowInfo = "N/A";
+                    Matcher matcher = SXSSF_RANGE_PATTERN.matcher(msg);
+                    if (matcher.find()) {
+                        try {
+                            int m = Integer.parseInt(matcher.group(2));
+                            windowInfo = String.valueOf(m + 1);
+                        } catch (NumberFormatException ignore) { /* 解析失败保持 N/A */ }
+                    }
+                    throw new IllegalStateException(
+                            "SXSSF(流式写入)下无法为已刷盘的单元格["
+                                    + CellReference.convertNumToColString(colNum) + (rowNum + 1)
+                                    + "]写入公式「" + formula.getFormula() + "」。"
+                                    + "原因：公式涉及的行号已超过 SXSSF 窗口大小（window=" + windowInfo + "），行数据已落盘，不允许回写。"
+                                    + "解决：1) 不要在流式/大批量模式下使用绝对引用公式（如 FORMULAS={D5:'ABS(D2)'}）、行/列/范围样式、合并、图表等需要回头修改行的功能；"
+                                    + "2) 关闭 JQuickExcelConfig.streamingExportEnabled 或降低数据量。", e);
+                }
+                throw e;
+            }
+        }
         Cell cell = row.getCell(colNum) != null ? row.getCell(colNum) : row.createCell(colNum);
         cell.setCellFormula(formula.getFormula());
         return cell;

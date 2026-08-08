@@ -16,6 +16,7 @@
 package com.github.paohaijiao.theme;
 
 import com.github.paohaijiao.theme.enums.JExcelThemeType;
+import com.github.paohaijiao.util.JCellStyleCache;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -81,7 +82,7 @@ public interface JExcelTheme {
      * @param label     页脚文本
      */
     default void buildFooter(Workbook workbook, Sheet sheet, int rowNum, int maxColumn, String label) {
-        CellStyle style = buildFormulaCellStyle(workbook);
+        CellStyle style = JCellStyleCache.getThemeStyle(workbook, this, JCellStyleCache.KIND_FORMULA);
         Row footerRow = sheet.createRow(rowNum);
         Cell footerCell = footerRow.createCell(0);
         footerCell.setCellValue(label);

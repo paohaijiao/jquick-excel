@@ -32,11 +32,16 @@ public class JQuickExcelDemo {
     @Test
     public void exportExcel() throws FileNotFoundException {
         JExcelThemeType[] themeTypes=JExcelThemeType.values();
-        for (int i=0;i<themeTypes.length;i++) {
+        Map<String, Object> sex = new HashMap<>();
+        sex.put( "0","男");
+        sex.put( "1","女");
+        JContext context = new JContext();
+        context.put("dict", sex);
+        for (int i=0;i<1;i++) {
             JExcelThemeType themeType=themeTypes[i];
             List<JQuickRow> rows = JQuickRow.toRows(JObjectConverter.convert(getData()));
             OutputStream fileOutputStream = new FileOutputStream("d://test//"+i+themeType.getCode()+".xlsx");
-            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(themeType.getCode(), rows, fileOutputStream);
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(themeType.getCode(),context, rows, fileOutputStream);
             JQuickFactory factory = new JQuickXmlFactory(parser, "jquick-excel.xml");
             JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
             excelExportService.exportExcel("1", "2");

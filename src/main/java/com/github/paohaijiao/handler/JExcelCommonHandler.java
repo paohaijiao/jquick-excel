@@ -15,6 +15,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import com.github.paohaijiao.util.JCellStyleCache;
+
 import java.util.*;
 
 public class JExcelCommonHandler {
@@ -189,7 +191,8 @@ public class JExcelCommonHandler {
     }
 
     public static void buildDefaultFooter(Workbook workbook, Sheet sheet, int rowNum, int maxColumn, String label) {
-        CellStyle cellStyle = buildDefaultFormulaCellStyle(workbook);
+        // 公式/页脚样式每个 workbook 仅 1 份，走缓存避免多次调用时耗尽 64000 样式额度
+        CellStyle cellStyle = JCellStyleCache.getFormulaStyle(workbook);
         Row footerRow = sheet.createRow(rowNum);
         Cell footerCell = footerRow.createCell(0);
         footerCell.setCellValue(label);

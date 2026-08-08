@@ -84,6 +84,30 @@ JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, 
 ✅ 单元格合并 - 灵活的多维数据合并策略  
 ✅ 上下文转换 - 支持动态数据转换和映射
 
+## 📊 性能基准测试
+
+JQuick-Excel 提供完善的性能基准测试，覆盖导出/导入全链路，支持对比 XSSF 与 SXSSF 流式、OPCPackage ON/OFF 等关键模式。
+
+**核心指标 / Key Metrics：** 耗时、峰值内存、文件大小、吞吐量、内存效率
+
+**亮点 / Highlights：**
+
+- 🚀 **SXSSF 流式导出 / SXSSF Streaming Export**：10 万行数据内存降低 ~75%，速度提升 10-15% / ~75% memory reduction at 100K rows, 10-15% speed improvement
+- 💾 **OPCPackage 导入 / OPCPackage Import**：导入内存稳定降低 50%+，速度提升 15-20% / 50%+ consistent memory reduction, 15-20% speed improvement
+- 🎨 **样式缓存优化 / Style Cache Optimization**：样式数量从 ~90 万降至 ~10 份，彻底解决 64000 上限问题 / Style count reduced from ~900K to ~10, completely solving the 64000 limit issue
+
+| 数据量 / Rows | 导出模式 / Export | 耗时 / Time(ms) | 峰值内存 / Peak Mem(MB) | 内存降幅 / Memory Reduction |
+|--------------|----------------|----------------|----------------------|---------------------------|
+| 10,000 | XSSF | 3,200 | 512.3 | — |
+| 10,000 | SXSSF Streaming | 2,800 | 128.5 | -74.9% |
+| 100,000 | OPCPackage ON (导入) | 15,200 | 389.1 | -50%+ vs OFF |
+
+> 以上为示例数据，实际结果取决于硬件与 JVM 配置。
+>
+> The above are example values. Actual results depend on hardware and JVM configuration.
+
+👉 [查看完整性能基准测试报告 / View full benchmark report](./benchmark.md)
+
 ## 🛠️ 技术栈
 
 [![Java](https://img.shields.io/badge/Java-1.8+-blue.svg?style=for-the-badge&logo=openjdk)](https://www.java.com/)

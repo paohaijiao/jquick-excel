@@ -116,6 +116,10 @@ public class JExcelExportHandler extends JExcelCommonHandler {
         int size = data == null ? 0 : data.size();
         JQuickExcelConfig global = JQuickExcelConfig.getInstance();
         boolean useStreaming = preferStreaming && global.shouldUseStreaming(size);
+        boolean forceDisableStreaming = needsRandomRowAccess(config);
+        if (useStreaming && forceDisableStreaming) {
+            useStreaming = false;
+        }
 
         Workbook nativeWorkbook;
         if (useStreaming) {
@@ -153,27 +157,27 @@ public class JExcelExportHandler extends JExcelCommonHandler {
         if (hasHeader && !data.isEmpty()) {
             Row headerRow = currentSheet.createRow(rowNum++);
             headerRow.setHeightInPoints(36);
+            final CellStyle headerCellStyle = (theme != null)
+                    ? JCellStyleCache.getThemeStyle(workbook, theme, JCellStyleCache.KIND_HEADER)
+                    : JCellStyleCache.getHeaderStyle(workbook);
             int colNum = 0;
             for (String header : data.get(0).keySet()) {
                 Cell cell = headerRow.createCell(colNum++);
                 cell.setCellValue(mappings.getOrDefault(header, header));
-                CellStyle cellStyle = theme != null ? theme.buildHeaderStyle(workbook) : buildDefaultHeaderStyle(workbook);
-                cell.setCellStyle(cellStyle);
+                cell.setCellStyle(headerCellStyle);
             }
         }
 
+        @SuppressWarnings("unchecked")
+        final Map<String, String> formats = config.getFormat();
         int dataRowIndex = 0;
         for (Map<String, Object> rowData : data) {
             Row row = currentSheet.createRow(rowNum++);
             row.setHeightInPoints(24);
             int colNum = 0;
+            final boolean isOdd = (dataRowIndex & 1) == 1; // 第 1 条数据行是偶数行(dataRowIndex=0) → 用 EVEN 样式
             for (Map.Entry<String, Object> entry : rowData.entrySet()) {
                 Cell cell = row.createCell(colNum++);
-                @SuppressWarnings("unchecked")
-                Map<String, String> formats = config.getFormat();
-                if (formats.containsKey(entry.getKey())) {
-                    applyCellFormat(cell, formats.get(entry.getKey()));
-                }
                 if (transforms.containsKey(entry.getKey())) {
                     Object value = applyTransform(entry.getKey(), entry.getValue(), transforms.get(entry.getKey()));
                     setCellValue(cell, value);
@@ -181,7 +185,8 @@ public class JExcelExportHandler extends JExcelCommonHandler {
                     Object value = entry.getValue() != null ? entry.getValue() : null;
                     setCellValue(cell, value);
                 }
-                CellStyle cellStyle = buildDataStyle(workbook, theme, dataRowIndex);
+                String fmt = formats == null ? null : formats.get(entry.getKey());
+                CellStyle cellStyle = JCellStyleCache.getThemedDataWithFormat(workbook, theme, isOdd, fmt);
                 cell.setCellStyle(cellStyle);
             }
             dataRowIndex++;
@@ -194,9 +199,19 @@ public class JExcelExportHandler extends JExcelCommonHandler {
             int footerRowNum = this.getLastRowNum(currentSheet) - 1;
             int footerMaxCol = this.getUsedColumnCount(currentSheet) - 1;
             if (theme != null) {
-                theme.buildFooter(workbook, currentSheet, footerRowNum, footerMaxCol, config.getFooter());
+                CellStyle footerCellStyle = JCellStyleCache.getThemeStyle(workbook, theme, JCellStyleCache.KIND_FORMULA);
+                Row footerRow = currentSheet.createRow(footerRowNum);
+                Cell footerCell = footerRow.createCell(0);
+                footerCell.setCellValue(config.getFooter());
+                footerCell.setCellStyle(footerCellStyle);
+                currentSheet.addMergedRegion(new CellRangeAddress(footerRowNum, footerRowNum, 0, footerMaxCol));
             } else {
-                buildDefaultFooter(workbook, currentSheet, footerRowNum, footerMaxCol, config.getFooter());
+                CellStyle footerCellStyle = JCellStyleCache.getFormulaStyle(workbook);
+                Row footerRow = currentSheet.createRow(footerRowNum);
+                Cell footerCell = footerRow.createCell(0);
+                footerCell.setCellValue(config.getFooter());
+                footerCell.setCellStyle(footerCellStyle);
+                currentSheet.addMergedRegion(new CellRangeAddress(footerRowNum, footerRowNum, 0, footerMaxCol));
             }
         }
     }
@@ -209,13 +224,14 @@ public class JExcelExportHandler extends JExcelCommonHandler {
         return JExcelThemeFactory.create(code);
     }
 
+    /**
+     * 按行奇偶性返回缓存复用的基础数据行样式（每 workbook + 每 theme + 每奇偶 只创建 1 个，避免 64000 样式上限）。
+     *
+     * <p>兼容原命名语义：dataRowIndex=0/2/4… 统一使用『DataOdd』命名的样式，dataRowIndex=1/3/5… 使用『DataEven』命名的样式。
+     */
     private CellStyle buildDataStyle(Workbook workbook, JExcelTheme theme, int dataRowIndex) {
-        if (theme == null) {
-            return buildDefaultDataOddStyle(workbook);
-        }
-        return (dataRowIndex & 1) == 0
-                ? theme.buildDataOddStyle(workbook)
-                : theme.buildDataEvenStyle(workbook);
+        final boolean useOddName = (dataRowIndex & 1) == 0;
+        return JCellStyleCache.getThemedDataWithFormat(workbook, theme, useOddName, null);
     }
 
     private void setCellValue(Cell cell, Object value) {
@@ -247,15 +263,13 @@ public class JExcelExportHandler extends JExcelCommonHandler {
         }
     }
 
+    /**
+     * 仅应用"纯 dataFormat 样式"到单元格（该方法会覆盖 cell 已有的边框/背景/字体等样式，绝大多数场景下请改用
+     * {@link JCellStyleCache#getThemedDataWithFormat(Workbook, JExcelTheme, boolean, String)} 叠加基础样式+格式）。
+     * 内部强制走缓存，保证 workbook 中同一种 formatSpec 对应唯一 CellStyle，避免 64000 上限。
+     */
     private void applyCellFormat(Cell cell, String formatSpec) {
-        CellStyle style;
-        if (JQuickExcelConfig.getInstance().isCellStyleCacheEnabled()) {
-            style = JCellStyleCache.getFormatStyle(workbook, formatSpec);
-        } else {
-            style = workbook.createCellStyle();
-            style.setDataFormat(workbook.createDataFormat().getFormat(formatSpec));
-        }
-        cell.setCellStyle(style);
+        cell.setCellStyle(JCellStyleCache.getFormatStyle(workbook, formatSpec));
     }
 
     private void applyFormulate(JExcelExportModel config, Integer maxRow, Integer maxCol) {
@@ -509,5 +523,56 @@ public class JExcelExportHandler extends JExcelCommonHandler {
 
     public Workbook getWorkBook() {
         return workbook;
+    }
+
+    /**
+     * 判断配置是否需要"随机访问/回写前面的行"——若返回 true，SXSSF 自动升级必须被强制禁用，
+     * 降级为 XSSF 以避免抛出不直观的 {@code Attempting to write a row[N] in the range [0,M] that is already written to disk}。
+     *
+     * <p>会触发"禁用流式"的条件（所有写完全部数据后才回头修改的能力）：
+     * <ul>
+     *   <li>FORMULAS：D5='ABS(D2)'、整行/整列公式 —— 需要对前面行 setCellFormula</li>
+     *   <li>ROW / COLUMN / CELL / RANGE 样式 —— 需要对前面行/单元格 setCellStyle</li>
+     *   <li>MERGE：行/列/区域合并 —— 需要对已写出行的合并区域 addMergedRegion</li>
+     *   <li>GRAPH 图表：非空 chartType / series / categories —— 需要访问已有行构建绘图锚</li>
+     *   <li>FOOTER：页脚 —— 需要在数据末尾行 setCellValue/setCellStyle</li>
+     * </ul>
+     */
+    static boolean needsRandomRowAccess(JExcelExportModel config) {
+        if (config == null) {
+            return false;
+        }
+        if (!isEmpty(config.getCellFormulas())
+                || !isEmpty(config.getRowFormulas())
+                || !isEmpty(config.getColFormulas())) {
+            return true;
+        }
+        // 2. 样式：ROW / COLUMN / CELL / RANGE
+        if (!isEmpty(config.getRowStyles())
+                || !isEmpty(config.getColStyles())
+                || !isEmpty(config.getCellStyles())
+                || !isEmpty(config.getRangeStyles())) {
+            return true;
+        }
+        // 3. 合并：行 / 列 / 区域
+        if (!isEmpty(config.getRowMerge())
+                || !isEmpty(config.getColMerge())
+                || !isEmpty(config.getRangeMerge())) {
+            return true;
+        }
+        // 4. 图表：graph 非空且配置了 chartType 或 series 或 categories
+        com.github.paohaijiao.graph.model.JChartData graph = config.getGraph();
+        if (graph != null && !graph.isEmpty()) {
+            return true;
+        }
+        // 5. 页脚：会在所有数据写完后再写页脚行（行号<lastRow）
+        if (config.getFooter() != null && !config.getFooter().toString().trim().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isEmpty(Map<?, ?> map) {
+        return map == null || map.isEmpty();
     }
 }

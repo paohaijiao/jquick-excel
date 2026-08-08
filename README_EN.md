@@ -95,6 +95,30 @@ JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, 
 
 ✅ Context conversion - supports dynamic data conversion and mapping
 
+## 📊 Performance Benchmark
+
+JQuick-Excel provides comprehensive performance benchmarks covering the full export/import pipeline, comparing key modes such as XSSF vs SXSSF streaming, OPCPackage ON/OFF.
+
+**Key Metrics:** Elapsed Time, Peak Memory, File Size, Throughput, Memory Efficiency
+
+**Highlights:**
+
+- 🚀 **SXSSF Streaming Export**: ~75% memory reduction at 100K rows, 10-15% speed improvement / 10 万行数据内存降低 ~75%，速度提升 10-15%
+- 💾 **OPCPackage Import**: 50%+ consistent memory reduction, 15-20% speed improvement / 导入内存稳定降低 50%+，速度提升 15-20%
+- 🎨 **Style Cache Optimization**: Style count reduced from ~900K to ~10, completely solving the 64000 limit issue / 样式数量从 ~90 万降至 ~10 份，彻底解决 64000 上限问题
+
+| Rows | Mode | Time(ms) | Peak Mem(MB) | Memory Reduction |
+|------|------|----------|--------------|------------------|
+| 10,000 | XSSF (Export) | 3,200 | 512.3 | — |
+| 10,000 | SXSSF Streaming (Export) | 2,800 | 128.5 | -74.9% |
+| 100,000 | OPCPackage ON (Import) | 15,200 | 389.1 | -50%+ vs OFF |
+
+> The above are example values. Actual results depend on hardware and JVM configuration.
+>
+> 以上为示例数据，实际结果取决于硬件与 JVM 配置。
+
+👉 [View full benchmark report / 查看完整性能基准测试报告](./benchmark.md)
+
 ## 🛠️ Tech Stack
 
 [![Java](https://img.shields.io/badge/Java-1.8+-blue.svg?style=for-the-badge&logo=openjdk)](https://www.java.com/)
