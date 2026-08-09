@@ -31,7 +31,8 @@
                     ,
             TRANSFORM={
                 "gender":trans(${dict},${gender}),
-                "age":add(${age},1)
+                "age":add(${age},1),
+                "enrollmentDate":dateFormat(${enrollmentDate},'yyyy-MM-dd')
                 }
         ]]>
     </excel>

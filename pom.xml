@@ -4,11 +4,12 @@
     <parent>
         <groupId>io.github.paohaijiao</groupId>
         <artifactId>javelin</artifactId>
-        <version>2.1.2</version>
+        <version>2.3.0</version>
     </parent>
     <artifactId>jquick-excel</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
     <properties>
+        <javelin.version>2.3.0</javelin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -33,7 +34,7 @@
         <dependency>
             <groupId>io.github.paohaijiao</groupId>
             <artifactId>javelin-core</artifactId>
-            <version>2.1.2</version>
+            <version>${javelin.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.paohaijiao</groupId>
@@ -60,13 +61,6 @@
         </dependency>
     </dependencies>
     <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.github.paohaijiao</groupId>
-                <artifactId>javelin-core</artifactId>
-                <version>2.1.2</version>
-            </dependency>
-        </dependencies>
     </dependencyManagement>
     <name>jquick-excel</name>
     <description>jquickexcel is a lightweight java excel library designed to provide developers with simple,

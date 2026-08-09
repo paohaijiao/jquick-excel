@@ -37,7 +37,7 @@ public class JQuickExcelDemo {
         sex.put( "1","女");
         JContext context = new JContext();
         context.put("dict", sex);
-        for (int i=0;i<1;i++) {
+        for (int i=0;i<themeTypes.length;i++) {
             JExcelThemeType themeType=themeTypes[i];
             List<JQuickRow> rows = JQuickRow.toRows(JObjectConverter.convert(getData()));
             OutputStream fileOutputStream = new FileOutputStream("d://test//"+i+themeType.getCode()+".xlsx");
