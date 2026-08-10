@@ -66,10 +66,17 @@ JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/�
 
 👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
 
+**方式一：DSL 模板中指定**
 ```java
-// 通过 code 指定主题 / Specify theme by code
 JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, rows, fileOutputStream);
+```
 
+**方式二：通过 JExcelExportModel 配置主题**
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("oceanBlue");  // 海洋蓝主题，参见上方编码表
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+handler.exportData();
 ```
 
 ## ✨ 核心特性
@@ -82,7 +89,12 @@ JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, 
 ✅ 图表生成 - 支持 10 种图表类型一键生成  
 ✅ 样式自定义 - 完整的单元格样式控制  
 ✅ 单元格合并 - 灵活的多维数据合并策略  
-✅ 上下文转换 - 支持动态数据转换和映射
+✅ 上下文转换 - 支持动态数据转换和映射  
+✅ 🎨 42 套精美主题 - 内置多色系主题模板，一键切换导出风格  
+✅ ⚙️ 全局配置中心 - 统一控制流式导出、OPCPackage 导入、样式缓存等性能参数  
+✅ 📦 分批导入 API - 支持回调式分页消费，避免大文件一次性加载  
+✅ 🔥 Transform AST 缓存 - 导入/导出时自动缓存解析结果，万级单元格零重复解析  
+✅ 📐 列数行数懒缓存 - 同 Sheet 内多次读取只做一次全表扫描
 
 ## 📊 性能基准测试
 
@@ -107,6 +119,54 @@ JQuick-Excel 提供完善的性能基准测试，覆盖导出/导入全链路，
 > The above are example values. Actual results depend on hardware and JVM configuration.
 
 👉 [查看完整性能基准测试报告 / View full benchmark report](./benchmark.md)
+
+### 大数据量导入优化
+
+JQuickExcel 在大数据量导入场景下实施了多项无损性能优化，**无 API 侵入、零配置即可享受**：
+
+| 优化项 | 说明 | 收益 |
+|--------|------|------|
+| **Transform AST 缓存** | 相同 transform 表达式仅做一次 ANTLR 词法/语法解析，ParseTree 跨调用复用 | 10 万行带 transform：20 万次解析 → 2 次 |
+| **列数/行数懒缓存** | `getUsedColumnCount` / `getLastRowNum` 首次计算后缓存，同 Sheet 内多次读取仅做一次全表扫描 | 省掉一次完整 O(行×列) 遍历 |
+| **DataFormatter 复用** | 验证范围内不再为每个单元格 `new DataFormatter()`，复用静态共享实例 | 消除万级临时对象与 GC 压力 |
+| **循环常数优化** | `getTransforms` 等调用提到外层循环，`headers.size()` 提取为局部变量 | 每单元格省 1~2 次方法调用 |
+| **MissingCellPolicy** | 改用 `RETURN_NULL_AND_BLANK`，稀疏表不再生成无意义空 Cell 对象 | 稀疏表百万级对象消除 |
+
+如需手动控制，可通过 `JQuickExcelConfig` 切换全局参数（参见下方「全局配置中心」章节）。
+
+## ⚙️ 全局配置中心
+
+`JQuickExcelConfig` 是 JQuick-Excel 的全局单例配置中心，用于统一控制导入导出性能参数，无需在每次调用时重复设置。
+
+```java
+JQuickExcelConfig cfg = JQuickExcelConfig.getInstance();
+
+// 导出：超过 5000 行自动切 SXSSF 流式写入
+cfg.setStreamingExportEnabled(true)
+   .setStreamingRowAccessWindowSize(100)    // 内存保留 100 行
+   .setStreamingExportThreshold(5000);
+
+// 导入：启用 OPCPackage 共享解析降低峰值内存
+cfg.setBigFileImportEnabled(true)
+   .setImportBatchThreshold(20000);        // 建议分批的行数阈值
+
+// 样式缓存：避免 CellStyle 超 64000 上限
+cfg.setCellStyleCacheEnabled(true);
+```
+
+### 配置项说明
+
+| 配置项 | 类型 | 默认值 | 说明 |
+|--------|------|--------|------|
+| `streamingExportEnabled` | `boolean` | `true` | 超过阈值时自动切换 SXSSF 流式写入 |
+| `streamingRowAccessWindowSize` | `int` | `100` | SXSSF 内存中保留的行数窗口 |
+| `streamingExportThreshold` | `int` | `5000` | 触发流式导出的行数阈值（≤0 关闭自动切换） |
+| `streamingCompressTempFiles` | `boolean` | `true` | 流式写入时是否压缩临时文件 |
+| `bigFileImportEnabled` | `boolean` | `true` | 导入时采用 OPCPackage 共享解析降低峰值内存 |
+| `importBatchThreshold` | `int` | `20000` | 建议使用分批导入的行数阈值（仅供参考） |
+| `cellStyleCacheEnabled` | `boolean` | `true` | CellStyle 缓存开关，避免 64000 样式上限 |
+
+> **提示**：`resetDefault()` 可在测试场景下将配置还原为默认值。
 
 ## 🛠️ 技术栈
 
@@ -579,6 +639,36 @@ JExcelImportHandler handler = new JExcelImportHandler(workbook);
 List<Map<String, Object>> data = handler.importData(model);
 ```
 
+### 分批导入示例（大数据量推荐）
+
+当数据量超过 `importBatchThreshold`（默认 20000 行）时，推荐使用 `importDataInBatch` 以回调方式消费数据，避免一次性堆积大量对象导致 OOM：
+
+```java
+JExcelImportHandler handler = new JExcelImportHandler(inputStream);
+JExcelImportModel model = executor.execute(rule);
+
+int total = handler.importDataInBatch(model, 5000, batch -> {
+    // 每 5000 行回调一次，batch 为当前批次数据
+    // 在此处理入库、校验等逻辑，返回 false 可提前终止
+    System.out.println("本批次: " + batch.size() + " 行");
+    return true;
+});
+System.out.println("总共读取: " + total + " 行");
+```
+
+### 主题配置导出示例
+
+通过 `JExcelExportModel#setTheme` 方法指定主题编码（42 种可选，详见主题编码汇总）：
+
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("jade");  // 设置翡翠绿主题
+
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+Workbook workbook = handler.getWorkBook();
+workbook.write(outputStream);
+```
+
 ### 基础导出示例
 
 ```java
@@ -745,8 +835,6 @@ workbook.write(fileOutputStream);
 
 ### 📈 数学公式（16个）
 
-### 数学公式（16个）
-
 | 公式名          | 语法示例                 | 参数数量 | 描述说明      | 对应类名              |
 |--------------|----------------------|------|-----------|-------------------|
 | 📏 `ABS`     | `ABS(D2)`            | 1    | 绝对值       | `JABSFormula`     |
@@ -795,8 +883,6 @@ D5:'SUM(D2:D4)'
 ```
 
 ### 📅 日期公式（15个）
-
-### 📅 日期公式 (15)
 
 | 公式名              | 语法示例                              | 特殊规则                              | 对应类名                 |
 |------------------|-----------------------------------|-----------------------------------|----------------------|
@@ -995,8 +1081,6 @@ JAbstractExcelFormula formula = factory.createFormulaInstance("YEAR(A1)");
 
 ### 🔤 字符串公式（17个）
 
-### 🔤 字符串公式 (17)
-
 | 公式名                | 语法格式                               | 参数规则         | 示例 & 结果                                     | 对应类名                           |
 |--------------------|------------------------------------|--------------|---------------------------------------------|--------------------------------|
 | 🧩 `CONCAT`        | `CONCAT(s1,s2...)`                 | ≥1 个参数       | `CONCAT("A","B")` → "AB"                    | `JConcatFormula`               |
@@ -1069,11 +1153,7 @@ FORMULAS={
 }
 ```
 
-### 🔍 逻辑公式（3个）
-
-IF、AND、OR
-
-### 🧠 逻辑公式
+### 🔍 逻辑公式（3个：IF、AND、OR）
 
 | 公式名     | 语法格式            | 参数规则   | 示例 & 结果                                       | 对应类名          |
 |---------|-----------------|--------|-----------------------------------------------|---------------|

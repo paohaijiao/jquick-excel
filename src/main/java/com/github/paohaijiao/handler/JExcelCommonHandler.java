@@ -26,7 +26,8 @@ public class JExcelCommonHandler {
      * transform 表达式 → 已解析的 ANTLR ParseTree 缓存。
      * <p>ParseTree 是不可变结构，可跨线程/跨调用安全复用，避免每个单元格重复构建 lexer/parser/AST。</p>
      */
-    private static final java.util.concurrent.ConcurrentHashMap<String, org.antlr.v4.runtime.tree.ParseTree> TRANSFORM_TREE_CACHE = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final java.util.concurrent.ConcurrentHashMap<String, org.antlr.v4.runtime.tree.ParseTree> TRANSFORM_TREE_CACHE =
+            new java.util.concurrent.ConcurrentHashMap<>();
 
     /** 测试/验证场景下允许清空 transform 解析缓存。 */
     public static void clearTransformCache() {
@@ -34,11 +35,8 @@ public class JExcelCommonHandler {
     }
 
     public JQuickMethodInvocationManager manager = JQuickMethodInvocationManager.getInstance();
-
     protected Workbook workbook;
-
     protected Sheet currentSheet;
-
     protected JContext context = new JContext();
 
     private static boolean isCellEmpty(Cell cell) {

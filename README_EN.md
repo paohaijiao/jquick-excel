@@ -69,10 +69,17 @@ JQuickExcel provides 42 built-in theme templates covering classic business, blue
 
 👉 [View all theme template previews / 查看全部主题模板预览](./template.md)
 
+**Option 1: Specify in DSL Template**
 ```java
-// Specify theme by code / 通过 code 指定主题
 JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, rows, fileOutputStream);
+```
 
+**Option 2: Configure via JExcelExportModel**
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("oceanBlue");  // Ocean Blue theme, see code table above
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+handler.exportData();
 ```
 
 ## ✨ Core Features
@@ -94,6 +101,16 @@ JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, 
 ✅ Cell Merge - Flexible Multidimensional Data Merge Strategy
 
 ✅ Context conversion - supports dynamic data conversion and mapping
+
+✅ 🎨 42 Built-in Themes - Multi-color theme templates, one-click style switching
+
+✅ ⚙️ Global Config Center - Unified control over streaming export, OPCPackage import, style cache
+
+✅ 📦 Batch Import API - Callback-based paginated consumption to avoid one-time large file loading
+
+✅ 🔥 Transform AST Cache - Auto-cache parse results during import/export, zero repeated parsing for 10K+ cells
+
+✅ 📐 Lazy Row/Column Count Cache - Multiple reads within the same Sheet trigger only one full table scan
 
 ## 📊 Performance Benchmark
 
@@ -118,6 +135,54 @@ JQuick-Excel provides comprehensive performance benchmarks covering the full exp
 > 以上为示例数据，实际结果取决于硬件与 JVM 配置。
 
 👉 [View full benchmark report / 查看完整性能基准测试报告](./benchmark.md)
+
+### Large Data Import Optimizations
+
+JQuickExcel implements several lossless performance optimizations (P1+P2 level) for large data import scenarios — **zero API intrusion, zero configuration required**:
+
+| Optimization | Description | Benefit |
+|-------------|-------------|---------|
+| **Transform AST Cache** | Same transform expressions parsed once via ANTLR, ParseTree reused across calls | 100K rows with transform: 200K parses → 2 |
+| **Lazy Row/Column Count Cache** | `getUsedColumnCount` / `getLastRowNum` cached after first computation, one full scan per Sheet | Saves one full O(rows×cols) traversal |
+| **DataFormatter Reuse** | Shared static DataFormatter instance; no per-cell allocation | Eliminates 10K+ temporary objects and GC pressure |
+| **Loop Constant Hoisting** | `getTransforms` hoisted outside inner loop; `headers.size()` extracted to local | 1-2 method calls saved per cell |
+| **MissingCellPolicy** | Uses `RETURN_NULL_AND_BLANK`; sparse sheets no longer generate empty Cell objects | Millions of objects eliminated in sparse sheets |
+
+For manual control, use `JQuickExcelConfig` (see "Global Config Center" below).
+
+## ⚙️ Global Config Center
+
+`JQuickExcelConfig` is the global singleton configuration center for JQuick-Excel, unifying performance parameters for import and export without repeated per-call setup.
+
+```java
+JQuickExcelConfig cfg = JQuickExcelConfig.getInstance();
+
+// Export: auto-switch to SXSSF streaming when rows exceed 5000
+cfg.setStreamingExportEnabled(true)
+   .setStreamingRowAccessWindowSize(100)    // Keep 100 rows in memory
+   .setStreamingExportThreshold(5000);
+
+// Import: enable OPCPackage shared parsing to reduce peak memory
+cfg.setBigFileImportEnabled(true)
+   .setImportBatchThreshold(20000);        // Recommended batch threshold
+
+// Style cache: avoid exceeding the 64000 CellStyle limit
+cfg.setCellStyleCacheEnabled(true);
+```
+
+### Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `streamingExportEnabled` | `boolean` | `true` | Auto-switch to SXSSF streaming when threshold exceeded |
+| `streamingRowAccessWindowSize` | `int` | `100` | Number of rows kept in memory for SXSSF |
+| `streamingExportThreshold` | `int` | `5000` | Row count threshold to trigger streaming export (≤0 disables) |
+| `streamingCompressTempFiles` | `boolean` | `true` | Whether to compress temp files during streaming |
+| `bigFileImportEnabled` | `boolean` | `true` | Use OPCPackage shared parsing to reduce peak memory during import |
+| `importBatchThreshold` | `int` | `20000` | Recommended row count for batch import (reference only) |
+| `cellStyleCacheEnabled` | `boolean` | `true` | CellStyle cache toggle, avoids the 64000 style cap |
+
+> **Tip**: `resetDefault()` can restore defaults in test scenarios.
 
 ## 🛠️ Tech Stack
 
@@ -579,6 +644,36 @@ InputStream is = getClass().getClassLoader().getResourceAsStream("templates/stud
 XSSFWorkbook workbook = new XSSFWorkbook(is);
 JExcelImportHandler handler = new JExcelImportHandler(workbook);
 List<Map<String, Object>> data = handler.importData(model);
+```
+
+### Batch Import Example (Recommended for Large Data)
+
+When data volume exceeds `importBatchThreshold` (default 20000 rows), `importDataInBatch` is recommended for callback-based data consumption to avoid OOM:
+
+```java
+JExcelImportHandler handler = new JExcelImportHandler(inputStream);
+JExcelImportModel model = executor.execute(rule);
+
+int total = handler.importDataInBatch(model, 5000, batch -> {
+    // Callback every 5000 rows; process the batch here
+    // Return false to terminate early
+    System.out.println("Batch size: " + batch.size() + " rows");
+    return true;
+});
+System.out.println("Total rows read: " + total);
+```
+
+### Theme-based Export Example
+
+Specify a theme code via `JExcelExportModel#setTheme` (42 options available, see the theme code summary above):
+
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("jade");  // Apply the Jade Green theme
+
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+Workbook workbook = handler.getWorkBook();
+workbook.write(outputStream);
 ```
 
 ### Basic export example
@@ -1067,11 +1162,7 @@ FORMULAS={
 }
 ```
 
-### 🔍 Logical formulas (3)
-
-IF、AND、OR
-
-### 🧠 Logical formula
+### 🔍 Logical formulas (3: IF, AND, OR)
 
 | Formula Name | Syntax Format   | Parameter Rules | Example & Result                                                      | Corresponding Class Name |
 |--------------|-----------------|-----------------|-----------------------------------------------------------------------|--------------------------|
