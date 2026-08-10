@@ -23,8 +23,8 @@ import com.github.paohaijiao.validate.JAbstractValidationRule;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -42,6 +42,49 @@ public class JExcelImportHandler extends JExcelCommonHandler {
     /** 兼容旧常量：超过这个行数建议采用分批消费。默认值对齐 JQuickExcelConfig#getImportBatchThreshold() */
     @Deprecated
     public static final int BIG_IMPORT_ROWS_THRESHOLD = JQuickExcelConfig.DEFAULT_IMPORT_BATCH_THRESHOLD;
+
+    /** getUsedColumnCount / getLastRowNum 的轻量缓存，避免同一 sheet 多次全表扫描。切换 sheet 时由 {@link #setSheet} 清空。 */
+    private Sheet cachedStatsSheet;
+
+    private int cachedUsedColCount = -1;
+
+    private int cachedLastRowNum = -1;
+
+    /** 懒获取当前 sheet 的已使用列数，带缓存。 */
+    private int usedColCountOf(Sheet sheet) {
+        if (sheet != cachedStatsSheet) {
+            cachedStatsSheet = sheet;
+            cachedUsedColCount = -1;
+            cachedLastRowNum = -1;
+        }
+        if (cachedUsedColCount < 0) {
+            cachedUsedColCount = super.getUsedColumnCount(sheet);
+        }
+        return cachedUsedColCount;
+    }
+
+    /** 懒获取当前 sheet 的最后行数（带 +1 语义兼容父类），带缓存。 */
+    private int lastRowNumOf(Sheet sheet) {
+        if (sheet != cachedStatsSheet) {
+            cachedStatsSheet = sheet;
+            cachedUsedColCount = -1;
+            cachedLastRowNum = -1;
+        }
+        if (cachedLastRowNum < 0) {
+            cachedLastRowNum = super.getLastRowNum(sheet);
+        }
+        return cachedLastRowNum;
+    }
+
+    @Override
+    protected int getUsedColumnCount(Sheet sheet) {
+        return usedColCountOf(sheet);
+    }
+
+    @Override
+    protected int getLastRowNum(Sheet sheet) {
+        return lastRowNumOf(sheet);
+    }
 
     /**
      * 通过 XSSFWorkbook 导入（小数据量，兼容原 API）。
@@ -91,40 +134,49 @@ public class JExcelImportHandler extends JExcelCommonHandler {
         this.context = contextParams == null ? new JContext() : contextParams;
     }
 
+    @Override
+    protected void setSheet(Object sheetConfig) {
+        cachedStatsSheet = null;
+        cachedUsedColCount = -1;
+        cachedLastRowNum = -1;
+        super.setSheet(sheetConfig);
+    }
+
     public List<JQuickRow> importData(JExcelImportModel config) throws IOException {
         setSheet(config.getSheet());
         applyValidate(config);
         boolean hasHeader = config.getHeader();
         List<String> headers = new ArrayList<>();
         Map<String, String> mappings = config.getMappings();
+        Map<String, String> transforms = config.getTransforms();
         List<JQuickRow> data = new ArrayList<>();
         int startCol = 0;
         Row headerRow = currentSheet.getRow(0);
         int endCol = getUsedColumnCount(currentSheet);
         if (headerRow != null) {
             for (int i = 0; i <= endCol; i++) {
-                Cell cell = headerRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                String headerName = dataFormatter.formatCellValue(cell);
+                Cell cell = headerRow.getCell(i, Row.MissingCellPolicy.RETURN_NULL_AND_BLANK);
+                String headerName = cell == null ? "" : dataFormatter.formatCellValue(cell);
                 headers.add(mappings.getOrDefault(headerName, headerName));
             }
         }
         int lastRowNum = this.getLastRowNum(currentSheet);
         int startRow = hasHeader ? 1 : 0;
+        int headerSize = headers.size();
         for (int rowNum = startRow; rowNum <= lastRowNum; rowNum++) {
             Row row = currentSheet.getRow(rowNum);
             if (row == null) continue;
             JQuickRow rowData = new JQuickRow();
             for (int colNum = startCol; colNum <= endCol; colNum++) {
-                if (colNum >= headers.size()) break;
-                Cell cell = row.getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                if (colNum >= headerSize) break;
+                Cell cell = row.getCell(colNum, Row.MissingCellPolicy.RETURN_NULL_AND_BLANK);
                 Object value = getCellValue(cell);
-                Map<String, String> transforms = config.getTransforms();
                 String fieldName = headers.get(colNum);
-                if (transforms.containsKey(fieldName)) {
+                if (value != null && transforms.containsKey(fieldName)) {
                     value = applyTransform(fieldName, value, transforms.get(fieldName));
                 }
-                if (StringUtils.isNotEmpty(headers.get(colNum)) && null != value) {
-                    rowData.put(headers.get(colNum), value);
+                if (StringUtils.isNotEmpty(fieldName) && null != value) {
+                    rowData.put(fieldName, value);
                 }
             }
             if (!rowData.isEmpty()) {
@@ -142,9 +194,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
      * @param consumer 分页消费回调；返回 false 可提前终止后续读取
      * @return 总读取行数
      */
-    public int importDataInBatch(JExcelImportModel config,
-                                 int pageSize,
-                                 java.util.function.Predicate<List<JQuickRow>> consumer) throws IOException {
+    public int importDataInBatch(JExcelImportModel config, int pageSize, java.util.function.Predicate<List<JQuickRow>> consumer) throws IOException {
         if (pageSize <= 0) {
             throw new IllegalArgumentException("pageSize must > 0");
         }
@@ -303,8 +353,7 @@ public class JExcelImportHandler extends JExcelCommonHandler {
             for (int i = firstRow; i <= lastRow; i++) {
                 for (int j = firstCol; j <= lastCol; j++) {
                     Cell cell = getCellByIndex(this.currentSheet, i, j);
-                    DataFormatter formatter = new DataFormatter();
-                    String cellValue = formatter.formatCellValue(cell);
+                    String cellValue = dataFormatter.formatCellValue(cell);
                     for (JAbstractValidationRule rule : rules) {
                         rule.test(cellValue);
                     }
