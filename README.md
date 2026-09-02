@@ -13,72 +13,6 @@
 jquick-excel 是一个专为 Java 开发者设计的轻量级 Excel 操作框架。它结合了 **易用性**、**灵活性** 和 **高性能**，支持主流
 Excel 格式（xls/xlsx），并提供丰富的 API 帮助开发者快速实现复杂的 Excel 导入导出功能。
 
-## 🎨 主题模板 / Theme Templates
-
-JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
-
-## 主题编码汇总 / Theme Code Summary
-
-| 序号 / No. | Code | 中文名称 / Chinese Name |
-|---------|------|----------------------|
-| 1 | `default` | 经典皇家蓝 |
-| 2 | `minimalistGrey` | 极简灰 |
-| 3 | `slate` | 板岩灰 |
-| 4 | `charcoal` | 炭灰 |
-| 5 | `navyBlue` | 海军蓝 |
-| 6 | `oceanBlue` | 海洋蓝 |
-| 7 | `skyBlue` | 天空蓝 |
-| 8 | `azure` | 蔚蓝 |
-| 9 | `steelBlue` | 钢蓝 |
-| 10 | `denim` | 牛仔蓝 |
-| 11 | `indigo` | 靛蓝 |
-| 12 | `periwinkle` | 长春花蓝 |
-| 13 | `forestGreen` | 森林绿 |
-| 14 | `emerald` | 祖母绿 |
-| 15 | `jade` | 翡翠绿 |
-| 16 | `mintFresh` | 清新薄荷 |
-| 17 | `sage` | 鼠尾草绿 |
-| 18 | `oliveGreen` | 橄榄绿 |
-| 19 | `tropicalTeal` | 热带青 |
-| 20 | `turquoise` | 绿松石 |
-| 21 | `cyan` | 青色 |
-| 22 | `sunsetOrange` | 落日橙 |
-| 23 | `coral` | 珊瑚 |
-| 24 | `peach` | 蜜桃 |
-| 25 | `crimsonRed` | 深红 |
-| 26 | `wineRed` | 酒红 |
-| 27 | `sakuraPink` | 樱花粉 |
-| 28 | `roseQuartz` | 粉晶 |
-| 29 | `lavenderPurple` | 薰衣草紫 |
-| 30 | `amethyst` | 紫水晶 |
-| 31 | `plum` | 紫梅 |
-| 32 | `royalGold` | 皇家金 |
-| 33 | `champagne` | 香槟金 |
-| 34 | `amber` | 琥珀 |
-| 35 | `mustard` | 芥末黄 |
-| 36 | `bronze` | 青铜 |
-| 37 | `vintageSepia` | 复古棕 |
-| 38 | `espresso` | 浓缩咖啡 |
-| 39 | `mahogany` | 红木 |
-| 40 | `terracotta` | 陶土 |
-| 41 | `midnightDark` | 午夜深色 |
-| 42 | `pearl` | 珍珠 |
-
-👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
-
-**方式一：DSL 模板中指定**
-```java
-JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, rows, fileOutputStream);
-```
-
-**方式二：通过 JExcelExportModel 配置主题**
-```java
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-config.setTheme("oceanBlue");  // 海洋蓝主题，参见上方编码表
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-handler.exportData();
-```
-
 ## ✨ 核心特性
 
 ✅ 双格式支持 - 完美兼容 .xls 和 .xlsx 格式  
@@ -95,78 +29,6 @@ handler.exportData();
 ✅ 📦 分批导入 API - 支持回调式分页消费，避免大文件一次性加载  
 ✅ 🔥 Transform AST 缓存 - 导入/导出时自动缓存解析结果，万级单元格零重复解析  
 ✅ 📐 列数行数懒缓存 - 同 Sheet 内多次读取只做一次全表扫描
-
-## 📊 性能基准测试
-
-JQuick-Excel 提供完善的性能基准测试，覆盖导出/导入全链路，支持对比 XSSF 与 SXSSF 流式、OPCPackage ON/OFF 等关键模式。
-
-**核心指标 / Key Metrics：** 耗时、峰值内存、文件大小、吞吐量、内存效率
-
-**亮点 / Highlights：**
-
-- 🚀 **SXSSF 流式导出 / SXSSF Streaming Export**：10 万行数据内存降低 ~75%，速度提升 10-15% / ~75% memory reduction at 100K rows, 10-15% speed improvement
-- 💾 **OPCPackage 导入 / OPCPackage Import**：导入内存稳定降低 50%+，速度提升 15-20% / 50%+ consistent memory reduction, 15-20% speed improvement
-- 🎨 **样式缓存优化 / Style Cache Optimization**：样式数量从 ~90 万降至 ~10 份，彻底解决 64000 上限问题 / Style count reduced from ~900K to ~10, completely solving the 64000 limit issue
-
-| 数据量 / Rows | 导出模式 / Export | 耗时 / Time(ms) | 峰值内存 / Peak Mem(MB) | 内存降幅 / Memory Reduction |
-|--------------|----------------|----------------|----------------------|---------------------------|
-| 10,000 | XSSF | 3,200 | 512.3 | — |
-| 10,000 | SXSSF Streaming | 2,800 | 128.5 | -74.9% |
-| 100,000 | OPCPackage ON (导入) | 15,200 | 389.1 | -50%+ vs OFF |
-
-> 以上为示例数据，实际结果取决于硬件与 JVM 配置。
->
-> The above are example values. Actual results depend on hardware and JVM configuration.
-
-👉 [查看完整性能基准测试报告 / View full benchmark report](./benchmark.md)
-
-### 大数据量导入优化
-
-JQuickExcel 在大数据量导入场景下实施了多项无损性能优化，**无 API 侵入、零配置即可享受**：
-
-| 优化项 | 说明 | 收益 |
-|--------|------|------|
-| **Transform AST 缓存** | 相同 transform 表达式仅做一次 ANTLR 词法/语法解析，ParseTree 跨调用复用 | 10 万行带 transform：20 万次解析 → 2 次 |
-| **列数/行数懒缓存** | `getUsedColumnCount` / `getLastRowNum` 首次计算后缓存，同 Sheet 内多次读取仅做一次全表扫描 | 省掉一次完整 O(行×列) 遍历 |
-| **DataFormatter 复用** | 验证范围内不再为每个单元格 `new DataFormatter()`，复用静态共享实例 | 消除万级临时对象与 GC 压力 |
-| **循环常数优化** | `getTransforms` 等调用提到外层循环，`headers.size()` 提取为局部变量 | 每单元格省 1~2 次方法调用 |
-| **MissingCellPolicy** | 改用 `RETURN_NULL_AND_BLANK`，稀疏表不再生成无意义空 Cell 对象 | 稀疏表百万级对象消除 |
-
-如需手动控制，可通过 `JQuickExcelConfig` 切换全局参数（参见下方「全局配置中心」章节）。
-
-## ⚙️ 全局配置中心
-
-`JQuickExcelConfig` 是 JQuick-Excel 的全局单例配置中心，用于统一控制导入导出性能参数，无需在每次调用时重复设置。
-
-```java
-JQuickExcelConfig cfg = JQuickExcelConfig.getInstance();
-
-// 导出：超过 5000 行自动切 SXSSF 流式写入
-cfg.setStreamingExportEnabled(true)
-   .setStreamingRowAccessWindowSize(100)    // 内存保留 100 行
-   .setStreamingExportThreshold(5000);
-
-// 导入：启用 OPCPackage 共享解析降低峰值内存
-cfg.setBigFileImportEnabled(true)
-   .setImportBatchThreshold(20000);        // 建议分批的行数阈值
-
-// 样式缓存：避免 CellStyle 超 64000 上限
-cfg.setCellStyleCacheEnabled(true);
-```
-
-### 配置项说明
-
-| 配置项 | 类型 | 默认值 | 说明 |
-|--------|------|--------|------|
-| `streamingExportEnabled` | `boolean` | `true` | 超过阈值时自动切换 SXSSF 流式写入 |
-| `streamingRowAccessWindowSize` | `int` | `100` | SXSSF 内存中保留的行数窗口 |
-| `streamingExportThreshold` | `int` | `5000` | 触发流式导出的行数阈值（≤0 关闭自动切换） |
-| `streamingCompressTempFiles` | `boolean` | `true` | 流式写入时是否压缩临时文件 |
-| `bigFileImportEnabled` | `boolean` | `true` | 导入时采用 OPCPackage 共享解析降低峰值内存 |
-| `importBatchThreshold` | `int` | `20000` | 建议使用分批导入的行数阈值（仅供参考） |
-| `cellStyleCacheEnabled` | `boolean` | `true` | CellStyle 缓存开关，避免 64000 样式上限 |
-
-> **提示**：`resetDefault()` 可在测试场景下将配置还原为默认值。
 
 ## 🛠️ 技术栈
 
@@ -196,7 +58,7 @@ cfg.setCellStyleCacheEnabled(true);
 implementation 'io.github.paohaijiao:jquick-excel:最新版本'
 ```
 
-#### 🚀 快速集成
+### 🚀 快速集成
 
 > 在项目的 resources 目录下创建 jquick-excel.xml 配置文件，这是整个 Excel 导入导出功能的“指挥中心”。
 
@@ -326,9 +188,145 @@ public interface JQuickExcelExportService {
 - 样式定制 - 完整的单元格样式控制
 - 数据合并 - 多种合并策略（最大、最小、平均等）
 
+## 🎨 主题模板 / Theme Templates
 
+JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
 
-## 🎯 使用示例
+### 主题编码汇总 / Theme Code Summary
+
+| 序号 / No. | Code | 中文名称 / Chinese Name |
+|---------|------|----------------------|
+| 1 | `default` | 经典皇家蓝 |
+| 2 | `minimalistGrey` | 极简灰 |
+| 3 | `slate` | 板岩灰 |
+| 4 | `charcoal` | 炭灰 |
+| 5 | `navyBlue` | 海军蓝 |
+| 6 | `oceanBlue` | 海洋蓝 |
+| 7 | `skyBlue` | 天空蓝 |
+| 8 | `azure` | 蔚蓝 |
+| 9 | `steelBlue` | 钢蓝 |
+| 10 | `denim` | 牛仔蓝 |
+| 11 | `indigo` | 靛蓝 |
+| 12 | `periwinkle` | 长春花蓝 |
+| 13 | `forestGreen` | 森林绿 |
+| 14 | `emerald` | 祖母绿 |
+| 15 | `jade` | 翡翠绿 |
+| 16 | `mintFresh` | 清新薄荷 |
+| 17 | `sage` | 鼠尾草绿 |
+| 18 | `oliveGreen` | 橄榄绿 |
+| 19 | `tropicalTeal` | 热带青 |
+| 20 | `turquoise` | 绿松石 |
+| 21 | `cyan` | 青色 |
+| 22 | `sunsetOrange` | 落日橙 |
+| 23 | `coral` | 珊瑚 |
+| 24 | `peach` | 蜜桃 |
+| 25 | `crimsonRed` | 深红 |
+| 26 | `wineRed` | 酒红 |
+| 27 | `sakuraPink` | 樱花粉 |
+| 28 | `roseQuartz` | 粉晶 |
+| 29 | `lavenderPurple` | 薰衣草紫 |
+| 30 | `amethyst` | 紫水晶 |
+| 31 | `plum` | 紫梅 |
+| 32 | `royalGold` | 皇家金 |
+| 33 | `champagne` | 香槟金 |
+| 34 | `amber` | 琥珀 |
+| 35 | `mustard` | 芥末黄 |
+| 36 | `bronze` | 青铜 |
+| 37 | `vintageSepia` | 复古棕 |
+| 38 | `espresso` | 浓缩咖啡 |
+| 39 | `mahogany` | 红木 |
+| 40 | `terracotta` | 陶土 |
+| 41 | `midnightDark` | 午夜深色 |
+| 42 | `pearl` | 珍珠 |
+
+👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
+
+**方式一：DSL 模板中指定**
+```java
+JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, rows, fileOutputStream);
+```
+
+**方式二：通过 JExcelExportModel 配置主题**
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("oceanBlue");  // 海洋蓝主题，参见上方编码表
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+handler.exportData();
+```
+
+## 📊 性能基准测试
+
+JQuick-Excel 提供完善的性能基准测试，覆盖导出/导入全链路，支持对比 XSSF 与 SXSSF 流式、OPCPackage ON/OFF 等关键模式。
+
+**核心指标 / Key Metrics：** 耗时、峰值内存、文件大小、吞吐量、内存效率
+
+**亮点 / Highlights：**
+
+- 🚀 **SXSSF 流式导出 / SXSSF Streaming Export**：10 万行数据内存降低 ~75%，速度提升 10-15% / ~75% memory reduction at 100K rows, 10-15% speed improvement
+- 💾 **OPCPackage 导入 / OPCPackage Import**：导入内存稳定降低 50%+，速度提升 15-20% / 50%+ consistent memory reduction, 15-20% speed improvement
+- 🎨 **样式缓存优化 / Style Cache Optimization**：样式数量从 ~90 万降至 ~10 份，彻底解决 64000 上限问题 / Style count reduced from ~900K to ~10, completely solving the 64000 limit issue
+
+| 数据量 / Rows | 导出模式 / Export | 耗时 / Time(ms) | 峰值内存 / Peak Mem(MB) | 内存降幅 / Memory Reduction |
+|--------------|----------------|----------------|----------------------|---------------------------|
+| 10,000 | XSSF | 3,200 | 512.3 | — |
+| 10,000 | SXSSF Streaming | 2,800 | 128.5 | -74.9% |
+| 100,000 | OPCPackage ON (导入) | 15,200 | 389.1 | -50%+ vs OFF |
+
+> 以上为示例数据，实际结果取决于硬件与 JVM 配置。
+>
+> The above are example values. Actual results depend on hardware and JVM configuration.
+
+👉 [查看完整性能基准测试报告 / View full benchmark report](./benchmark.md)
+
+### 大数据量导入优化
+
+JQuickExcel 在大数据量导入场景下实施了多项无损性能优化，**无 API 侵入、零配置即可享受**：
+
+| 优化项 | 说明 | 收益 |
+|--------|------|------|
+| **Transform AST 缓存** | 相同 transform 表达式仅做一次 ANTLR 词法/语法解析，ParseTree 跨调用复用 | 10 万行带 transform：20 万次解析 → 2 次 |
+| **列数/行数懒缓存** | `getUsedColumnCount` / `getLastRowNum` 首次计算后缓存，同 Sheet 内多次读取仅做一次全表扫描 | 省掉一次完整 O(行×列) 遍历 |
+| **DataFormatter 复用** | 验证范围内不再为每个单元格 `new DataFormatter()`，复用静态共享实例 | 消除万级临时对象与 GC 压力 |
+| **循环常数优化** | `getTransforms` 等调用提到外层循环，`headers.size()` 提取为局部变量 | 每单元格省 1~2 次方法调用 |
+| **MissingCellPolicy** | 改用 `RETURN_NULL_AND_BLANK`，稀疏表不再生成无意义空 Cell 对象 | 稀疏表百万级对象消除 |
+
+如需手动控制，可通过 `JQuickExcelConfig` 切换全局参数（参见下方「全局配置中心」章节）。
+
+## ⚙️ 全局配置中心
+
+`JQuickExcelConfig` 是 JQuick-Excel 的全局单例配置中心，用于统一控制导入导出性能参数，无需在每次调用时重复设置。
+
+```java
+JQuickExcelConfig cfg = JQuickExcelConfig.getInstance();
+
+// 导出：超过 5000 行自动切 SXSSF 流式写入
+cfg.setStreamingExportEnabled(true)
+   .setStreamingRowAccessWindowSize(100)    // 内存保留 100 行
+   .setStreamingExportThreshold(5000);
+
+// 导入：启用 OPCPackage 共享解析降低峰值内存
+cfg.setBigFileImportEnabled(true)
+   .setImportBatchThreshold(20000);        // 建议分批的行数阈值
+
+// 样式缓存：避免 CellStyle 超 64000 上限
+cfg.setCellStyleCacheEnabled(true);
+```
+
+### 配置项说明
+
+| 配置项 | 类型 | 默认值 | 说明 |
+|--------|------|--------|------|
+| `streamingExportEnabled` | `boolean` | `true` | 超过阈值时自动切换 SXSSF 流式写入 |
+| `streamingRowAccessWindowSize` | `int` | `100` | SXSSF 内存中保留的行数窗口 |
+| `streamingExportThreshold` | `int` | `5000` | 触发流式导出的行数阈值（≤0 关闭自动切换） |
+| `streamingCompressTempFiles` | `boolean` | `true` | 流式写入时是否压缩临时文件 |
+| `bigFileImportEnabled` | `boolean` | `true` | 导入时采用 OPCPackage 共享解析降低峰值内存 |
+| `importBatchThreshold` | `int` | `20000` | 建议使用分批导入的行数阈值（仅供参考） |
+| `cellStyleCacheEnabled` | `boolean` | `true` | CellStyle 缓存开关，避免 64000 样式上限 |
+
+> **提示**：`resetDefault()` 可在测试场景下将配置还原为默认值。
+
+## 🎯 导入使用示例
 
 ### 基础语法
 
@@ -381,7 +379,7 @@ IMPORT WITH TRANSFORM={
 
 ### 导入验证
 
-## 📊 支持的验证规则
+#### 支持的验证规则
 
 | 规则类型  | 示例                               | 说明      |
 |-------|----------------------------------|---------|
@@ -617,7 +615,7 @@ IMPORT WITH VALIDATION={   B2:B4:{
 
 ### 基础导入示例
 
-## 🔧 导入配置
+#### 🔧 导入配置
 
 ```java
 String rule = """
@@ -656,47 +654,7 @@ int total = handler.importDataInBatch(model, 5000, batch -> {
 System.out.println("总共读取: " + total + " 行");
 ```
 
-### 主题配置导出示例
-
-通过 `JExcelExportModel#setTheme` 方法指定主题编码（42 种可选，详见主题编码汇总）：
-
-```java
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-config.setTheme("jade");  // 设置翡翠绿主题
-
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-Workbook workbook = handler.getWorkBook();
-workbook.write(outputStream);
-```
-
-### 基础导出示例
-
-```java
-String rule = """
-EXPORT WITH
-SHEET="学生表",
-HEADER=true,
-MAPPING={
-"id": "主键",
-"name": "姓名",
-"gender": "性别",
-"age": "年龄",
-"enrollmentDate": "入学时间",
-"className": "班级"
-}
-""";
-
-List<Map<String, Object>> data = JObjectConverter.convert(getData());
-FileOutputStream fos = new FileOutputStream("导出结果.xlsx");
-JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-Workbook workbook = handler.getWorkBook();
-workbook.write(fos);
-fos.close();
-```
-
-## 📤 导出配置
+## 📤 导出使用示例
 
 ### 基础语法
 
@@ -831,6 +789,46 @@ workbook.write(fileOutputStream);
    `A1:B5` - 代表从 A1 单元格到 B5 单元格的矩形区域
 5.
 
+### 主题配置导出示例
+
+通过 `JExcelExportModel#setTheme` 方法指定主题编码（42 种可选，详见主题编码汇总）：
+
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("jade");  // 设置翡翠绿主题
+
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+Workbook workbook = handler.getWorkBook();
+workbook.write(outputStream);
+```
+
+### 基础导出示例
+
+```java
+String rule = """
+EXPORT WITH
+SHEET="学生表",
+HEADER=true,
+MAPPING={
+"id": "主键",
+"name": "姓名",
+"gender": "性别",
+"age": "年龄",
+"enrollmentDate": "入学时间",
+"className": "班级"
+}
+""";
+
+List<Map<String, Object>> data = JObjectConverter.convert(getData());
+FileOutputStream fos = new FileOutputStream("导出结果.xlsx");
+JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+Workbook workbook = handler.getWorkBook();
+workbook.write(fos);
+fos.close();
+```
+
 ## 🔢 支持的公式类型
 
 ### 📈 数学公式（16个）
@@ -893,7 +891,7 @@ D5:'SUM(D2:D4)'
 | 🗓️ `EOMONTH`    | `EOMONTH("2025-01-23",3)`         | 返回指定月份的月末日期                       | `JEOMONTHFormula`    |
 | ⏰ `HOUR`         | `HOUR('2025-01-23')`              | 提取时间中的小时（0-23）                    | `JHourFormula`       |
 | 💼 `NETWORKDAYS` | `NETWORKDAYS(s,e,[h])`            | 参数数量 2-3 个（计算工作日）                 | `JNetworkDayFormula` |
-| �实时 `NOW`        | `NOW()`                           | 需精确匹配语法，返回当前时间戳                   | `JNowFormula`        |
+| 🕒 `NOW`        | `NOW()`                           | 需精确匹配语法，返回当前时间戳                   | `JNowFormula`        |
 | 📅 `TODAY`       | `TODAY()`                         | 需精确匹配语法，返回当前日期                    | `JTodayFormula`      |
 | 🛠️ `WORKDAY`    | `WORKDAY(s,days,[h])`             | 参数数量 2-3 个（计算工作日偏移）               | `JWorkDayFormula`    |
 | ⏱️ `MINUTE`      | `MINUTE(time_value)`              | 1 个时间序列参数，提取分钟（0-59）              | -                    |
@@ -1200,9 +1198,26 @@ FORMULAS={
 
 #### 图表配置采用类 JSON 格式的领域特定语言 (DSL)，基础结构如下
 
-# 图表配置关键字说明
+```string
+EXPORT WITH GRAPH = {
+    TYPE = Chart Type,
+    TITLE = "Chart Title",
+    [CATEGORY_AXIS = "Category Axis Title",]
+    [VALUE_AXIS = "Value Axis Title",]
+    CATEGORIES = [Category Value 1, Category Value 2, ...],
+    SERIES = [
+        {
+            NAME = "Series Name",
+            DATA = [Data Value 1, Data Value 2, ...]
+        },
+        ...
+    ]
+}
+```
 
-## 1. TYPE（必填）
+#### 图表配置关键字说明
+
+##### 1. TYPE（必填）
 
 - **说明**：指定图表类型
 - **支持类型**：
@@ -1217,14 +1232,14 @@ FORMULAS={
     - `RADAR`（雷达图）
     - `SURFACE`（曲面图）
 
-## 2. TITLE（必填）
+##### 2. TITLE（必填）
 
 - **说明**：图表的标题文本
 - **类型**：字符串
 - **格式要求**：需用双引号`"`或单引号`'`包裹
 - **示例**：`TITLE = "2023年销售数据统计"`
 
-## 3. CATEGORY_AXIS（可选）
+##### 3. CATEGORY_AXIS（可选）
 
 - **说明**：分类轴（通常为X轴）的标题文本
 - **适用范围**：除饼图外的大多数图表类型
@@ -1232,7 +1247,7 @@ FORMULAS={
 - **格式要求**：需用双引号`"`或单引号`'`包裹
 - **示例**：`CATEGORY_AXIS = "产品类别"`
 
-## 4. VALUE_AXIS（可选）
+##### 4. VALUE_AXIS（可选）
 
 - **说明**：数值轴（通常为Y轴）的标题文本
 - **适用范围**：除饼图、雷达图外的图表类型
@@ -1240,7 +1255,7 @@ FORMULAS={
 - **格式要求**：需用双引号`"`或单引号`'`包裹
 - **示例**：`VALUE_AXIS = "销售额(万元)"`
 
-## 5. CATEGORIES（必填）
+##### 5. CATEGORIES（必填）
 
 - **说明**：图表的分类维度数据（X轴数据或分组依据）
 - **类型**：数组
@@ -1249,7 +1264,7 @@ FORMULAS={
     - `CATEGORIES = ["1月", "2月", "3月", "4月"]`
     - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
 
-## 6. SERIES（必填）
+##### 6. SERIES（必填）
 
 - **说明**：图表的数据系列集合，每个系列代表一组相关数据
 - **类型**：数组，包含一个或多个数据系列对象
@@ -1853,11 +1868,11 @@ FORMULAS={
 | `thin_horz_bands`     | 细水平条纹   | `FillPatternType.THIN_HORZ_BANDS`     |
 | `thin_vert_bands`     | 细垂直条纹   | `FillPatternType.THIN_VERT_BANDS`     |
 | `thin_backward_diag`  | 细反向对角线  | `FillPatternType.THIN_BACKWARD_DIAG`  |
-| `thin_forward_diag`   | 细正向对角线  | `FillPatternType.THIN_FORWARD_DIAG`   |
-| `squares`             | 正方形纹理填充 | `FillPatternType.SQUARES`             |
+| `thin_forward_diag`   | 细正向对角线  | `FillPatternType.THIN_FORWARD_DIAG`  |
+| `squares`             | 正方形纹理填充 | `FillPatternType.SQUARES`            |
 | `diamonds`            | 菱形纹理填充  | `FillPatternType.DIAMONDS`            |
 | `less_dots`           | 低密度点填充  | `FillPatternType.LESS_DOTS`           |
-| `least_dots`          | 最低密度点填充 | `FillPatternType.LEAST_DOTS`          |
+| `least_dots`          | 最低密度点填充 | `FillPatternType.LEAST_DOTS`         |
 
 ### 🌈 JColorEnum 颜色常量（按编码名）
 
@@ -1888,7 +1903,7 @@ FORMULAS={
 | `grey25Percent`       | 25%灰色     | 22  | `IndexedColors.GREY_25_PERCENT`       |
 | `grey50Percent`       | 50%灰色     | 23  | `IndexedColors.GREY_50_PERCENT`       |
 | `cornflowerBlue`      | 矢车菊蓝      | 24  | `IndexedColors.CORNFLOWER_BLUE`       |
-| `maroon`              | 褐红色       | 25  | `IndexedColors.MAROON`                |
+| `maroon`              | 餐红色       | 25  | `IndexedColors.MAROON`                |
 | `lemonChiffon`        | 柠檬绸色      | 26  | `IndexedColors.LEMON_CHIFFON`         |
 | `lightTurquoise1`     | 浅青绿色（变体1） | 27  | `IndexedColors.LIGHT_TURQUOISE`       |
 | `orchid`              | 兰花紫       | 28  | `IndexedColors.ORCHID`                |
@@ -1914,7 +1929,7 @@ FORMULAS={
 | `darkTeal`            | 深水鸭色      | 56  | `IndexedColors.DARK_TEAL`             |
 | `seaGreen`            | 海绿色       | 57  | `IndexedColors.SEA_GREEN`             |
 | `darkGreen`           | 深绿色       | 58  | `IndexedColors.DARK_GREEN`            |
-| `oliveGreen`          | 橄榄绿       | 59  | `IndexedColors.OLIVE_GREEN`           |
+| `oliveGreen`          | 橄榄绿       | 59  | `IndexedColors.OLIVE_GREEN`          |
 | `brown`               | 棕色        | 60  | `IndexedColors.BROWN`                 |
 | `plum`                | 李子紫       | 61  | `IndexedColors.PLUM`                  |
 | `indigo`              | 靛蓝色       | 62  | `IndexedColors.INDIGO`                |
@@ -2024,7 +2039,7 @@ FOOTER="Confidential - Internal Use Only"
 ## **如何支持我们**
 
 1. **请我喝杯咖啡**  
-   果这个项目为您节省了时间或金钱，请考虑通过小额捐赠支持我。
+   如果这个项目为您节省了时间或金钱，请考虑通过小额捐赠支持我。
 
 2. **您的捐赠用途**
 

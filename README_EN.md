@@ -1,26 +1,217 @@
-# 🚀 jquick-excel: Lightweight and high-performance Java Excel operating framework
+# 🚀 jquick-excel: Lightweight and High-Performance Java Excel Operating Framework
 
 [简体中文](./README.md) | English
 
 [![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
 > Featured in the [Awesome Java](https://github.com/akullpp/awesome-java) curated list — **Document Processing**
 
-⚡ A concise, powerful, and easy-to-use Java Excel reading and writing tool that supports xls/xlsx formats, provides rich
-APIs, and flexible configuration syntax
+⚡ JQuickExcel is a lightweight, highly extensible Java Excel processing framework that supports .xls and .xlsx formats
+with no complex dependencies. It provides declarative import/export capabilities driven by XML configuration, making it
+ideal for rapid development and complex data conversion scenarios.
 
 ## 📦 Project Introduction
 
-Jquick Excel is a lightweight Excel operating framework designed specifically for Java developers. It combines *
-*usability**, **flexibility**, and **high performance**,
-supports mainstream Excel formats (xls/xlsx), and provides rich APIs to help developers quickly implement complex Excel
-import and export functions.
+jquick-excel is a lightweight Excel operating framework designed specifically for Java developers. It combines **
+usability**, **flexibility**, and **high performance**, supports mainstream Excel formats (xls/xlsx), and provides rich
+APIs to help developers quickly implement complex Excel import and export functions.
 
-## 🎨 Theme Templates
+## ✨ Core Features
+
+✅ Dual format support - Full compatibility with .xls and .xlsx formats
+
+✅ Declarative configuration - Define import and export rules with concise DSL syntax
+
+✅ High performance processing - Optimized for reading and writing large volumes of data with low memory footprint
+
+✅ Rich validation rules - 20+ built-in data validation rules
+
+✅ Powerful formula support - 50+ Excel formulas supported
+
+✅ Chart generation - One-click generation of 10 chart types
+
+✅ Style customization - Complete cell style control
+
+✅ Cell merge - Flexible multi-dimensional data merge strategies
+
+✅ Context conversion - Dynamic data conversion and mapping support
+
+✅ 🎨 42 built-in themes - Multi-color theme templates with one-click style switching
+
+✅ ⚙️ Global config center - Unified control over streaming export, OPCPackage import, style cache and other performance
+parameters
+
+✅ 📦 Batch import API - Callback-based paginated consumption to avoid one-time loading of large files
+
+✅ 🔥 Transform AST cache - Auto-caches parse results during import/export, zero repeated parsing for 10K+ cells
+
+✅ 📐 Lazy row/column count cache - Multiple reads within the same Sheet trigger only one full table scan
+
+## 🛠️ Tech Stack
+
+[![Java](https://img.shields.io/badge/Java-1.8+-blue.svg?style=for-the-badge&logo=openjdk)](https://www.java.com/)
+[![Apache POI](https://img.shields.io/badge/Apache%2520POI-5.2.3-green.svg?style=for-the-badge&logo=apache)](https://poi.apache.org/)
+[![Lombok](https://img.shields.io/badge/Lombok-1.18.24-red.svg?style=for-the-badge&logo=lombok)](https://projectlombok.org/)
+[![License](https://img.shields.io/github/license/paohaijiao/jquick-excel.svg?style=for-the-badge)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/commits/main)
+[![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/stargazers)
+[![Forks](https://img.shields.io/github/forks/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/network/members)
+
+## 📥 Quick Start
+
+### Maven Dependency
+
+```xml
+<dependency>
+  <groupId>io.github.paohaijiao</groupId>
+  <artifactId>jquick-excel</artifactId>
+  <version>${latest.version}</version>
+</dependency>
+```
+
+### gradle Dependency
+
+```gradle
+implementation 'io.github.paohaijiao:jquick-excel:${latest.version}'
+```
+
+### 🚀 Quick Integration
+
+> Create a `jquick-excel.xml` configuration file in the project's `resources` directory. This file serves as the "command
+> center" for the entire Excel import and export functionality.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<excels namespace="com.github.paohaijiao.xml.service.JQuickExcelExportService">
+
+    <excel name="exportExcel" returnClass="void">
+        EXPORT  WITH
+            SHEET="学生表",
+            HEADER=true,
+            MAPPING={
+                "id":"主键",
+                "name":"姓名",
+                "gender":"性别",
+                "age":"年龄",
+                "enrollmentDate":"入学时间",
+                "className":"班级",
+                "ignoreField":"是否忽略"
+            },
+            FORMULAS={
+                D5:'ABS(D2)'
+            },
+            STYLE={
+                ROW 1: {
+                    fontName: Arial,
+                    fontHeightInPoints: 12,
+                    italic: true,
+                    color: yellow,
+                    bold: true
+                }
+            }
+    </excel>
+    <excel name="importExcel" returnClass="jva.util.List">
+        IMPORT WITH
+        HEADER=true,
+        SHEET='Sheet1',
+        MAPPING = {
+            "学号": "no",
+            "姓名": "name",
+            "性别": "sex",
+            "年龄": "age",
+            "出生日期": "birthday"
+        },
+        TRANSFORM={
+            "sex":trans(${dict},${sex}),
+            "birthday":dateFormat(${birthday},'yyyy-MM-dd')
+        }
+    </excel>
+</excels>
+
+```
+
+> The service interface is the bridge that connects XML configuration with actual business logic. Through interface
+> method declarations, the framework can automatically parse XML configuration and generate corresponding proxy
+> implementations. Interface methods use the `@Param` annotation to mark parameters, which can then be referenced in
+> dynamic SQL or conditional queries configured in XML.
+
+```java
+import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.xml.param.Param;
+
+import java.util.List;
+
+public interface JQuickExcelExportService {
+
+    public void exportExcel(@Param("field")String field, @Param("value")String value);
+
+    public List<JQuickRow> importExcel(@Param("field")String field, @Param("value")String value);
+}
+
+```
+
+> Everything is ready — with just a few lines of code, the Excel import and export functions come to life!
+> The framework automatically handles data conversion, style rendering, file generation and other complex operations.
+
+```java
+ public static List<JStudentModel> getData() {
+        List<JStudentModel> students = new ArrayList<>();
+        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
+        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
+        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
+        return students;
+    }
+    @Test
+    public void exportExcel() throws FileNotFoundException {
+        List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
+        OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
+        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows,fileOutputStream);
+        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
+        System.out.println(factory);
+        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
+        excelExportService.exportExcel("1","2");
+        System.out.println("导出成功");
+    }
+    @Test
+    public void importExcel() throws FileNotFoundException {
+        InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
+        Map<String,Object> sex=new HashMap<>();
+        sex.put("男","1");
+        sex.put("女","2");
+        JContext context = new JContext();
+        context.put("dict",sex);
+        JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context,is);
+        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
+        System.out.println(factory);
+        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
+        List<JQuickRow> list=excelExportService.importExcel("1","2");
+        System.out.println("导入成功:"+list.size());
+    }
+```
+
+## 📚 Function Overview
+
+### 🔄 Import function
+
+- Intelligent Mapping - Automatic field mapping and conversion
+- Data Validation - 20+ validation rules (email, phone, regex, etc.)
+- Format Conversion - Date, number, string formatting
+- Batch processing - Supports importing large volumes of data in batches
+
+### 📤 Export function
+
+- Template Export - Quickly export based on configuration templates
+- Formula Calculation - Supports 50+ Excel formulas
+- Chart Generation - 10 chart types
+- Style Customization - Complete cell style control
+- Data merging - Multiple merge strategies (max, min, average, etc.)
+
+## 🎨 Theme Templates / 主题模板
 
 JQuickExcel provides 42 built-in theme templates covering classic business, blue/green/teal/red-orange/pink-purple/gold-brown families and special styles, ready to use out of the box.
 
-
-## 主题编码汇总 / Theme Code Summary
+### 主题编码汇总 / Theme Code Summary
 
 | 序号 / No. | Code | 中文名称 / Chinese Name |
 |---------|------|----------------------|
@@ -81,36 +272,6 @@ config.setTheme("oceanBlue");  // Ocean Blue theme, see code table above
 JExcelExportHandler handler = new JExcelExportHandler(config, data);
 handler.exportData();
 ```
-
-## ✨ Core Features
-
-✅ Dual format support - perfect compatibility with. xls and. xlsx formats
-
-✅ Declarative configuration - Define import and export rules using concise DSL syntax
-
-✅ High performance processing - optimized for reading and writing large amounts of data, with low memory usage
-
-✅ Rich Validation Rules - Built in 20+Data Validation Rules
-
-✅ Powerful Formula Support - Supports 50+Excel Formulas
-
-✅ Chart Generation - Supports one click generation of 10 chart types
-
-✅ Style Customization - Complete Cell Style Control
-
-✅ Cell Merge - Flexible Multidimensional Data Merge Strategy
-
-✅ Context conversion - supports dynamic data conversion and mapping
-
-✅ 🎨 42 Built-in Themes - Multi-color theme templates, one-click style switching
-
-✅ ⚙️ Global Config Center - Unified control over streaming export, OPCPackage import, style cache
-
-✅ 📦 Batch Import API - Callback-based paginated consumption to avoid one-time large file loading
-
-✅ 🔥 Transform AST Cache - Auto-cache parse results during import/export, zero repeated parsing for 10K+ cells
-
-✅ 📐 Lazy Row/Column Count Cache - Multiple reads within the same Sheet trigger only one full table scan
 
 ## 📊 Performance Benchmark
 
@@ -184,163 +345,31 @@ cfg.setCellStyleCacheEnabled(true);
 
 > **Tip**: `resetDefault()` can restore defaults in test scenarios.
 
-## 🛠️ Tech Stack
+## 🎯 Import Usage Examples
 
-[![Java](https://img.shields.io/badge/Java-1.8+-blue.svg?style=for-the-badge&logo=openjdk)](https://www.java.com/)
-[![Apache POI](https://img.shields.io/badge/Apache%2520POI-5.2.3-green.svg?style=for-the-badge&logo=apache)](https://poi.apache.org/)
-[![Lombok](https://img.shields.io/badge/Lombok-1.18.24-red.svg?style=for-the-badge&logo=lombok)](https://projectlombok.org/)
-[![License](https://img.shields.io/github/license/paohaijiao/jquick-excel.svg?style=for-the-badge)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/commits/main)
-[![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/stargazers)
-[![Forks](https://img.shields.io/github/forks/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/network/members)
-
-## 📥 Quick Start
-
-### Maven Dependency
-
-```xml
-<dependency>
-  <groupId>io.github.paohaijiao</groupId>
-  <artifactId>jquick-excel</artifactId>
-  <version>${latest.version}</version>
-</dependency>
-```
-
-### gradle Dependency
-
-```gradle
-implementation 'io.github.paohaijiao:jquick-excel:${latest.version}'
-```
-
-#### 🚀 Quick Integration
-
-> Create a jquick-excel.xml configuration file in the resources directory of the project, which serves as the "command
-> center" for the entire Excel import and export function.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
-        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
-<excels namespace="com.github.paohaijiao.xml.service.JQuickExcelExportService">
-
-    <excel name="exportExcel" returnClass="void">
-        <![CDATA[
-             Lexer Content
-        ]]>
-    </excel>
-    <excel name="importExcel" returnClass="jva.util.List">
-        <![CDATA[
-         Lexer Content
-        ]]>
-    </excel>
-</excels>
-
-```
-
-> The service interface is a bridge that connects XML configuration with actual business logic. Through interface method
-> declarations,
-> the framework can automatically parse XML configuration and generate corresponding proxy implementations. The
-> interface method uses
-> @ Param annotation to annotate parameters, which can be used in dynamic SQL or conditional queries configured in XML.
-
-```java
-import com.github.paohaijiao.statement.JQuickRow;
-import com.github.paohaijiao.xml.param.Param;
-
-import java.util.List;
-
-public interface JQuickExcelExportService {
-
-    public void exportExcel(@Param("field")String field, @Param("value")String value);
-
-    public List<JQuickRow> importExcel(@Param("field")String field, @Param("value")String value);
-}
-
-```
-
-> Everything is ready, now with just a few lines of code, Excel's import and export functions can come to life!
-> The framework will automatically complete complex operations such as data conversion, style rendering, and file
-> generation
-
-```java
- public static List<JStudentModel> getData() {
-        List<JStudentModel> students = new ArrayList<>();
-        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
-        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
-        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
-        return students;
-    }
-    @Test
-    public void exportExcel() throws FileNotFoundException {
-        List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
-        OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
-        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows,fileOutputStream);
-        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
-        System.out.println(factory);
-        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
-        excelExportService.exportExcel("1","2");
-        System.out.println("导出成功");
-    }
-    @Test
-    public void importExcel() throws FileNotFoundException {
-        InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
-        Map<String,Object> sex=new HashMap<>();
-        sex.put("男","1");
-        sex.put("女","2");
-        JContext context = new JContext();
-        context.put("dict",sex);
-        JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context,is);
-        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
-        System.out.println(factory);
-        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
-        List<JQuickRow> list=excelExportService.importExcel("1","2");
-        System.out.println("导入成功:"+list.size());
-    }
-```
-
-## 📚 Function Overview
-
-### 🔄 Import function
-
-- Intelligent Mapping - Automatic Field Mapping and Conversion
-- Data Validation -20+validation rules (email, phone, regular, etc.)
-- Format Conversion - Date, Number, String Format
-- Batch processing - supports importing large amounts of data in batches
-
-### 📤 Export function
-
-- Template Export - Quickly Export Based on Configuration Templates
-- Formula Calculation - Supports 50+Excel Formulas
-- Chart Generation -10 Chart Types
-- Style Customization - Complete Cell Style Control
-- Data merging - multiple merging strategies (maximum, minimum, average, etc.)
-
-
-## 🎯 Usage example
-
-### basic syntax
+### Basic Syntax
 
 ```string
 IMPORT [WITH option1, option2, ...]
 ```
 
-### 配置项说明
+### Configuration Options
 
-| rule         | syntax                       | desc                                      |
-|--------------|------------------------------|-------------------------------------------|
-| `SHEET`      | `SHEET = (string \| number)` | Specify worksheet (name/index)            |
-| `HEADER`     | `HEADER = boolean`           | Does it include a header (`true`/`false`) |
-| `MAPPING`    | `MAPPING = { rule }`         | Source field ↔  Target field mapping      |
-| `TRANSFORM`  | `TRANSFORM = { rule }`       | Data Conversion Rules                     |
-| `VALIDATION` | `VALIDATION = { rule }`      | Data Validation Rules                     |
+| Option       | Syntax                       | Description                                      |
+|--------------|------------------------------|--------------------------------------------------|
+| `SHEET`      | `SHEET = (string \| number)` | Specify worksheet (name/index)                   |
+| `HEADER`     | `HEADER = boolean`           | Whether to include a header (`true`/`false`)     |
+| `MAPPING`    | `MAPPING = { rule }`         | Source field ↔ Target field mapping             |
+| `TRANSFORM`  | `TRANSFORM = { rule }`       | Data conversion rules                            |
+| `VALIDATION` | `VALIDATION = { rule }`      | Data validation rules                            |
 
-### SHEET syntax
+### SHEET Syntax
 
 ```string
 IMPORT WITH SHEET="Sheet1"
 ```
 
-### HEADER syntax
+### HEADER Syntax
 
 ```string
 IMPORT WITH HEADER=true
@@ -358,7 +387,7 @@ IMPORT WITH MAPPING = {
 }
 ```
 
-### TRANS MAPPING syntax（support JEvaluator all method）
+### Transform Syntax (supports all JEvaluator methods)
 
 ```string
 IMPORT WITH TRANSFORM={
@@ -367,22 +396,22 @@ IMPORT WITH TRANSFORM={
 }
 ```
 
-### import validation
+### Import Validation
 
-## 📊 Supported validation rules
+#### Supported Validation Rules
 
-| rule type         | sample                           |
-|-------------------|----------------------------------|
-| boolean           | boolean{required:true}           | 
-| date              | date_format{format:'yyyy-MM-dd'} |
-| number range      | range{min:1, max:100}            |
-| dict validation   | dict{map:{'1':'男','2':'女'}}      |
-| regex validation  | regex{pattern:'^\\d+$'}          | 
-| length validation | max_length{maxLength:10}         | 
-| email validation  | email{}                          | 
-| phone validation  | mobile{}                         | 
+| Rule Type       | Sample                           |
+|-----------------|----------------------------------|
+| boolean         | boolean{required:true}           | 
+| date format     | date_format{format:'yyyy-MM-dd'} |
+| number range    | range{min:1, max:100}            |
+| dict validation | dict{map:{'1':'男','2':'女'}}      |
+| regex           | regex{pattern:'^\\d+$'}          | 
+| length          | max_length{maxLength:10}         | 
+| email           | email{}                          | 
+| phone           | mobile{}                         | 
 
-#### 验证规则语法
+#### Validation Rule Syntax
 
 ```string
 // Row Validation
@@ -397,43 +426,24 @@ C1 - Validate cell C1 (row 1, column C)
 A1:B5 - Validate the range from A1 to B5
 ```
 
-#### Example of Verification Rule Configuration
+#### Validation Rule Configuration Example
 
 ```string
-IMPORT_WITH_VALIDATION = {
-    ROW 1..10 {
-        required {
-            required: true,
-            msg: "Cannot be empty"
-        },
-        range {
-            required: true,
-            msg: "Value out of range",
-            map: {
-                min: 1,
-                max: 100
-            }
-        }
-    },
-    COL A {
-        required {
-            required: true,
-            msg: "Column A cannot be empty"
-        }
-    },
-    B1:C5 {
-        regex {
-            required: true,
-            msg: "Format error",
-            map: {
-                pattern: "^\\d+$"
-            }
-        }
-    }
+IMPORT WITH VALIDATION={
+ROW 1..10 {
+required {required: true, msg: "Cannot be empty"},
+range {required: true, msg: "Value out of range", map: {min: 1, max: 100}}
+},
+COL A {
+required {required: true, msg: "Column A cannot be empty"}
+},
+B1:C5 {
+regex {required: true, msg: "Format error", map: {pattern: "^\\d+$"}}
+}
 }
 ```
 
-### Validation Rule Type
+#### Validation Rule Types
 
 #### Validation Rule List
 
@@ -606,7 +616,7 @@ IMPORT WITH VALIDATION={   B2:B4:{
 }
 ```
 
-##### Verification With not_end_with
+##### Verification With contain
 
 ```string
 IMPORT WITH VALIDATION={   B2:B4:{
@@ -624,7 +634,7 @@ IMPORT WITH VALIDATION={   B2:B4:{
 
 ### Basic Import Example
 
-## 🔧 Import configuration
+#### 🔧 Import Configuration
 
 ```java
 String rule = """
@@ -663,49 +673,9 @@ int total = handler.importDataInBatch(model, 5000, batch -> {
 System.out.println("Total rows read: " + total);
 ```
 
-### Theme-based Export Example
+## 📤 Export Usage Examples
 
-Specify a theme code via `JExcelExportModel#setTheme` (42 options available, see the theme code summary above):
-
-```java
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-config.setTheme("jade");  // Apply the Jade Green theme
-
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-Workbook workbook = handler.getWorkBook();
-workbook.write(outputStream);
-```
-
-### Basic export example
-
-```java
-String rule = """
-EXPORT WITH
-SHEET="学生表",
-HEADER=true,
-MAPPING={
-"id": "主键",
-"name": "姓名",
-"gender": "性别",
-"age": "年龄",
-"enrollmentDate": "入学时间",
-"className": "班级"
-}
-""";
-
-List<Map<String, Object>> data = JObjectConverter.convert(getData());
-FileOutputStream fos = new FileOutputStream("导出结果.xlsx");
-JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-Workbook workbook = handler.getWorkBook();
-workbook.write(fos);
-fos.close();
-```
-
-## 📤 Export Configuration
-
-### basic grammar
+### Basic Syntax
 
 ```string
 EXPORT [WITH option1, option2, ...]
@@ -726,19 +696,19 @@ EXPORT [WITH option1, option2, ...]
 | 📊 `GRAPH`         | `GRAPH '=' '{' graphSpec (',' graphSpec)* '}'`             | Configure generation parameters for charts/graphs                          |
 | 📝 `FOOTER`        | `FOOTER '=' (STRING \| IDENTIFIER)`                        | Set footer text or reference variables                                     |
 
-### SHEET OPTION
+### SHEET Option
 
 ```string
 EXPORT WITH SHEET="Report"
 ```
 
-### HEADER OPTION
+### HEADER Option
 
 ```string
 EXPORT WITH HEADER=true
 ```
 
-### Mapping OPTION
+### Mapping Option
 
 ```string
 EXPORT  WITH MAPPING={
@@ -769,7 +739,7 @@ Workbook workbook=handler.getWorkBook();
 workbook.write(fileOutputStream);
 ```
 
-### FORMAT OPTION
+### FORMAT Option
 
 ```string
 EXPORT  WITH MAPPING={
@@ -783,7 +753,7 @@ EXPORT  WITH MAPPING={
 },FORMAT={"enrollmentDate":"yyyy-MM-dd"}
 ```
 
-### TRANSFORM OPTION
+### TRANSFORM Option
 
 ```string
 EXPORT  WITH MAPPING={
@@ -822,7 +792,7 @@ workbook.write(fileOutputStream);
 
 ### Formula Options
 
-#### Apply scope support
+#### Apply Scope Support
 
 Supports four types: **Row**, **Column**, **Cell**, and **Range**:
 
@@ -837,9 +807,49 @@ Supports four types: **Row**, **Column**, **Cell**, and **Range**:
 4. **Range**
    `A1:B5` - Represents the rectangular area from cell A1 to cell B5
 
-## 🔢 Supported formula types
+### Theme-based Export Example
 
-### 📈 Mathematical formulas (16)
+Specify a theme code via `JExcelExportModel#setTheme` (42 options available, see the theme code summary above):
+
+```java
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+config.setTheme("jade");  // Apply the Jade Green theme
+
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+Workbook workbook = handler.getWorkBook();
+workbook.write(outputStream);
+```
+
+### Basic Export Example
+
+```java
+String rule = """
+EXPORT WITH
+SHEET="学生表",
+HEADER=true,
+MAPPING={
+"id": "主键",
+"name": "姓名",
+"gender": "性别",
+"age": "年龄",
+"enrollmentDate": "入学时间",
+"className": "班级"
+}
+""";
+
+List<Map<String, Object>> data = JObjectConverter.convert(getData());
+FileOutputStream fos = new FileOutputStream("导出结果.xlsx");
+JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
+JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
+JExcelExportHandler handler = new JExcelExportHandler(config, data);
+Workbook workbook = handler.getWorkBook();
+workbook.write(fos);
+fos.close();
+```
+
+## 🔢 Supported Formula Types
+
+### 📈 Mathematical Formulas (16)
 
 | Formula Name | Syntax Example       | Parameter Count | Description                       | Corresponding Class Name |
 |--------------|----------------------|-----------------|-----------------------------------|--------------------------|
@@ -887,7 +897,7 @@ D5:'STDEV(D2:D4)',
 D5:'SUM(D2:D4)'
 ```
 
-### 📅 Date formulas (15)
+### 📅 Date Formulas (15)
 
 | Formula Name     | Syntax Example                    | Special Rules                                                                                               | Corresponding Class Name |
 |------------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------|--------------------------|
@@ -910,9 +920,9 @@ D5:'SUM(D2:D4)'
 | 📊 `WEEKNUM`     | `WEEKNUM(date,[type])`            | 1-2 parameters; returns the week number of the year                                                         | -                        |
 | 📅 `YEAR`        | `YEAR(date_value)`                | 1 date series parameter; extracts the year (1900-9999) from a date                                          | -                        |
 
-### 📅 Date formula configuration&equivalent Java code (integrated version)
+### 📅 Date Formula Configuration & Equivalent Java Code (Integrated Version)
 
-#### 1. Basic date and time formula
+#### 1. Basic Date and Time Formula
 
 ```string
 # -------------------------- 1. DATETIME - Construct Date and Time --------------------------
@@ -974,7 +984,6 @@ FORMULAS={
  */
 sheet.createRow(0).createCell(0).setCellValue("2023-02-15");
 JAbstractExcelFormula formula = factory.createFormulaInstance("EOMONTH(A1,0)");
-
 # -------------------------- 6. HOUR - Extract Hour --------------------------
 # Prerequisite: Cell A1 value is 14:30:00
 FORMULAS={
@@ -1005,7 +1014,6 @@ JAbstractExcelFormula formula = factory.createFormulaInstance("MINUTE(A1)");
  */
 sheet.createRow(0).createCell(0).setCellValue("14:30:45");
 JAbstractExcelFormula formula = factory.createFormulaInstance("SECOND(A1)");
-
 # -------------------------- 7. NETWORKDAYS - Calculate Working Days --------------------------
 # Prerequisite: A1=2023-05-01, A2=2023-05-07
 FORMULAS={
@@ -1029,7 +1037,6 @@ JAbstractExcelFormula formula = factory.createFormulaInstance("NETWORKDAYS(A1,A2
 sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
 sheet.createRow(1).createCell(0).setCellValue("2023-05-17");
 JAbstractExcelFormula formula = factory.createFormulaInstance("WORKDAY(A1,3,A2)");
-
 # -------------------------- 8. NOW - Get Current Date and Time --------------------------
 FORMULAS={
     D5:'NOW()'  # Gets the current system date + time
@@ -1050,7 +1057,6 @@ JAbstractExcelFormula formula = factory.createFormulaInstance("TODAY()");
  * Constructs the time 14:30:00 (Excel time serial number: 0-0.999)
  */
 JAbstractExcelFormula formula = factory.createFormulaInstance("TIME(14,30,0)");
-
 # -------------------------- 12. MONTH - Extract Month --------------------------
 # Equivalent Java Code
 /*
@@ -1088,7 +1094,7 @@ sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
 JAbstractExcelFormula formula = factory.createFormulaInstance("YEAR(A1)");
 ```
 
-### 🔤 17 string formulas
+### 🔤 17 String Formulas
 
 | Formula Name       | Syntax Format                      | Parameter Rules               | Example & Result                            | Corresponding Class Name       |
 |--------------------|------------------------------------|-------------------------------|---------------------------------------------|--------------------------------|
@@ -1110,7 +1116,7 @@ JAbstractExcelFormula formula = factory.createFormulaInstance("YEAR(A1)");
 | 📈 `UPPER`         | `UPPER(text)`                      | 1 parameter                   | `UPPER("email")` → "EMAIL"                  | `JUpperFormula`                |
 | 🔢 `VALUE`         | `VALUE(text)`                      | 1 parameter                   | `VALUE("¥1,000")` → 1000.0                  | `JValueFormula`                |
 
-### 🔤 Example of string formula configuration (integrated version)
+### 🔤 String Formula Configuration Example (Integrated Version)
 
 ```string
 # String Formula Configuration Instructions: FORMULAS = { Target Cell: 'Formula Expression' }
@@ -1162,7 +1168,7 @@ FORMULAS={
 }
 ```
 
-### 🔍 Logical formulas (3: IF, AND, OR)
+### 🔍 Logical Formulas (3: IF, AND, OR)
 
 | Formula Name | Syntax Format   | Parameter Rules | Example & Result                                                      | Corresponding Class Name |
 |--------------|-----------------|-----------------|-----------------------------------------------------------------------|--------------------------|
@@ -1170,7 +1176,7 @@ FORMULAS={
 | ✅ `AND`      | `AND(b1,b2...)` | ≥1 parameter(s) | `AND(TRUE,FALSE)` → FALSE                                             | `JAndFormula`            |
 | 🟡 `OR`      | `OR(b1,b2...)`  | ≥1 parameter(s) | `OR(TRUE,FALSE)` → TRUE                                               | `JORFormula`             |
 
-### 🧠 Logic&Search Formula Configuration Example (Integrated Version)
+### 🧠 Logic & Search Formula Configuration Example (Integrated Version)
 
 ```string
 # Formula Configuration Instructions: FORMULAS = { Target Cell: 'Formula Expression' }
@@ -1192,7 +1198,7 @@ FORMULAS={
 }
 ```
 
-## 📊 Chart type support
+## 📊 Chart Type Support
 
 | Chart Type    | Example                    | Purpose                      |
 |---------------|----------------------------|------------------------------|
@@ -1205,9 +1211,9 @@ FORMULAS={
 | Radar Chart   | Competency Assessment      | Multi-dimensional Evaluation |
 | 3D Chart      | Terrain Height Example     | 3D Data Presentation         |
 
-### basic structure
+### Basic Structure
 
-#### The chart configuration adopts Domain Specific Language (DSL) in JSON like format, and the basic structure is as follows
+#### The chart configuration adopts a Domain Specific Language (DSL) in JSON-like format. The basic structure is as follows:
 
 ```string
 EXPORT WITH GRAPH = {
@@ -1226,9 +1232,9 @@ EXPORT WITH GRAPH = {
 }
 ```
 
-# Explanation of Chart Configuration Keywords
+#### Chart Configuration Keyword Explanation
 
-## 1. TYPE
+##### 1. TYPE (Required)
 
 - **Description**: Specify the chart type
 - **Supported Types**:
@@ -1243,100 +1249,45 @@ EXPORT WITH GRAPH = {
     - `RADAR` (Radar Chart)
     - `SURFACE` (Surface Chart)
 
-## 2. TITLE (Required)
+##### 2. TITLE (Required)
 
 - **Description**: Title text of the chart
 - **Type**: String
 - **Format Requirement**: Must be enclosed in double quotes `"` or single quotes `'`
-- **Example**: `TITLE = "2023 Sales Data Statistics"`
+- **Example**: `TITLE = "2023年销售数据统计"`
 
-## 3. CATEGORY_AXIS (Optional)
+##### 3. CATEGORY_AXIS (Optional)
 
 - **Description**: Title text of the category axis (usually the X-axis)
 - **Applicable Scope**: Most chart types except Pie Chart
 - **Type**: String
 - **Format Requirement**: Must be enclosed in double quotes `"` or single quotes `'`
-- **Example**: `CATEGORY_AXIS = "Product Category"`
+- **Example**: `CATEGORY_AXIS = "产品类别"`
 
-## 4. VALUE_AXIS (Optional)
+##### 4. VALUE_AXIS (Optional)
 
 - **Description**: Title text of the value axis (usually the Y-axis)
 - **Applicable Scope**: Chart types except Pie Chart and Radar Chart
 - **Type**: String
 - **Format Requirement**: Must be enclosed in double quotes `"` or single quotes `'`
-- **Example**: `VALUE_AXIS = "Sales Volume (10,000 CNY)"`
+- **Example**: `VALUE_AXIS = "销售额(万元)"`
 
-## 5. CATEGORIES (Required)
+##### 5. CATEGORIES (Required)
 
 - **Description**: Categorical dimension data of the chart (X-axis data or grouping basis)
 - **Type**: Array
 - **Content**: A collection of categorical values containing string or numeric types
 - **Examples**:
-    - `CATEGORIES = ["Jan", "Feb", "Mar", "Apr"]`
+    - `CATEGORIES = ["1月", "2月", "3月", "4月"]`
     - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
 
-## 6. SERIES (Required)
+##### 6. SERIES (Required)
 
 - **Description**: Collection of data series for the chart, where each series represents a set of related data
 - **Type**: Array containing one or more data series objects
 - **Each series object includes**:
     - `NAME`: Series name (string type, must be enclosed in quotes)
     - `DATA`: Series data (array type, containing a collection of numeric values)
-
-## 1. TYPE（必填）
-
-- **说明**：指定图表类型
-- **支持类型**：
-    - `LINE`（折线图）
-    - `COLUMN`（柱状图）
-    - `BAR`（条形图）
-    - `BAR3D`（3D 条形图）
-    - `PIE`（饼图）
-    - `AREA`（面积图）
-    - `AREA3D`（3D 面积图）
-    - `SCATTER`（散点图）
-    - `RADAR`（雷达图）
-    - `SURFACE`（曲面图）
-
-## 2. TITLE（必填）
-
-- **说明**：图表的标题文本
-- **类型**：字符串
-- **格式要求**：需用双引号`"`或单引号`'`包裹
-- **示例**：`TITLE = "2023年销售数据统计"`
-
-## 3. CATEGORY_AXIS（可选）
-
-- **说明**：分类轴（通常为X轴）的标题文本
-- **适用范围**：除饼图外的大多数图表类型
-- **类型**：字符串
-- **格式要求**：需用双引号`"`或单引号`'`包裹
-- **示例**：`CATEGORY_AXIS = "产品类别"`
-
-## 4. VALUE_AXIS（可选）
-
-- **说明**：数值轴（通常为Y轴）的标题文本
-- **适用范围**：除饼图、雷达图外的图表类型
-- **类型**：字符串
-- **格式要求**：需用双引号`"`或单引号`'`包裹
-- **示例**：`VALUE_AXIS = "销售额(万元)"`
-
-## 5. CATEGORIES（必填）
-
-- **说明**：图表的分类维度数据（X轴数据或分组依据）
-- **类型**：数组
-- **内容**：包含字符串或数值类型的分类值集合
-- **示例**：
-    - `CATEGORIES = ["1月", "2月", "3月", "4月"]`
-    - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
-
-## 6. SERIES（必填）
-
-- **说明**：图表的数据系列集合，每个系列代表一组相关数据
-- **类型**：数组，包含一个或多个数据系列对象
-- **每个系列对象包含**：
-    - `NAME`：系列名称（字符串类型，需用引号包裹）
-    - `DATA`：系列数据（数组类型，包含数值集合）
 
 ```string 
 // ============================================================================
@@ -1935,7 +1886,7 @@ EXPORT WITH GRAPH = {
 | `thin_vert_bands`     | Thin vertical bands      | `FillPatternType.THIN_VERT_BANDS`     |
 | `thin_backward_diag`  | Thin backward diagonal   | `FillPatternType.THIN_BACKWARD_DIAG`  |
 | `thin_forward_diag`   | Thin forward diagonal    | `FillPatternType.THIN_FORWARD_DIAG`   |
-| `squares`             | Square texture fill      | `FillPatternType.SQUARES`             |
+| `squares`             | Square texture fill      | `FillPatternType.SQUARES`            |
 | `diamonds`            | Diamond texture fill     | `FillPatternType.DIAMONDS`            |
 | `less_dots`           | Low-density dot fill     | `FillPatternType.LESS_DOTS`           |
 | `least_dots`          | Minimum-density dot fill | `FillPatternType.LEAST_DOTS`          |
@@ -2002,7 +1953,7 @@ EXPORT WITH GRAPH = {
 | `grey80Percent`       | 80% Grey                    | 63          | `IndexedColors.GREY_80_PERCENT`       |
 | `automatic`           | Automatic Color             | 64          | `IndexedColors.AUTOMATIC`             |
 
-### cell style
+### Cell Style
 
 ```string
 EXPORT  WITH SHEET="学生表",HEADER=true,
@@ -2095,6 +2046,13 @@ SERIES=[{NAME="2023", DATA=[45000, 52000, 48000, 51000]}]
 },
 FOOTER="Confidential - Internal Use Only"
 ```
+
+# **Donation ☕**
+
+Thank you for using this open-source project! It is completely free and will continue to be maintained, but the developer
+does need your support.
+
+---
 
 ## **How to Support Us**
 
