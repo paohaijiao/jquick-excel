@@ -1,121 +1,116 @@
-# 🚀 jquick-excel: 轻量级、高性能的 Java Excel 操作框架
+<p align="center">
+  <img src="src/main/resources/static/jquick-logo.svg" width="180" alt="JQuick-Excel logo" />
+</p>
 
-简体中文 | [English](./README_EN.md)
+<h1 align="center">JQuick-Excel</h1>
+
+<p align="center">
+  <a href="https://central.sonatype.com/artifact/io.github.paohaijiao/jquick-excel"><img src="https://img.shields.io/maven-central/v/io.github.paohaijiao/jquick-excel.svg?label=Maven%20Central" alt="Maven Central" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License" /></a>
+  <img src="https://img.shields.io/badge/JDK-8%2B-orange.svg" alt="JDK 8+" />
+</p>
+
+<p align="center">
+  <b>English</b> | <a href="./README-CN.md">Chinese</a>
+</p>
 
 [![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
-> 已被收录至 [Awesome Java](https://github.com/akullpp/awesome-java) 的 **Document Processing** 精选章节
+> Featured in the [Awesome Java](https://github.com/akullpp/awesome-java) curated list — **Document Processing**
 
-⚡ JQuickExcel 是一款轻量级、高扩展性的 Java Excel 处理框架，支持 .xls 和 .xlsx 格式，无需复杂依赖。它提供基于 XML
-配置的声明式导入/导出能力，适用于快速开发与复杂数据转换场景。
+# Project Introduction
 
-## 📦 项目简介
+JQuick-Excel is a lightweight Java framework for importing and exporting `xls` and `xlsx` workbooks. It combines an XML service definition with a declarative DSL for mapping, conversion, validation, formulas, styles, merge summaries, charts, and footers.
 
-jquick-excel 是一个专为 Java 开发者设计的轻量级 Excel 操作框架。它结合了 **易用性**、**灵活性** 和 **高性能**，支持主流
-Excel 格式（xls/xlsx），并提供丰富的 API 帮助开发者快速实现复杂的 Excel 导入导出功能。
+The XML definition keeps Excel rules close to the service contract. Java callers create a proxy from that definition and pass application data, streams, and context values into the import or export operation.
 
-## ✨ 核心特性
+## Supported Workflows
 
-✅ 双格式支持 - 完美兼容 .xls 和 .xlsx 格式  
-✅ 声明式配置 - 使用简洁的 DSL 语法定义导入导出规则  
-✅ 高性能处理 - 优化大数据量读写，内存占用低  
-✅ 丰富验证规则 - 内置 20+ 种数据验证规则  
-✅ 强大公式支持 - 支持 50+ 种 Excel 公式  
-✅ 图表生成 - 支持 10 种图表类型一键生成  
-✅ 样式自定义 - 完整的单元格样式控制  
-✅ 单元格合并 - 灵活的多维数据合并策略  
-✅ 上下文转换 - 支持动态数据转换和映射  
-✅ 🎨 42 套精美主题 - 内置多色系主题模板，一键切换导出风格  
-✅ ⚙️ 全局配置中心 - 统一控制流式导出、OPCPackage 导入、样式缓存等性能参数  
-✅ 📦 分批导入 API - 支持回调式分页消费，避免大文件一次性加载  
-✅ 🔥 Transform AST 缓存 - 导入/导出时自动缓存解析结果，万级单元格零重复解析  
-✅ 📐 列数行数懒缓存 - 同 Sheet 内多次读取只做一次全表扫描
+- Import a worksheet into `List<JQuickRow>`.
+- Export application data to a workbook.
+- Select a sheet by name or index.
+- Map headers and fields in either direction.
+- Transform values with context-aware expressions.
+- Validate cells, rows, columns, and rectangular ranges.
+- Render formulas, styles, merges, charts, and footers.
 
-## 🛠️ 技术栈
+## Design Goals
 
-[![Java](https://img.shields.io/badge/Java-1.8+-blue.svg?style=for-the-badge&logo=openjdk)](https://www.java.com/)
-[![Apache POI](https://img.shields.io/badge/Apache%2520POI-5.2.3-green.svg?style=for-the-badge&logo=apache)](https://poi.apache.org/)
-[![Lombok](https://img.shields.io/badge/Lombok-1.18.24-red.svg?style=for-the-badge&logo=lombok)](https://projectlombok.org/)
-[![License](https://img.shields.io/github/license/paohaijiao/jquick-excel.svg?style=for-the-badge)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/commits/main)
-[![Stars](https://img.shields.io/github/stars/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/stargazers)
-[![Forks](https://img.shields.io/github/forks/paohaijiao/jquick-excel.svg?style=for-the-badge)](https://github.com/paohaijiao/jquick-excel/network/members)
+The DSL is intended for readable configuration rather than generated Java code. Keep rule keywords, delimiters, and range syntax exact. Use XML for service binding and Java for streams, data objects, and dictionaries.
 
-## 📥 快速开始
+# Core Features
 
-### Maven 依赖
+- Dual workbook support for `xls` and `xlsx`.
+- Declarative import and export rules through `IMPORT WITH` and `EXPORT WITH`.
+- Field mapping, formatting, and evaluator-based transformations.
+- Twenty built-in validation rules with explicit range scopes.
+- Mathematical, date/time, text, logical, and lookup formulas.
+- Ten graph types configured by `GRAPH` DSL.
+- Row, column, cell, and range style settings.
+- Nine merge aggregation strategies.
+- Forty-two built-in export themes.
+- Streaming export, large-file import, and style-cache configuration.
+
+## Import Capabilities
+
+Imports can select a worksheet, treat the first row as headers, map headers to fields, transform values, and validate the selected areas before the result is consumed.
+
+## Export Capabilities
+
+Exports can map source fields to headers and add output formatting, formulas, style rules, merge summaries, charts, and footer text in one rule.
+
+## Configuration Capabilities
+
+`JQuickExcelConfig` centralizes streaming export, import memory behavior, and cell-style cache settings. It can be configured once before repeated operations.
+
+# Quick Start
+
+## Maven
 
 ```xml
 <dependency>
   <groupId>io.github.paohaijiao</groupId>
   <artifactId>jquick-excel</artifactId>
-  <version>最新版本</version>
+  <version>3.6.0</version>
 </dependency>
 ```
 
-### gradle 依赖
+## Gradle
 
 ```gradle
-implementation 'io.github.paohaijiao:jquick-excel:最新版本'
+implementation 'io.github.paohaijiao:jquick-excel:3.6.0'
 ```
 
-### 🚀 快速集成
+## XML Configuration
 
-> 在项目的 resources 目录下创建 jquick-excel.xml 配置文件，这是整个 Excel 导入导出功能的“指挥中心”。
+Create `jquick-excel.xml` in the resources directory.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
 <excels namespace="com.github.paohaijiao.xml.service.JQuickExcelExportService">
-
     <excel name="exportExcel" returnClass="void">
-        EXPORT  WITH
-            SHEET="学生表",
+        <![CDATA[
+            EXPORT WITH
+            SHEET="Students",
             HEADER=true,
-            MAPPING={
-                "id":"主键",
-                "name":"姓名",
-                "gender":"性别",
-                "age":"年龄",
-                "enrollmentDate":"入学时间",
-                "className":"班级",
-                "ignoreField":"是否忽略"
-            },
-            FORMULAS={
-                D5:'ABS(D2)'
-            },
-            STYLE={
-                ROW 1: {
-                    fontName: Arial,
-                    fontHeightInPoints: 12,
-                    italic: true,
-                    color: yellow,
-                    bold: true
-                }
-            }
+            MAPPING={"id":"ID","name":"Name","age":"Age"}
+        ]]>
     </excel>
-    <excel name="importExcel" returnClass="jva.util.List">
-        IMPORT WITH
-        HEADER=true,
-        SHEET='Sheet1',
-        MAPPING = {
-            "学号": "no",
-            "姓名": "name",
-            "性别": "sex",
-            "年龄": "age",
-            "出生日期": "birthday"
-        },
-        TRANSFORM={
-            "sex":trans(${dict},${sex}),
-            "birthday":dateFormat(${birthday},'yyyy-MM-dd')
-        }
+    <excel name="importExcel" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH
+            SHEET="Students",
+            HEADER=true,
+            MAPPING={"ID":"id","Name":"name","Age":"age"}
+        ]]>
     </excel>
 </excels>
-
 ```
 
-> 服务接口是连接 XML 配置与实际业务逻辑的桥梁，通过接口方法声明，框架能够自动解析 XML 配置并生成对应的代理实现。接口方法使用
-> @Param 注解标注参数，这些参数可以在 XML 配置的动态 SQL 或条件查询中使用。
+## Service Interface
+
+The XML `namespace` names the service interface that is exposed as a proxy.
 
 ```java
 import com.github.paohaijiao.statement.JQuickRow;
@@ -125,1952 +120,711 @@ import java.util.List;
 
 public interface JQuickExcelExportService {
 
-    public void exportExcel(@Param("field")String field, @Param("value")String value);
+    void exportExcel(@Param("field") String field, @Param("value") String value);
 
-    public List<JQuickRow> importExcel(@Param("field")String field, @Param("value")String value);
-}
-
-```
-
-> 一切准备就绪，现在只需几行代码，就能让 Excel 导入导出功能“活”起来！
-> 框架会自动完成数据转换、样式渲染、文件生成等复杂操作
-
-```java
- public static List<JStudentModel> getData() {
-        List<JStudentModel> students = new ArrayList<>();
-        students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
-        students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
-        students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
-        return students;
-    }
-    @Test
-    public void exportExcel() throws FileNotFoundException {
-        List<JQuickRow> rows= JQuickRow.toRows( JObjectConverter.convert(getData()));
-        OutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
-        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows,fileOutputStream);
-        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
-        System.out.println(factory);
-        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
-        excelExportService.exportExcel("1","2");
-        System.out.println("导出成功");
-    }
-    @Test
-    public void importExcel() throws FileNotFoundException {
-        InputStream is = JMappingTest.class.getClassLoader().getResourceAsStream("templates/student.xlsx");
-        Map<String,Object> sex=new HashMap<>();
-        sex.put("男","1");
-        sex.put("女","2");
-        JContext context = new JContext();
-        context.put("dict",sex);
-        JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context,is);
-        JQuickFactory factory = new JQuickXmlFactory(parser,"jquick-excel.xml");
-        System.out.println(factory);
-        JQuickExcelExportService excelExportService = factory.createApi(JQuickExcelExportService.class);
-        List<JQuickRow> list=excelExportService.importExcel("1","2");
-        System.out.println("导入成功:"+list.size());
-    }
-```
-
-## 📚 功能总览
-
-### 🔄 导入功能
-
-- 智能映射 - 字段自动映射与转换
-- 数据验证 - 20+ 种验证规则（邮箱、手机、正则等）
-- 格式转换 - 日期、数字、字符串格式化
-- 批量处理 - 支持大数据量分批次导入
-
-### 📤 导出功能
-
-- 模板导出 - 基于配置模板快速导出
-- 公式计算 - 支持 50+ 种 Excel 公式
-- 图表生成 - 10 种图表类型
-- 样式定制 - 完整的单元格样式控制
-- 数据合并 - 多种合并策略（最大、最小、平均等）
-
-## 🎨 主题模板 / Theme Templates
-
-JQuickExcel 内置 42 套精美主题模板，涵盖经典商务、蓝/绿/青/红橙/粉紫/金棕色系及特殊风格，开箱即用。
-
-### 主题编码汇总 / Theme Code Summary
-
-| 序号 / No. | Code | 中文名称 / Chinese Name |
-|---------|------|----------------------|
-| 1 | `default` | 经典皇家蓝 |
-| 2 | `minimalistGrey` | 极简灰 |
-| 3 | `slate` | 板岩灰 |
-| 4 | `charcoal` | 炭灰 |
-| 5 | `navyBlue` | 海军蓝 |
-| 6 | `oceanBlue` | 海洋蓝 |
-| 7 | `skyBlue` | 天空蓝 |
-| 8 | `azure` | 蔚蓝 |
-| 9 | `steelBlue` | 钢蓝 |
-| 10 | `denim` | 牛仔蓝 |
-| 11 | `indigo` | 靛蓝 |
-| 12 | `periwinkle` | 长春花蓝 |
-| 13 | `forestGreen` | 森林绿 |
-| 14 | `emerald` | 祖母绿 |
-| 15 | `jade` | 翡翠绿 |
-| 16 | `mintFresh` | 清新薄荷 |
-| 17 | `sage` | 鼠尾草绿 |
-| 18 | `oliveGreen` | 橄榄绿 |
-| 19 | `tropicalTeal` | 热带青 |
-| 20 | `turquoise` | 绿松石 |
-| 21 | `cyan` | 青色 |
-| 22 | `sunsetOrange` | 落日橙 |
-| 23 | `coral` | 珊瑚 |
-| 24 | `peach` | 蜜桃 |
-| 25 | `crimsonRed` | 深红 |
-| 26 | `wineRed` | 酒红 |
-| 27 | `sakuraPink` | 樱花粉 |
-| 28 | `roseQuartz` | 粉晶 |
-| 29 | `lavenderPurple` | 薰衣草紫 |
-| 30 | `amethyst` | 紫水晶 |
-| 31 | `plum` | 紫梅 |
-| 32 | `royalGold` | 皇家金 |
-| 33 | `champagne` | 香槟金 |
-| 34 | `amber` | 琥珀 |
-| 35 | `mustard` | 芥末黄 |
-| 36 | `bronze` | 青铜 |
-| 37 | `vintageSepia` | 复古棕 |
-| 38 | `espresso` | 浓缩咖啡 |
-| 39 | `mahogany` | 红木 |
-| 40 | `terracotta` | 陶土 |
-| 41 | `midnightDark` | 午夜深色 |
-| 42 | `pearl` | 珍珠 |
-
-👉 [查看全部主题模板预览 / View all theme template previews](./template.md)
-
-**方式一：DSL 模板中指定**
-```java
-JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(template_code, rows, fileOutputStream);
-```
-
-**方式二：通过 JExcelExportModel 配置主题**
-```java
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-config.setTheme("oceanBlue");  // 海洋蓝主题，参见上方编码表
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-handler.exportData();
-```
-
-## 📊 性能基准测试
-
-JQuick-Excel 提供完善的性能基准测试，覆盖导出/导入全链路，支持对比 XSSF 与 SXSSF 流式、OPCPackage ON/OFF 等关键模式。
-
-**核心指标 / Key Metrics：** 耗时、峰值内存、文件大小、吞吐量、内存效率
-
-**亮点 / Highlights：**
-
-- 🚀 **SXSSF 流式导出 / SXSSF Streaming Export**：10 万行数据内存降低 ~75%，速度提升 10-15% / ~75% memory reduction at 100K rows, 10-15% speed improvement
-- 💾 **OPCPackage 导入 / OPCPackage Import**：导入内存稳定降低 50%+，速度提升 15-20% / 50%+ consistent memory reduction, 15-20% speed improvement
-- 🎨 **样式缓存优化 / Style Cache Optimization**：样式数量从 ~90 万降至 ~10 份，彻底解决 64000 上限问题 / Style count reduced from ~900K to ~10, completely solving the 64000 limit issue
-
-| 数据量 / Rows | 导出模式 / Export | 耗时 / Time(ms) | 峰值内存 / Peak Mem(MB) | 内存降幅 / Memory Reduction |
-|--------------|----------------|----------------|----------------------|---------------------------|
-| 10,000 | XSSF | 3,200 | 512.3 | — |
-| 10,000 | SXSSF Streaming | 2,800 | 128.5 | -74.9% |
-| 100,000 | OPCPackage ON (导入) | 15,200 | 389.1 | -50%+ vs OFF |
-
-> 以上为示例数据，实际结果取决于硬件与 JVM 配置。
->
-> The above are example values. Actual results depend on hardware and JVM configuration.
-
-👉 [查看完整性能基准测试报告 / View full benchmark report](./benchmark.md)
-
-### 大数据量导入优化
-
-JQuickExcel 在大数据量导入场景下实施了多项无损性能优化，**无 API 侵入、零配置即可享受**：
-
-| 优化项 | 说明 | 收益 |
-|--------|------|------|
-| **Transform AST 缓存** | 相同 transform 表达式仅做一次 ANTLR 词法/语法解析，ParseTree 跨调用复用 | 10 万行带 transform：20 万次解析 → 2 次 |
-| **列数/行数懒缓存** | `getUsedColumnCount` / `getLastRowNum` 首次计算后缓存，同 Sheet 内多次读取仅做一次全表扫描 | 省掉一次完整 O(行×列) 遍历 |
-| **DataFormatter 复用** | 验证范围内不再为每个单元格 `new DataFormatter()`，复用静态共享实例 | 消除万级临时对象与 GC 压力 |
-| **循环常数优化** | `getTransforms` 等调用提到外层循环，`headers.size()` 提取为局部变量 | 每单元格省 1~2 次方法调用 |
-| **MissingCellPolicy** | 改用 `RETURN_NULL_AND_BLANK`，稀疏表不再生成无意义空 Cell 对象 | 稀疏表百万级对象消除 |
-
-如需手动控制，可通过 `JQuickExcelConfig` 切换全局参数（参见下方「全局配置中心」章节）。
-
-## ⚙️ 全局配置中心
-
-`JQuickExcelConfig` 是 JQuick-Excel 的全局单例配置中心，用于统一控制导入导出性能参数，无需在每次调用时重复设置。
-
-```java
-JQuickExcelConfig cfg = JQuickExcelConfig.getInstance();
-
-// 导出：超过 5000 行自动切 SXSSF 流式写入
-cfg.setStreamingExportEnabled(true)
-   .setStreamingRowAccessWindowSize(100)    // 内存保留 100 行
-   .setStreamingExportThreshold(5000);
-
-// 导入：启用 OPCPackage 共享解析降低峰值内存
-cfg.setBigFileImportEnabled(true)
-   .setImportBatchThreshold(20000);        // 建议分批的行数阈值
-
-// 样式缓存：避免 CellStyle 超 64000 上限
-cfg.setCellStyleCacheEnabled(true);
-```
-
-### 配置项说明
-
-| 配置项 | 类型 | 默认值 | 说明 |
-|--------|------|--------|------|
-| `streamingExportEnabled` | `boolean` | `true` | 超过阈值时自动切换 SXSSF 流式写入 |
-| `streamingRowAccessWindowSize` | `int` | `100` | SXSSF 内存中保留的行数窗口 |
-| `streamingExportThreshold` | `int` | `5000` | 触发流式导出的行数阈值（≤0 关闭自动切换） |
-| `streamingCompressTempFiles` | `boolean` | `true` | 流式写入时是否压缩临时文件 |
-| `bigFileImportEnabled` | `boolean` | `true` | 导入时采用 OPCPackage 共享解析降低峰值内存 |
-| `importBatchThreshold` | `int` | `20000` | 建议使用分批导入的行数阈值（仅供参考） |
-| `cellStyleCacheEnabled` | `boolean` | `true` | CellStyle 缓存开关，避免 64000 样式上限 |
-
-> **提示**：`resetDefault()` 可在测试场景下将配置还原为默认值。
-
-## 🎯 导入使用示例
-
-### 基础语法
-
-```string
-IMPORT [WITH option1, option2, ...]
-```
-
-### 配置项说明
-
-| 项            | 语法                      | 描述                      |
-|--------------|-------------------------|-------------------------|
-| `SHEET`      | `SHEET = (字符串 \| 数字)`   | 指定工作表（名称/索引）            |
-| `HEADER`     | `HEADER = 布尔值`          | 是否包含表头 (`true`/`false`) |
-| `MAPPING`    | `MAPPING = { 映射关系 }`    | 源字段 ↔ 目标字段映射            |
-| `TRANSFORM`  | `TRANSFORM = { 转换规则 }`  | 数据转换规则                  |
-| `VALIDATION` | `VALIDATION = { 验证规则 }` | 数据验证规则                  |
-
-### SHEET 语法
-
-```string
-IMPORT WITH SHEET="Sheet1"
-```
-
-### HEADER 语法
-
-```string
-IMPORT WITH HEADER=true
-```
-
-### 字段映射语法
-
-```string
-IMPORT WITH MAPPING = {
-"学号": "no",
-"姓名": "name",
-"性别": "sex",
-"年龄": "age",
-"出生日期": "birthday"
+    List<JQuickRow> importExcel(@Param("field") String field, @Param("value") String value);
 }
 ```
 
-### 转换规则语法（支持 JEvaluator 所有方法）
+## Export Through XML
 
-```string
-IMPORT WITH TRANSFORM={
-"sex": trans(${dict},${sex}),
-"birthday": dateFormat(${birthday},'yyyy-MM-dd')
+The export parser receives converted rows and an output stream. `JQuickXmlFactory` creates the service proxy from the XML file.
+
+```java
+import com.github.paohaijiao.convert.JObjectConverter;
+import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.xml.JQuickFactory;
+import com.github.paohaijiao.xml.JQuickXmlFactory;
+import com.github.paohaijiao.xml.parse.JQuickParseHandler;
+import com.github.paohaijiao.xml.parse.excel.JQuickExcelExportXmlParseFactory;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class XmlExportExample {
+    public static void main(String[] args) throws Exception {
+        List<Map<String, Object>> data = new ArrayList<>();
+        Map<String, Object> student = new LinkedHashMap<>();
+        student.put("id", "1001");
+        student.put("name", "Alice");
+        student.put("age", 20);
+        data.add(student);
+
+        List<JQuickRow> rows = JQuickRow.toRows(JObjectConverter.convert(data));
+        try (OutputStream output = new FileOutputStream("students.xlsx")) {
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, output);
+            JQuickFactory factory = new JQuickXmlFactory(parser, "jquick-excel.xml");
+            JQuickExcelExportService service = factory.createApi(JQuickExcelExportService.class);
+            service.exportExcel("field", "value");
+        }
+    }
 }
 ```
 
-### 导入验证
+## Import Through XML
 
-#### 支持的验证规则
+The import parser receives a `JContext` and an input stream. Context values are available to DSL transformations.
 
-| 规则类型  | 示例                               | 说明      |
-|-------|----------------------------------|---------|
-| 布尔验证  | boolean{required:true}           | 验证布尔值   |
-| 日期格式  | date_format{format:'yyyy-MM-dd'} | 日期格式验证  |
-| 数值范围  | range{min:1, max:100}            | 数值范围验证  |
-| 字典验证  | dict{map:{'1':'男','2':'女'}}      | 值必须在字典中 |
-| 正则表达式 | regex{pattern:'^\\d+$'}          | 正则匹配验证  |
-| 长度验证  | max_length{maxLength:10}         | 字符串长度验证 |
-| 邮箱验证  | email{}                          | 邮箱格式验证  |
-| 手机验证  | mobile{}                         | 手机号格式验证 |
+```java
+import com.github.paohaijiao.context.JContext;
+import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.xml.JQuickFactory;
+import com.github.paohaijiao.xml.JQuickXmlFactory;
+import com.github.paohaijiao.xml.parse.JQuickParseHandler;
+import com.github.paohaijiao.xml.parse.excel.JQuickExcelImportXmlParseFactory;
 
-#### 验证规则语法
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-```string
-// 行验证
-ROW 5 - 验证第5行
-ROW 1..10 - 验证第1行到第10行
-// 列验证
-COL A - 验证A列
-COL A..D - 验证A列到D列
-// 单元格验证
-C1 - 验证第1行C列单元格
-// 范围验证
-A1:B5 - 验证A1到B5的矩形区域
+public class XmlImportExample {
+    public static void main(String[] args) {
+        try (InputStream input = XmlImportExample.class.getClassLoader()
+                .getResourceAsStream("students.xlsx")) {
+            Map<String, Object> gender = new HashMap<>();
+            gender.put("Male", "1");
+            gender.put("Female", "2");
+            JContext context = new JContext();
+            context.put("dict", gender);
+
+            JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(context, input);
+            JQuickFactory factory = new JQuickXmlFactory(parser, "jquick-excel.xml");
+            JQuickExcelExportService service = factory.createApi(JQuickExcelExportService.class);
+            List<JQuickRow> rows = service.importExcel("field", "value");
+            System.out.println(rows.size());
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+}
 ```
 
-#### 验证规则配置示例
+# Usage Details
+
+## Read Excel
+
+Use `IMPORT WITH` to select a sheet, interpret headers, map fields, transform values, and validate input.
+
+```string
+    IMPORT WITH
+    SHEET="Students",
+    HEADER=true,
+    MAPPING={"ID":"id","Name":"name","Age":"age"},
+    TRANSFORM={"name":toUpper(${name})}
+```
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `SHEET` | Selects a worksheet by name or index. | `SHEET="Students"` |
+| `HEADER` | Declares whether the first row is a header. | `HEADER=true` |
+| `MAPPING` | Maps headers to target fields. | `MAPPING={"ID":"id"}` |
+| `TRANSFORM` | Converts imported values. | `TRANSFORM={"name":toUpper(${name})}` |
+| `VALIDATION` | Applies rules to a selected scope. | `VALIDATION={C2:C4:{integer{required:true}}}` |
+
+### Validation Scopes
+
+Validation and formula targets support row, column, cell, and rectangle syntax.
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| Row | One row or a row interval. | `ROW 5`, `ROW 1..10` |
+| Column | One column or a column interval. | `COL A`, `COL A..D` |
+| Cell | One cell. | `C1` |
+| Range | A rectangular cell range. | `A1:B5` |
 
 ```string
 IMPORT WITH VALIDATION={
-ROW 1..10 {
-required {required: true, msg: "不能为空"},
-range {required: true, msg: "数值超出范围", map: {min: 1, max: 100}}
-},
-COL A {
-required {required: true, msg: "A列不能为空"}
-},
-B1:C5 {
-regex {required: true, msg: "格式错误", map: {pattern: "^\\d+$"}}
-}
+  ROW 2..100:{
+    integer{required:true,msg:'Age must be an integer'}
+  },
+  C2:C100:{
+    email{required:true,msg:'Invalid email'}
+  }
 }
 ```
 
-#### 验证规则类型
+### Validation Rules
 
-#### 验证规则列表
+All validation rules use the same three-column form. `required`, `msg`, and `map` are supplied as needed by a rule.
 
-| 规则名称             | 参数键                 | 参数类型             | 描述                      |
-|------------------|---------------------|------------------|-------------------------|
-| `boolean`        | -                   | -                | 验证值是否为布尔值               |
-| `date_format`    | `format`            | `String`         | 验证字符串是否符合指定的日期格式        |
-| `max_date`       | `maxDate`, `format` | `Date`, `String` | 验证日期是否不超过指定的最大日期        |
-| `min_date`       | `minDate`, `format` | `Date`, `String` | 验证日期是否不小于指定的最小日期        |
-| `integer`        | -                   | -                | 验证值是否为整数                |
-| `decimal`        | -                   | -                | 验证值是否为小数                |
-| `max_value`      | `maxValue`          | `BigDecimal`     | 验证数值是否不大于指定的最大值         |
-| `min_value`      | `minValue`          | `BigDecimal`     | 验证数值是否不小于指定的最小值         |
-| `dict`           | key-value pairs     | `Map`            | 验证值是否存在于提供的字典中          |
-| `email`          | -                   | -                | 验证字符串是否为有效的电子邮件格式       |
-| `mobile`         | -                   | -                | 验证字符串是否为有效的手机号码格式（中国标准） |
-| `max_length`     | `maxLength`         | `BigDecimal`     | 验证字符串长度是否不超过指定的最大长度     |
-| `min_length`     | `minLength`         | `BigDecimal`     | 验证字符串长度是否不小于指定的最小长度     |
-| `regex`          | `pattern`           | `String`         | 验证字符串是否匹配指定的正则表达式       |
-| `start_with`     | `startWith`         | `String`         | 验证字符串是否以指定的子字符串开头       |
-| `not_start_with` | `notStartWith`      | `String`         | 验证字符串是否不以指定的子字符串开头      |
-| `end_with`       | `endWith`           | `String`         | 验证字符串是否以指定的子字符串结尾       |
-| `not_end_with`   | `notEndWith`        | `String`         | 验证字符串是否不以指定的子字符串结尾      |
-| `contain`        | `contains`          | `String`         | 验证字符串是否包含指定的子字符串        |
-| `not_contain`    | `notContain`        | `String`         | 验证字符串是否不包含指定的子字符串       |
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `boolean` | Validates a boolean value. | `boolean{required:true}` |
+| `date_format` | Validates a date string format. | `date_format{required:true,map:{'format':'yyyy-MM-dd'}}` |
+| `max_date` | Validates a maximum date. | `max_date{required:true,map:{'format':'yyyy-MM-dd',maxDate:2025-01-01}}` |
+| `min_date` | Validates a minimum date. | `min_date{required:true,map:{'format':'yyyy-MM-dd',minDate:2022-01-01}}` |
+| `integer` | Validates an integer. | `integer{required:true}` |
+| `decimal` | Validates a decimal number. | `decimal{required:true}` |
+| `max_value` | Validates a numeric maximum. | `max_value{required:true,map:{'maxValue':50}}` |
+| `min_value` | Validates a numeric minimum. | `min_value{required:true,map:{'minValue':2}}` |
+| `dict` | Validates dictionary membership. | `dict{required:true,map:{'1':'Male','2':'Female'}}` |
+| `email` | Validates an email address. | `email{required:true}` |
+| `mobile` | Validates a mobile number. | `mobile{required:true}` |
+| `max_length` | Validates maximum string length. | `max_length{required:true,map:{'maxLength':7}}` |
+| `min_length` | Validates minimum string length. | `min_length{required:true,map:{'minLength':1}}` |
+| `regex` | Validates a regular expression. | `regex{required:true,map:{pattern:'^\\d+$'}}` |
+| `start_with` | Requires a prefix. | `start_with{required:true,map:{startWith:'A'}}` |
+| `not_start_with` | Forbids a prefix. | `not_start_with{required:true,map:{notStartWith:'A'}}` |
+| `end_with` | Requires a suffix. | `end_with{required:true,map:{endWith:'Z'}}` |
+| `not_end_with` | Forbids a suffix. | `not_end_with{required:true,map:{notEndWith:'Z'}}` |
+| `contain` | Requires a substring. | `contain{required:true,map:{contains:'key'}}` |
+| `not_contain` | Forbids a substring. | `not_contain{required:true,map:{notContain:'key'}}` |
 
-##### 布尔验证
+## Write Excel
+
+Use `EXPORT WITH` to define sheets, headers, mappings, formats, transformations, formulas, styles, merges, graphs, and footer text.
 
 ```string
-IMPORT WITH VALIDATION={   
-    C2:C4:{
-        boolean{required:true,msg:'性别非法',map:{'1':'男','2':'女'}}
-    }
-}
-```
-
-##### 日期格式验证
-
-```string
-IMPORT WITH VALIDATION={   E2:E4:{
-date_format{required:true,msg:'不符合日期格式',map:{'format':'yyyy-MM-dd'}   }
-}
-```
-
-##### 最大日期验证
-
-```string
-IMPORT WITH VALIDATION={   E2:E4:{
-    max_date{required:true,msg:'超过最大日期',map:{'format':'yyyy-MM-dd',maxDate:2025-01-01}   }
-}
-```
-
-##### 最小日期验证
-
-```string
-IMPORT WITH VALIDATION={   E2:E4:{
-    min_date{required:true,msg:'不能小于最小日期',map:{'format':'yyyy-MM-dd',minDate:2022-01-01}   }
-}
-```
-
-##### 整数验证
-
-```string
-IMPORT WITH VALIDATION={   D2:D4:{
-    integer{required:true,msg:'要求该字段是整形'   }
-}
-```
-
-##### 小数验证
-
-```string
-IMPORT WITH VALIDATION={   D2:D4:{
-    decimal{required:true,msg:'要求该字段是整形'   }
-}
-```
-
-##### 最大值验证
-
-```string
-IMPORT WITH VALIDATION={   D2:D4:{
-    max_value{required:true,msg:'年龄不能超过最大值',map:{'maxValue':50}   }
-}
-```
-
-##### 最小值验证
-
-```string
-IMPORT WITH VALIDATION={   D2:D4:{
-    min_value{required:true,msg:'年龄不能小于xx',map:{'minValue':2}   }
-}
-```
-
-##### 字典验证
-
-```string
-IMPORT WITH VALIDATION={   C2:C4:{
-    dict{required:true,msg:'性别非法',map:{'1':'男','2':'女'}   }
-}
-```
-
-##### 邮箱验证
-
-```string
-IMPORT WITH VALIDATION={   C2:C4:{
-    email{required:true,msg:'邮箱格式不正确'   }
-}
-```
-
-##### 手机号验证
-
-```string
-IMPORT WITH VALIDATION={   C2:C4:{
-    mobile{required:true,msg:'手机格式不正确'   }
-}
-```
-
-##### 最大长度验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-    max_length{required:true,msg:'最大长度有误',map:{'maxLength':7}   }
-}
-```
-
-##### 最小长度验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-    min_length{required:true,msg:'最小长度有误',map:{'minLength':1}   }
-}
-```
-
-##### 正则表达式验证
-
-```string
-IMPORT WITH VALIDATION={   D2:D4:{
-    regex{required:true,msg:'不符合正则表达式',map:{pattern:'^\d+$'}   }
-}
-```
-
-##### 开头字符串验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-   start_with{required:true,msg:'开始字符串有误',map:{startWith:'张三'}   }
-}
-```
-
-##### 非开头字符串验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-   not_start_with{required:true,msg:'不能以该字符串开始',map:{notStartWith:'张三'}   }
-}
-```
-
-##### 结尾字符串验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-   end_with{required:true,msg:'不符合以张三结束的字符',map:{endWith:'张三'}   }
-}
-```
-
-##### 非结尾字符串验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-   not_end_with{required:true,msg:'不符合表达式',map:{notEndWith:'张三'}   }
-}
-```
-
-##### 包含字符串验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-   not_end_with{required:true,msg:'不符合表达式',map:{notEndWith:'张三'}   }
-}
-```
-
-##### 不包含字符串验证
-
-```string
-IMPORT WITH VALIDATION={   B2:B4:{
-   not_contain{required:true,msg:'不应该包含该关键字',map:{notContain:'张三'}   }
-}
-```
-
-### 基础导入示例
-
-#### 🔧 导入配置
-
-```java
-String rule = """
-    IMPORT WITH 
-    SHEET="Sheet1",
+    EXPORT WITH
+    SHEET="Report",
     HEADER=true,
-    MAPPING={
-        "学号": "no",
-        "姓名": "name",
-        "性别": "sex",
-        "年龄": "age",
-        "出生日期": "birthday"
-    }  """
-JQuickExcelCommonImportExecutor executor = new JQuickExcelCommonImportExecutor();
-JExcelImportModel model = (JExcelImportModel) executor.execute(rule);
-InputStream is = getClass().getClassLoader().getResourceAsStream("templates/student.xlsx");
-XSSFWorkbook workbook = new XSSFWorkbook(is);
-JExcelImportHandler handler = new JExcelImportHandler(workbook);
-List<Map<String, Object>> data = handler.importData(model);
+    MAPPING={"id":"ID","name":"Name","amount":"Amount"},
+    FORMAT={"amount":"currency"},
+    TRANSFORM={"name":toUpper(${name})},
+    FOOTER="Generated by JQuickExcel"
 ```
 
-### 分批导入示例（大数据量推荐）
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `SHEET` | Selects the target worksheet. | `SHEET="Report"` |
+| `HEADER` | Controls header generation. | `HEADER=true` |
+| `FORMAT` | Defines Excel display formats. | `FORMAT={"amount":"currency"}` |
+| `MAPPING` | Maps source fields to headers. | `MAPPING={"id":"ID"}` |
+| `TRANSFORM` | Converts values before output. | `TRANSFORM={"name":toUpper(${name})}` |
+| `FORMULAS` | Writes formulas to targets. | `FORMULAS={D2:'SUM(B2:C2)'}` |
+| `STYLE` | Applies styles to targets. | `STYLE={ROW 1:{bold:true}}` |
+| `MERGE` | Defines merge aggregation. | `MERGE:{ROWS 1..1,COLS A..D WITH FIRST}` |
+| `GRAPH` | Defines graph data and type. | `GRAPH={TYPE=PIE,TITLE="Revenue",CATEGORIES=["Q1"],SERIES=[{NAME="2023",DATA=[1]}]}` |
+| `FOOTER` | Sets footer text. | `FOOTER="Generated by JQuickExcel"` |
 
-当数据量超过 `importBatchThreshold`（默认 20000 行）时，推荐使用 `importDataInBatch` 以回调方式消费数据，避免一次性堆积大量对象导致 OOM：
+## Large Data Export
+
+`JQuickExcelConfig` configures streaming export, large-file import, and style caching globally.
 
 ```java
-JExcelImportHandler handler = new JExcelImportHandler(inputStream);
-JExcelImportModel model = executor.execute(rule);
+JQuickExcelConfig cfg = JQuickExcelConfig.getInstance();
+cfg.setStreamingExportEnabled(true)
+   .setStreamingRowAccessWindowSize(100)
+   .setStreamingExportThreshold(5000)
+   .setStreamingCompressTempFiles(true)
+   .setBigFileImportEnabled(true)
+   .setImportBatchThreshold(20000)
+   .setCellStyleCacheEnabled(true);
+```
 
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `streamingExportEnabled` | Enables automatic SXSSF streaming export. | `setStreamingExportEnabled(true)` |
+| `streamingRowAccessWindowSize` | Sets rows retained in memory. | `setStreamingRowAccessWindowSize(100)` |
+| `streamingExportThreshold` | Sets the streaming row threshold. | `setStreamingExportThreshold(5000)` |
+| `streamingCompressTempFiles` | Compresses streaming temporary files. | `setStreamingCompressTempFiles(true)` |
+| `bigFileImportEnabled` | Enables OPCPackage shared parsing. | `setBigFileImportEnabled(true)` |
+| `importBatchThreshold` | Sets the recommended batch threshold. | `setImportBatchThreshold(20000)` |
+| `cellStyleCacheEnabled` | Enables the cell style cache. | `setCellStyleCacheEnabled(true)` |
+
+For large imports, consume batches rather than retaining all rows at once.
+
+```java
 int total = handler.importDataInBatch(model, 5000, batch -> {
-    // 每 5000 行回调一次，batch 为当前批次数据
-    // 在此处理入库、校验等逻辑，返回 false 可提前终止
-    System.out.println("本批次: " + batch.size() + " 行");
+    process(batch);
     return true;
 });
-System.out.println("总共读取: " + total + " 行");
 ```
 
-## 📤 导出使用示例
+## Template Rendering
 
-### 基础语法
+Use `TRANSFORM`, context values, and `FOOTER` expressions to render output from application data.
 
 ```string
-EXPORT [WITH option1, option2, ...]
+EXPORT WITH
+MAPPING={"name":"Name","gender":"Gender"},
+TRANSFORM={"gender":trans(${dict},${gender})},
+FOOTER="Generated by JQuickExcel on ${current_date()}"
 ```
 
-### 导出选项说明
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `TRANSFORM` | Applies an evaluator expression. | `TRANSFORM={"gender":trans(${dict},${gender})}` |
+| `FOOTER` | Renders literal text or a variable expression. | `FOOTER="Generated on ${current_date()}"` |
+| `FORMAT` | Applies the Excel display format. | `FORMAT={"date":"yyyy-MM-dd"}` |
 
-| 配置项            | 语法格式                                                       | 描述说明                      |
-|----------------|------------------------------------------------------------|---------------------------|
-| 📑 `SHEET`     | `SHEET '=' (STRING \| NUMBER)`                             | 按名称或索引指定目标工作表             |
-| 📋 `HEADER`    | `HEADER '=' BOOLEAN`                                       | 控制是否包含表头 (`true`/`false`) |
-| 🎨 `FORMAT`    | `FORMAT '=' '{' cellFormat (',' cellFormat)* '}'`          | 定义单元格格式化规则                |
-| 🗺️ `MAPPING`  | `MAPPING '=' '{' fieldMapping (',' fieldMapping)* '}'`     | 源数据与导出数据之间的字段映射           |
-| 🔄 `TRANSFORM` | `TRANSFORM '=' '{' transformRule (',' transformRule)* '}'` | 导出前的数据转换规则                |
-| 🧮 `FORMULAS`  | `FORMULAS '=' '{' formulaTarget (',' formulaTarget)* '}'`  | 导出时应用的公式                  |
-| ✨ `STYLE`      | `STYLE '=' '{' styleTarget (',' styleTarget)* '}'`         | 单元格样式规则                   |
-| 🧩 `MERGE`     | `MERGE '=' '{' mergeSpec (',' mergeSpec)* '}'`             | 单元格合并规则                   |
-| 📊 `GRAPH`     | `GRAPH '=' '{' graphSpec (',' graphSpec)* '}'`             | 图表 / 图形配置                 |
-| 📝 `FOOTER`    | `FOOTER '=' (STRING \| IDENTIFIER)`                        | 页脚文本或变量引用                 |
+## Style Settings
 
-### SHEET 选项
+`STYLE` accepts a row, column, cell, or range target.
 
 ```string
-EXPORT WITH SHEET="Report"
-```
-
-### 表头选项
-
-```string
-EXPORT WITH HEADER=true
-```
-
-### 映射选项
-
-```string
-EXPORT  WITH MAPPING={
-	"id":"主键",
-	"name":"姓名",
-	"gender":"性别",
-	"age":"年龄",
-	"enrollmentDate":"入学时间",
-	"className":"班级",
-	"ignoreField":"是否忽略"
+EXPORT WITH STYLE={
+  ROW 1:{
+    fontName:Arial,
+    fontHeightInPoints:12,
+    italic:true,
+    color:yellow,
+    bold:true
+  },
+  A2:C100:{
+    alignment:center,
+    wrapText:true,
+    borderBottom:thin,
+    fillForegroundColor:lightYellow
+  }
 }
 ```
 
-```java
-public static List<JStudentModel> getData() {
-  List<JStudentModel> students = new ArrayList<>();
-  students.add(new JStudentModel("1001", "张三", 1, 20, new Date(), "计算机1班", "true"));
-  students.add(new JStudentModel("1002", "李四", 0, 21, new Date(), "计算机2班", "true"));
-  students.add(new JStudentModel("1003", "王五", 1, 22, new Date(), "计算机3班", "true"));
-  return students;
-}
-List<Map<String, Object>> data = JObjectConverter.convert(getData());
-FileOutputStream fileOutputStream=new FileOutputStream("d://test//format.xlsx");
-JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-JExcelExportModel config = (JExcelExportModel) executor.execute(input);
-JExcelExportHandler handler = new JExcelExportHandler(config,data);
-Workbook workbook=handler.getWorkBook();
-workbook.write(fileOutputStream);
-```
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `fontName` | Sets the font family. | `fontName:Arial` |
+| `fontHeightInPoints` | Sets font size in points. | `fontHeightInPoints:12` |
+| `bold` | Enables bold text. | `bold:true` |
+| `italic` | Enables italic text. | `italic:true` |
+| `color` | Sets font color. | `color:yellow` |
+| `alignment` | Sets horizontal alignment. | `alignment:center` |
+| `verticalAlignment` | Sets vertical alignment. | `verticalAlignment:center` |
+| `wrapText` | Enables wrapping. | `wrapText:true` |
+| `borderLeft` | Sets the left border. | `borderLeft:thin` |
+| `borderRight` | Sets the right border. | `borderRight:thin` |
+| `borderTop` | Sets the top border. | `borderTop:thin` |
+| `borderBottom` | Sets the bottom border. | `borderBottom:thin` |
+| `fillPattern` | Sets the fill pattern. | `fillPattern:solid_foreground` |
+| `fillForegroundColor` | Sets fill foreground color. | `fillForegroundColor:yellow` |
+| `fillBackgroundColor` | Sets fill background color. | `fillBackgroundColor:white` |
+| `dataFormatString` | Sets the cell display pattern. | `dataFormatString:"yyyy-MM-dd"` |
 
-### 格式化选项
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| Border | No border. | `borderBottom:none` |
+| Border | Thin border. | `borderBottom:thin` |
+| Border | Medium border. | `borderBottom:medium` |
+| Border | Dashed border. | `borderBottom:dashed` |
+| Border | Dotted border. | `borderBottom:dotted` |
+| Border | Thick border. | `borderBottom:thick` |
+| Border | Double border. | `borderBottom:double` |
+| Fill | No fill. | `fillPattern:no_fill` |
+| Fill | Solid foreground fill. | `fillPattern:solid_foreground` |
+| Fill | Fine dots. | `fillPattern:fine_dots` |
+| Fill | Sparse dots. | `fillPattern:sparse_dots` |
+| Fill | Thin horizontal bands. | `fillPattern:thin_horz_bands` |
+| Fill | Thin vertical bands. | `fillPattern:thin_vert_bands` |
 
-```string
-EXPORT  WITH MAPPING={
-	"id":"主键",
-	"name":"姓名",
-	"gender":"性别",
-	"age":"年龄",
-	"enrollmentDate":"入学时间",
-	"className":"班级",
-	"ignoreField":"是否忽略"
-},FORMAT={"enrollmentDate":"yyyy-MM-dd"}
-```
+## Theme Templates
 
-### 转换选项
-
-```string
-EXPORT  WITH MAPPING={
-	"id":"主键",
-	"name":"姓名",
-	"gender":"性别",
-	"age":"年龄",
-	"enrollmentDate":"入学时间",
-	"className":"班级",
-	"ignoreField":"是否忽略"
-},
-FORMAT={	
-  "enrollmentDate":"yyyy-MM-dd"
-},
-TRANSFORM={
-  "name": toUpper(${name}),
-  "enrollmentDate": dateFormat(${enrollmentDate},'yyyy-MM-dd'),
-  "gender": trans(${dict},${gender})
-}
-```
-
-``` java
-List<Map<String, Object>> data = JObjectConverter.convert(getData());
-FileOutputStream fileOutputStream=new FileOutputStream("d://test//transform.xlsx");
-JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-JExcelExportModel config = (JExcelExportModel) executor.execute(input);
-HashMap<String,Object> map = new HashMap<>();
-  map.put("1","男");
-  map.put("0","女");
-JContext context = new JContext();
-context.put("dict",map);
-JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-Workbook workbook=handler.getWorkBook();
-workbook.write(fileOutputStream);
-```
-
-### 公式选项
-
-#### 应用范围支持
-
-支持**行**、**列**、**单元格**、**区域**四种类型：
-
-1. **行**
-   `ROW 5` - 应用第 5 行
-   `ROW 1..10` - 应用第 1 行至第 10 行
-2. **列**
-   `COL A:` - 应用 A 列
-   `COL A..D:` - 应用 A 列至 D 列
-3. **单元格**
-   `C1:` - 应用第 1 行 C 列的单元格
-4. **区域**
-   `A1:B5` - 代表从 A1 单元格到 B5 单元格的矩形区域
-5.
-
-### 主题配置导出示例
-
-通过 `JExcelExportModel#setTheme` 方法指定主题编码（42 种可选，详见主题编码汇总）：
+JQuick-Excel provides 42 built-in themes. Set a theme on `JExcelExportModel` after executing the rule and before creating the export handler.
 
 ```java
 JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-config.setTheme("jade");  // 设置翡翠绿主题
-
+config.setTheme("jade");
 JExcelExportHandler handler = new JExcelExportHandler(config, data);
 Workbook workbook = handler.getWorkBook();
 workbook.write(outputStream);
 ```
 
-### 基础导出示例
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `default`, `minimalistGrey`, `slate` | Classic and grey themes. | `setTheme("default")` |
+| `charcoal`, `navyBlue`, `oceanBlue` | Dark and ocean blue themes. | `setTheme("oceanBlue")` |
+| `skyBlue`, `azure`, `steelBlue` | Light and steel blue themes. | `setTheme("skyBlue")` |
+| `denim`, `indigo`, `periwinkle` | Denim and indigo themes. | `setTheme("indigo")` |
+| `forestGreen`, `emerald`, `jade` | Forest and jade green themes. | `setTheme("jade")` |
+| `mintFresh`, `sage`, `oliveGreen` | Fresh and muted green themes. | `setTheme("mintFresh")` |
+| `tropicalTeal`, `turquoise`, `cyan` | Teal and cyan themes. | `setTheme("turquoise")` |
+| `sunsetOrange`, `coral`, `peach` | Orange and peach themes. | `setTheme("coral")` |
+| `crimsonRed`, `wineRed`, `sakuraPink` | Red and sakura themes. | `setTheme("crimsonRed")` |
+| `roseQuartz`, `lavenderPurple`, `amethyst` | Pink and purple themes. | `setTheme("amethyst")` |
+| `plum`, `royalGold`, `champagne` | Plum and gold themes. | `setTheme("royalGold")` |
+| `amber`, `mustard`, `bronze` | Amber, mustard, and bronze themes. | `setTheme("amber")` |
+| `vintageSepia`, `espresso`, `mahogany` | Sepia and brown themes. | `setTheme("espresso")` |
+| `terracotta`, `midnightDark`, `pearl` | Terracotta, dark, and pearl themes. | `setTheme("midnightDark")` |
+
+## Type Conversion
+
+`TRANSFORM` connects row fields and context values to `JEvaluator` functions. The documented evaluator functions can be called directly in expressions; no separate SPI registration API is defined in this reference.
 
 ```java
-String rule = """
+Map<String, Object> gender = new HashMap<>();
+gender.put("1", "Male");
+gender.put("0", "Female");
+
+JContext context = new JContext();
+context.put("dict", gender);
+```
+
+```string
 EXPORT WITH
-SHEET="学生表",
-HEADER=true,
-MAPPING={
-"id": "主键",
-"name": "姓名",
-"gender": "性别",
-"age": "年龄",
-"enrollmentDate": "入学时间",
-"className": "班级"
+FORMAT={"enrollmentDate":"yyyy-MM-dd"},
+TRANSFORM={
+  "name":toUpper(${name}),
+  "enrollmentDate":dateFormat(${enrollmentDate},'yyyy-MM-dd'),
+  "gender":trans(${dict},${gender})
 }
-""";
-
-List<Map<String, Object>> data = JObjectConverter.convert(getData());
-FileOutputStream fos = new FileOutputStream("导出结果.xlsx");
-JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-JExcelExportHandler handler = new JExcelExportHandler(config, data);
-Workbook workbook = handler.getWorkBook();
-workbook.write(fos);
-fos.close();
 ```
 
-## 🔢 支持的公式类型
+The conversion chain is: `${name}` or `${gender}` reads a row field, `${dict}` reads the value placed in `JContext`, `trans(...)` maps the field through that context value, and `dateFormat(...)` or `toUpper(...)` produces the transformed value. `FORMAT` is applied afterward to control the final Excel cell display and does not replace `TRANSFORM`.
 
-### 📈 数学公式（16个）
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `JContext` | Supplies external values to transformation expressions. | `context.put("dict", gender)` |
+| `${field}` | Reads a field from the current row. | `${gender}` |
+| `${dict}` | Reads a context value. | `${dict}` |
+| `toUpper` | Converts text to uppercase. | `toUpper(${name})` |
+| `dateFormat` | Converts a date to a string. | `dateFormat(${enrollmentDate},'yyyy-MM-dd')` |
+| `trans` | Converts through a context dictionary. | `trans(${dict},${gender})` |
+| `FORMAT` | Defines the final Excel display format. | `FORMAT={"enrollmentDate":"yyyy-MM-dd"}` |
 
-| 公式名          | 语法示例                 | 参数数量 | 描述说明      | 对应类名              |
-|--------------|----------------------|------|-----------|-------------------|
-| 📏 `ABS`     | `ABS(D2)`            | 1    | 绝对值       | `JABSFormula`     |
-| 📊 `AVERAGE` | `AVERAGE(D2:D4)`     | ≥1   | 算术平均值     | `JAverageFormula` |
-| 🔢 `COUNT`   | `COUNT(D2:D4)`       | ≥1   | 计数        | `JCountFormula`   |
-| ⬆️ `MAX`     | `MAX(D2:D4)`         | ≥1   | 最大值       | `JMaxFormula`     |
-| ⬇️ `MIN`     | `MIN(D2:D4)`         | ≥1   | 最小值       | `JMinFormula`     |
-| ⚡ `POWER`    | `POWER(2,3)`         | 2    | 幂运算       | `JPowerFormula`   |
-| 🎲 `RAND`    | `RAND()`             | 0    | 随机数 [0,1) | `JRandFormula`    |
-| 🏆 `RANK`    | `RANK(20,D2:D4)`     | 2    | 列表中排名     | `JRankFormula`    |
-| 🎯 `ROUND`   | `ROUND(3.1415926,3)` | 2    | 四舍五入指定位数  | `JRoundFormula`   |
-| √️ `SQRT`    | `SQRT(4)`            | 1    | 平方根       | `JSQRTFormula`    |
-| 📈 `STDEV`   | `STDEV(D2:D4)`       | ≥1   | 标准差       | `JSTDEVFormula`   |
-| ➕ `SUM`      | `SUM(D2:D4)`         | ≥1   | 求和        | `JSumFormula`     |
+## Common Parameters
+
+### Import DSL
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `SHEET` | Source worksheet selector. | `SHEET="Students"` |
+| `HEADER` | Header-row declaration. | `HEADER=true` |
+| `MAPPING` | Header-to-field mapping. | `MAPPING={"ID":"id"}` |
+| `TRANSFORM` | Import value conversion. | `TRANSFORM={"name":toUpper(${name})}` |
+| `VALIDATION` | Selected-scope validation. | `VALIDATION={C2:C4:{integer{required:true}}}` |
+
+### Export DSL
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `SHEET` | Target worksheet selector. | `SHEET="Report"` |
+| `HEADER` | Header generation switch. | `HEADER=true` |
+| `FORMAT` | Output formatting rules. | `FORMAT={"amount":"currency"}` |
+| `MAPPING` | Field-to-header mapping. | `MAPPING={"id":"ID"}` |
+| `TRANSFORM` | Pre-output conversion. | `TRANSFORM={"name":toUpper(${name})}` |
+| `FORMULAS` | Formula target and expression. | `FORMULAS={D2:'SUM(B2:C2)'}` |
+| `STYLE` | Style target and properties. | `STYLE={ROW 1:{bold:true}}` |
+| `MERGE` | Merge target and strategy. | `MERGE:{ROWS 1..1,COLS A..D WITH FIRST}` |
+| `GRAPH` | Graph specification. | `GRAPH={TYPE=PIE,TITLE="Revenue",CATEGORIES=["Q1"],SERIES=[{NAME="2023",DATA=[1]}]}` |
+| `FOOTER` | Footer text. | `FOOTER="Generated by JQuickExcel"` |
+
+### Formulas
+
+Formula targets support `ROW 5`, `ROW 1..10`, `COL A:`, `COL A..D:`, `C1:`, and `A1:B5`.
+
+#### Mathematical Functions
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `ABS` | Absolute value. | `ABS(D2)` |
+| `AVERAGE` | Arithmetic mean. | `AVERAGE(D2:D4)` |
+| `COUNT` | Counts numeric values. | `COUNT(D2:D4)` |
+| `MAX` | Maximum value. | `MAX(D2:D4)` |
+| `MIN` | Minimum value. | `MIN(D2:D4)` |
+| `POWER` | Exponentiation. | `POWER(2,3)` |
+| `RAND` | Random value in `[0,1)`. | `RAND()` |
+| `RANK` | Rank in a range. | `RANK(20,D2:D4)` |
+| `ROUND` | Rounds a value. | `ROUND(3.1415926,3)` |
+| `SQRT` | Square root. | `SQRT(4)` |
+| `STDEV` | Standard deviation. | `STDEV(D2:D4)` |
+| `SUM` | Sum of values. | `SUM(D2:D4)` |
 
 ```string
-# 数学公式配置示例（整合版）
-# 格式说明：FORMULAS = { 目标单元格: '公式表达式' }
-# 所有公式均配置在 D5 单元格，可根据实际需求修改目标单元格
-FORMULAS={
-# 1. 绝对值计算：取 D2 单元格的绝对值
-D5:'ABS(D2)',
-# 2. 算术平均值：计算 D2 至 D4 单元格的平均值
-D5:'AVERAGE(D2:D4)',
-# 3. 计数：统计 D2 至 D4 单元格的有效数值个数
-D5:'COUNT(D2:D4)',
-# 4. 最大值：取 D2 至 D4 单元格中的最大值
-D5:'MAX(D2:D4)',
-# 5. 最小值：取 D2 至 D4 单元格中的最小值
-D5:'MIN(D2:D4)',
-# 6. 幂运算：计算 2 的 3 次方（2^3）
-D5:'POWER(2,3)',
-# 7. 随机数：生成 0（包含）到 1（不包含）之间的随机数
-D5:'RAND()',
-# 8. 排名：计算数值 20 在 D2 至 D4 区域中的排名
-D5:'RANK(20,D2:D4)',
-# 9. 四舍五入：将 3.1415926 保留 3 位小数
-D5:'ROUND(3.1415926,3)',
-# 10. 平方根：计算 4 的平方根
-D5:'SQRT(4)',
-# 11. 标准差：计算 D2 至 D4 单元格数据的标准差（反映数据离散程度）
-D5:'STDEV(D2:D4)',
-# 12. 求和：计算 D2 至 D4 单元格的数值总和
-D5:'SUM(D2:D4)'
+EXPORT WITH FORMULAS={
+  D5:'SUM(D2:D4)',
+  E5:'ROUND(AVERAGE(D2:D4),2)',
+  F5:'RANK(D2,D2:D4)'
 }
 ```
 
-### 📅 日期公式（15个）
+#### Date and Time Functions
 
-| 公式名              | 语法示例                              | 特殊规则                              | 对应类名                 |
-|------------------|-----------------------------------|-----------------------------------|----------------------|
-| 🕒 `DATETIME`    | `DATETIME(2023,5,15,14,30,0)`     | 返回当前日期时间                          | `JDateTimeFormula`   |
-| 📆 `DAY`         | `DAY("2025-01-23")`               | 提取日期中的日（1-31）                     | `JDayFormula`        |
-| 📊 `DAYS`        | `DAYS("2025-01-23","2025-01-28")` | 计算两个日期之间的天数                       | `JDaysFormula`       |
-| 📈 `EDATE`       | `EDATE(start,months)`             | 给日期添加指定月份                         | `JEDATEFormula`      |
-| 🗓️ `EOMONTH`    | `EOMONTH("2025-01-23",3)`         | 返回指定月份的月末日期                       | `JEOMONTHFormula`    |
-| ⏰ `HOUR`         | `HOUR('2025-01-23')`              | 提取时间中的小时（0-23）                    | `JHourFormula`       |
-| 💼 `NETWORKDAYS` | `NETWORKDAYS(s,e,[h])`            | 参数数量 2-3 个（计算工作日）                 | `JNetworkDayFormula` |
-| 🕒 `NOW`        | `NOW()`                           | 需精确匹配语法，返回当前时间戳                   | `JNowFormula`        |
-| 📅 `TODAY`       | `TODAY()`                         | 需精确匹配语法，返回当前日期                    | `JTodayFormula`      |
-| 🛠️ `WORKDAY`    | `WORKDAY(s,days,[h])`             | 参数数量 2-3 个（计算工作日偏移）               | `JWorkDayFormula`    |
-| ⏱️ `MINUTE`      | `MINUTE(time_value)`              | 1 个时间序列参数，提取分钟（0-59）              | -                    |
-| 📍 `MONTH`       | `MONTH(date_value)`               | 1 个日期序列参数，提取月份（1-12）              | -                    |
-| 🎯 `SECOND`      | `SECOND(time_value)`              | 1 个时间序列参数，提取秒（0-59）               | -                    |
-| ⏲️ `TIME`        | `TIME(hour,min,sec)`              | 3 个参数（时/分/秒），返回Excel时间序列（0-0.999） | -                    |
-| 📆 `TODAY`       | `TODAY()`                         | 精确匹配语法，返回当前日期序列                   | -                    |
-| 📝 `WEEKDAY`     | `WEEKDAY(date,[type])`            | 参数数量 1-2 个，返回星期几（可配置）             | -                    |
-| 📊 `WEEKNUM`     | `WEEKNUM(date,[type])`            | 参数数量 1-2 个，返回周数                   | -                    |
-| 📅 `YEAR`        | `YEAR(date_value)`                | 1 个日期序列参数，提取年份（1900-9999）         | -                    |
-
-### 📅 日期公式配置 & 等效 Java 代码（整合版）
-
-#### 1. 基础日期时间公式
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `DATETIME` | Creates a date and time. | `DATETIME(2023,5,15,14,30,0)` |
+| `DAY` | Extracts day of month. | `DAY("2025-01-23")` |
+| `DAYS` | Calculates day difference. | `DAYS("2025-01-23","2025-01-28")` |
+| `EDATE` | Offsets a date by months. | `EDATE("2025-01-23",3)` |
+| `EOMONTH` | Returns a month end. | `EOMONTH("2025-01-23",3)` |
+| `HOUR` | Extracts an hour. | `HOUR(A1)` |
+| `NETWORKDAYS` | Counts workdays. | `NETWORKDAYS(A1,A2)` |
+| `NOW` | Returns current date and time. | `NOW()` |
+| `TODAY` | Returns current date. | `TODAY()` |
+| `WORKDAY` | Offsets by workdays. | `WORKDAY(A1,3,A2)` |
+| `MINUTE` | Extracts a minute. | `MINUTE(A1)` |
+| `MONTH` | Extracts a month. | `MONTH(A1)` |
+| `SECOND` | Extracts a second. | `SECOND(A1)` |
+| `TIME` | Creates a time value. | `TIME(14,30,0)` |
+| `WEEKDAY` | Returns weekday number. | `WEEKDAY(A1,2)` |
+| `WEEKNUM` | Returns week number. | `WEEKNUM(A1,1)` |
+| `YEAR` | Extracts a year. | `YEAR(A1)` |
 
 ```string
-# -------------------------- 1. DATETIME - 构造日期时间 --------------------------
-# 配置格式：FORMULAS = { 目标单元格: '公式表达式' }
-FORMULAS={
-    D5:'DATETIME(2023,5,15,14,30,0)'  # 构造 2023-05-15 14:30:00 日期时间
+EXPORT WITH FORMULAS={
+  D5:'TODAY()',
+  E5:'NETWORKDAYS(A1,A2)',
+  F5:'WEEKNUM(A1,1)'
 }
-# 等效 Java 代码
-/*
- * 直接创建 DATETIME 公式实例
- */
-JAbstractExcelFormula formula = factory.createFormulaInstance("DATETIME(2023,5,15,14,30,0)");
-
-# -------------------------- 2. DAY - 提取日期中的“日” --------------------------
-FORMULAS={
-    D5:'DAY("2025-01-23")'  # 提取 2025-01-23 的“日”（结果：23）
-}
-# 等效 Java 代码
-/*
- * 1. 先在 A1 单元格写入日期值
- * 2. 基于 A1 单元格创建 DAY 公式
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
-JAbstractExcelFormula formula = factory.createFormulaInstance("DAY(A1)");
-
-# -------------------------- 3. DAYS - 计算两个日期的天数差 --------------------------
-FORMULAS={
-    D5:'DAYS("2025-01-23","2025-01-28")'  # 计算 2025-01-28 与 2025-01-23 的天数差
-}
-# 等效 Java 代码
-/*
- * 1. A1 写入起始日期，A2 写入结束日期
- * 2. 计算 A2 - A1 的天数差
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-01-01");
-sheet.createRow(1).createCell(0).setCellValue("2023-12-31");
-JAbstractExcelFormula formula = factory.createFormulaInstance("DAYS(A2,A1)");
-
-# -------------------------- 4. EDATE - 日期添加指定月份 --------------------------
-FORMULAS={
-    D5:'EDATE("2025-01-23",3)'  # 2025-01-23 加 3 个月
-}
-# 等效 Java 代码
-/*
- * 1. A1 写入基础日期
- * 2. 给 A1 日期添加 3 个月
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-01-31");
-JAbstractExcelFormula formula = factory.createFormulaInstance("EDATE(A1,3)");
-
-# -------------------------- 5. EOMONTH - 获取月末日期 --------------------------
-FORMULAS={
-    D5:'EOMONTH("2025-01-23",3)'  # 2025-01-23 加 3 个月后的月末日期
-}
-# 等效 Java 代码
-/*
- * 1. A1 写入基础日期
- * 2. 获取 A1 日期当月的月末日期（参数 0 表示当前月）
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-02-15");
-JAbstractExcelFormula formula = factory.createFormulaInstance("EOMONTH(A1,0)");
-# -------------------------- 6. HOUR - 提取小时 --------------------------
-# 前提：A1 单元格值为 14:30:00
-FORMULAS={
-    D5:'HOUR("A1")'  # 提取 A1 单元格时间的小时部分（结果：14）
-}
-# 等效 Java 代码
-/*
- * 1. A1 写入时间值
- * 2. 提取 A1 时间的小时
- */
-sheet.createRow(0).createCell(0).setCellValue("14:30:00");
-JAbstractExcelFormula formula = factory.createFormulaInstance("HOUR(A1)");
-
-# -------------------------- 11. MINUTE - 提取分钟 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入时间值 14:30:45
- * 2. 提取 A1 时间的分钟部分（结果：30）
- */
-sheet.createRow(0).createCell(0).setCellValue("14:30:45");
-JAbstractExcelFormula formula = factory.createFormulaInstance("MINUTE(A1)");
-
-# -------------------------- 14. SECOND - 提取秒 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入时间值 14:30:45
- * 2. 提取 A1 时间的秒部分（结果：45）
- */
-sheet.createRow(0).createCell(0).setCellValue("14:30:45");
-JAbstractExcelFormula formula = factory.createFormulaInstance("SECOND(A1)");
-# -------------------------- 7. NETWORKDAYS - 计算工作日数 --------------------------
-# 前提：A1=2023-05-01，A2=2023-05-07
-FORMULAS={
-    D5:'NETWORKDAYS(A1,A2)'  # 计算 A1 到 A2 之间的工作日数（排除周末）
-}
-# 等效 Java 代码
-/*
- * 1. A1 写入起始日期，A2 写入结束日期
- * 2. 计算两个日期之间的工作日数
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-05-01");
-sheet.createRow(1).createCell(0).setCellValue("2023-05-07");
-JAbstractExcelFormula formula = factory.createFormulaInstance("NETWORKDAYS(A1,A2)");
-
-# -------------------------- 10. WORKDAY - 计算偏移工作日 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入起始日期，A2 写入节假日（可选）
- * 2. 从 A1 开始偏移 3 个工作日（排除 A2 节假日）
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
-sheet.createRow(1).createCell(0).setCellValue("2023-05-17");
-JAbstractExcelFormula formula = factory.createFormulaInstance("WORKDAY(A1,3,A2)");
-# -------------------------- 8. NOW - 获取当前日期时间 --------------------------
-FORMULAS={
-    D5:'NOW()'  # 获取当前系统日期+时间
-}
-# 等效 Java 代码
-JAbstractExcelFormula formula = factory.createFormulaInstance("NOW()");
-
-# -------------------------- 9. TODAY - 获取当前日期 --------------------------
-FORMULAS={
-    D5:'TODAY()'  # 获取当前系统日期（不含时间）
-}
-# 等效 Java 代码
-JAbstractExcelFormula formula = factory.createFormulaInstance("TODAY()");
-
-# -------------------------- 15. TIME - 构造时间 --------------------------
-# 等效 Java 代码
-/*
- * 构造 14:30:00 时间（Excel 时间序列：0-0.999）
- */
-JAbstractExcelFormula formula = factory.createFormulaInstance("TIME(14,30,0)");
-# -------------------------- 12. MONTH - 提取月份 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入日期值 2023-05-15
- * 2. 提取 A1 日期的月份（结果：5）
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
-JAbstractExcelFormula formula = factory.createFormulaInstance("MONTH(A1)");
-
-# -------------------------- 16. WEEKDAY - 提取星期几 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入日期值 2023-05-15
- * 2. 提取星期几（参数 2 表示：周一=1，周日=7）
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
-JAbstractExcelFormula formula = factory.createFormulaInstance("WEEKDAY(A1,2)");
-
-# -------------------------- 18. WEEKNUM - 提取周数 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入日期值 2023-01-01
- * 2. 提取周数（参数 1 表示：周日为一周起始）
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-01-01");
-JAbstractExcelFormula formula = factory.createFormulaInstance("WEEKNUM(A1,1)");
-
-# -------------------------- 19. YEAR - 提取年份 --------------------------
-# 等效 Java 代码
-/*
- * 1. A1 写入日期值 2023-05-15
- * 2. 提取 A1 日期的年份（结果：2023）
- */
-sheet.createRow(0).createCell(0).setCellValue("2023-05-15");
-JAbstractExcelFormula formula = factory.createFormulaInstance("YEAR(A1)");
 ```
 
-### 🔤 字符串公式（17个）
+#### Text Functions
 
-| 公式名                | 语法格式                               | 参数规则         | 示例 & 结果                                     | 对应类名                           |
-|--------------------|------------------------------------|--------------|---------------------------------------------|--------------------------------|
-| 🧩 `CONCAT`        | `CONCAT(s1,s2...)`                 | ≥1 个参数       | `CONCAT("A","B")` → "AB"                    | `JConcatFormula`               |
-| 🆚 `EXACT`         | `EXACT(s1,s2)`                     | 2 个参数（区分大小写） | `EXACT("a","A")` → FALSE                    | `JExactFormula`                |
-| 🔍 `FIND`          | `FIND(sub,str,[pos])`              | 2-3 个参数      | `FIND("n","apple")` → 0                     | `JFindFormula`                 |
-| ← `LEFT`/→ `RIGHT` | `LEFT(text,len)`/`RIGHT(text,len)` | 2 个参数        | `LEFT("hello",2)` → "he"                    | `JLeftFormula`/`JRightFormula` |
-| 📏 `LEN`           | `LEN(text)`                        | 1 个参数        | `LEN("text")` → 4                           | `JLenFormula`                  |
-| 🔪 `MID`           | `MID(text,start,len)`              | 3 个参数        | `MID("apple",2,3)` → "ppl"                  | `JMIDFormula`                  |
-| 🔄 `SUBSTITUTE`    | `SUBSTITUTE(s,o,n,[i])`            | 3-4 个参数      | `SUBSTITUTE("a-a","a","b")` → "b-b"         | `JSubstituteFormula`           |
-| 🧹 `TRIM`          | `TRIM(text)`                       | 1 个参数        | `TRIM(" a ")` → "a"                         | `JTrimFormula`                 |
-| 📝 `CONCATENATE`   | `CONCATENATE(text1, [text2]...)`   | ≥1 个参数       | `CONCATENATE("A",1,TRUE)` → "A1TRUE"        | `JConcatenateFormula`          |
-| 📉 `LOWER`         | `LOWER(text)`                      | 1 个参数        | `LOWER("ExCeL")` → "excel"                  | `JLowerFormula`                |
-| 🎩 `PROPER`        | `PROPER(text)`                     | 1 个参数        | `PROPER("john o'reilly")` → "John O'Reilly" | `JProperFormula`               |
-| ✏️ `REPLACE`       | `REPLACE(old,start,num,new)`       | 4 个参数        | `REPLACE("ABCD",2,2,"XY")` → "AXYD"         | `JReplaceFormula`              |
-| 🔎 `SEARCH`        | `SEARCH(find,within,[start])`      | 2-3 个参数      | `SEARCH("n","Banana",3)` → 5                | `JSearchFormula`               |
-| 🔁 `SUBSTITUTE`    | `SUBSTITUTE(text,old,new,[nth])`   | 3-4 个参数      | `SUBSTITUTE("A-A-A","A","B",2)` → "A-B-A"   | `JSubstituteFormula`           |
-| 🎨 `TEXT`          | `TEXT(value,format)`               | 2 个参数        | `TEXT(0.25,"0.0%")` → "25.0%"               | `JTextFormula`                 |
-| 📈 `UPPER`         | `UPPER(text)`                      | 1 个参数        | `UPPER("email")` → "EMAIL"                  | `JUpperFormula`                |
-| 🔢 `VALUE`         | `VALUE(text)`                      | 1 个参数        | `VALUE("¥1,000")` → 1000.0                  | `JValueFormula`                |
-
-### 🔤 字符串公式配置示例（整合版）
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `CONCAT` | Concatenates text. | `CONCAT(A1,B1)` |
+| `EXACT` | Compares text with case. | `EXACT("a","A")` |
+| `FIND` | Finds case-sensitive text. | `FIND("n","apple")` |
+| `LEFT` | Extracts text from the left. | `LEFT("hello",2)` |
+| `RIGHT` | Extracts text from the right. | `RIGHT("hello",2)` |
+| `LEN` | Counts characters. | `LEN("text")` |
+| `MID` | Extracts text by position. | `MID("apple",2,3)` |
+| `SUBSTITUTE` | Replaces matching text. | `SUBSTITUTE("a-a","a","b")` |
+| `TRIM` | Trims surrounding spaces. | `TRIM(" a ")` |
+| `CONCATENATE` | Concatenates values. | `CONCATENATE("A",1,TRUE)` |
+| `LOWER` | Converts to lowercase. | `LOWER("ExCeL")` |
+| `PROPER` | Capitalizes words. | `PROPER("john o'reilly")` |
+| `REPLACE` | Replaces by position. | `REPLACE("ABCD",2,2,"XY")` |
+| `SEARCH` | Finds case-insensitive text. | `SEARCH("n","Banana",3)` |
+| `TEXT` | Formats a value as text. | `TEXT(0.25,"0.0%")` |
+| `UPPER` | Converts to uppercase. | `UPPER("email")` |
+| `VALUE` | Converts text to a number. | `VALUE("1000")` |
 
 ```string
-# 字符串公式配置说明：FORMULAS = { 目标单元格: '公式表达式' }
-# 所有公式均映射到 D5 单元格，可根据实际需求修改目标单元格
-FORMULAS={
-    # ====================== 字符串拼接类 ======================
-    # 1. CONCATENATE - 拼接多个单元格/字符串（兼容旧版Excel）
-    D5:'CONCATENATE(A1, B1)',  # 拼接 A1 和 B1 单元格内容
-    # 2. CONCAT - 拼接多个字符串（新版推荐）
-    D5:'CONCAT(A1, B1)',       # 拼接 A1 和 B1 单元格内容（效果同 CONCATENATE）
-
-    # ====================== 字符串对比/查找类 ======================
-    # 3. EXACT - 精确对比两个字符串（区分大小写）
-    D5:'EXACT("A1", "B1")',    # 对比字符串 "A1" 和 "B1" 是否完全一致
-    # 4. FIND - 精准查找子串位置（区分大小写，找不到返回0）
-    D5:'FIND("o", "Microsoft")',# 在 "Microsoft" 中查找 "o" 的位置
-    # 16. SEARCH - 模糊查找子串位置（不区分大小写）
-    D5:'SEARCH("e","Excel")',  # 在 "Excel" 中查找 "e" 的位置（不区分大小写）
-
-    # ====================== 字符串截取类 ======================
-    # 5. LEFT - 从左侧截取指定长度字符串
-    D5:'LEFT("hello world", 3)',# 截取 "hello world" 左侧3个字符 → "hel"
-    # 6. RIGHT - 从右侧截取指定长度字符串
-    D5:'RIGHT("hello world", 3)',# 截取 "hello world" 右侧3个字符 → "rld"
-    # 7. LEN - 计算字符串长度（含空格）
-    D5:'LEN("hello world")',   # 计算 "hello world" 的长度 → 11
-    # 8. MID - 从指定位置截取指定长度字符串（起始位置从1开始）
-    D5:'MID("hello world",1,2)',# 从第1位开始截取2个字符 → "he"
-
-    # ====================== 字符串替换/清理类 ======================
-    # 9. SUBSTITUTE - 替换指定子串（全量替换）
-    D5:'SUBSTITUTE("hello world","hello","new")',# 将 "hello" 替换为 "new" → "new world"
-    # 10. TRIM - 去除字符串首尾空格（保留中间空格）
-    D5:'TRIM("hello world")',  # 清理首尾空格（示例无空格，结果仍为 "hello world"）
-    # 12. REPLACE - 按位置替换指定长度子串
-    D5:'REPLACE("ABCD",2,2,"XY")',# 从第2位开始替换2个字符 → "AXYD"
-
-    # ====================== 字符串格式转换类 ======================
-    # 10. LOWER - 转换为全小写
-    D5:'LOWER("hello world")', # 转换为小写（示例无大写，结果仍为 "hello world"）
-    # 11. PROPER - 首字母大写（其余小写）
-    D5:'PROPER("hello world")',# 转换为首字母大写 → "Hello World"
-    # 13. TEXT - 将数值格式化为指定字符串
-    D5:'TEXT(0.25,"0.0%")',    # 将 0.25 格式化为百分比 → "25.0%"
-    # 14. UPPER - 转换为全大写
-    D5:'UPPER("email")',       # 转换为大写 → "EMAIL"
-    # 15. VALUE - 将字符串转换为数值（自动识别金额/千分位）
-    D5:'VALUE("¥1,000")'       # 将金额字符串转为数值 → 1000.0
+EXPORT WITH FORMULAS={
+  D5:'CONCAT(A1,B1)',
+  E5:'TEXT(C2,"0.0%")',
+  F5:'UPPER(B2)'
 }
 ```
 
-### 🔍 逻辑公式（3个：IF、AND、OR）
+#### Logical and Lookup Functions
 
-| 公式名     | 语法格式            | 参数规则   | 示例 & 结果                                       | 对应类名          |
-|---------|-----------------|--------|-----------------------------------------------|---------------|
-| 🎯 `IF` | `IF(cond,t,f)`  | 3 个参数  | `IF(A1>0,"Yes","No")` → 若A1>0返回"Yes"，否则返回"No" | `JIfFormula`  |
-| ✅ `AND` | `AND(b1,b2...)` | ≥1 个参数 | `AND(TRUE,FALSE)` → FALSE                     | `JAndFormula` |
-| 🟡 `OR` | `OR(b1,b2...)`  | ≥1 个参数 | `OR(TRUE,FALSE)` → TRUE                       | `JORFormula`  |
-
-### 🧠 逻辑&查找公式配置示例（整合版）
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `IF` | Returns one of two values. | `IF(D2>0,"Yes","No")` |
+| `AND` | Tests all conditions. | `AND(TRUE,FALSE)` |
+| `OR` | Tests any condition. | `OR(TRUE,FALSE)` |
+| `LOOKUP` | Performs vector lookup. | `LOOKUP(22,D2:D4,C2:C4)` |
 
 ```string
-# 公式配置说明：FORMULAS = { 目标单元格: '公式表达式' }
-# 所有公式均映射到 D5 单元格，可根据实际需求修改目标单元格
-FORMULAS={
-    # ====================== 逻辑判断类 ======================
-    # 1. IF - 条件判断（满足条件返回t，否则返回f）
-    D5:'IF(D2>0,"Yes","No")',  # 若 D2 单元格值>0，返回"Yes"；否则返回"No"
-    
-    # 2. AND - 多条件与判断（所有条件为TRUE时，结果才为TRUE）
-    D5:'AND(TRUE,FALSE)',      # 同时满足TRUE和FALSE → 结果为FALSE
-    
-    # 3. OR - 多条件或判断（任一条件为TRUE时，结果即为TRUE）
-    D5:'OR(TRUE,FALSE)',       # 满足TRUE或FALSE → 结果为TRUE
-
-    # ====================== 数据查找类 ======================
-    # 4. LOOKUP - 向量查找（在指定区域查找值，返回对应区域结果）
-    D5:'LOOKUP(22, D2:D4, C2:C4)'  # 在 D2:D4 区域查找22，返回 C2:C4 对应位置的值
+EXPORT WITH FORMULAS={
+  D5:'IF(D2>0,"Yes","No")',
+  E5:'AND(A1>0,B1>0)',
+  F5:'LOOKUP(22,D2:D4,C2:C4)'
 }
 ```
 
-## 📊 图表类型支持
+### Charts
 
-| 图表类型 | 示例     | 用途    |
-|------|--------|-------|
-| 柱状图  | 销售数据对比 | 数据比较  |
-| 条形图  | 季度销售排行 | 排名展示  |
-| 折线图  | 温度变化趋势 | 趋势分析  |
-| 饼图   | 市场份额分布 | 占比展示  |
-| 面积图  | 销售趋势分析 | 累积趋势  |
-| 散点图  | 身高体重分布 | 相关性分析 |
-| 雷达图  | 能力评估   | 多维评估  |
-| 3D图表 | 地形高度示例 | 三维数据  |
-
-### 基础结构
-
-#### 图表配置采用类 JSON 格式的领域特定语言 (DSL)，基础结构如下
+The graph DSL uses the following complete structure. `CATEGORY_AXIS` and `VALUE_AXIS` are optional.
 
 ```string
 EXPORT WITH GRAPH = {
-    TYPE = Chart Type,
+    TYPE = LINE,
     TITLE = "Chart Title",
-    [CATEGORY_AXIS = "Category Axis Title",]
-    [VALUE_AXIS = "Value Axis Title",]
-    CATEGORIES = [Category Value 1, Category Value 2, ...],
+    CATEGORY_AXIS = "Category Axis",
+    VALUE_AXIS = "Value Axis",
+    CATEGORIES = ["Jan", "Feb", "Mar"],
     SERIES = [
         {
             NAME = "Series Name",
-            DATA = [Data Value 1, Data Value 2, ...]
-        },
-        ...
+            DATA = [10, 20, 30]
+        }
     ]
 }
 ```
 
-#### 图表配置关键字说明
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `TYPE` | Selects a graph type. | `TYPE = LINE` |
+| `TITLE` | Sets the graph title. | `TITLE = "Monthly Sales"` |
+| `CATEGORY_AXIS` | Sets the category axis title. | `CATEGORY_AXIS = "Month"` |
+| `VALUE_AXIS` | Sets the value axis title. | `VALUE_AXIS = "Amount"` |
+| `CATEGORIES` | Supplies category values. | `CATEGORIES = ["Jan", "Feb"]` |
+| `SERIES` | Supplies series objects. | `SERIES = [{NAME = "Sales", DATA = [10, 20]}]` |
+| `NAME` | Names one series. | `NAME = "Sales"` |
+| `DATA` | Supplies one series data array. | `DATA = [10, 20]` |
 
-##### 1. TYPE（必填）
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `LINE` | Trend analysis. | `TYPE = LINE` |
+| `COLUMN` | Vertical comparison. | `TYPE = COLUMN` |
+| `BAR` | Horizontal comparison. | `TYPE = BAR` |
+| `BAR3D` | Three-dimensional bars. | `TYPE = BAR3D` |
+| `PIE` | Proportion display. | `TYPE = PIE` |
+| `AREA` | Accumulated trend. | `TYPE = AREA` |
+| `AREA3D` | Three-dimensional area. | `TYPE = AREA3D` |
+| `SCATTER` | Correlation display. | `TYPE = SCATTER` |
+| `RADAR` | Multidimensional comparison. | `TYPE = RADAR` |
+| `SURFACE` | Surface data display. | `TYPE = SURFACE` |
 
-- **说明**：指定图表类型
-- **支持类型**：
-    - `LINE`（折线图）
-    - `COLUMN`（柱状图）
-    - `BAR`（条形图）
-    - `BAR3D`（3D 条形图）
-    - `PIE`（饼图）
-    - `AREA`（面积图）
-    - `AREA3D`（3D 面积图）
-    - `SCATTER`（散点图）
-    - `RADAR`（雷达图）
-    - `SURFACE`（曲面图）
-
-##### 2. TITLE（必填）
-
-- **说明**：图表的标题文本
-- **类型**：字符串
-- **格式要求**：需用双引号`"`或单引号`'`包裹
-- **示例**：`TITLE = "2023年销售数据统计"`
-
-##### 3. CATEGORY_AXIS（可选）
-
-- **说明**：分类轴（通常为X轴）的标题文本
-- **适用范围**：除饼图外的大多数图表类型
-- **类型**：字符串
-- **格式要求**：需用双引号`"`或单引号`'`包裹
-- **示例**：`CATEGORY_AXIS = "产品类别"`
-
-##### 4. VALUE_AXIS（可选）
-
-- **说明**：数值轴（通常为Y轴）的标题文本
-- **适用范围**：除饼图、雷达图外的图表类型
-- **类型**：字符串
-- **格式要求**：需用双引号`"`或单引号`'`包裹
-- **示例**：`VALUE_AXIS = "销售额(万元)"`
-
-##### 5. CATEGORIES（必填）
-
-- **说明**：图表的分类维度数据（X轴数据或分组依据）
-- **类型**：数组
-- **内容**：包含字符串或数值类型的分类值集合
-- **示例**：
-    - `CATEGORIES = ["1月", "2月", "3月", "4月"]`
-    - `CATEGORIES = ["Apple", "Samsung", "Xiaomi"]`
-
-##### 6. SERIES（必填）
-
-- **说明**：图表的数据系列集合，每个系列代表一组相关数据
-- **类型**：数组，包含一个或多个数据系列对象
-- **每个系列对象包含**：
-    - `NAME`：系列名称（字符串类型，需用引号包裹）
-    - `DATA`：系列数据（数组类型，包含数值集合）
-
-```string 
-// ============================================================================
-#  柱状图 column chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>柱状图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-        JChartData chartData = new JChartData();
-        chartData.setTitle("销售数据统计");
-        chartData.setCategoryAxisTitle("产品");
-        chartData.setValueAxisTitle("销量");
-        chartData.setCategories(Arrays.asList(
-        "产品A", "产品B", "产品C", "产品D"));
-        JSeriesData series1 = new JSeriesData();
-        series1.setName("第一季度");
-        series1.setData(Arrays.asList(120, 200, 150, 180));
-        JSeriesData series2 = new JSeriesData();
-        series2.setName("第二季度");
-        series2.setData(Arrays.asList(180, 210, 190, 220));
-        chartData.setSeries(Arrays.asList(series1, series2));
-        XSSFWorkbook workbook = JExcelChartFactory.
-        createWorkbookWithChart(chartData, JExcelChartType
-        .COLUMN, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-           "D://test//SalesReport.xlsx")
-        ) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-          </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/column.png" alt="column " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">column</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  条形图 bar chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>条形图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-       JChartData salesData = new JChartData();
-        salesData.setTitle("2023年季度销售数据");
-        salesData.setCategoryAxisTitle("季度");
-        salesData.setValueAxisTitle("销售额(万元)");
-        salesData.setCategories(Arrays.asList("第一季度",
-        "第二季度", "第三季度", "第四季度"));
-        JSeriesData productA = new JSeriesData();
-        productA.setName("产品A");
-        productA.setData(Arrays.asList(450, 520, 480, 600));
-        JSeriesData productB = new JSeriesData();
-        productB.setName("产品B");
-        productB.setData(Arrays.asList(320, 380, 420, 500));
-        JSeriesData productC = new JSeriesData();
-        productC.setName("产品C");
-        productC.setData(Arrays.asList(280, 310, 350, 400));
-        salesData.setSeries(Arrays.asList(productA, productB,
-        productC));
-        salesData.setSeries(Arrays.asList(productA, productB,
-         productC));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                salesData, JExcelChartType.BAR, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-         "D://test//bar.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook,
-           out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/bar.png" alt="bar " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">bar</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  条形图 bar3d chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>条形图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-        JChartData chartData = new JChartData();
-        chartData.setTitle("产品季度销售(3D)");
-        chartData.setCategoryAxisTitle("产品");
-        chartData.setValueAxisTitle("销售额(万元)");
-        chartData.setCategories(Arrays.asList("笔记本"
-        , "手机", "平板", "显示器", "配件"));
-        JSeriesData q1 = new JSeriesData();
-        q1.setName("第一季度");
-        q1.setData(Arrays.asList(450, 680, 320, 280, 190));
-        JSeriesData q2 = new JSeriesData();
-        q2.setName("第二季度");
-        q2.setData(Arrays.asList(520, 720, 380, 310, 210));
-        JSeriesData q3 = new JSeriesData();
-        q3.setName("第三季度");
-        q3.setData(Arrays.asList(480, 750, 350, 330, 230));
-        chartData.setSeries(Arrays.asList(q1, q2, q3));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.BAR3D, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-          "D://test//bar3D.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/bar3d.png" alt="bar3d " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">bar3d</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  折线图 line chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>折线图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-        JChartData chartData = new JChartData();
-        chartData.setTitle("2023年北京月平均温度变化");
-        chartData.setCategoryAxisTitle("月份");
-        chartData.setValueAxisTitle("温度(℃)");
-        chartData.setCategories(Arrays.asList(
-                "1月", "2月", "3月", "4月", "5月", "6月",
-                "7月", "8月", "9月", "10月", "11月", "12月"
-        ));
-        JSeriesData avgTemp = new JSeriesData();
-        avgTemp.setName("平均温度");
-        avgTemp.setData(Arrays.asList(
-                -3.2, 0.5, 7.8, 15.2, 21.3, 25.7,
-                27.9, 26.8, 21.5, 14.6, 6.3, -1.0
-        ));
-        JSeriesData maxTemp = new JSeriesData();
-        maxTemp.setName("最高温度");
-        maxTemp.setData(Arrays.asList(
-                2.1, 5.3, 12.7, 20.5, 26.8, 30.4,
-                32.6, 31.5, 27.2, 20.8, 12.5, 4.2
-        ));
-        JSeriesData minTemp = new JSeriesData();
-        minTemp.setName("最低温度");
-        minTemp.setData(Arrays.asList(
-                -8.5, -4.2, 2.9, 9.9, 15.8, 21.0,
-                23.2, 22.1, 15.8, 8.4, 0.1, -6.2
-        ));
-        chartData.setSeries(Arrays.asList(avgTemp,
-        maxTemp, minTemp));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.LINE, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-           "D://test//line.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/line.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">line</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  饼状图 pie chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>饼状图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-           JChartData chartData = new JChartData();
-        chartData.setTitle("2023年智能手机市场份额");
-        JSeriesData marketShare = new JSeriesData();
-        marketShare.setName("市场份额");
-        marketShare.setData(Arrays.asList(38.5, 22.3,
-    15.7, 10.2, 8.5, 4.8));
-        chartData.setCategories(Arrays.asList(
-                "Apple", "Samsung", "Xiaomi", "OPPO", "vivo", "其他"
-        ));
-        chartData.setSeries(Collections.singletonList(marketShare));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.PIE, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-        "D://test//pie.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/pie.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">pie</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  面积图 area chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>面积图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-          JChartData chartData = new JChartData();
-        chartData.setTitle("季度销售趋势分析");
-        chartData.setCategoryAxisTitle("季度");
-        chartData.setValueAxisTitle("销售额(万元)");
-        chartData.setCategories(Arrays.asList("Q1", 
-        "Q2", "Q3", "Q4"));
-        JSeriesData productA = new JSeriesData();
-        productA.setName("产品线A");
-        productA.setData(Arrays.asList(120, 150, 180, 210));
-        JSeriesData productB = new JSeriesData();
-        productB.setName("产品线B");
-        productB.setData(Arrays.asList(80, 110, 130, 170));
-        JSeriesData productC = new JSeriesData();
-        productC.setName("产品线C");
-        productC.setData(Arrays.asList(60, 75, 90, 120));
-        chartData.setSeries(Arrays.asList(productA, 
-        productB, productC));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.AREA, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-        "D://test//area.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/area.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">area</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  面积图 area3d chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>面积图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-          JChartData chartData = new JChartData();
-        chartData.setTitle("季度销售趋势(3D)");
-        chartData.setCategoryAxisTitle("季度");
-        chartData.setValueAxisTitle("销售额(万元)");
-        chartData.setCategories(Arrays.asList("Q1", 
-        "Q2", "Q3", "Q4"));
-        JSeriesData productA = new JSeriesData();
-        productA.setName("产品线A");
-        productA.setData(Arrays.asList(120, 150, 180, 210));
-        JSeriesData productB = new JSeriesData();
-        productB.setName("产品线B");
-        productB.setData(Arrays.asList(80, 110, 130, 170));
-        JSeriesData productC = new JSeriesData();
-        productC.setName("产品线C");
-        productC.setData(Arrays.asList(60, 75, 90, 120));
-        chartData.setSeries(Arrays.asList(productA, productB,
-        productC));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.AREA3D, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-            "D://test//area3D.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/area3d.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">area3d</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  散点图 scatter chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>散点图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-        JChartData chartData = new JChartData();
-        chartData.setTitle("身高体重分布");
-        chartData.setCategoryAxisTitle("身高(cm)");
-        chartData.setValueAxisTitle("体重(kg)");
-        chartData.setCategories(Arrays.asList(
-   "160", "165", "170", "175", "180", "185", "190"
-        ));
-        JSeriesData male = new JSeriesData();
-        male.setName("男性");
-        male.setData(Arrays.asList(55, 60, 65, 70, 
-        75, 80, 85));
-        JSeriesData female = new JSeriesData();
-        female.setName("女性");
-        female.setData(Arrays.asList(50, 55, 58, 
-        62, 65, 68, 70));
-        chartData.setSeries(Arrays.asList(male, female));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.SCATTER, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-        "D://test//scatter.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/scatter.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">scatter</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  雷达图 radar chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>雷达图</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-       JChartData chartData = new JChartData();
-        chartData.setTitle("员工能力评估");
-        chartData.setCategories(Arrays.asList(
-                "编程能力", "沟通能力", "设计能力",
-                "解决问题", "团队合作", "学习能力"
-        ));
-        JSeriesData employeeA = new JSeriesData();
-        employeeA.setName("员工A");
-        employeeA.setData(Arrays.asList(90, 70,
-        85, 80, 75, 88));
-        JSeriesData employeeB = new JSeriesData();
-        employeeB.setName("员工B");
-        employeeB.setData(Arrays.asList(75, 85, 70,
-        90, 80, 75));
-        chartData.setSeries(Arrays.asList(employeeA, 
-        employeeB));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.RADAR, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-        "D://test//radar.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/radar.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">radar</div>
-    </td>
-  </tr>
-</table>
-
-```string 
-// ============================================================================
-#  surface surface chart
-// ============================================================================
-```
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr>
-    <td style="width: 10%; vertical-align: middle; padding-right: 2%; border: none;">
-      <strong>surface</strong><br>
-      <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 0.9em; overflow-x: auto;">
-          <code class="language-java">
-        JChartData chartData = new JChartData();
-        chartData.setTitle("地形高度示例");
-        chartData.setCategoryAxisTitle("X坐标");
-        chartData.setValueAxisTitle("Y坐标");
-        chartData.setCategories(Arrays.asList(
-        "1", "2", "3", "4", "5"));
-        JSeriesData row1 = new JSeriesData();
-        row1.setName("Y=1");
-        row1.setData(Arrays.asList(10, 15, 25, 
-        30, 25));
-        JSeriesData row2 = new JSeriesData();
-        row2.setName("Y=2");
-        row2.setData(Arrays.asList(15, 20, 35, 
-        40, 35));
-        JSeriesData row3 = new JSeriesData();
-        row3.setName("Y=3");
-        row3.setData(Arrays.asList(25, 35, 50, 
-        55, 50));
-        JSeriesData row4 = new JSeriesData();
-        row4.setName("Y=4");
-        row4.setData(Arrays.asList(20, 30, 45, 
-        50, 45));
-        JSeriesData row5 = new JSeriesData();
-        row5.setName("Y=5");
-        row5.setData(Arrays.asList(15, 25, 35, 
-        40, 35));
-        chartData.setSeries(Arrays.asList(row1, row2, 
-        row3, row4, row5));
-        XSSFWorkbook workbook = JExcelChartFactory
-        .createWorkbookWithChart(
-                chartData, JExcelChartType.SURFACE, "销售报表");
-        try (FileOutputStream out = new FileOutputStream(
-        "D://test//surface.xlsx")) {
-            JExcelChartFactory.writeWorkbookToStream(workbook, out);
-            System.out.println("Excel文件生成成功！");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         </code>
-      </pre>
-    </td>
-    <td style="width: 80%; vertical-align: middle; text-align: center; border: none;">
-      <img src="./src/main/resources/images/surface.png" alt="line " style="width: 100%; min-width: 400px ;max-width: 400px !important; height: auto;">
-      <div style="font-size: 0.9em; color: #666; margin-top: 10px;">surface</div>
-    </td>
-  </tr>
-</table>
-
-## 🎨 样式配置
-
-### 🎨 行 & 字体样式配置参数
-
-| 元素名称                    | 描述       | 取值/格式                 |
-|-------------------------|----------|-----------------------|
-| 📏 `height`             | 行高       | 像素值（整数）               |
-| 🔢 `rowNum`             | 行号       | 整数（0 起始）              |
-| 🎨 `rowStyle`           | 关联单元格样式  | `JCellStyle` 对象       |
-| 📐 `heightInPoints`     | 行高（点数）   | 高精度小数（1点=1/72英寸）      |
-| 🙈 `zeroHeight`         | 行是否隐藏    | `true`/`false`        |
-| 🔤 `fontHeightInPoints` | 字体大小（点数） | 高精度小数（如 12.0）/整数（如 3） |
-| ✍️ `fontName`           | 字体名称     | 字符串（如 "Arial"）        |
-| 📏 `fontHeight`         | 字体高度     | 整数（如 3）               |
-| 📝 `underLine`          | 下划线      | 参考 `JFont` 枚举         |
-| 𝗕 `bold`               | 粗体       | `true`/`false`        |
-| ⁱ `italic`              | 斜体       | `true`/`false`        |
-| 🌈 `color`              | 字体颜色     | 参考 `JColorEnum` 枚举    |
-| 🚫 `strikeout`          | 删除线      | `true`/`false`        |
-
-### 📋 表格元素配置参数
-
-| 常量名称                     | 描述       | 取值/格式                                                             |
-|--------------------------|----------|-------------------------------------------------------------------|
-| 🔢 `index`               | 样式索引标识   | 高精度小数                                                             |
-| 📊 `dataFormat`          | 数据格式编码   | 高精度小数格式码                                                          |
-| 📝 `dataFormatString`    | 数据格式字符串  | 格式字符串（如 "yyyy-MM-dd"）                                             |
-| ✍️ `font`                | 字体对象引用   | Font 对象                                                           |
-| 🔖 `fontIndex`           | 字体索引引用   | 高精度小数索引值                                                          |
-| 🙈 `hidden`              | 单元格可见性   | true/false                                                        |
-| 🔒 `locked`              | 单元格保护    | true/false                                                        |
-| 📜 `quotePrefixed`       | 引号前缀显示   | true/false                                                        |
-| 🧭 `alignment`           | 水平对齐方式   | left/right/center/center-section/general/fill/justify/distributed |
-| 📥 `wrapText`            | 文本自动换行   | true/false                                                        |
-| 🧱 `verticalAlignment`   | 垂直对齐方式   | top/bottom/center/justify/distributed                             |
-| 🔄 `rotation`            | 文本旋转角度   | 高精度小数（0-180 度）                                                    |
-| 📏 `indention`           | 文本缩进级别   | 高精度小数（缩进层级）                                                       |
-| 📐 `borderLeft`          | 左侧边框样式   | 边框样式常量                                                            |
-| 📐 `borderRight`         | 右侧边框样式   | 边框样式常量                                                            |
-| 📐 `borderTop`           | 顶部边框样式   | 边框样式常量                                                            |
-| 📐 `borderBottom`        | 底部边框样式   | 边框样式常量                                                            |
-| 🌈 `leftBorderColor`     | 左侧边框颜色   | 颜色编码/十六进制值                                                        |
-| 🌈 `rightBorderColor`    | 右侧边框颜色   | 颜色编码/十六进制值                                                        |
-| 🌈 `topBorderColor`      | 顶部边框颜色   | 颜色编码/十六进制值                                                        |
-| 🌈 `bottomBorderColor`   | 底部边框颜色   | 颜色编码/十六进制值                                                        |
-| 🎨 `fillPattern`         | 单元格填充样式  | 填充样式常量                                                            |
-| 🎨 `fillBackgroundColor` | 背景填充颜色   | 颜色编码/十六进制值                                                        |
-| 🎨 `fillForegroundColor` | 前景填充颜色   | 颜色编码/十六进制值                                                        |
-| 🪄 `shrinkToFit`         | 文本自适应单元格 | true/false                                                        |
-| 𝗕 `bold`                | 字体粗体样式   | Boolean (true/false)                                              |
-| 📛 `fontName`            | 字体系列名称   | 字符串（如 "Arial", "Times New Roman"）                                 |
-| 📏 `fontHeightInPoints`  | 字体大小（点数） | 高精度小数（如 12.0, 14.5）                                               |
-| 📏 `fontHeight`          | 字体高度（缇）  | 高精度小数（如 240, 280）                                                 |
-| ⁱ `italic`               | 字体斜体样式   | Boolean (true/false)                                              |
-| 📝 `underLine`           | 下划线类型    | 字符串（通过 JFont.nameOf() 映射）                                         |
-| 🌈 `color`               | 字体颜色     | 字符串（通过 JColorEnum.codeOf() 映射）                                    |
-| 🚫 `strikeout`           | 删除线文本    | Boolean (true/false)                                              |
-
-### 📐 边框样式取值说明
-
-| 输入字符串值                  | 边框样式常量                | 描述        |
-|-------------------------|-----------------------|-----------|
-| `"none"`                | `NONE`                | 无边框       |
-| `"thin"`                | `THIN`                | 细线条边框     |
-| `"medium"`              | `MEDIUM`              | 中等粗细边框    |
-| `"dashed"`              | `DASHED`              | 虚线边框      |
-| `"dotted"`              | `DOTTED`              | 点线边框      |
-| `"thick"`               | `THICK`               | 粗线条边框     |
-| `"double"`              | `DOUBLE`              | 双线条边框     |
-| `"hair"`                | `HAIR`                | 极细边框（发丝线） |
-| `"medium_dashed"`       | `MEDIUM_DASHED`       | 中等粗细虚线边框  |
-| `"dash_dot"`            | `DASH_DOT`            | 点划线交替边框   |
-| `"medium_dash_dot"`     | `MEDIUM_DASH_DOT`     | 中等粗细点划线边框 |
-| `"dash_dot_dot"`        | `DASH_DOT_DOT`        | 点划点交替边框   |
-| `"medium_dash_dot_dot"` | `MEDIUM_DASH_DOT_DOT` | 中等粗细点划点边框 |
-| `"slanted_dash_dot"`    | `SLANTED_DASH_DOT`    | 斜向点划线边框   |
-
-### 🎨 填充样式取值说明
-
-| 常量名称                  | 描述      | 取值/格式                                 |
-|-----------------------|---------|---------------------------------------|
-| `no_fill`             | 无填充样式   | `FillPatternType.NO_FILL`             |
-| `solid_foreground`    | 纯色前景填充  | `FillPatternType.SOLID_FOREGROUND`    |
-| `fine_dots`           | 细点填充样式  | `FillPatternType.FINE_DOTS`           |
-| `alt_bars`            | 交替条纹填充  | `FillPatternType.ALT_BARS`            |
-| `sparse_dots`         | 稀疏点填充样式 | `FillPatternType.SPARSE_DOTS`         |
-| `thick_horz_bands`    | 粗水平条纹   | `FillPatternType.THICK_HORZ_BANDS`    |
-| `thick_vert_bands`    | 粗垂直条纹   | `FillPatternType.THICK_VERT_BANDS`    |
-| `thick_backward_diag` | 粗反向对角线  | `FillPatternType.THICK_BACKWARD_DIAG` |
-| `thick_forward_diag`  | 粗正向对角线  | `FillPatternType.THICK_FORWARD_DIAG`  |
-| `big_spots`           | 大斑点填充样式 | `FillPatternType.BIG_SPOTS`           |
-| `bricks`              | 砖块纹理填充  | `FillPatternType.BRICKS`              |
-| `thin_horz_bands`     | 细水平条纹   | `FillPatternType.THIN_HORZ_BANDS`     |
-| `thin_vert_bands`     | 细垂直条纹   | `FillPatternType.THIN_VERT_BANDS`     |
-| `thin_backward_diag`  | 细反向对角线  | `FillPatternType.THIN_BACKWARD_DIAG`  |
-| `thin_forward_diag`   | 细正向对角线  | `FillPatternType.THIN_FORWARD_DIAG`  |
-| `squares`             | 正方形纹理填充 | `FillPatternType.SQUARES`            |
-| `diamonds`            | 菱形纹理填充  | `FillPatternType.DIAMONDS`            |
-| `less_dots`           | 低密度点填充  | `FillPatternType.LESS_DOTS`           |
-| `least_dots`          | 最低密度点填充 | `FillPatternType.LEAST_DOTS`         |
-
-### 🌈 JColorEnum 颜色常量（按编码名）
-
-| 编码名                   | 描述        | 索引值 | 映射颜色                                  |
-|-----------------------|-----------|-----|---------------------------------------|
-| `black1`              | 黑色（变体1）   | 0   | `IndexedColors.BLACK`                 |
-| `white1`              | 白色（变体1）   | 1   | `IndexedColors.WHITE`                 |
-| `red1`                | 红色（变体1）   | 2   | `IndexedColors.RED`                   |
-| `brightGreen1`        | 亮绿色（变体1）  | 3   | `IndexedColors.BRIGHT_GREEN`          |
-| `blue1`               | 蓝色（变体1）   | 4   | `IndexedColors.BLUE`                  |
-| `yellow1`             | 黄色（变体1）   | 5   | `IndexedColors.YELLOW`                |
-| `pink1`               | 粉色（变体1）   | 6   | `IndexedColors.PINK`                  |
-| `turquoise1`          | 青绿色（变体1）  | 7   | `IndexedColors.TURQUOISE`             |
-| `black`               | 标准黑色      | 8   | `IndexedColors.BLACK`                 |
-| `white`               | 标准白色      | 9   | `IndexedColors.WHITE`                 |
-| `red`                 | 标准红色      | 10  | `IndexedColors.RED`                   |
-| `brightGreen`         | 标准亮绿色     | 11  | `IndexedColors.BRIGHT_GREEN`          |
-| `blue`                | 标准蓝色      | 12  | `IndexedColors.BLUE`                  |
-| `yellow`              | 标准黄色      | 13  | `IndexedColors.YELLOW`                |
-| `pink`                | 标准粉色      | 14  | `IndexedColors.PINK`                  |
-| `turquoise`           | 标准青绿色     | 15  | `IndexedColors.TURQUOISE`             |
-| `darkRed`             | 深红色       | 16  | `IndexedColors.DARK_RED`              |
-| `green`               | 绿色        | 17  | `IndexedColors.GREEN`                 |
-| `darkBlue`            | 深蓝色       | 18  | `IndexedColors.DARK_BLUE`             |
-| `darkYellow`          | 深黄色       | 19  | `IndexedColors.DARK_YELLOW`           |
-| `violet`              | 紫罗兰色      | 20  | `IndexedColors.VIOLET`                |
-| `teal`                | 水鸭色       | 21  | `IndexedColors.TEAL`                  |
-| `grey25Percent`       | 25%灰色     | 22  | `IndexedColors.GREY_25_PERCENT`       |
-| `grey50Percent`       | 50%灰色     | 23  | `IndexedColors.GREY_50_PERCENT`       |
-| `cornflowerBlue`      | 矢车菊蓝      | 24  | `IndexedColors.CORNFLOWER_BLUE`       |
-| `maroon`              | 餐红色       | 25  | `IndexedColors.MAROON`                |
-| `lemonChiffon`        | 柠檬绸色      | 26  | `IndexedColors.LEMON_CHIFFON`         |
-| `lightTurquoise1`     | 浅青绿色（变体1） | 27  | `IndexedColors.LIGHT_TURQUOISE`       |
-| `orchid`              | 兰花紫       | 28  | `IndexedColors.ORCHID`                |
-| `coral`               | 珊瑚色       | 29  | `IndexedColors.CORAL`                 |
-| `royalBlue`           | 宝蓝色       | 30  | `IndexedColors.ROYAL_BLUE`            |
-| `lightCornflowerBlue` | 浅矢车菊蓝     | 31  | `IndexedColors.LIGHT_CORNFLOWER_BLUE` |
-| `skyBlue`             | 天蓝色       | 40  | `IndexedColors.SKY_BLUE`              |
-| `lightTurquoise`      | 浅青绿色      | 41  | `IndexedColors.LIGHT_TURQUOISE`       |
-| `lightGreen`          | 浅绿色       | 42  | `IndexedColors.LIGHT_GREEN`           |
-| `lightYellow`         | 浅黄色       | 43  | `IndexedColors.LIGHT_YELLOW`          |
-| `paleBlue`            | 淡蓝色       | 44  | `IndexedColors.PALE_BLUE`             |
-| `rose`                | 玫瑰红       | 45  | `IndexedColors.ROSE`                  |
-| `lavender`            | 薰衣草紫      | 46  | `IndexedColors.LAVENDER`              |
-| `tan`                 | 棕褐色       | 47  | `IndexedColors.TAN`                   |
-| `lightBlue`           | 浅蓝色       | 48  | `IndexedColors.LIGHT_BLUE`            |
-| `aqua`                | 水绿色       | 49  | `IndexedColors.AQUA`                  |
-| `lime`                | 酸橙绿       | 50  | `IndexedColors.LIME`                  |
-| `gold`                | 金色        | 51  | `IndexedColors.GOLD`                  |
-| `lightOrange`         | 浅橙色       | 52  | `IndexedColors.LIGHT_ORANGE`          |
-| `orange`              | 橙色        | 53  | `IndexedColors.ORANGE`                |
-| `blueGrey`            | 蓝灰色       | 54  | `IndexedColors.BLUE_GREY`             |
-| `grey40Percent`       | 40%灰色     | 55  | `IndexedColors.GREY_40_PERCENT`       |
-| `darkTeal`            | 深水鸭色      | 56  | `IndexedColors.DARK_TEAL`             |
-| `seaGreen`            | 海绿色       | 57  | `IndexedColors.SEA_GREEN`             |
-| `darkGreen`           | 深绿色       | 58  | `IndexedColors.DARK_GREEN`            |
-| `oliveGreen`          | 橄榄绿       | 59  | `IndexedColors.OLIVE_GREEN`          |
-| `brown`               | 棕色        | 60  | `IndexedColors.BROWN`                 |
-| `plum`                | 李子紫       | 61  | `IndexedColors.PLUM`                  |
-| `indigo`              | 靛蓝色       | 62  | `IndexedColors.INDIGO`                |
-| `grey80Percent`       | 80%灰色     | 63  | `IndexedColors.GREY_80_PERCENT`       |
-| `automatic`           | 自动颜色      | 64  | `IndexedColors.AUTOMATIC`             |
-
-### 单元格样式
+#### LINE
 
 ```string
-EXPORT  WITH SHEET="学生表",HEADER=true,
-MAPPING={
-	"id":"主键",
-	"name":"姓名",
-	"gender":"性别",
-	"age":"年龄",
-	"enrollmentDate":"入学时间",
-	"className":"班级",
-	"ignoreField":"是否忽略"
-},
-FORMULAS={
-D5:'ABS(D2)'},  STYLE={
-    ROW 1: {
-      fontName: Arial,
-      fontHeightInPoints: 12,
-      italic: true,
-      color: yellow,
-      bold: true
-    }}
+EXPORT WITH GRAPH = {
+    TYPE = LINE,
+    TITLE = "Monthly Trend",
+    CATEGORY_AXIS = "Month",
+    VALUE_AXIS = "Amount",
+    CATEGORIES = ["Jan", "Feb", "Mar"],
+    SERIES = [{NAME = "Sales", DATA = [120, 150, 180]}]
+}
 ```
 
-```java
-List<Map<String, Object>> data = JObjectConverter.convert(getData());
-FileOutputStream fileOutputStream=new FileOutputStream("d://test//style.xlsx");
-JQuickExcelCommonExportExecutor executor = new JQuickExcelCommonExportExecutor();
-JExcelExportModel config = (JExcelExportModel) executor.execute(rule);
-HashMap<String,Object> map = new HashMap<>();
-map.put("1","男");
-map.put("0","女");
-JContext context = new JContext();
-context.put("dict",map);
-JExcelExportHandler handler = new JExcelExportHandler(config,context,JQuickRow.toRows(data));
-Workbook workbook=handler.getWorkBook();
-workbook.write(fileOutputStream);
-```
-
-## 🔄 合并策略
-
-| 策略                | 描述     | 适用场景     |
-|-------------------|--------|----------|
-| MERGE_WITH_MAX    | 取最大值   | 成绩、销售额统计 |
-| MERGE_WITH_MIN    | 取最小值   | 最低价、最低分  |
-| MERGE_WITH_AVG    | 取平均值   | 平均分、平均工资 |
-| MERGE_WITH_SUM    | 求和     | 总计、汇总    |
-| MERGE_WITH_FIRST  | 取第一个值  | 主数据保留    |
-| MERGE_WITH_LAST   | 取最后一个值 | 最新数据     |
-| MERGE_WITH_CONCAT | 字符串连接  | 名称合并     |
-| MERGE_WITH_COUNT  | 计数     | 统计数量     |
-| MERGE_WITH_VALUE  | 固定值    | 汇总标签     |
-
-### footer Option
+#### COLUMN
 
 ```string
-EXPORT WITH FOOTER="Generated by JQuickExcel on ${current_date()}"
+EXPORT WITH GRAPH = {
+    TYPE = COLUMN,
+    TITLE = "Product Sales",
+    CATEGORY_AXIS = "Product",
+    VALUE_AXIS = "Amount",
+    CATEGORIES = ["A", "B", "C"],
+    SERIES = [{NAME = "Sales", DATA = [120, 200, 150]}]
+}
 ```
 
-#### Comprehensive Export Test
+#### BAR
 
 ```string
-EXPORT WITH
-SHEET="AnnualReport",
-HEADER=true,
-FORMAT={
-"A:A": "text",
-"B:B": "number",
-"C:C": "currency",
-"D1:D100": "date"
-},
-STYLE={
-ROW 1: {"font": "bold", "color": "blue", "align": "center"},
-COL B: {"bgcolor": "lightyellow"},
-A1:D1: {"border": "thick"}
-},
-FORMULAS={
-E2:E100: "SUM(B2:D2)",
-F1: "TOTAL:",
-F2:F100: "AVERAGE(B2:D2)"
-},
-MERGE: {
-ROWS 1..1,
-COLS A..F WITH FIRST
-},
-GRAPH={
-TYPE=PIE,
-TITLE="Revenue Breakdown",
-CATEGORIES=["Q1", "Q2", "Q3", "Q4"],
-SERIES=[{NAME="2023", DATA=[45000, 52000, 48000, 51000]}]
-},
-FOOTER="Confidential - Internal Use Only"
+EXPORT WITH GRAPH = {
+    TYPE = BAR,
+    TITLE = "Quarter Ranking",
+    CATEGORY_AXIS = "Quarter",
+    VALUE_AXIS = "Amount",
+    CATEGORIES = ["Q1", "Q2", "Q3"],
+    SERIES = [{NAME = "Sales", DATA = [450, 520, 480]}]
+}
 ```
 
-# **捐献 ☕**
+#### BAR3D
 
-感谢您使用这个开源项目！它完全免费并将持续维护，但开发者确实需要您的支持。
+```string
+EXPORT WITH GRAPH = {
+    TYPE = BAR3D,
+    TITLE = "Product Sales 3D",
+    CATEGORY_AXIS = "Product",
+    VALUE_AXIS = "Amount",
+    CATEGORIES = ["Laptop", "Phone", "Tablet"],
+    SERIES = [{NAME = "Q1", DATA = [450, 680, 320]}]
+}
+```
 
----
+#### PIE
 
-## **如何支持我们**
+```string
+EXPORT WITH GRAPH = {
+    TYPE = PIE,
+    TITLE = "Market Share",
+    CATEGORIES = ["A", "B", "C"],
+    SERIES = [{NAME = "Share", DATA = [38.5, 22.3, 15.7]}]
+}
+```
 
-1. **请我喝杯咖啡**  
-   如果这个项目为您节省了时间或金钱，请考虑通过小额捐赠支持我。
+#### AREA
 
-2. **您的捐赠用途**
+```string
+EXPORT WITH GRAPH = {
+    TYPE = AREA,
+    TITLE = "Quarterly Trend",
+    CATEGORY_AXIS = "Quarter",
+    VALUE_AXIS = "Amount",
+    CATEGORIES = ["Q1", "Q2", "Q3"],
+    SERIES = [{NAME = "Line A", DATA = [120, 150, 180]}]
+}
+```
 
-- 维持项目运行的服务器成本.
-- 开发新功能以提供更多价值.
-- 优化文档以提升用户体验.
+#### AREA3D
 
-3. **每一分都很重要**  
-   即使是1分钱的捐赠也能激励我熬夜调试！
+```string
+EXPORT WITH GRAPH = {
+    TYPE = AREA3D,
+    TITLE = "Quarterly Trend 3D",
+    CATEGORY_AXIS = "Quarter",
+    VALUE_AXIS = "Amount",
+    CATEGORIES = ["Q1", "Q2", "Q3"],
+    SERIES = [{NAME = "Line A", DATA = [120, 150, 180]}]
+}
+```
 
-## **为什么捐赠?**
+#### SCATTER
 
-✔️ 保持项目永远免费且无广告.  
-✔️ 支持及时响应问题和社区咨询.  
-✔️ 实现计划中的未来功能.
+```string
+EXPORT WITH GRAPH = {
+    TYPE = SCATTER,
+    TITLE = "Height and Weight",
+    CATEGORY_AXIS = "Height",
+    VALUE_AXIS = "Weight",
+    CATEGORIES = ["160", "170", "180"],
+    SERIES = [{NAME = "People", DATA = [55, 65, 75]}]
+}
+```
 
-感谢您成为让开源世界更美好的伙伴！
+#### RADAR
 
---- 
+```string
+EXPORT WITH GRAPH = {
+    TYPE = RADAR,
+    TITLE = "Capability Review",
+    CATEGORY_AXIS = "Capability",
+    CATEGORIES = ["Coding", "Design", "Communication"],
+    SERIES = [{NAME = "Member A", DATA = [90, 85, 70]}]
+}
+```
 
-### **补充说明**
+#### SURFACE
 
-- 本项目和产品维护.
-- 您的支持确保其可持续性和成长 .
+```string
+EXPORT WITH GRAPH = {
+    TYPE = SURFACE,
+    TITLE = "Terrain Height",
+    CATEGORY_AXIS = "X",
+    VALUE_AXIS = "Y",
+    CATEGORIES = ["1", "2", "3"],
+    SERIES = [{NAME = "Y=1", DATA = [10, 15, 25]}]
+}
+```
 
----
+### Merge Strategies
 
-## **🌟 立即支持**
+Each merge definition identifies rows and columns, then applies a strategy after `WITH`.
 
-赞助时欢迎通过 [email](mailto:goudingcheng@gmail.com) 留言。您的名字将被列入项目README文件的 **"特别感谢"** 名单中！
-![Ali Pay](./src/main/resources/pay/alipay.jpg)
-![Wechat Pay](./src/main/resources/pay/wechat.jpg)
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| `MERGE_WITH_MAX` | Uses the maximum value. | `COLS A..F WITH MAX` |
+| `MERGE_WITH_MIN` | Uses the minimum value. | `COLS A..F WITH MIN` |
+| `MERGE_WITH_AVG` | Uses the average value. | `COLS A..F WITH AVG` |
+| `MERGE_WITH_SUM` | Sums values. | `COLS A..F WITH SUM` |
+| `MERGE_WITH_FIRST` | Uses the first value. | `COLS A..F WITH FIRST` |
+| `MERGE_WITH_LAST` | Uses the last value. | `COLS A..F WITH LAST` |
+| `MERGE_WITH_CONCAT` | Concatenates values. | `COLS A..F WITH CONCAT` |
+| `MERGE_WITH_COUNT` | Counts values. | `COLS A..F WITH COUNT` |
+| `MERGE_WITH_VALUE` | Uses a fixed value. | `COLS A..F WITH VALUE` |
 
----
+```string
+EXPORT WITH MERGE:{
+  ROWS 1..1,
+  COLS A..F WITH FIRST
+}
+```
+
+## Dependency & Compatibility
+
+The Maven coordinate is `io.github.paohaijiao:jquick-excel`. This document uses version `3.6.0`. JQuick-Excel requires Java 8 or later and supports both `xls` and `xlsx` files.
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| Java | Minimum runtime. | `Java 8+` |
+| Workbook | Legacy Excel format. | `xls` |
+| Workbook | Office Open XML format. | `xlsx` |
+| Dependency | Maven coordinate. | `io.github.paohaijiao:jquick-excel` |
+
+# Notes / FAQ
+
+| Parameter | Description | Usage Example |
+| --- | --- | --- |
+| Large files | Enable streaming export for high row counts. | `setStreamingExportEnabled(true)` |
+| Large imports | Consume batches when input is large. | `importDataInBatch(model, 5000, batch -> true)` |
+| Style limit | Reuse styles through the cache. | `setCellStyleCacheEnabled(true)` |
+| XML location | Put the XML definition on the classpath. | `jquick-excel.xml` |
+| DSL syntax | Preserve keywords, braces, separators, and ranges. | `FORMULAS={D5:'SUM(D2:D4)'}` |
+| Streams | Close input and output streams. | `try (OutputStream output = ...) {}` |
+| Context | Put dictionary values in `JContext`. | `context.put("dict", gender)` |
+| Charts | Keep each `DATA` array aligned with `CATEGORIES`. | `DATA = [10, 20, 30]` |
+
+# License
+
+This project is licensed under the Apache License 2.0.
