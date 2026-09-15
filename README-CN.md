@@ -466,9 +466,15 @@ TRANSFORM={
 }
 ```
 
-### SPI 依赖与注册
+### 求值器函数与 SPI 注册
 
-完整的 TRANSFORM provider 目录维护在 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function)。需要外部 provider 时加入以下依赖。
+JQuick-Excel 表达式可以使用现有求值器函数 `toUpper`、`dateFormat` 和 `trans`。外部 provider 目录维护在 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function)。需要 SPI provider 时加入以下依赖。
+
+| 参数 | 描述 | 用法示例 |
+| --- | --- | --- |
+| `toUpper` | 现有求值器，将文本转换为大写。 | `toUpper(${name})` |
+| `dateFormat` | 现有求值器，格式化日期值。 | `dateFormat(${enrollmentDate},'yyyy-MM-dd')` |
+| `trans` | 现有求值器，通过 `JContext` 字典映射值。 | `trans(${dict},${gender})` |
 
 ```xml
 <dependency>
@@ -534,7 +540,7 @@ public interface JQuickMethodFunctionProvider {
 | `extra` | 类型转换、数字格式化、集合构造和类型检查。 | `cast(value,targetClass)`；`formatNumber(number,pattern)`；`parseNumber(str,pattern)`；`toArray(value1,value2,...)`；`toCurrency(number,locale?)`；`toList(value1,value2,...)`；`toPercentage(number,decimals?)`；`typeOf(value)` |
 | `json` | 对象序列化。 | `toJson(value)` |
 | `math` | 四则运算、三角函数、常量、聚合、统计、进制和数值转换。 | `abs(value)`；`acos(value)`；`add(...)`；`asin(value)`；`atan(value)`；`atan2(y,x)`；`avg(...)`；`ceil(value)`；`ceilTo(value,places)`；`e()`；`pi()`；`cos(radians)`；`cosh(value)`；`divide(a,b,...)`；`exp(value)`；`expm1(value)`；`floor(value)`；`floorTo(value,places)`；`greatest(value1,value2,...)`；`isNumber(value)`；`least(value1,value2,...)`；`log(value)`；`log10(value)`；`log1p(value)`；`max(...)`；`median(numbers...)`；`min(...)`；`mode(numbers...)`；`mod(a,b)`；`multiply(...)`；`parseBinary(binaryStr)`；`parseHex(hexStr)`；`percentile(numbers...,percentile)`；`pow(base,exponent)`；`range(numbers...)`；`round(value)`；`roundTo(value,places)`；`signum(value)`；`sin(radians)`；`sinh(value)`；`sqrt(value)`；`stdDev(numbers...)`；`subtract(a,b,...)`；`tan(radians)`；`tanh(value)`；`toBinary(number)`；`toDegrees(radians)`；`toDouble(value,defaultValue?)`；`toFloat(value,defaultValue?)`；`toHex(number)`；`toInt(value,defaultValue?)`；`toLong(value,defaultValue?)`；`toNumberString(number,pattern?)`；`toOctal(number)`；`toRadians(degrees)`；`ulp(value)`；`variance(numbers...)`；`countDistinct(...)`；`count(...)`；`countNonNull(...)`；`product(...)`；`sum(...)` |
-| `random` | 随机值、随机选择、颜色、日期、数组和 UUID。 | `randomBoolean(trueProbability?)`；`randomChoice(list)` 或 `randomChoice(elem1,elem2,...)`；`randomDouble(min,max)`；`random(arr)`；`randomInt(min,max)`；`randomIntArray(size,min,max)`；`randomLong(min,max)`；`randomSample(list,count,allowRepeat?)`；`shuffle(list)`；`randomString(length)`；`randomUUID(withoutDashes?)`；`randomColor(type?)`；`randomDate(startDate,endDate,pattern?)` |
+| `random` | 随机值、随机选择、颜色、日期、数组和 UUID。 | `randomBoolean()` 或 `randomBoolean(trueProbability?)`；`randomChoice(list)` 或 `randomChoice(elem1,elem2,...)`；`randomDouble()` 或 `randomDouble(min,max)`；`random(arr)`；`randomInt()`、`randomInt(max)` 或 `randomInt(min,max)`；`randomIntArray(size,min,max)`；`randomLong()`、`randomLong(max)` 或 `randomLong(min,max)`；`randomSample(list,count,allowRepeat?)`；`shuffle(list)`；`randomString(length)`；`randomUUID(withoutDashes?)`；`randomColor(type?)`；`randomDate(startDate,endDate,pattern?)` |
 | `string` | 字符串比较、查找、填充、脱敏、转义、编码、替换、大小写转换和聚合。 | `abbreviate(str,maxWidth,ellipsis?)`；`capitalize(str)`；`centerPad(str,size,padChar?)`；`compareTo(str1,str2,ignoreCase?)`；`concat(...)`；`contains(str,sub)`；`tokenize(str,delimiters)`；`countChar(str,ch,ignoreCase?)`；`countMatches(str,sub,ignoreCase?)`；`equalsAny(str,target1,target2,...)`；`equalsIgnoreCase(str1,str2)`；`escapeHtml(str)`；`escapeRegex(str)`；`format(pattern,arg1,arg2,...)`；`indexOf(str,search,fromIndex?)`；`isAlpha(str)`；`isAlphaNumeric(str)`；`isBlank(str)`；`isNumeric(str)`；`isString(value)`；`left(str,n)`；`leftPad(str,size,padChar?)`；`length(str)`；`levenshtein(str1,str2)`；`maskEmail(email)`；`mask(str,start,end,maskChar?)`；`matches(str,regex)`；`mid(str,start,length?)`；`removeDuplicates(str)`；`removeEnd(str,suffix,ignoreCase?)`；`removeStart(str,prefix,ignoreCase?)`；`removeWhitespace(str)`；`repeat(str,count,separator?)`；`repeatChar(ch,count)`；`replace(str,target,replacement)`；`replaceAll(str,regex,replacement)`；`reverse(str)`；`right(str,n)`；`rightPad(str,size,padChar?)`；`similarity(str1,str2)`；`split(str,regex)`；`splitByLength(str,chunkSize)`；`substring(str,beginIndex)` 或 `substring(str,beginIndex,endIndex)`；`substringAfter(str,separator)`；`substringBefore(str,separator)`；`substringBetween(str,open,close)`；`swapCase(str)`；`toCamelCase(str,firstUpper?)`；`toLower(str)`；`toSnakeCase(str)`；`toString(value,pattern?)`；`toUpper(str)`；`trim(str)`；`uncapitalize(str)`；`unescapeHtml(str)`；`uniqueChars(str)`；`wordCount(str)`；`base64Decode(encodedStr)`；`base64Encode(str)`；`decodeUrl(str)`；`encodeUrl(str)`；`md5(str)`；`groupConcat(delimiter,...)`；`stringAgg(delimiter,...)` |
 | `translate` | 上下文字典翻译。 | `translate(context,code,dictType,defaultValue?)` |
 
