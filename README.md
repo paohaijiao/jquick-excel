@@ -457,20 +457,22 @@ EXPORT WITH
 FORMAT={"enrollmentDate":"yyyy-MM-dd"},
 TRANSFORM={
   "name":toUpper(${name}),
-  "enrollmentDate":formatDate(${enrollmentDate},'yyyy-MM-dd'),
-  "gender":translate(${dict},${gender},'gender','Unknown')
+  "enrollmentDate":dateFormat(${enrollmentDate},'yyyy-MM-dd'),
+  "gender":trans(${dict},${gender})
 }
 ```
 
 ### Evaluator Functions and SPI Registration
 
-JQuick-Excel expressions can use the existing evaluator functions `toUpper`, `dateFormat`, and `trans`. The external provider catalog is maintained in [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function). Add it when the SPI providers are required.
+JQuick-Excel has built-in evaluators such as `toUpper`, `dateFormat`, and `trans`. The external [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function) dependency adds SPI functions such as `formatDate` and `translate`.
 
 | Parameter | Description | Usage Example |
 | --- | --- | --- |
-| `toUpper` | Existing evaluator that converts text to uppercase. | `toUpper(${name})` |
-| `dateFormat` | Existing evaluator that formats a date value. | `dateFormat(${enrollmentDate},'yyyy-MM-dd')` |
-| `trans` | Existing evaluator that maps a value through a `JContext` dictionary. | `trans(${dict},${gender})` |
+| `toUpper` | Built-in evaluator that converts text to uppercase. | `toUpper(${name})` |
+| `dateFormat` | Built-in evaluator that formats a date value. | `dateFormat(${enrollmentDate},'yyyy-MM-dd')` |
+| `trans` | Built-in evaluator that maps a value through a `JContext` dictionary. | `trans(${dict},${gender})` |
+| `formatDate` | SPI function that formats a date with a pattern. | `formatDate(${enrollmentDate},'yyyy-MM-dd')` |
+| `translate` | SPI function that maps a context dictionary value. | `translate(${dict},${gender},'gender','Unknown')` |
 
 ```xml
 <dependency>
@@ -492,7 +494,24 @@ public interface JQuickMethodFunctionProvider {
 }
 ```
 
-Each provider implementation is listed in `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`. Java SPI discovery loads these classes. `JQuickMethodInvocationManager` calls `ServiceLoader.loadServicesByPriority(...)`, registers providers by `getMethodName()`, and invokes the matching provider with the evaluated argument list. `JFunctionExecutor` exposes the execution contract `apply(List<Object> args)`. Custom functions can be added with `registerInvoker(...)` or deliberately replace an existing function with `registerOrReplaceInvoker(...)`.
+Each provider implementation is listed in `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`. Java SPI discovery loads these classes. `JQuickMethodInvocationManager` calls `ServiceLoader.loadServicesByPriority(...)`, registers providers by `getMethodName()`, and invokes the matching provider with the evaluated argument list. `JFunctionExecutor` exposes `Object apply(List<Object> args) throws Exception`. The manager also supports `hasMethod`, `getSupportedMethods`, `getInvoker`, `getAllInvokers`, `registerInvoker`, `registerInvokers`, `registerOrReplaceInvoker`, and `unregisterInvoker`. Use `registerInvoker` to add a function and `registerOrReplaceInvoker` to deliberately replace one.
+
+A custom provider is a normal Java class plus one service-descriptor entry:
+
+```java
+public final class FullNameFunction implements JQuickMethodFunctionProvider {
+    public String getMethodName() { return "fullName"; }
+    public Object invoke(List<Object> args) {
+        return String.valueOf(args.get(0)) + " " + String.valueOf(args.get(1));
+    }
+}
+```
+
+```text
+com.example.FullNameFunction
+```
+
+Put the class name in `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`. After the dependency is on the classpath, the SPI loader discovers it, the manager registers `fullName`, and `TRANSFORM` can call `fullName(${firstName},${lastName})`.
 
 The runtime path is:
 
@@ -515,6 +534,14 @@ row field or JContext value
 | `META-INF/services/...` | Java SPI provider descriptor. | `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider` |
 | `getPriority` | Supplies the provider loading priority. | `return 5000;` |
 | `JQuickMethodInvocationManager` | Looks up and invokes registered functions. | `manager.invoke("toUpper", args)` |
+| `getMethodCount` | Returns the number of registered functions. | `manager.getMethodCount()` |
+| `getInvokersSortedByPriority` | Lists functions ordered by provider priority. | `manager.getInvokersSortedByPriority()` |
+| `getInvokersSortedByName` | Lists functions ordered by method name. | `manager.getInvokersSortedByName()` |
+| `searchMethods` | Searches registered functions by name or description. | `manager.searchMethods("date")` |
+| `getGroupedInvokers` | Groups registered functions for inspection. | `manager.getGroupedInvokers()` |
+| `printRegisteredMethods` | Prints the registered function list. | `manager.printRegisteredMethods()` |
+| `printGitHubTable` | Prints the function list as a Markdown table. | `manager.printGitHubTable()` |
+| `isPrettyPrintEnabled` / `setPrettyPrintEnabled` | Reads or changes diagnostic output formatting. | `manager.setPrettyPrintEnabled(true)` |
 | `JFunctionExecutor` | Defines a function execution adapter. | `executor.apply(args)` |
 | `FORMAT` | Controls final Excel display formatting. | `FORMAT={"enrollmentDate":"yyyy-MM-dd"}` |
 
@@ -529,14 +556,14 @@ The following catalog contains all 248 functions published by `jquick-transform-
 | `bool` | Boolean checks. | `isBoolean(value)` |
 | `business` | Card, email, gender, ID-card, phone, and email validation. | `bankCardMask(cardNo,keepStart?,keepEnd?)`; `bankCardValidate(cardNo)`; `emailMask(email)`; `genderName(code)`; `idCardAge(idCard,referenceDate?)`; `idCardBirthday(idCard,pattern?)`; `idCardGender(idCard,format?)`; `idCardInfo(idCard,field?)`; `idCardValidate(idCard)`; `phoneInfo(phone,field?)`; `phoneMask(phone,keepStart?,keepEnd?)`; `phoneValidate(phone)`; `isEmail(value)` |
 | `collection` | Empty checks, joining, and size. | `isEmpty(value)`; `join(list,delimiter)`; `size(value)` |
-| `condition` | Comparisons, ranges, branching, null defaults, and switches. | `between(value,min,max,inclusive?)`; `caseWhen(condition1,result1,...,defaultResult)`; `coalesce(value1,value2,...)`; `defaultIfNull(value,defaultValue)`; `eq(a,b,ignoreCase?)`; `gte(a,b)`; `gt(a,b)`; `ifElse(condition1,value1,...,defaultValue)`; `if(condition,trueValue,falseValue)`; `lte(a,b)`; `lt(a,b)`; `ne(a,b,ignoreCase?)`; `nvl(value,defaultValue)`; `switch(value,case1,result1,...,defaultValue)` |
+| `condition` | Comparisons, ranges, branching, null defaults, and switches. | `between(value,min,max,inclusive?)`; `caseWhen(condition1,result1,condition2,result2,...,defaultResult)`; `coalesce(value1,value2,...)`; `defaultIfNull(value,defaultValue)`; `eq(a,b,ignoreCase?)`; `gte(a,b)`; `gt(a,b)`; `ifElse(condition1,value1,condition2,value2,...,defaultValue)`; `if(condition,trueValue,falseValue)`; `lte(a,b)`; `lt(a,b)`; `ne(a,b,ignoreCase?)`; `nvl(value,defaultValue)`; `switch(value,case1,result1,case2,result2,...,defaultValue)` |
 | `convert` | Boolean, date, datetime, and short conversion. | `toBoolean(value,defaultValue?)`; `toDate(value,pattern?)`; `toDateTime(value,pattern?)`; `toShort(value,defaultValue?)` |
 | `date` | Date arithmetic, extraction, comparison, boundaries, and formatting. | `addDays(date,days)`; `addHours(datetime,hours)`; `addMinutes(datetime,minutes)`; `addMonths(date,months)`; `addSeconds(datetime,seconds)`; `addYears(date,years)`; `age(birthDate,referenceDate?)`; `day(date?)`; `dayOfWeek(date?,locale?)`; `dayOfYear(date?)`; `daysBetween(date1,date2)`; `endOfDay(date?)`; `endOfMonth(date?)`; `endOfYear(date?)`; `hour(datetime?)`; `hoursBetween(datetime1,datetime2)`; `isAfter(date1,date2)`; `isBefore(date1,date2)`; `isDate(value)`; `isLeapYear(year?)`; `isSameDay(date1,date2)`; `isWeekend(date?)`; `minute(datetime?)`; `month(date?)`; `monthsBetween(date1,date2)`; `second(datetime?)`; `startOfDay(date?)`; `startOfMonth(date?)`; `startOfYear(date?)`; `weekOfYear(date?)`; `year(date?)`; `yearsBetween(date1,date2)`; `formatDate(date,pattern)`; `now()`; `parseDate(dateStr,pattern)`; `timestamp()`; `today()`; `toIsoString(date)` |
 | `geometry` | Geometry, vectors, matrices, complex numbers, and numeric mapping. | `areaCircle(radius)`; `areaRectangle(length,width)`; `areaTriangle(base,height)` or `areaTriangle(a,b,c)`; `circumference(radius)`; `clamp(value,min,max)`; `combination(n,k)`; `cross(x1,y1,x2,y2)`; `distance(x1,y1,x2,y2)` or `distance(x1,y1,z1,x2,y2,z2)`; `dot(vector1,vector2)`; `factorial(n)`; `fibonacci(n)`; `gcd(a,b,...)`; `hypot(x,y)`; `isPowerOfTwo(n)`; `isPrime(n)`; `lcm(a,b,...)`; `lerp(a,b,t)`; `map(value,fromLow,fromHigh,toLow,toHigh,clamp?)`; `permutation(n,k)`; `complexAdd(r1,i1,r2,i2)`; `complexMultiply(r1,i1,r2,i2)`; `matrixAdd(matrix1,matrix2)` |
 | `extra` | General casting, numeric formatting, collections, and type inspection. | `cast(value,targetClass)`; `formatNumber(number,pattern)`; `parseNumber(str,pattern)`; `toArray(value1,value2,...)`; `toCurrency(number,locale?)`; `toList(value1,value2,...)`; `toPercentage(number,decimals?)`; `typeOf(value)` |
 | `json` | Object serialization. | `toJson(value)` |
 | `math` | Arithmetic, trigonometry, constants, aggregation, statistics, bases, and numeric conversion. | `abs(value)`; `acos(value)`; `add(...)`; `asin(value)`; `atan(value)`; `atan2(y,x)`; `avg(...)`; `ceil(value)`; `ceilTo(value,places)`; `e()`; `pi()`; `cos(radians)`; `cosh(value)`; `divide(a,b,...)`; `exp(value)`; `expm1(value)`; `floor(value)`; `floorTo(value,places)`; `greatest(value1,value2,...)`; `isNumber(value)`; `least(value1,value2,...)`; `log(value)`; `log10(value)`; `log1p(value)`; `max(...)`; `median(numbers...)`; `min(...)`; `mode(numbers...)`; `mod(a,b)`; `multiply(...)`; `parseBinary(binaryStr)`; `parseHex(hexStr)`; `percentile(numbers...,percentile)`; `pow(base,exponent)`; `range(numbers...)`; `round(value)`; `roundTo(value,places)`; `signum(value)`; `sin(radians)`; `sinh(value)`; `sqrt(value)`; `stdDev(numbers...)`; `subtract(a,b,...)`; `tan(radians)`; `tanh(value)`; `toBinary(number)`; `toDegrees(radians)`; `toDouble(value,defaultValue?)`; `toFloat(value,defaultValue?)`; `toHex(number)`; `toInt(value,defaultValue?)`; `toLong(value,defaultValue?)`; `toNumberString(number,pattern?)`; `toOctal(number)`; `toRadians(degrees)`; `ulp(value)`; `variance(numbers...)`; `countDistinct(...)`; `count(...)`; `countNonNull(...)`; `product(...)`; `sum(...)` |
-| `random` | Random values, choices, colors, dates, arrays, and UUIDs. | `randomBoolean()` or `randomBoolean(trueProbability?)`; `randomChoice(list)` or `randomChoice(elem1,elem2,...)`; `randomDouble()` or `randomDouble(min,max)`; `random(arr)`; `randomInt()`, `randomInt(max)`, or `randomInt(min,max)`; `randomIntArray(size,min,max)`; `randomLong()`, `randomLong(max)`, or `randomLong(min,max)`; `randomSample(list,count,allowRepeat?)`; `shuffle(list)`; `randomString(length)`; `randomUUID(withoutDashes?)`; `randomColor(type?)`; `randomDate(startDate,endDate,pattern?)` |
+| `random` | Random values, choices, colors, dates, arrays, and UUIDs. | `randomBoolean()` or `randomBoolean(trueProbability?)`; `randomChoice(list)` or `randomChoice(elem1,elem2,...)`; `randomDouble()` or `randomDouble(min,max)`; `random(arr)` or `random(elem1,elem2,...)`; `randomInt()`, `randomInt(max)`, or `randomInt(min,max)`; `randomIntArray(size,min,max)`; `randomLong()`, `randomLong(max)`, or `randomLong(min,max)`; `randomSample(list,count,allowRepeat?)`; `shuffle(list)`; `randomString(length)`; `randomUUID(withoutDashes?)`; `randomColor(type?)`; `randomDate(startDate,endDate,pattern?)` |
 | `string` | String comparison, search, padding, masking, escaping, encoding, replacement, case conversion, and aggregation. | `abbreviate(str,maxWidth,ellipsis?)`; `capitalize(str)`; `centerPad(str,size,padChar?)`; `compareTo(str1,str2,ignoreCase?)`; `concat(...)`; `contains(str,sub)`; `tokenize(str,delimiters)`; `countChar(str,ch,ignoreCase?)`; `countMatches(str,sub,ignoreCase?)`; `equalsAny(str,target1,target2,...)`; `equalsIgnoreCase(str1,str2)`; `escapeHtml(str)`; `escapeRegex(str)`; `format(pattern,arg1,arg2,...)`; `indexOf(str,search,fromIndex?)`; `isAlpha(str)`; `isAlphaNumeric(str)`; `isBlank(str)`; `isNumeric(str)`; `isString(value)`; `left(str,n)`; `leftPad(str,size,padChar?)`; `length(str)`; `levenshtein(str1,str2)`; `maskEmail(email)`; `mask(str,start,end,maskChar?)`; `matches(str,regex)`; `mid(str,start,length?)`; `removeDuplicates(str)`; `removeEnd(str,suffix,ignoreCase?)`; `removeStart(str,prefix,ignoreCase?)`; `removeWhitespace(str)`; `repeat(str,count,separator?)`; `repeatChar(ch,count)`; `replace(str,target,replacement)`; `replaceAll(str,regex,replacement)`; `reverse(str)`; `right(str,n)`; `rightPad(str,size,padChar?)`; `similarity(str1,str2)`; `split(str,regex)`; `splitByLength(str,chunkSize)`; `substring(str,beginIndex)` or `substring(str,beginIndex,endIndex)`; `substringAfter(str,separator)`; `substringBefore(str,separator)`; `substringBetween(str,open,close)`; `swapCase(str)`; `toCamelCase(str,firstUpper?)`; `toLower(str)`; `toSnakeCase(str)`; `toString(value,pattern?)`; `toUpper(str)`; `trim(str)`; `uncapitalize(str)`; `unescapeHtml(str)`; `uniqueChars(str)`; `wordCount(str)`; `base64Decode(encodedStr)`; `base64Encode(str)`; `decodeUrl(str)`; `encodeUrl(str)`; `md5(str)`; `groupConcat(delimiter,...)`; `stringAgg(delimiter,...)` |
 | `translate` | Context dictionary translation. | `translate(context,code,dictType,defaultValue?)` |
 

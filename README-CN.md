@@ -19,7 +19,7 @@
 
 
 [![Awesome Java](https://img.shields.io/badge/Awesome-Java-ff69b4.svg)](https://github.com/akullpp/awesome-java)
-> 已被收录至 [Awesome Java](https://github.com/akullpp/awesome-java) 的 **Document Processing** 精选章节
+> 已被收录至 [Awesome Java](https://github.com/akullpp/awesome-java) 的 **文档处理** 精选章节
 
 
 # 项目简介
@@ -445,7 +445,7 @@ workbook.write(outputStream);
 
 ## 类型转换与 TRANSFORM 函数
 
-`TRANSFORM` 为每一行计算表达式。`${field}` 读取当前行字段，`${key}` 可以读取 `JContext` 中的值，求值后的参数会传给求值器或 SPI provider。`FORMAT` 独立负责转换后的 Excel 单元格显示格式。
+`TRANSFORM` 为每一行计算表达式。`${field}` 读取当前行字段，`${key}` 可以读取 `JContext` 中的值，求值后的参数会传给求值器或 SPI 提供者。`FORMAT` 独立负责转换后的 Excel 单元格显示格式。
 
 ```java
 Map<String, Object> gender = new HashMap<>();
@@ -461,20 +461,22 @@ EXPORT WITH
 FORMAT={"enrollmentDate":"yyyy-MM-dd"},
 TRANSFORM={
   "name":toUpper(${name}),
-  "enrollmentDate":formatDate(${enrollmentDate},'yyyy-MM-dd'),
-  "gender":translate(${dict},${gender},'gender','Unknown')
+  "enrollmentDate":dateFormat(${enrollmentDate},'yyyy-MM-dd'),
+  "gender":trans(${dict},${gender})
 }
 ```
 
 ### 求值器函数与 SPI 注册
 
-JQuick-Excel 表达式可以使用现有求值器函数 `toUpper`、`dateFormat` 和 `trans`。外部 provider 目录维护在 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function)。需要 SPI provider 时加入以下依赖。
+JQuick-Excel 内置求值器包括 `toUpper`、`dateFormat` 和 `trans`。外部依赖 [jquick-transform-function](https://github.com/paohaijiao/jquick-transform-function) 通过 SPI 增加 `formatDate`、`translate` 等函数。
 
 | 参数 | 描述 | 用法示例 |
 | --- | --- | --- |
-| `toUpper` | 现有求值器，将文本转换为大写。 | `toUpper(${name})` |
-| `dateFormat` | 现有求值器，格式化日期值。 | `dateFormat(${enrollmentDate},'yyyy-MM-dd')` |
-| `trans` | 现有求值器，通过 `JContext` 字典映射值。 | `trans(${dict},${gender})` |
+| `toUpper` | 内置求值器，将文本转换为大写。 | `toUpper(${name})` |
+| `dateFormat` | 内置求值器，格式化日期值。 | `dateFormat(${enrollmentDate},'yyyy-MM-dd')` |
+| `trans` | 内置求值器，通过 `JContext` 字典映射值。 | `trans(${dict},${gender})` |
+| `formatDate` | SPI 函数，按格式模式格式化日期。 | `formatDate(${enrollmentDate},'yyyy-MM-dd')` |
+| `translate` | SPI 函数，通过上下文字典映射值。 | `translate(${dict},${gender},'gender','Unknown')` |
 
 ```xml
 <dependency>
@@ -484,7 +486,7 @@ JQuick-Excel 表达式可以使用现有求值器函数 `toUpper`、`dateFormat`
 </dependency>
 ```
 
-Provider 实现 `com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`：
+提供者实现 `com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`：
 
 ```java
 public interface JQuickMethodFunctionProvider {
@@ -496,7 +498,24 @@ public interface JQuickMethodFunctionProvider {
 }
 ```
 
-每个 provider 实现都列在 `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider` 中，由 Java SPI 发现并加载。`JQuickMethodInvocationManager` 调用 `ServiceLoader.loadServicesByPriority(...)`，按照 `getMethodName()` 建立注册表，再将求值后的参数列表传给匹配的 provider。`JFunctionExecutor` 暴露 `apply(List<Object> args)` 执行契约。自定义函数可以使用 `registerInvoker(...)` 注册，也可以使用 `registerOrReplaceInvoker(...)` 明确覆盖已有函数。
+每个提供者实现都列在 `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider` 中，由 Java SPI 发现并加载。`JQuickMethodInvocationManager` 调用 `ServiceLoader.loadServicesByPriority(...)`，按照 `getMethodName()` 建立注册表，再将求值后的参数列表传给匹配的提供者。`JFunctionExecutor` 暴露 `Object apply(List<Object> args) throws Exception` 执行契约。管理器还支持 `hasMethod`、`getSupportedMethods`、`getInvoker`、`getAllInvokers`、`registerInvoker`、`registerInvokers`、`registerOrReplaceInvoker` 和 `unregisterInvoker`。使用 `registerInvoker` 添加函数，使用 `registerOrReplaceInvoker` 明确替换已有函数。
+
+自定义提供者只需要 Java 类和服务描述文件中的一行：
+
+```java
+public final class FullNameFunction implements JQuickMethodFunctionProvider {
+    public String getMethodName() { return "fullName"; }
+    public Object invoke(List<Object> args) {
+        return String.valueOf(args.get(0)) + " " + String.valueOf(args.get(1));
+    }
+}
+```
+
+```text
+com.example.FullNameFunction
+```
+
+将类名写入 `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider`。依赖进入类路径后，SPI 加载器发现该类，管理器注册 `fullName`，随后 `TRANSFORM` 可以调用 `fullName(${firstName},${lastName})`。
 
 运行链路为：
 
@@ -516,9 +535,17 @@ public interface JQuickMethodFunctionProvider {
 | `${field}` | 读取当前行字段值。 | `${gender}` |
 | `TRANSFORM` | 在导入或导出前计算值表达式。 | `TRANSFORM={"name":toUpper(${name})}` |
 | `JQuickMethodFunctionProvider` | 可调用函数的 SPI 契约。 | `getMethodName()` 和 `invoke(args)` |
-| `META-INF/services/...` | Java SPI provider 描述文件。 | `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider` |
-| `getPriority` | 提供 provider 加载优先级。 | `return 5000;` |
+| `META-INF/services/...` | Java SPI 提供者描述文件。 | `META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider` |
+| `getPriority` | 提供者加载优先级。 | `return 5000;` |
 | `JQuickMethodInvocationManager` | 查找并调用已注册函数。 | `manager.invoke("toUpper", args)` |
+| `getMethodCount` | 返回已注册函数数量。 | `manager.getMethodCount()` |
+| `getInvokersSortedByPriority` | 按提供者优先级列出函数。 | `manager.getInvokersSortedByPriority()` |
+| `getInvokersSortedByName` | 按函数名排序列出函数。 | `manager.getInvokersSortedByName()` |
+| `searchMethods` | 按名称或描述搜索已注册函数。 | `manager.searchMethods("date")` |
+| `getGroupedInvokers` | 按分组返回已注册函数，便于检查。 | `manager.getGroupedInvokers()` |
+| `printRegisteredMethods` | 输出已注册函数列表。 | `manager.printRegisteredMethods()` |
+| `printGitHubTable` | 以 Markdown 格式表格输出函数列表。 | `manager.printGitHubTable()` |
+| `isPrettyPrintEnabled` / `setPrettyPrintEnabled` | 读取或修改诊断输出格式。 | `manager.setPrettyPrintEnabled(true)` |
 | `JFunctionExecutor` | 定义函数执行适配契约。 | `executor.apply(args)` |
 | `FORMAT` | 控制最终 Excel 显示格式。 | `FORMAT={"enrollmentDate":"yyyy-MM-dd"}` |
 
@@ -533,14 +560,14 @@ public interface JQuickMethodFunctionProvider {
 | `bool` | 布尔判断。 | `isBoolean(value)` |
 | `business` | 银行卡、邮箱、性别、身份证和手机处理及校验。 | `bankCardMask(cardNo,keepStart?,keepEnd?)`；`bankCardValidate(cardNo)`；`emailMask(email)`；`genderName(code)`；`idCardAge(idCard,referenceDate?)`；`idCardBirthday(idCard,pattern?)`；`idCardGender(idCard,format?)`；`idCardInfo(idCard,field?)`；`idCardValidate(idCard)`；`phoneInfo(phone,field?)`；`phoneMask(phone,keepStart?,keepEnd?)`；`phoneValidate(phone)`；`isEmail(value)` |
 | `collection` | 空值判断、集合拼接和长度。 | `isEmpty(value)`；`join(list,delimiter)`；`size(value)` |
-| `condition` | 比较、范围、分支、空值默认值和多分支判断。 | `between(value,min,max,inclusive?)`；`caseWhen(condition1,result1,...,defaultResult)`；`coalesce(value1,value2,...)`；`defaultIfNull(value,defaultValue)`；`eq(a,b,ignoreCase?)`；`gte(a,b)`；`gt(a,b)`；`ifElse(condition1,value1,...,defaultValue)`；`if(condition,trueValue,falseValue)`；`lte(a,b)`；`lt(a,b)`；`ne(a,b,ignoreCase?)`；`nvl(value,defaultValue)`；`switch(value,case1,result1,...,defaultValue)` |
+| `condition` | 比较、范围、分支、空值默认值和多分支判断。 | `between(value,min,max,inclusive?)`；`caseWhen(condition1,result1,condition2,result2,...,defaultResult)`；`coalesce(value1,value2,...)`；`defaultIfNull(value,defaultValue)`；`eq(a,b,ignoreCase?)`；`gte(a,b)`；`gt(a,b)`；`ifElse(condition1,value1,condition2,value2,...,defaultValue)`；`if(condition,trueValue,falseValue)`；`lte(a,b)`；`lt(a,b)`；`ne(a,b,ignoreCase?)`；`nvl(value,defaultValue)`；`switch(value,case1,result1,case2,result2,...,defaultValue)` |
 | `convert` | 布尔、日期、日期时间和 short 类型转换。 | `toBoolean(value,defaultValue?)`；`toDate(value,pattern?)`；`toDateTime(value,pattern?)`；`toShort(value,defaultValue?)` |
 | `date` | 日期运算、提取、比较、边界、格式化和当前时间。 | `addDays(date,days)`；`addHours(datetime,hours)`；`addMinutes(datetime,minutes)`；`addMonths(date,months)`；`addSeconds(datetime,seconds)`；`addYears(date,years)`；`age(birthDate,referenceDate?)`；`day(date?)`；`dayOfWeek(date?,locale?)`；`dayOfYear(date?)`；`daysBetween(date1,date2)`；`endOfDay(date?)`；`endOfMonth(date?)`；`endOfYear(date?)`；`hour(datetime?)`；`hoursBetween(datetime1,datetime2)`；`isAfter(date1,date2)`；`isBefore(date1,date2)`；`isDate(value)`；`isLeapYear(year?)`；`isSameDay(date1,date2)`；`isWeekend(date?)`；`minute(datetime?)`；`month(date?)`；`monthsBetween(date1,date2)`；`second(datetime?)`；`startOfDay(date?)`；`startOfMonth(date?)`；`startOfYear(date?)`；`weekOfYear(date?)`；`year(date?)`；`yearsBetween(date1,date2)`；`formatDate(date,pattern)`；`now()`；`parseDate(dateStr,pattern)`；`timestamp()`；`today()`；`toIsoString(date)` |
 | `geometry` | 几何、向量、矩阵、复数和数值映射。 | `areaCircle(radius)`；`areaRectangle(length,width)`；`areaTriangle(base,height)` 或 `areaTriangle(a,b,c)`；`circumference(radius)`；`clamp(value,min,max)`；`combination(n,k)`；`cross(x1,y1,x2,y2)`；`distance(x1,y1,x2,y2)` 或 `distance(x1,y1,z1,x2,y2,z2)`；`dot(vector1,vector2)`；`factorial(n)`；`fibonacci(n)`；`gcd(a,b,...)`；`hypot(x,y)`；`isPowerOfTwo(n)`；`isPrime(n)`；`lcm(a,b,...)`；`lerp(a,b,t)`；`map(value,fromLow,fromHigh,toLow,toHigh,clamp?)`；`permutation(n,k)`；`complexAdd(r1,i1,r2,i2)`；`complexMultiply(r1,i1,r2,i2)`；`matrixAdd(matrix1,matrix2)` |
 | `extra` | 类型转换、数字格式化、集合构造和类型检查。 | `cast(value,targetClass)`；`formatNumber(number,pattern)`；`parseNumber(str,pattern)`；`toArray(value1,value2,...)`；`toCurrency(number,locale?)`；`toList(value1,value2,...)`；`toPercentage(number,decimals?)`；`typeOf(value)` |
 | `json` | 对象序列化。 | `toJson(value)` |
 | `math` | 四则运算、三角函数、常量、聚合、统计、进制和数值转换。 | `abs(value)`；`acos(value)`；`add(...)`；`asin(value)`；`atan(value)`；`atan2(y,x)`；`avg(...)`；`ceil(value)`；`ceilTo(value,places)`；`e()`；`pi()`；`cos(radians)`；`cosh(value)`；`divide(a,b,...)`；`exp(value)`；`expm1(value)`；`floor(value)`；`floorTo(value,places)`；`greatest(value1,value2,...)`；`isNumber(value)`；`least(value1,value2,...)`；`log(value)`；`log10(value)`；`log1p(value)`；`max(...)`；`median(numbers...)`；`min(...)`；`mode(numbers...)`；`mod(a,b)`；`multiply(...)`；`parseBinary(binaryStr)`；`parseHex(hexStr)`；`percentile(numbers...,percentile)`；`pow(base,exponent)`；`range(numbers...)`；`round(value)`；`roundTo(value,places)`；`signum(value)`；`sin(radians)`；`sinh(value)`；`sqrt(value)`；`stdDev(numbers...)`；`subtract(a,b,...)`；`tan(radians)`；`tanh(value)`；`toBinary(number)`；`toDegrees(radians)`；`toDouble(value,defaultValue?)`；`toFloat(value,defaultValue?)`；`toHex(number)`；`toInt(value,defaultValue?)`；`toLong(value,defaultValue?)`；`toNumberString(number,pattern?)`；`toOctal(number)`；`toRadians(degrees)`；`ulp(value)`；`variance(numbers...)`；`countDistinct(...)`；`count(...)`；`countNonNull(...)`；`product(...)`；`sum(...)` |
-| `random` | 随机值、随机选择、颜色、日期、数组和 UUID。 | `randomBoolean()` 或 `randomBoolean(trueProbability?)`；`randomChoice(list)` 或 `randomChoice(elem1,elem2,...)`；`randomDouble()` 或 `randomDouble(min,max)`；`random(arr)`；`randomInt()`、`randomInt(max)` 或 `randomInt(min,max)`；`randomIntArray(size,min,max)`；`randomLong()`、`randomLong(max)` 或 `randomLong(min,max)`；`randomSample(list,count,allowRepeat?)`；`shuffle(list)`；`randomString(length)`；`randomUUID(withoutDashes?)`；`randomColor(type?)`；`randomDate(startDate,endDate,pattern?)` |
+| `random` | 随机值、随机选择、颜色、日期、数组和 UUID。 | `randomBoolean()` 或 `randomBoolean(trueProbability?)`；`randomChoice(list)` 或 `randomChoice(elem1,elem2,...)`；`randomDouble()` 或 `randomDouble(min,max)`；`random(arr)` 或 `random(elem1,elem2,...)`；`randomInt()`、`randomInt(max)` 或 `randomInt(min,max)`；`randomIntArray(size,min,max)`；`randomLong()`、`randomLong(max)` 或 `randomLong(min,max)`；`randomSample(list,count,allowRepeat?)`；`shuffle(list)`；`randomString(length)`；`randomUUID(withoutDashes?)`；`randomColor(type?)`；`randomDate(startDate,endDate,pattern?)` |
 | `string` | 字符串比较、查找、填充、脱敏、转义、编码、替换、大小写转换和聚合。 | `abbreviate(str,maxWidth,ellipsis?)`；`capitalize(str)`；`centerPad(str,size,padChar?)`；`compareTo(str1,str2,ignoreCase?)`；`concat(...)`；`contains(str,sub)`；`tokenize(str,delimiters)`；`countChar(str,ch,ignoreCase?)`；`countMatches(str,sub,ignoreCase?)`；`equalsAny(str,target1,target2,...)`；`equalsIgnoreCase(str1,str2)`；`escapeHtml(str)`；`escapeRegex(str)`；`format(pattern,arg1,arg2,...)`；`indexOf(str,search,fromIndex?)`；`isAlpha(str)`；`isAlphaNumeric(str)`；`isBlank(str)`；`isNumeric(str)`；`isString(value)`；`left(str,n)`；`leftPad(str,size,padChar?)`；`length(str)`；`levenshtein(str1,str2)`；`maskEmail(email)`；`mask(str,start,end,maskChar?)`；`matches(str,regex)`；`mid(str,start,length?)`；`removeDuplicates(str)`；`removeEnd(str,suffix,ignoreCase?)`；`removeStart(str,prefix,ignoreCase?)`；`removeWhitespace(str)`；`repeat(str,count,separator?)`；`repeatChar(ch,count)`；`replace(str,target,replacement)`；`replaceAll(str,regex,replacement)`；`reverse(str)`；`right(str,n)`；`rightPad(str,size,padChar?)`；`similarity(str1,str2)`；`split(str,regex)`；`splitByLength(str,chunkSize)`；`substring(str,beginIndex)` 或 `substring(str,beginIndex,endIndex)`；`substringAfter(str,separator)`；`substringBefore(str,separator)`；`substringBetween(str,open,close)`；`swapCase(str)`；`toCamelCase(str,firstUpper?)`；`toLower(str)`；`toSnakeCase(str)`；`toString(value,pattern?)`；`toUpper(str)`；`trim(str)`；`uncapitalize(str)`；`unescapeHtml(str)`；`uniqueChars(str)`；`wordCount(str)`；`base64Decode(encodedStr)`；`base64Encode(str)`；`decodeUrl(str)`；`encodeUrl(str)`；`md5(str)`；`groupConcat(delimiter,...)`；`stringAgg(delimiter,...)` |
 | `translate` | 上下文字典翻译。 | `translate(context,code,dictType,defaultValue?)` |
 
