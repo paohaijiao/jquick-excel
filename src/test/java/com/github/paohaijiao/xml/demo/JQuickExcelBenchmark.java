@@ -3,7 +3,6 @@ package com.github.paohaijiao.xml.demo;
 import com.github.paohaijiao.anno.JExcelColumn;
 import com.github.paohaijiao.anno.JExcelSheet;
 import com.github.paohaijiao.config.JQuickExcelConfig;
-import com.github.paohaijiao.excel.JExcelExporter;
 import com.github.paohaijiao.param.JContext;
 import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.xml.ex.JQuickExcelExportXmlParseFactory;
@@ -151,11 +150,11 @@ public class JQuickExcelBenchmark {
                 .setStreamingExportThreshold(5_000)
                 .setStreamingRowAccessWindowSize(100)
                 .setStreamingCompressTempFiles(true);
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(Math.max(4096, size * 256))) {
-            JExcelExporter<ImportFixture> exporter = new JExcelExporter<>(ImportFixture.class);
-            exporter.write(baos, data);
-            Files.write(target, baos.toByteArray());
-        }
+//        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(Math.max(4096, size * 256))) {
+//            JExcelExporter<ImportFixture> exporter = new JExcelExporter<>(ImportFixture.class);
+//            exporter.write(baos, data);
+//            Files.write(target, baos.toByteArray());
+//        }
         long seconds = (System.currentTimeMillis() - startMs + 500) / 1000;
         System.out.printf("  [生成] %s → %,d 行 / %s（耗时 %,ds）%n",
                 target, size, fmtSize(Files.size(target)), seconds);
