@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- basic 子包：最基础的导出（SHEET/HEADER/MAPPING + TRANSFORM 字典转换） -->
+<excels namespace="com.github.paohaijiao.demo.basic.BasicService">
+
+    <excel name="exportBasic" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="基础导出", HEADER=true,
+                MAPPING={"a":"姓名","b":"性别","c":"年龄"},
+                TRANSFORM={"b":trans(${dict},${b}),"a":toUpper(${a})}
+        ]]>
+    </excel>
+
+</excels>

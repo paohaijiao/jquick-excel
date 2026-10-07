@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  validation 子包：VALIDATION 数据校验
+  规则块三段式：rule{required:true,msg:'...',map:{...}}，参数必须放在嵌套 map 中。
+  夹具中的年龄/日期均为“文本单元格”，因此 integer / date_format 等规则可以通过；
+  对真实数值或日期单元格，这些规则会失败（详见 ValidationDemo 类注释）。
+-->
+<excels namespace="com.github.paohaijiao.demo.validation.ValidationService">
+
+    <!-- 对夹具数据应全部通过的规则集（覆盖行/列/单元格/矩形范围与 20 类规则） -->
+    <excel name="importWithValidation" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true, VALIDATION={
+                COL A:{max_length{required:true,msg:'学号最长10位',map:{maxLength:10}}},
+                A2:A4:{min_length{required:true,msg:'学号至少4位',map:{minLength:4}}},
+                COL B:{min_length{required:true,msg:'姓名至少2个字',map:{minLength:2}}},
+                B2:B4:{max_length{required:true,msg:'姓名最长20个字',map:{maxLength:20}}},
+                C2:{dict{required:true,msg:'性别必须是男或女',map:{'男':'男','女':'女'}}},
+                D2:D4:{integer{required:true,msg:'年龄必须是整数'}},
+                D2:D4:{min_value{required:true,msg:'年龄不能为负',map:{minValue:0}}},
+                D2:{max_value{required:true,msg:'年龄不能超过150',map:{maxValue:150}}},
+                E2:E4:{date_format{required:true,msg:'出生日期格式须为yyyy-MM-dd',map:{format:'yyyy-MM-dd'}}},
+                E2:E4:{min_date{required:true,msg:'出生日期不能早于1990-01-01',map:{format:'yyyy-MM-dd',minDate:1990-01-01}}},
+                E2:{max_date{required:true,msg:'出生日期不能晚于2010-12-31',map:{format:'yyyy-MM-dd',maxDate:2010-12-31}}},
+                G2:G4:{email{required:true,msg:'邮箱格式无效'}},
+                G2:G4:{end_with{required:true,msg:'邮箱必须以.com结尾',map:{endWith:'.com'}}},
+                G2:{contain{required:true,msg:'邮箱必须包含@',map:{contains:'@'}}},
+                H2:H4:{mobile{required:true,msg:'手机号格式无效'}},
+                H2:H4:{regex{required:true,msg:'手机号必须是11位数字',map:{pattern:'^1[0-9]{10}$'}}},
+                H2:{start_with{required:true,msg:'手机号必须以138开头',map:{startWith:'138'}}},
+                I2:I4:{decimal{required:true,msg:'分数必须是数值'}},
+                I2:I4:{max_value{required:true,msg:'分数不能超过100',map:{maxValue:100}}},
+                I3:{min_value{required:true,msg:'分数不能为负',map:{minValue:0}}},
+                ROW 2:{max_length{required:true,msg:'第2行存在超长单元格',map:{maxLength:30}}},
+                ROW 1..4:{max_length{required:true,msg:'存在超长单元格',map:{maxLength:40}}}
+            }
+        ]]>
+    </excel>
+
+    <!-- 故意失败：学号最长 3 位，夹具学号为 7 位 -->
+    <excel name="importWithValidationFail" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true, VALIDATION={
+                COL A:{max_length{required:true,msg:'学号超过3位（演示失败）',map:{maxLength:3}}}
+            }
+        ]]>
+    </excel>
+
+</excels>

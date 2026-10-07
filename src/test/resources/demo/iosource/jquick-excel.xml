@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- iosource 子包：输入/输出源与具体流类型无关（File / 字节数组 / 网络流均可） -->
+<excels namespace="com.github.paohaijiao.demo.iosource.IoSourceService">
+
+    <excel name="importRows" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true
+        ]]>
+    </excel>
+
+    <excel name="exportRows" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="输入输出源", HEADER=true, MAPPING={"a":"姓名","b":"年龄"}
+        ]]>
+    </excel>
+
+</excels>

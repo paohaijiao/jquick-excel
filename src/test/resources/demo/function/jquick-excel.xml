@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  function 子包（对应 DSL 的 FORMULAS，即 Excel 函数/公式）
+  实测可用写法：
+    1) 单元格坐标: D5:'SUM(D2:D4)'
+    2) 整行:       ROW 6:'SUM(B2:C2)'
+    3) 整列:       COL E:'D2*0.1'
+    4) 行区间:     ROW 5..10:'SUM(B2:C2)'
+  仅支持“单个函数 + 区域/单元格引用”或裸算术表达式；
+  函数嵌套函数（ROUND(AVERAGE(...),2)）、比较表达式（B2>0）、
+  带文本参数的文本函数（UPPER/LEFT/TEXT 的单元格引用会被加引号）均不可用。
+  实测 COL 目标按 col+1 落位（写 COL E 实际进 F 列），且遍历会包含表头行。
+  注意 FORMULAS 写的是 Excel 公式，TRANSFORM 写的是 Java 侧求值，两者不是一回事。
+-->
+<excels namespace="com.github.paohaijiao.demo.function.FunctionService">
+
+    <excel name="exportFormulas" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="公式", HEADER=true,
+                MAPPING={"a":"项目","b":"一月","c":"二月","d":"三月"},
+                FORMULAS={D5:'SUM(D2:D4)', ROW 6:'SUM(B2:C2)', COL E:'D2*0.1'}
+        ]]>
+    </excel>
+
+    <excel name="exportFormulasRowRange" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="公式行区间", HEADER=true,
+                MAPPING={"a":"项目","b":"一月","c":"二月"},
+                FORMULAS={ROW 5..10:'SUM(B2:C2)'}
+        ]]>
+    </excel>
+
+</excels>

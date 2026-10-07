@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- format 子包：FORMAT 必须使用真实的 Excel 数字格式码（不能写 currency/percent 等描述词） -->
+<excels namespace="com.github.paohaijiao.demo.format.FormatService">
+
+    <excel name="exportFormat" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="格式", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"金额","d":"人民币","e":"比率","f":"入职日期"},
+                FORMAT={"a":"000000","c":"#,##0.00","d":"¥#,##0.00","e":"0.00%","f":"yyyy-MM-dd"}
+        ]]>
+    </excel>
+
+</excels>

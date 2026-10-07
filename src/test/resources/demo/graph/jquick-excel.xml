@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  graph 子包：GRAPH 声明式图表（10 种类型：COLUMN/BAR/LINE/AREA/PIE/DOUGHNUT/
+  SCATTER/RADAR/SURFACE/BUBBLE 及对应 3D 变体，以枚举实际支持为准）。
+  标题/分类用双引号字符串；轴标题与序列名是裸标识符（NAME=第一季度）。
+-->
+<excels namespace="com.github.paohaijiao.demo.graph.GraphService">
+
+    <excel name="exportGraph" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="图表", HEADER=true,
+                MAPPING={"a":"产品","b":"销量"},
+                GRAPH={TYPE=COLUMN, TITLE="季度销售统计", CATEGORY_AXIS=产品, VALUE_AXIS=销量,
+                       CATEGORIES=["产品A","产品B","产品C"],
+                       SERIES=[{NAME=第一季度, DATA=[120,200,150]},{NAME=第二季度, DATA=[180,210,190]}]}
+        ]]>
+    </excel>
+
+</excels>

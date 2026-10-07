@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- sheet 子包：SHEET 工作表选择（按名称 / 按 1 基索引） -->
+<excels namespace="com.github.paohaijiao.demo.sheet.SheetService">
+
+    <!-- 按工作表名称匹配 -->
+    <excel name="importByName" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="学生信息", HEADER=true
+        ]]>
+    </excel>
+
+    <!-- 按工作表索引匹配（1 起算，SHEET=1 即第一张表） -->
+    <excel name="importByIndex" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true
+        ]]>
+    </excel>
+
+</excels>

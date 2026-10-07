@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- theme 子包：内置主题导出（主题编码见 JExcelThemeType，如 oceanBlue/jade） -->
+<excels namespace="com.github.paohaijiao.demo.theme.ThemeService">
+
+    <!-- 主题不在 DSL 中声明，由 JQuickExcelExportXmlParseFactory 构造器首参传入 -->
+    <excel name="exportTheme" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="主题", HEADER=true, MAPPING={"a":"姓名","b":"年龄"}
+        ]]>
+    </excel>
+
+</excels>

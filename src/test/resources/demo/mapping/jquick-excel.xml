@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- mapping 子包：导入方向的 MAPPING（表头 -> 字段） -->
+<excels namespace="com.github.paohaijiao.demo.mapping.MappingService">
+
+    <excel name="importWithMapping" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true,
+                MAPPING={"学号":"no","姓名":"name","性别":"sex","年龄":"age","出生日期":"birthday","班级":"className"}
+        ]]>
+    </excel>
+
+</excels>

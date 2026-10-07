@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- transform 子包：MAPPING + TRANSFORM（toUpper / trans 字典 / dateFormat） -->
+<excels namespace="com.github.paohaijiao.demo.transform.TransformService">
+
+    <excel name="importWithMappingTransform" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true,
+                MAPPING={"学号":"no","姓名":"name","性别":"sex","年龄":"age","出生日期":"birthday","班级":"className"},
+                TRANSFORM={"name":toUpper(${name}),"sex":trans(${dict},${sex}),"birthday":dateFormat(${birthday},'yyyy-MM-dd')}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!-- style 子包：STYLE 行样式与区域样式（边框/对齐/填充） -->
+<excels namespace="com.github.paohaijiao.demo.style.StyleService">
+
+    <excel name="exportStyle" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="样式", HEADER=true,
+                MAPPING={"a":"姓名","b":"年龄","c":"班级"},
+                STYLE={
+                    ROW 1:{fontName:Arial,fontHeightInPoints:12,bold:true,italic:true,color:yellow,fillPattern:solid_foreground,fillForegroundColor:darkBlue,alignment:center},
+                    A2:C100:{alignment:center,wrapText:true,borderBottom:thin,fillForegroundColor:lightYellow}
+                }
+        ]]>
+    </excel>
+
+</excels>

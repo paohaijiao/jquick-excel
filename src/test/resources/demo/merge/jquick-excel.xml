@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  merge 子包：MERGE 合并聚合
+  注意：聚合关键字必须写完整 code（MERGE_WITH_FIRST，不能只写 FIRST）；
+  ROWS 与 COLS 不能同表叠加（合并区域重叠会报错），所以这里拆成两条规则、两个文件。
+-->
+<excels namespace="com.github.paohaijiao.demo.merge.MergeService">
+
+    <!-- 按行合并：第 1 行取首个值，第 2 行拼接全部值 -->
+    <excel name="mergeRows" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="合并-行", HEADER=true,
+                MAPPING={"a":"部门","b":"姓名","c":"一季度","d":"二季度","e":"三季度","f":"四季度"},
+                MERGE:{ROWS 1 WITH MERGE_WITH_FIRST, ROWS 2 WITH MERGE_WITH_CONCAT}
+        ]]>
+    </excel>
+
+    <!-- 按列合并：A~F 每列纵向取值 -->
+    <excel name="mergeCols" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="合并-列", HEADER=true,
+                MAPPING={"a":"部门","b":"姓名","c":"一季度","d":"二季度","e":"三季度","f":"四季度"},
+                MERGE:{COLS A..F WITH MERGE_WITH_FIRST}
+        ]]>
+    </excel>
+
+</excels>
