@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  header 子包：HEADER —— 表头开关。
+  导出 HEADER=false 不写表头行；导入 HEADER=false 时第 1 行会被当成数据行读取。
+-->
+<excels namespace="com.github.paohaijiao.demo.header.HeaderService">
+
+    <excel name="exportWithHeader" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="有表头", HEADER=true, MAPPING={"a":"姓名","b":"年龄"}
+        ]]>
+    </excel>
+
+    <excel name="exportWithoutHeader" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="无表头", HEADER=false, MAPPING={"a":"姓名","b":"年龄"}
+        ]]>
+    </excel>
+
+    <excel name="importWithHeader" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="学生信息", HEADER=true, MAPPING={"姓名":"name","年龄":"age"}
+        ]]>
+    </excel>
+
+    <excel name="importWithoutHeader" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="学生信息", HEADER=false, MAPPING={"姓名":"name","年龄":"age"}
+        ]]>
+    </excel>
+
+</excels>

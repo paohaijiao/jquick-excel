@@ -21,13 +21,21 @@ import com.github.paohaijiao.xml.param.Param;
 import java.util.List;
 
 /**
- * sheet 子包服务契约：方法名与 demo/sheet/jquick-excel.xml 中的 name 一一对应。
+ * sheet 子包服务契约：SHEET —— 导出指定输出工作表名，导入按名称 / 1 基索引选择工作表。
+ *
+ * <p>方法名与 {@code demo/sheet/jquick-excel.xml} 中的 {@code <excel name=...>} 一一对应。
  */
 public interface SheetService {
 
-    /** SHEET="学生信息"：按名称选择工作表。 */
+    /** 导出：SHEET="学生信息" 指定输出工作表名称。 */
+    void exportSheet(@Param("field") String field, @Param("value") String value);
+
+    /** 导入：SHEET="学生信息" 按工作表名称选择。 */
     List<JQuickRow> importByName(@Param("field") String field, @Param("value") String value);
 
-    /** SHEET=1：按 1 基索引选择工作表。 */
+    /** 导入：SHEET=1 按 1 基索引选择。 */
     List<JQuickRow> importByIndex(@Param("field") String field, @Param("value") String value);
+
+    /** 导入：SHEET="班级信息" 选择第二张工作表。 */
+    List<JQuickRow> importClassSheet(@Param("field") String field, @Param("value") String value);
 }

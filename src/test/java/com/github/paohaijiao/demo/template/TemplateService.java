@@ -13,21 +13,18 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.demo.mapping;
+package com.github.paohaijiao.demo.template;
 
-import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.xml.param.Param;
 
-import java.util.List;
-
 /**
- * mapping 子包服务契约：MAPPING 源字段 ↔ 表头文本映射。
+ * 分类：<b>导出模板</b> —— 主题模板。
+ *
+ * <p>方法名与 {@code demo/template/jquick-excel.xml} 中的 {@code <excel name=...>} 一一对应；
+ * 主题编码由 {@code JQuickExcelExportXmlParseFactory} 的构造参数传入，不在 XML 内。
  */
-public interface MappingService {
+public interface TemplateService {
 
-    /** 导出：源字段 a/b/c 映射成表头「姓名/年龄/班级」。 */
-    void exportMapping(@Param("field") String field, @Param("value") String value);
-
-    /** 导入：Excel 表头映射成 Java 字段（no/name/sex/…）。 */
-    List<JQuickRow> importMapping(@Param("field") String field, @Param("value") String value);
+    /** 用指定主题模板导出。 */
+    void exportTheme(@Param("field") String field, @Param("value") String value);
 }

@@ -13,18 +13,23 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.demo.function;
+package com.github.paohaijiao.demo.bigdata;
 
+import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.xml.param.Param;
 
+import java.util.List;
+
 /**
- * function 子包服务契约：FORMULAS 公式（单元格 / 行 / 列 / 行区间四类目标）。
+ * 分类：<b>大数据量导入导出</b>。
+ *
+ * <p>方法名与 {@code demo/bigdata/jquick-excel.xml} 中的 {@code <excel name=...>} 一一对应。
  */
-public interface FunctionService {
+public interface BigDataService {
 
-    /** 单元格 D5、整行 ROW 6、整列 COL E 三种目标各写一条公式。 */
-    void exportFormulas(@Param("field") String field, @Param("value") String value);
+    /** 大数据量导出（达到阈值自动切 SXSSF 流式）。 */
+    void exportLarge(@Param("field") String field, @Param("value") String value);
 
-    /** 行区间 ROW 5..10 批量写公式。 */
-    void exportFormulasRowRange(@Param("field") String field, @Param("value") String value);
+    /** 大数据量导入（XML 入口，全量返回）。 */
+    List<JQuickRow> importLarge(@Param("field") String field, @Param("value") String value);
 }

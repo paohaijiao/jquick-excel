@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  formulas 子包：FORMULAS —— 单元格公式写入。
+  cellRef 形式为「单元格引用:'公式文本'」；公式可由框架内置函数（SUM/ABS/...）或自定义表达式构成。
+  注意：写公式需要回头修改已写行，命中 needsRandomRowAccess 会强制关闭 SXSSF 流式。
+-->
+<excels namespace="com.github.paohaijiao.demo.formulas.FormulaService">
+
+    <excel name="exportFormula" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="公式", HEADER=true,
+                MAPPING={"a":"项目","b":"一月","c":"二月","d":"三月"},
+                FORMULAS={E2:'SUM(B2:D2)',E3:'SUM(B3:D3)',E4:'SUM(B4:D4)'}
+        ]]>
+    </excel>
+
+</excels>

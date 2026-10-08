@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
-<!-- sheet 子包：SHEET 工作表选择（按名称 / 按 1 基索引） -->
+<!--
+  sheet 子包：SHEET —— 导出指定输出工作表名；导入按名称 / 1 基索引选择工作表。
+  导入源文件：classpath:demo/import-source.xlsx（含「学生信息」「班级信息」两张表）。
+-->
 <excels namespace="com.github.paohaijiao.demo.sheet.SheetService">
 
-    <!-- 按工作表名称匹配 -->
-    <excel name="importByName" returnClass="java.util.List">
+    <!-- 导出：SHEET 指定输出工作表名称 -->
+    <excel name="exportSheet" returnClass="void">
         <![CDATA[
-            IMPORT WITH SHEET="学生信息", HEADER=true
+            EXPORT WITH SHEET="学生信息", HEADER=true,
+                MAPPING={"a":"姓名","b":"年龄"}
         ]]>
     </excel>
 
-    <!-- 按工作表索引匹配（1 起算，SHEET=1 即第一张表） -->
+    <!-- 导入：SHEET="学生信息" 按工作表名称选择 -->
+    <excel name="importByName" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="学生信息", HEADER=true,
+                MAPPING={"学号":"no","姓名":"name","年龄":"age"}
+        ]]>
+    </excel>
+
+    <!-- 导入：SHEET=1 按 1 基索引选择（第一张表） -->
     <excel name="importByIndex" returnClass="java.util.List">
         <![CDATA[
-            IMPORT WITH SHEET=1, HEADER=true
+            IMPORT WITH SHEET=1, HEADER=true,
+                MAPPING={"学号":"no","姓名":"name","年龄":"age"}
+        ]]>
+    </excel>
+
+    <!-- 导入：选择第二张工作表「班级信息」 -->
+    <excel name="importClassSheet" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="班级信息", HEADER=true,
+                MAPPING={"班级":"className","班主任":"headTeacher","人数":"count"}
         ]]>
     </excel>
 

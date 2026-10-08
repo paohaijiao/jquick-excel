@@ -13,15 +13,17 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.demo.theme;
+package com.github.paohaijiao.demo.formulas;
 
 import com.github.paohaijiao.xml.param.Param;
 
 /**
- * theme 子包服务契约：主题编码由 XML 解析工厂首参传入。
+ * 分类：<b>FORMULAS</b> —— 单元格公式写入。
+ *
+ * <p>方法名与 {@code demo/formulas/jquick-excel.xml} 中的 {@code <excel name=...>} 一一对应。
  */
-public interface ThemeService {
+public interface FormulaService {
 
-    /** 应用工厂构造时指定的主题（本 demo 用 oceanBlue）。 */
-    void exportTheme(@Param("field") String field, @Param("value") String value);
+    /** 在 E 列为每行写入 SUM 公式（合计 B~D 三个月）。 */
+    void exportFormula(@Param("field") String field, @Param("value") String value);
 }

@@ -13,19 +13,17 @@
  *
  * Copyright (c) [2025-2099] Martin (goudingcheng@gmail.com)
  */
-package com.github.paohaijiao.demo.style;
+package com.github.paohaijiao.demo.formulas;
 
 import com.github.paohaijiao.statement.JQuickRow;
 import com.github.paohaijiao.xml.ex.JQuickExcelExportXmlParseFactory;
 import com.github.paohaijiao.xml.factory.JQuickFactory;
 import com.github.paohaijiao.xml.factory.JQuickXmlFactory;
 import com.github.paohaijiao.xml.handler.JQuickParseHandler;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,17 +36,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 分类：<b>STYLE</b> —— 单元格 / 行 / 列样式配置。
+ * 分类：<b>FORMULAS</b> —— 单元格公式写入。
  *
- * <p>规则文件 {@code demo/style/jquick-excel.xml}，直接使用框架入口
+ * <p>规则文件 {@code demo/formulas/jquick-excel.xml}，直接使用框架入口
  * {@link JQuickExcelExportXmlParseFactory}，不使用任何自封装方法。
- * 边框取值如 thin/m，填充模式 {@code fillPattern:solid_foreground}，
- * 颜色取 POI 调色板名。产物目录：{@code D:\test\excel}。
+ * 写公式命中 {@code needsRandomRowAccess} 会强制关闭 SXSSF 流式。
+ * 产物目录：{@code D:\test\excel}。
  */
-public class StyleDemo {
+public class FormulaDemo {
 
     private static final File OUT_DIR = new File("D:" + File.separator + "test" + File.separator + "excel");
-    private static final String XML = "demo/style/jquick-excel.xml";
+    private static final String XML = "demo/formulas/jquick-excel.xml";
 
     static {
         if (!OUT_DIR.exists()) {
@@ -56,38 +54,46 @@ public class StyleDemo {
         }
     }
 
-    /** 导出：ROW 1 表头样式 + A2:C100 数据区域样式，回读核对。 */
+    /** 导出：E 列写入 SUM 公式，回读校验单元格类型、公式文本与计算结果。 */
     @Test
-    public void exportStyle() throws Exception {
+    public void exportFormula() throws Exception {
         List<JQuickRow> rows = new ArrayList<>();
         JQuickRow r1 = new JQuickRow();
-        r1.put("a", "张三");
-        r1.put("b", 20);
-        r1.put("c", "计算机1班");
+        r1.put("a", "项目A");
+        r1.put("b", 10);
+        r1.put("c", 20);
+        r1.put("d", 30);
         rows.add(r1);
         JQuickRow r2 = new JQuickRow();
-        r2.put("a", "李四");
-        r2.put("b", 21);
-        r2.put("c", "软件工程2班");
+        r2.put("a", "项目B");
+        r2.put("b", 40);
+        r2.put("c", 50);
+        r2.put("d", 60);
         rows.add(r2);
+        JQuickRow r3 = new JQuickRow();
+        r3.put("a", "项目C");
+        r3.put("b", 70);
+        r3.put("c", 80);
+        r3.put("d", 90);
+        rows.add(r3);
 
-        File out = new File(OUT_DIR, "style-export.xlsx");
+        File out = new File(OUT_DIR, "formulas-export.xlsx");
         try (OutputStream os = new FileOutputStream(out)) {
             JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
             JQuickFactory factory = new JQuickXmlFactory(parser, XML);
-            StyleService service = factory.createApi(StyleService.class);
-            service.exportStyle("field", "value");
+            FormulaService service = factory.createApi(FormulaService.class);
+            service.exportFormula("field", "value");
         }
 
-        try (Workbook wb = new XSSFWorkbook(new FileInputStream(out))) {
-            Sheet sheet = wb.getSheet("样式");
-            Row header = sheet.getRow(0);
-            XSSFCellStyle headerStyle = (XSSFCellStyle) header.getCell(0).getCellStyle();
-            Assert.assertTrue("表头应加粗", headerStyle.getFont().getBold());
-            CellStyle bodyStyle = sheet.getRow(1).getCell(0).getCellStyle();
-            Assert.assertNotEquals("数据区应有下边框", BorderStyle.NONE, bodyStyle.getBorderBottom());
-            System.out.println("【STYLE】表头加粗=" + headerStyle.getFont().getBold()
-                    + "，数据区下边框=" + bodyStyle.getBorderBottom());
+        try (XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(out))) {
+            Sheet sheet = wb.getSheet("公式");
+            Cell cell = sheet.getRow(1).getCell(4);
+            Assert.assertEquals(CellType.FORMULA, cell.getCellType());
+            Assert.assertEquals("SUM(B2:D2)", cell.getCellFormula());
+            FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+            double value = evaluator.evaluate(cell).getNumberValue();
+            System.out.println("【FORMULAS】E2 公式=" + cell.getCellFormula() + "，计算结果=" + value);
+            Assert.assertEquals(60.0, value, 0.0001);
         }
     }
 }

@@ -21,10 +21,17 @@ import com.github.paohaijiao.xml.param.Param;
 import java.util.List;
 
 /**
- * transform 子包服务契约：映射 + 转换（字典由 JContext 传入）。
+ * 分类：<b>TRANSFORM</b> —— 值转换表达式。
+ *
+ * <p>导入方向是「Excel 文字 → 内部值」，导出方向是「内部值 → 单元格文字」，
+ * 同一个 {@code TRANSFORM} 关键字在两侧语义相反。方法名与
+ * {@code demo/transform/jquick-excel.xml} 中的 {@code <excel name=...>} 一一对应。
  */
 public interface TransformService {
 
-    /** toUpper 转大写、trans 走 JContext 字典、dateFormat 统一日期文本。 */
-    List<JQuickRow> importWithMappingTransform(@Param("field") String field, @Param("value") String value);
+    /** 导入：性别字典反查 + 姓名大写 + 出生日期归一。 */
+    List<JQuickRow> importTransform(@Param("field") String field, @Param("value") String value);
+
+    /** 导出：姓名大写 + 性别码值转中文 + 年龄加 1。 */
+    void exportTransform(@Param("field") String field, @Param("value") String value);
 }

@@ -15,8 +15,12 @@
  */
 package com.github.paohaijiao.demo.iosource;
 
-import com.github.paohaijiao.demo.support.DemoKit;
 import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.xml.ex.JQuickExcelExportXmlParseFactory;
+import com.github.paohaijiao.xml.factory.JQuickFactory;
+import com.github.paohaijiao.xml.factory.JQuickXmlFactory;
+import com.github.paohaijiao.xml.handler.JQuickParseHandler;
+import com.github.paohaijiao.xml.im.JQuickExcelImportXmlParseFactory;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
@@ -29,29 +33,40 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * iosource 子包 demo：框架只认 InputStream / OutputStream。
+ * 分类：<b>输入输出源</b> —— 框架只认 {@link InputStream} / {@link OutputStream}。
  *
- * <p>独立规则文件：{@code demo/iosource/jquick-excel.xml}。
- * 导入侧演示 FileInputStream 与 ByteArrayInputStream；
- * 导出侧演示 FileOutputStream 与 ByteArrayOutputStream
- * （Web 下载时把字节数组写进 HttpServletResponse.getOutputStream() 即可）。
+ * <p>规则文件 {@code demo/iosource/jquick-excel.xml}，直接使用框架入口
+ * {@link JQuickExcelExportXmlParseFactory} / {@link JQuickExcelImportXmlParseFactory}。
+ * 导入侧演示 FileInputStream 与 ByteArrayInputStream；导出侧演示 FileOutputStream 与
+ * ByteArrayOutputStream（Web 下载时把字节数组写进 HttpServletResponse 即可）。
+ * 不使用任何自封装方法，字节拷贝就地内联。产物目录：{@code D:\test\excel}。
  */
 public class IoSourceDemo {
 
+    private static final File OUT_DIR = new File("D:" + File.separator + "test" + File.separator + "excel");
     private static final String XML = "demo/iosource/jquick-excel.xml";
+
+    static {
+        if (!OUT_DIR.exists()) {
+            OUT_DIR.mkdirs();
+        }
+    }
 
     /** 从磁盘文件导入。 */
     @Test
     public void importFromFile() throws Exception {
-        File file = DemoKit.prepareImportFile();
+        File file = new File(IoSourceDemo.class.getClassLoader()
+                .getResource("demo/import-source.xlsx").toURI());
         try (InputStream in = new FileInputStream(file)) {
-            IoSourceService service = DemoKit.importApi(XML, in, IoSourceService.class);
+            JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(in);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            IoSourceService service = factory.createApi(IoSourceService.class);
             List<JQuickRow> rows = service.importRows("field", "value");
-            System.out.println("从文件导入 " + rows.size() + " 行");
+            System.out.println("【输入输出源】从文件导入 " + rows.size() + " 行");
             Assert.assertEquals(3, rows.size());
         }
     }
@@ -59,11 +74,22 @@ public class IoSourceDemo {
     /** 从字节数组导入（例如文件已上传到内存 / OSS SDK 返回 bytes）。 */
     @Test
     public void importFromBytes() throws Exception {
-        byte[] bytes = Files.readAllBytes(DemoKit.prepareImportFile().toPath());
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] chunk = new byte[8192];
+        int len;
+        try (InputStream is = IoSourceDemo.class.getClassLoader().getResourceAsStream("demo/import-source.xlsx")) {
+            while ((len = is.read(chunk)) != -1) {
+                buffer.write(chunk, 0, len);
+            }
+        }
+        byte[] bytes = buffer.toByteArray();
+
         try (InputStream in = new ByteArrayInputStream(bytes)) {
-            IoSourceService service = DemoKit.importApi(XML, in, IoSourceService.class);
+            JQuickParseHandler parser = new JQuickExcelImportXmlParseFactory(in);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            IoSourceService service = factory.createApi(IoSourceService.class);
             List<JQuickRow> rows = service.importRows("field", "value");
-            System.out.println("从字节流导入 " + rows.size() + " 行");
+            System.out.println("【输入输出源】从字节流导入 " + rows.size() + " 行，字节数=" + bytes.length);
             Assert.assertEquals(3, rows.size());
         }
     }
@@ -71,26 +97,40 @@ public class IoSourceDemo {
     /** 导出到磁盘文件。 */
     @Test
     public void exportToFile() throws Exception {
-        List<JQuickRow> rows = DemoKit.toRows(DemoKit.personRows());
-        File out = DemoKit.out("iosource-file.xlsx");
+        List<JQuickRow> rows = new ArrayList<>();
+        JQuickRow r1 = new JQuickRow();
+        r1.put("a", "张三");
+        r1.put("b", 20);
+        rows.add(r1);
+
+        File out = new File(OUT_DIR, "iosource-file.xlsx");
         try (OutputStream os = new FileOutputStream(out)) {
-            IoSourceService service = DemoKit.exportApi(XML, rows, os, IoSourceService.class);
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            IoSourceService service = factory.createApi(IoSourceService.class);
             service.exportRows("field", "value");
         }
         Assert.assertTrue(out.length() > 0);
-        System.out.println("导出文件大小: " + out.length() + " bytes");
+        System.out.println("【输入输出源】导出文件大小: " + out.length() + " bytes");
     }
 
     /** 导出到字节数组，再用该字节数组重新打开工作簿验证。 */
     @Test
     public void exportToBytes() throws Exception {
-        List<JQuickRow> rows = DemoKit.toRows(DemoKit.personRows());
+        List<JQuickRow> rows = new ArrayList<>();
+        JQuickRow r1 = new JQuickRow();
+        r1.put("a", "张三");
+        r1.put("b", 20);
+        rows.add(r1);
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        IoSourceService service = DemoKit.exportApi(XML, rows, bos, IoSourceService.class);
+        JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, bos);
+        JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+        IoSourceService service = factory.createApi(IoSourceService.class);
         service.exportRows("field", "value");
 
         byte[] bytes = bos.toByteArray();
-        System.out.println("字节数组长度: " + bytes.length + " bytes");
+        System.out.println("【输入输出源】字节数组长度: " + bytes.length + " bytes");
         Assert.assertTrue(bytes.length > 0);
         try (Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(bytes))) {
             Assert.assertEquals("输入输出源", wb.getSheetName(0));

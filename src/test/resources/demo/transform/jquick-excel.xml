@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
-<!-- transform 子包：MAPPING + TRANSFORM（toUpper / trans 字典 / dateFormat） -->
+<!--
+  transform 子包：TRANSFORM —— 值转换表达式（导入 / 导出双向）。
+  函数名以框架为准：toUpper（JMethodEnums 内置）、trans（码值字典，字典来自 JContext）、
+  dateFormat（日期文本归一）、add / trim 等由 SPI 函数库提供。
+  注意：导入字典方向是「Excel 文字 -> 内部码值」，与导出方向相反。
+-->
 <excels namespace="com.github.paohaijiao.demo.transform.TransformService">
 
-    <excel name="importWithMappingTransform" returnClass="java.util.List">
+    <!-- 导入：MAPPING 之后按 TRANSFORM 改写字段值 -->
+    <excel name="importTransform" returnClass="java.util.List">
         <![CDATA[
             IMPORT WITH SHEET=1, HEADER=true,
                 MAPPING={"学号":"no","姓名":"name","性别":"sex","年龄":"age","出生日期":"birthday","班级":"className"},
                 TRANSFORM={"name":toUpper(${name}),"sex":trans(${dict},${sex}),"birthday":dateFormat(${birthday},'yyyy-MM-dd')}
+        ]]>
+    </excel>
+
+    <!-- 导出：TRANSFORM 在写入单元格之前对字段值改写 -->
+    <excel name="exportTransform" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="值转换", HEADER=true,
+                MAPPING={"a":"姓名","b":"性别","c":"年龄"},
+                TRANSFORM={"a":toUpper(${a}),"b":trans(${dict},${b}),"c":add(${c},1)}
         ]]>
     </excel>
 

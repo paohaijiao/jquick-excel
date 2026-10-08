@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  bigdata 子包：大数据量导入导出。
+  导出：数据量达到 JQuickExcelConfig#getStreamingExportThreshold()（默认 5000）时自动切 SXSSF 流式，
+        只需保证规则里不含 FORMULAS / STYLE / MERGE / GRAPH / FOOTER（这些需要回头改行，会强制关闭流式）。
+  导入：小文件可走 XML 入口全量返回；几十万行建议用 JExcelImportHandler#importDataInBatch 分批消费（见 BigDataDemo）。
+-->
+<excels namespace="com.github.paohaijiao.demo.bigdata.BigDataService">
+
+    <excel name="exportLarge" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="大数据", HEADER=true,
+                MAPPING={"a":"姓名","b":"部门","c":"编号"}
+        ]]>
+    </excel>
+
+    <excel name="importLarge" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="大数据", HEADER=true,
+                MAPPING={"姓名":"name","部门":"dept","编号":"no"}
+        ]]>
+    </excel>
+
+</excels>

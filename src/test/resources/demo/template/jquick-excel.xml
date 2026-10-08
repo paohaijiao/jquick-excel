@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  template 子包：导出模板（主题模板）。
+  主题编码通过 JQuickExcelExportXmlParseFactory 的首参传入，写入 JExcelExportModel#theme，
+  由 JExcelThemeFactory 解析为 JExcelTheme 后应用到表头 / 数据行 / 页脚样式。
+  内置主题编码见 JExcelThemeType（如 oceanBlue、royalGold、sakuraPink ...）。
+-->
+<excels namespace="com.github.paohaijiao.demo.template.TemplateService">
+
+    <excel name="exportTheme" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="主题模板", HEADER=true,
+                MAPPING={"a":"姓名","b":"城市"}
+        ]]>
+    </excel>
+
+</excels>

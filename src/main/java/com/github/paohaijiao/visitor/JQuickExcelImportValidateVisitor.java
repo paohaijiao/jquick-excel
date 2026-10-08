@@ -32,6 +32,23 @@ public class JQuickExcelImportValidateVisitor extends JFieldMappingVisitor {
 
     protected JExcelImportModel config = new JExcelImportModel();
 
+    /**
+     * 导入侧 HEADER 选项：把 HEADER=true/false 写入导入模型。
+     *
+     * <p>父类 {@link JQuickExcelCoreVisitor#visitHeaderOption} 写入的是其自身的导出模型字段，
+     * 而本类以 {@link JExcelImportModel} 遮蔽了同名字段，若不重写，导入侧 HEADER 会被静默忽略
+     * （导入模型 header 恒为默认值 true）。此处重写以修正该行为。
+     */
+    @Override
+    public Void visitHeaderOption(JQuickExcelParser.HeaderOptionContext ctx) {
+        boolean header = Boolean.FALSE;
+        if (ctx.BOOLEAN() != null) {
+            header = JStringUtils.trim(ctx.BOOLEAN().getText()).equalsIgnoreCase("true");
+        }
+        this.config.setHeader(header);
+        return null;
+    }
+
     @Override
     public Void visitValidationOption(JQuickExcelParser.ValidationOptionContext ctx) {
         for (JQuickExcelParser.ValidationRuleContext ruleCtx : ctx.validationRule()) {

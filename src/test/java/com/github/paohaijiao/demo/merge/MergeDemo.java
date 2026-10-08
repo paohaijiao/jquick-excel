@@ -15,8 +15,11 @@
  */
 package com.github.paohaijiao.demo.merge;
 
-import com.github.paohaijiao.demo.support.DemoKit;
 import com.github.paohaijiao.statement.JQuickRow;
+import com.github.paohaijiao.xml.ex.JQuickExcelExportXmlParseFactory;
+import com.github.paohaijiao.xml.factory.JQuickFactory;
+import com.github.paohaijiao.xml.factory.JQuickXmlFactory;
+import com.github.paohaijiao.xml.handler.JQuickParseHandler;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -27,47 +30,95 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * merge 子包 demo：MERGE 两种方向 + 两种聚合策略。
+ * 分类：<b>MERGE</b> —— 单元格合并。
  *
- * <p>独立规则文件：{@code demo/merge/jquick-excel.xml}。
- * 九种聚合策略完整 code：MERGE_WITH_MAX / MIN / VALUE / AVG / COUNT / SUM /
- * CONCAT / FIRST / LAST。
+ * <p>规则文件 {@code demo/merge/jquick-excel.xml}，直接使用框架入口
+ * {@link JQuickExcelExportXmlParseFactory}，不使用任何自封装方法。
+ * 聚合关键字必须写完整 code：{@code MERGE_WITH_MAX / MIN / VALUE / AVG / COUNT /
+ * SUM / CONCAT / FIRST / LAST}；ROWS 与 COLS 不能同表叠加（区域重叠会报错）。
+ * 产物目录：{@code D:\test\excel}。
  */
 public class MergeDemo {
 
+    private static final File OUT_DIR = new File("D:" + File.separator + "test" + File.separator + "excel");
     private static final String XML = "demo/merge/jquick-excel.xml";
 
-    /** ROWS 1 取首个值（表头行跨列合并），ROWS 2 拼接该行所有值。 */
+    static {
+        if (!OUT_DIR.exists()) {
+            OUT_DIR.mkdirs();
+        }
+    }
+
+    /** 按行合并：第 1 行取首个值，第 2 行拼接全部值。 */
     @Test
     public void mergeRows() throws Exception {
-        List<JQuickRow> rows = DemoKit.toRows(DemoKit.mergeRows());
-        File out = DemoKit.out("merge-rows.xlsx");
+        List<JQuickRow> rows = new ArrayList<>();
+        JQuickRow r1 = new JQuickRow();
+        r1.put("a", "研发部");
+        r1.put("b", "张三");
+        r1.put("c", 100);
+        r1.put("d", 120);
+        r1.put("e", 130);
+        r1.put("f", 140);
+        rows.add(r1);
+        JQuickRow r2 = new JQuickRow();
+        r2.put("a", "研发部");
+        r2.put("b", "李四");
+        r2.put("c", 110);
+        r2.put("d", 125);
+        r2.put("e", 135);
+        r2.put("f", 145);
+        rows.add(r2);
+
+        File out = new File(OUT_DIR, "merge-rows.xlsx");
         try (OutputStream os = new FileOutputStream(out)) {
-            MergeService service = DemoKit.exportApi(XML, rows, os, MergeService.class);
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            MergeService service = factory.createApi(MergeService.class);
             service.mergeRows("field", "value");
         }
         try (Workbook wb = new XSSFWorkbook(new FileInputStream(out))) {
             List<CellRangeAddress> regions = wb.getSheet("合并-行").getMergedRegions();
-            System.out.println("行合并区域: " + regions);
+            System.out.println("【MERGE】行合并区域: " + regions);
             Assert.assertFalse(regions.isEmpty());
         }
     }
 
-    /** COLS A..F 六列分别纵向合并。 */
+    /** 按列合并：A~F 六列分别纵向合并。 */
     @Test
     public void mergeCols() throws Exception {
-        List<JQuickRow> rows = DemoKit.toRows(DemoKit.mergeRows());
-        File out = DemoKit.out("merge-cols.xlsx");
+        List<JQuickRow> rows = new ArrayList<>();
+        JQuickRow r1 = new JQuickRow();
+        r1.put("a", "研发部");
+        r1.put("b", "张三");
+        r1.put("c", 100);
+        r1.put("d", 120);
+        r1.put("e", 130);
+        r1.put("f", 140);
+        rows.add(r1);
+        JQuickRow r2 = new JQuickRow();
+        r2.put("a", "研发部");
+        r2.put("b", "李四");
+        r2.put("c", 110);
+        r2.put("d", 125);
+        r2.put("e", 135);
+        r2.put("f", 145);
+        rows.add(r2);
+
+        File out = new File(OUT_DIR, "merge-cols.xlsx");
         try (OutputStream os = new FileOutputStream(out)) {
-            MergeService service = DemoKit.exportApi(XML, rows, os, MergeService.class);
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            MergeService service = factory.createApi(MergeService.class);
             service.mergeCols("field", "value");
         }
         try (Workbook wb = new XSSFWorkbook(new FileInputStream(out))) {
             List<CellRangeAddress> regions = wb.getSheet("合并-列").getMergedRegions();
-            System.out.println("列合并区域数: " + regions.size());
+            System.out.println("【MERGE】列合并区域数: " + regions.size());
             Assert.assertTrue(regions.size() >= 6);
         }
     }
