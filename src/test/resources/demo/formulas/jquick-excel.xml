@@ -3,8 +3,17 @@
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
 <!--
   formulas 子包：FORMULAS —— 单元格公式写入。
-  cellRef 形式为「单元格引用:'公式文本'」；公式可由框架内置函数（SUM/ABS/...）或自定义表达式构成。
-  注意：写公式需要回头修改已写行，命中 needsRandomRowAccess 会强制关闭 SXSSF 流式。
+
+  formulaTarget 共三类：
+    <单元格引用>:'公式'        单格公式，如 E2:'SUM(B2:D2)'
+    ROW <行号 | 起始..结束>:'公式'  整行公式，写入该行的「所有映射列」（列数 = 数据列数）
+    COL <列字母 | A..C>:'公式'     整列公式，写入该列的「所有行」
+
+  说明：
+    * 公式文本由框架 JExcelFormulaContext 解析，支持内置函数（SUM/ABS/IF/...）与自定义表达式。
+    * 写公式需要回头修改已写行，会命中 needsRandomRowAccess 从而强制关闭 SXSSF 流式。
+    * ROW 目标按「数据列数」横向铺满；COL 目标按「表头行 + 所有数据行」纵向铺满
+      （即 COL 会连表头行一起写入公式）。
 -->
 <excels namespace="com.github.paohaijiao.demo.formulas.FormulaService">
 
@@ -12,7 +21,11 @@
         <![CDATA[
             EXPORT WITH SHEET="公式", HEADER=true,
                 MAPPING={"a":"项目","b":"一月","c":"二月","d":"三月"},
-                FORMULAS={E2:'SUM(B2:D2)',E3:'SUM(B3:D3)',E4:'SUM(B4:D4)'}
+                FORMULAS={
+                    E2:'SUM(B2:D2)',E3:'SUM(B3:D3)',E4:'SUM(B4:D4)',
+                    ROW 6:'SUM(B2:D4)',
+                    COL F:'SUM(B2:B4)'
+                }
         ]]>
     </excel>
 

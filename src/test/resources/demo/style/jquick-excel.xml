@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
-<!-- style 子包：STYLE 行样式与区域样式（边框/对齐/填充） -->
+<!--
+  style 子包：STYLE —— 单元格 / 行 / 列 / 区域样式。
+
+  styleTarget 共四类（应用顺序 ROW -> COL -> CELL -> RANGE，后者覆盖前者）：
+    ROW <行号 | 起始..结束>:{...}   行样式，可设行高，并对该行所有单元格套用字体/边框等
+    COL <列字母 | A..C>:{...}       列样式，对整列所有已存在行的单元格套用
+    <单元格引用>:{...}               单元格样式，如 C2
+    <区域引用>:{...}                 矩形区域样式，如 A2:A4
+
+  样式属性一览（styleProperty 形如 IDENTIFIER:值）：
+    字体：fontName(Arial)、fontHeightInPoints(12)、fontHeight(240)、bold(true)、
+          italic(true)、underLine(uNone|uSingle|uDouble|uSingleAccounting|uDoubleAccounting)、
+          color(white)、strikeout(false)
+    行高：height(1/20 点，如 560)、heightInPoints(28)、zeroHeight(false)
+    对齐：alignment(left|right|center|center-section|general|fill|justify|distributed)、
+          verticalAlignment(top|bottom|center|justify|distributed)、rotation(0-180)、indention(0-15)
+    文本：wrapText(true)、shrinkToFit(true)、quotePrefixed(false)
+    保护：locked(true)、hidden(false)
+    边框：borderLeft|borderRight|borderTop|borderBottom
+          (none|thin|medium|dashed|dotted|thick|double|hair|medium_dashed|dash_dot|
+           medium_dash_dot|dash_dot_dot|medium_dash_dot_dot|slanted_dash_dot)、
+          leftBorderColor|rightBorderColor|topBorderColor|bottomBorderColor(颜色名)
+    填充：fillPattern(no_fill|solid_foreground|fine_dots|alt_bars|sparse_dots|thick_horz_bands|
+          thick_vert_bands|thick_backward_diag|thick_forward_diag|big_spots|bricks|thin_horz_bands|
+          thin_vert_bands|thin_backward_diag|thin_forward_diag|squares|diamonds|less_dots|least_dots)、
+          fillForegroundColor(lightYellow)、fillBackgroundColor(grey25Percent)
+
+  颜色取 JColorEnum 的 code（black/white/red/darkBlue/lightYellow/green/maroon/grey25Percent...）。
+-->
 <excels namespace="com.github.paohaijiao.demo.style.StyleService">
 
     <excel name="exportStyle" returnClass="void">
@@ -9,8 +37,10 @@
             EXPORT WITH SHEET="样式", HEADER=true,
                 MAPPING={"a":"姓名","b":"年龄","c":"班级"},
                 STYLE={
-                    ROW 1:{fontName:Arial,fontHeightInPoints:12,bold:true,italic:true,color:yellow,fillPattern:solid_foreground,fillForegroundColor:darkBlue,alignment:center},
-                    A2:C100:{alignment:center,wrapText:true,borderBottom:thin,fillForegroundColor:lightYellow}
+                    ROW 1:{fontName:Arial,fontHeightInPoints:12,bold:true,italic:true,underLine:uSingle,color:white,strikeout:false,fillPattern:solid_foreground,fillForegroundColor:darkBlue,heightInPoints:28,alignment:center,verticalAlignment:center},
+                    COL B:{alignment:left,indention:2,wrapText:true,shrinkToFit:true,quotePrefixed:false,borderLeft:thin,leftBorderColor:red},
+                    C2:{rotation:45,borderTop:double,topBorderColor:maroon,locked:true,hidden:false},
+                    A2:A4:{fillPattern:solid_foreground,fillForegroundColor:lightYellow,verticalAlignment:top,borderBottom:dashed,bottomBorderColor:green}
                 }
         ]]>
     </excel>

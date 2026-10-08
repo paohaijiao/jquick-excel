@@ -2,19 +2,58 @@
 <!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
         "classpath:paohaijiao/dtd/Jquick-excel.dtd">
 <!--
-  graph 子包：GRAPH 声明式图表（10 种类型：COLUMN/BAR/LINE/AREA/PIE/DOUGHNUT/
-  SCATTER/RADAR/SURFACE/BUBBLE 及对应 3D 变体，以枚举实际支持为准）。
-  标题/分类用双引号字符串；轴标题与序列名是裸标识符（NAME=第一季度）。
+  graph 子包：GRAPH —— 声明式图表。每个 EXCEL 只承载一个 GRAPH 块。
+
+  TYPE 取值（JExcelChartType，共 10 种）：
+    COLUMN  垂直柱形图      BAR     水平条形图
+    BAR3D   3D 条形图       LINE    折线图
+    PIE     饼图            AREA    面积图
+    AREA3D  3D 面积图       SCATTER 散点图
+    RADAR   雷达图          SURFACE 曲面图
+
+  GRAPH 配置项：
+    TYPE=<图表类型>                   必填
+    TITLE="图表标题"                  双引号字符串；同时作为「图表数据 sheet」的名称
+    CATEGORY_AXIS=<分类轴标题>        裸标识符（不写引号）
+    VALUE_AXIS=<数值轴标题>           裸标识符（不写引号）
+    CATEGORIES=[分类1,分类2,...]      分类标签，可用字符串或标识符
+    SERIES=[{NAME=序列名,DATA=[数,数,...]},...]  一个或多个数据序列
+
+  图表由独立 sheet + drawing/charts 部件承载；图表数据也会写入标题所示 sheet 中。
+  图表会命中 needsRandomRowAccess，强制关闭 SXSSF 流式。
 -->
 <excels namespace="com.github.paohaijiao.demo.graph.GraphService">
 
-    <excel name="exportGraph" returnClass="void">
+    <!-- 柱形图：两个季度对比 -->
+    <excel name="exportColumnChart" returnClass="void">
         <![CDATA[
             EXPORT WITH SHEET="图表", HEADER=true,
                 MAPPING={"a":"产品","b":"销量"},
                 GRAPH={TYPE=COLUMN, TITLE="季度销售统计", CATEGORY_AXIS=产品, VALUE_AXIS=销量,
                        CATEGORIES=["产品A","产品B","产品C"],
                        SERIES=[{NAME=第一季度, DATA=[120,200,150]},{NAME=第二季度, DATA=[180,210,190]}]}
+        ]]>
+    </excel>
+
+    <!-- 折线图：单序列趋势 -->
+    <excel name="exportLineChart" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="图表", HEADER=true,
+                MAPPING={"a":"产品","b":"销量"},
+                GRAPH={TYPE=LINE, TITLE="月度销量趋势", CATEGORY_AXIS=月份, VALUE_AXIS=销量,
+                       CATEGORIES=["一月","二月","三月","四月"],
+                       SERIES=[{NAME=销量, DATA=[100,180,140,220]}]}
+        ]]>
+    </excel>
+
+    <!-- 饼图：占比 -->
+    <excel name="exportPieChart" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="图表", HEADER=true,
+                MAPPING={"a":"产品","b":"占比"},
+                GRAPH={TYPE=PIE, TITLE="销量占比", CATEGORY_AXIS=产品, VALUE_AXIS=占比,
+                       CATEGORIES=["产品A","产品B","产品C"],
+                       SERIES=[{NAME=占比, DATA=[120,200,150]}]}
         ]]>
     </excel>
 

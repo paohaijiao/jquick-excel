@@ -330,7 +330,7 @@ public class JExcelExportHandler extends JExcelCommonHandler {
                     for (int j = 0; j < maxRow; j++) {
                         JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
                         JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
-                        factory.applyFormula(currentSheet, j, i + 1, formula);
+                        factory.applyFormula(currentSheet, j, i, formula);
                     }
                 }
             } else {
@@ -339,7 +339,7 @@ public class JExcelExportHandler extends JExcelCommonHandler {
                     Short col = cellReference.getCol();
                     JExcelFormulaContext factory = new JExcelFormulaContext(workbook);
                     JAbstractExcelFormula formula = factory.createFormulaInstance(formulate);
-                    factory.applyFormula(currentSheet, i, col + 1, formula);
+                    factory.applyFormula(currentSheet, i, col, formula);
                 }
             }
         }
@@ -502,6 +502,20 @@ public class JExcelExportHandler extends JExcelCommonHandler {
                 Map<String, Object> cssStyle = cellStyle.getValue();
                 JStyleContext styleContext = new JStyleContext(workbook, currentSheet).forCell(cell);
                 styleContext.applyStyle(cssStyle);
+            }
+        }
+        Map<String, Map<String, Object>> rangeStyles = config.getRangeStyles();
+        if (null != rangeStyles && !rangeStyles.isEmpty()) {
+            for (Map.Entry<String, Map<String, Object>> rangeStyle : rangeStyles.entrySet()) {
+                String range = rangeStyle.getKey().trim();
+                Map<String, Object> cssStyle = rangeStyle.getValue();
+                CellRangeAddress region = CellRangeAddress.valueOf(range);
+                for (int row = region.getFirstRow(); row <= region.getLastRow(); row++) {
+                    for (int col = region.getFirstColumn(); col <= region.getLastColumn(); col++) {
+                        JStyleContext styleContext = new JStyleContext(workbook, currentSheet).forCell(row, col);
+                        styleContext.applyStyle(cssStyle);
+                    }
+                }
             }
         }
     }

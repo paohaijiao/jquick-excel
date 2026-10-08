@@ -24,19 +24,26 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
- * 分类：<b>GRAPH</b> —— 图表（饼图 / 柱状图等）配置。
+ * 分类：<b>GRAPH</b> —— 声明式图表（柱形 / 折线 / 饼图）。
  *
  * <p>规则文件 {@code demo/graph/jquick-excel.xml}，直接使用框架入口
  * {@link JQuickExcelExportXmlParseFactory}，不使用任何自封装方法。
- * 图表由独立 sheet + drawing/charts 部件承载。产物目录：{@code D:\test\excel}。
+ * 每个 EXCEL 只承载一个 GRAPH 块；图表由独立 sheet + drawing/charts 部件承载，
+ * 且图表数据会写入「TITLE 所示 sheet」。产物目录：{@code D:\test\excel}。
  */
 public class GraphDemo {
 
@@ -49,9 +56,9 @@ public class GraphDemo {
         }
     }
 
-    /** 导出声明式柱状图，回读校验图表 sheet 与 xl/charts 部件。 */
+    /** TYPE=COLUMN：柱形图，回读图表 sheet 数据与 xl/charts 部件类型。 */
     @Test
-    public void exportGraph() throws Exception {
+    public void exportColumnChart() throws Exception {
         List<JQuickRow> rows = new ArrayList<>();
         JQuickRow r1 = new JQuickRow();
         r1.put("a", "产品A");
@@ -66,30 +73,131 @@ public class GraphDemo {
         r3.put("b", 150);
         rows.add(r3);
 
-        File out = new File(OUT_DIR, "graph-export.xlsx");
+        File out = new File(OUT_DIR, "graph-column.xlsx");
         try (OutputStream os = new FileOutputStream(out)) {
             JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
             JQuickFactory factory = new JQuickXmlFactory(parser, XML);
             GraphService service = factory.createApi(GraphService.class);
-            service.exportGraph("field", "value");
+            service.exportColumnChart("field", "value");
         }
 
-        // 回读：图表由独立 sheet + drawing/charts 部件承载
         try (XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(out))) {
-            Assert.assertNotNull("应当生成图表 sheet", wb.getSheet("季度销售统计"));
+            Assert.assertNotNull("应以 TITLE 生成图表数据 sheet", wb.getSheet("季度销售统计"));
+            // 图表数据：第 0 行是「Categories + 各序列名」，第 1 行起是分类 + 数值
+            org.apache.poi.ss.usermodel.Sheet chartSheet = wb.getSheet("季度销售统计");
+            Assert.assertEquals("第一季度", chartSheet.getRow(0).getCell(1).getStringCellValue());
+            Assert.assertEquals("产品A", chartSheet.getRow(1).getCell(0).getStringCellValue());
+            Assert.assertEquals(120.0, chartSheet.getRow(1).getCell(1).getNumericCellValue(), 0.0001);
         }
-        // xlsx 本质是 zip，断言里面确实存在图表部件
-        boolean hasChart = false;
-        try (java.util.zip.ZipFile zip = new java.util.zip.ZipFile(out)) {
-            java.util.Enumeration<? extends java.util.zip.ZipEntry> entries = zip.entries();
+
+        String chartXml = null;
+        try (ZipFile zip = new ZipFile(out)) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
             while (entries.hasMoreElements()) {
-                String name = entries.nextElement().getName();
-                if (name.startsWith("xl/charts/chart")) {
-                    hasChart = true;
+                ZipEntry entry = entries.nextElement();
+                if (entry.getName().startsWith("xl/charts/chart")) {
+                    try (InputStream in = zip.getInputStream(entry)) {
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] buf = new byte[4096];
+                        int n;
+                        while ((n = in.read(buf)) > 0) {
+                            bos.write(buf, 0, n);
+                        }
+                        chartXml = new String(bos.toByteArray(), StandardCharsets.UTF_8);
+                    }
                 }
             }
         }
-        Assert.assertTrue("xlsx 中应包含 xl/charts/chart*.xml 部件", hasChart);
-        System.out.println("【GRAPH】图表已生成: " + out.getName());
+        Assert.assertNotNull("xlsx 中应包含 xl/charts/chart*.xml 部件", chartXml);
+        Assert.assertTrue("COLUMN 应对应 barChart 部件", chartXml.contains("barChart"));
+        System.out.println("【GRAPH】柱形图已生成: " + out.getName());
+    }
+
+    /** TYPE=LINE：折线图。 */
+    @Test
+    public void exportLineChart() throws Exception {
+        List<JQuickRow> rows = new ArrayList<>();
+        JQuickRow row = new JQuickRow();
+        row.put("a", "一月");
+        row.put("b", 100);
+        rows.add(row);
+
+        File out = new File(OUT_DIR, "graph-line.xlsx");
+        try (OutputStream os = new FileOutputStream(out)) {
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            GraphService service = factory.createApi(GraphService.class);
+            service.exportLineChart("field", "value");
+        }
+
+        try (XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(out))) {
+            Assert.assertNotNull("应以 TITLE 生成图表数据 sheet", wb.getSheet("月度销量趋势"));
+        }
+
+        String chartXml = null;
+        try (ZipFile zip = new ZipFile(out)) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (entry.getName().startsWith("xl/charts/chart")) {
+                    try (InputStream in = zip.getInputStream(entry)) {
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] buf = new byte[4096];
+                        int n;
+                        while ((n = in.read(buf)) > 0) {
+                            bos.write(buf, 0, n);
+                        }
+                        chartXml = new String(bos.toByteArray(), StandardCharsets.UTF_8);
+                    }
+                }
+            }
+        }
+        Assert.assertNotNull("xlsx 中应包含 xl/charts/chart*.xml 部件", chartXml);
+        Assert.assertTrue("LINE 应对应 lineChart 部件", chartXml.contains("lineChart"));
+        System.out.println("【GRAPH】折线图已生成: " + out.getName());
+    }
+
+    /** TYPE=PIE：饼图。 */
+    @Test
+    public void exportPieChart() throws Exception {
+        List<JQuickRow> rows = new ArrayList<>();
+        JQuickRow row = new JQuickRow();
+        row.put("a", "产品A");
+        row.put("b", 120);
+        rows.add(row);
+
+        File out = new File(OUT_DIR, "graph-pie.xlsx");
+        try (OutputStream os = new FileOutputStream(out)) {
+            JQuickParseHandler parser = new JQuickExcelExportXmlParseFactory(rows, os);
+            JQuickFactory factory = new JQuickXmlFactory(parser, XML);
+            GraphService service = factory.createApi(GraphService.class);
+            service.exportPieChart("field", "value");
+        }
+
+        try (XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(out))) {
+            Assert.assertNotNull("应以 TITLE 生成图表数据 sheet", wb.getSheet("销量占比"));
+        }
+
+        String chartXml = null;
+        try (ZipFile zip = new ZipFile(out)) {
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (entry.getName().startsWith("xl/charts/chart")) {
+                    try (InputStream in = zip.getInputStream(entry)) {
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] buf = new byte[4096];
+                        int n;
+                        while ((n = in.read(buf)) > 0) {
+                            bos.write(buf, 0, n);
+                        }
+                        chartXml = new String(bos.toByteArray(), StandardCharsets.UTF_8);
+                    }
+                }
+            }
+        }
+        Assert.assertNotNull("xlsx 中应包含 xl/charts/chart*.xml 部件", chartXml);
+        Assert.assertTrue("PIE 应对应 pieChart 部件", chartXml.contains("pieChart"));
+        System.out.println("【GRAPH】饼图已生成: " + out.getName());
     }
 }

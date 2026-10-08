@@ -24,6 +24,6 @@ import com.github.paohaijiao.xml.param.Param;
  */
 public interface FormulaService {
 
-    /** 在 E 列为每行写入 SUM 公式（合计 B~D 三个月）。 */
+    /** E2/E3/E4 单格 SUM、ROW 6 整行公式、COL F 整列公式。 */
     void exportFormula(@Param("field") String field, @Param("value") String value);
 }

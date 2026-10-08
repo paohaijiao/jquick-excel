@@ -18,10 +18,16 @@ package com.github.paohaijiao.demo.graph;
 import com.github.paohaijiao.xml.param.Param;
 
 /**
- * graph 子包服务契约：声明式柱状图导出。
+ * graph 子包服务契约：声明式图表导出（柱形 / 折线 / 饼图）。
  */
 public interface GraphService {
 
-    /** GRAPH 块在工作簿中生成图表 sheet 与 drawing。 */
-    void exportGraph(@Param("field") String field, @Param("value") String value);
+    /** TYPE=COLUMN 柱形图。 */
+    void exportColumnChart(@Param("field") String field, @Param("value") String value);
+
+    /** TYPE=LINE 折线图。 */
+    void exportLineChart(@Param("field") String field, @Param("value") String value);
+
+    /** TYPE=PIE 饼图。 */
+    void exportPieChart(@Param("field") String field, @Param("value") String value);
 }

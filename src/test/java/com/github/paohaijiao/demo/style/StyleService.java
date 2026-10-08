@@ -18,10 +18,10 @@ package com.github.paohaijiao.demo.style;
 import com.github.paohaijiao.xml.param.Param;
 
 /**
- * style 子包服务契约：行样式 + 矩形区域样式。
+ * style 子包服务契约：行 / 列 / 单元格 / 区域四类样式目标。
  */
 public interface StyleService {
 
-    /** ROW 1 表头样式；A2:C100 数据区域居中、自动换行、下边框、浅色填充。 */
+    /** ROW 1 行样式；COL B 列样式；C2 单元格样式；A2:A4 区域样式。 */
     void exportStyle(@Param("field") String field, @Param("value") String value);
 }

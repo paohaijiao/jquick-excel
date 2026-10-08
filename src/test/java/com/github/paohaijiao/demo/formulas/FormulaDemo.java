@@ -40,8 +40,8 @@ import java.util.List;
  *
  * <p>规则文件 {@code demo/formulas/jquick-excel.xml}，直接使用框架入口
  * {@link JQuickExcelExportXmlParseFactory}，不使用任何自封装方法。
- * 写公式命中 {@code needsRandomRowAccess} 会强制关闭 SXSSF 流式。
- * 产物目录：{@code D:\test\excel}。
+ * 覆盖三类目标：{@code E2:'...'} 单格、{@code ROW 6:'...'} 整行、{@code COL F:'...'} 整列。
+ * 写公式命中 {@code needsRandomRowAccess} 会强制关闭 SXSSF 流式。产物目录：{@code D:\test\excel}。
  */
 public class FormulaDemo {
 
@@ -54,7 +54,7 @@ public class FormulaDemo {
         }
     }
 
-    /** 导出：E 列写入 SUM 公式，回读校验单元格类型、公式文本与计算结果。 */
+    /** 导出：单格 SUM + 整行公式 + 整列公式，回读校验公式文本、目标列位与计算结果。 */
     @Test
     public void exportFormula() throws Exception {
         List<JQuickRow> rows = new ArrayList<>();
@@ -87,13 +87,30 @@ public class FormulaDemo {
 
         try (XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(out))) {
             Sheet sheet = wb.getSheet("公式");
-            Cell cell = sheet.getRow(1).getCell(4);
-            Assert.assertEquals(CellType.FORMULA, cell.getCellType());
-            Assert.assertEquals("SUM(B2:D2)", cell.getCellFormula());
             FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-            double value = evaluator.evaluate(cell).getNumberValue();
-            System.out.println("【FORMULAS】E2 公式=" + cell.getCellFormula() + "，计算结果=" + value);
-            Assert.assertEquals(60.0, value, 0.0001);
+
+            // 单元格目标：E2 = SUM(B2:D2)
+            Cell e2 = sheet.getRow(1).getCell(4);
+            Assert.assertEquals(CellType.FORMULA, e2.getCellType());
+            Assert.assertEquals("SUM(B2:D2)", e2.getCellFormula());
+            Assert.assertEquals(60.0, evaluator.evaluate(e2).getNumberValue(), 0.0001);
+
+            // 整行目标：ROW 6 横向铺满映射列，A6 = SUM(B2:D4)
+            Cell a6 = sheet.getRow(5).getCell(0);
+            Assert.assertEquals(CellType.FORMULA, a6.getCellType());
+            Assert.assertEquals("SUM(B2:D4)", a6.getCellFormula());
+            Assert.assertEquals(450.0, evaluator.evaluate(a6).getNumberValue(), 0.0001);
+
+            // 整列目标：COL F 写入 F 列（不是 G 列），F2 = SUM(B2:B4)
+            Cell f2 = sheet.getRow(1).getCell(5);
+            Assert.assertEquals(CellType.FORMULA, f2.getCellType());
+            Assert.assertEquals("SUM(B2:B4)", f2.getCellFormula());
+            Assert.assertEquals(120.0, evaluator.evaluate(f2).getNumberValue(), 0.0001);
+            Assert.assertNull("COL F 不应偏移到 G 列", sheet.getRow(1).getCell(6));
+
+            System.out.println("【FORMULAS】E2=" + e2.getCellFormula()
+                    + "，A6=" + a6.getCellFormula()
+                    + "，F2=" + f2.getCellFormula());
         }
     }
 }
