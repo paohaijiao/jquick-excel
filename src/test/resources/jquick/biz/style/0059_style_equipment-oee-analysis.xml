@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 59：生产设备 OEE 分析表（绩效考核类，🟢 纯 XML） ====================
+  业务：按设备统计时间开动率、性能开动率与合格品率，逐行算「OEE = 三者之积」，
+        末尾一行给出平均 OEE；OEE 低于标杆的设备标红。
+
+  🟢 标记含义：逐行连乘、均值、样式与标红全部写在 XML 中 ——
+        FORMULAS 用 C*D*E 求 OEE、AVERAGE 求平均 OEE，
+        STYLE 给均值行高亮、给 OEE 低于标杆的设备标红，Java 只负责构造设备数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 台设备 OEE 明细
+      第7行     平均 OEE
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0059EquipmentOeeAnalysisService">
+
+    <!-- 导出：生产设备 OEE 分析表 -->
+    <excel name="exportEquipmentOeeAnalysis" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="生产设备OEE分析表", HEADER=true,
+                MAPPING={"a":"设备编号","b":"设备名称","c":"时间开动率","d":"性能开动率","e":"合格品率","f":"OEE","g":"评价"},
+                FORMAT={"c":"0.00%","d":"0.00%","e":"0.00%","f":"0.00%"},
+                FORMULAS={
+                    F2:'C2*D2*E2',F3:'C3*D3*E3',F4:'C4*D4*E4',F5:'C5*D5*E5',F6:'C6*D6*E6',
+                    F7:'AVERAGE(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的生产设备 OEE 分析表 -->
+    <excel name="importEquipmentOeeAnalysis" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="生产设备OEE分析表", HEADER=true,
+                MAPPING={"设备编号":"equipmentNo","设备名称":"equipmentName","时间开动率":"availability","性能开动率":"performance","合格品率":"quality","OEE":"oee","评价":"evaluation"}
+        ]]>
+    </excel>
+
+</excels>

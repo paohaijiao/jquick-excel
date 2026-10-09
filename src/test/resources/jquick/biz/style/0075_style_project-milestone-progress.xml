@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 75：研发项目里程碑进度表（计划排期类，🟢 纯 XML） ====================
+  业务：逐行登记里程碑的计划工时与实际工时，算「偏差工时 = 计划 - 实际」与「工时达成率 = 计划 / 实际」，
+        末尾一行汇总总计划工时、总实际工时、总偏差与整体达成率；达成率最低的里程碑标红。
+
+  🟢 标记含义：逐行偏差与达成率、合计全部写在 XML 中 ——
+        FORMULAS 用 C-D 求偏差、C/D 求达成率、SUM 求各列合计，
+        STYLE 给合计行高亮、给达成率最低的里程碑标红，Java 只负责构造进度数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个里程碑（第 2 个「系统设计」达成率最低，Excel 第 3 行）
+      第7行     工时合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0075ProjectMilestoneProgressService">
+
+    <!-- 导出：研发项目里程碑进度表 -->
+    <excel name="exportProjectMilestoneProgress" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="研发项目里程碑进度表", HEADER=true,
+                MAPPING={"a":"里程碑阶段","b":"负责人","c":"计划工时","d":"实际工时","e":"偏差工时","f":"工时达成率","g":"状态"},
+                FORMAT={"c":"#,##0","d":"#,##0","e":"#,##0","f":"0.00%"},
+                FORMULAS={
+                    E2:'C2-D2',F2:'C2/D2',E3:'C3-D3',F3:'C3/D3',
+                    E4:'C4-D4',F4:'C4/D4',E5:'C5-D5',F5:'C5/D5',
+                    E6:'C6-D6',F6:'C6/D6',
+                    C7:'SUM(C2:C6)',D7:'SUM(D2:D6)',E7:'C7-D7',F7:'C7/D7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F3:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的研发项目里程碑进度表 -->
+    <excel name="importProjectMilestoneProgress" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="研发项目里程碑进度表", HEADER=true,
+                MAPPING={"里程碑阶段":"milestone","负责人":"owner","计划工时":"plannedHours","实际工时":"actualHours","偏差工时":"deviationHours","工时达成率":"achievementRate","状态":"status"}
+        ]]>
+    </excel>
+
+</excels>

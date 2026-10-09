@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 13：费用报销单（🟢 纯 XML） ==================
+  业务：报销明细逐行「金额 - 自付金额 = 可报销金额」，末尾一行合计；
+        合计行的「合计」标签横向合并前两列。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：发生日期 yyyy-MM-dd，三列金额均为千分位 2 位小数
+    * FORMULAS：逐行可报销 = 金额-自付；合计行 SUM 汇总金额 / 自付 / 可报销
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * MERGE   ：合计行 A5:B5 横向合并（MERGE 后是冒号 ':'）
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0013ExpenseReimbursementService">
+
+    <!-- 导出：费用报销单 -->
+    <excel name="exportExpenseReimbursement" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="费用报销单", HEADER=true,
+                MAPPING={"a":"费用类型","b":"发生日期","c":"金额","d":"自付金额","e":"可报销金额"},
+                FORMAT={"b":"yyyy-MM-dd","c":"#,##0.00","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={E2:'C2-D2',E3:'C3-D3',E4:'C4-D4',C5:'SUM(C2:C4)',D5:'SUM(D2:D4)',E5:'SUM(E2:E4)'},
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                MERGE:{RANGE A5:B5 WITH MERGE_WITH_FIRST}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的费用报销单 -->
+    <excel name="importExpenseReimbursement" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="费用报销单", HEADER=true,
+                MAPPING={"费用类型":"category","发生日期":"expenseDate","金额":"amount","自付金额":"selfPaid","可报销金额":"reimbursable"}
+        ]]>
+    </excel>
+
+</excels>

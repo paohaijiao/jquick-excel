@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 38：产品质量成本分析表（质检缺陷类，🟢 纯 XML） ====================
+  业务：按产品统计检验结果，逐行算「不良率 = 不良数量 / 检验数量」与
+        「质量成本 = 不良数量 × 单件返工成本」，不良率超标的产品标红预警；
+        末尾一行汇总检验数量、不良数量、整体不良率与质量成本。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：数量千分位整数，不良率百分比两位小数，金额千分位两位小数
+    FORMULAS：逐行除法求不良率、乘法求质量成本；合计行 SUM 数量与成本、整体不良率再相除
+    STYLE   ：合计行加粗 + 浅黄高亮；不良率超标的产品标红
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行    表头
+      第2..6行 5 种产品（不良率、质量成本留空由 FORMULAS 计算，其中一种超标）
+      第7行    合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0038ProductQualityCostService">
+
+    <!-- 导出：产品质量成本分析表 -->
+    <excel name="exportProductQualityCost" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="产品质量成本分析", HEADER=true,
+                MAPPING={"a":"产品名称","b":"检验数量","c":"不良数量","d":"不良率","e":"单件返工成本","f":"质量成本","g":"控制状态"},
+                FORMAT={"b":"#,##0","c":"#,##0","d":"0.00%","e":"#,##0.00","f":"#,##0.00"},
+                FORMULAS={
+                    D2:'C2/B2',F2:'C2*E2',
+                    D3:'C3/B3',F3:'C3*E3',
+                    D4:'C4/B4',F4:'C4*E4',
+                    D5:'C5/B5',F5:'C5*E5',
+                    D6:'C6/B6',F6:'C6*E6',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'C7/B7',F7:'SUM(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    D3:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的产品质量成本分析表 -->
+    <excel name="importProductQualityCost" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="产品质量成本分析", HEADER=true,
+                MAPPING={"产品名称":"product","检验数量":"inspectQty","不良数量":"defectQty","不良率":"defectRate","单件返工成本":"reworkUnitCost","质量成本":"qualityCost","控制状态":"controlStatus"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 110：月度销量矩阵（🟢 纯 XML + SURFACE 曲面图） ==================
+  业务：三个产品一至三月的销量矩阵，末行按月份汇总；配曲面图展示二维（产品 × 月份）分布。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：销量千分位整数
+    * FORMULAS：末行按月份 SUM 汇总
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * GRAPH   ：曲面图（SURFACE），图表数据落在独立的「月度销量曲面图」sheet
+
+  说明：曲面图系列名用「一月 / 二月 / 三月」这类纯中文标识符（DSL 中 SERIES 的 NAME 为标识符而非字符串）。
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0110MonthlyProductMatrixService">
+
+    <!-- 导出：月度销量矩阵 -->
+    <excel name="exportMonthlyProductMatrix" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="月度销量矩阵", HEADER=true,
+                MAPPING={"a":"产品","b":"1月","c":"2月","d":"3月"},
+                FORMAT={"b":"#,##0","c":"#,##0","d":"#,##0"},
+                FORMULAS={
+                    B5:'SUM(B2:B4)',C5:'SUM(C2:C4)',D5:'SUM(D2:D4)'
+                },
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=SURFACE, TITLE="月度销量曲面图", CATEGORY_AXIS=产品, VALUE_AXIS=销量,
+                       CATEGORIES=["产品A","产品B","产品C"],
+                       SERIES=[
+                           {NAME=一月, DATA=[120,150,180]},
+                           {NAME=二月, DATA=[140,160,200]},
+                           {NAME=三月, DATA=[160,180,220]}
+                       ]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的月度销量矩阵 -->
+    <excel name="importMonthlyProductMatrix" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="月度销量矩阵", HEADER=true,
+                MAPPING={"产品":"product","1月":"jan","2月":"feb","3月":"mar"}
+        ]]>
+    </excel>
+
+</excels>

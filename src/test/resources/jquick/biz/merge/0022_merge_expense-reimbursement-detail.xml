@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 22：费用报销明细表（费用票据类，🟡 Java 预处理） ====================
+  业务：按部门归集员工费用报销明细，每个部门后跟一行金额小计，末尾一行合计；部门名称列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按部门分组、插入小计 / 合计占位行、确定合并范围」，
+              金额小计与合计由 XML 的 FORMULAS 计算，样式与合并由模板声明。
+
+  Java 侧给出的分组布局：
+      第1行    表头
+      第2..4行  研发部（3 笔）    第5行  研发部小计
+      第6..7行  市场部（2 笔）    第8行  市场部小计
+      第9..11行 财务部（3 笔）    第12行 财务部小计
+      第13行   合计
+  合并范围由布局推导：研发部 A2:A4、市场部 A6:A7、财务部 A9:A11（MERGE_WITH_FIRST 保留首值）。
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0022ExpenseReimbursementDetailService">
+
+    <!-- 导出：费用报销明细表 -->
+    <excel name="exportExpenseReimbursementDetail" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="费用报销明细表", HEADER=true,
+                MAPPING={"a":"部门","b":"报销人","c":"费用类型","d":"申请日期","e":"金额"},
+                FORMAT={"d":"yyyy-MM-dd","e":"#,##0.00"},
+                FORMULAS={
+                    E5:'SUM(E2:E4)',
+                    E8:'SUM(E6:E7)',
+                    E12:'SUM(E9:E11)',
+                    E13:'E5+E8+E12'
+                },
+                STYLE={
+                    ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 12:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 13:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A4 WITH MERGE_WITH_FIRST,
+                    RANGE A6:A7 WITH MERGE_WITH_FIRST,
+                    RANGE A9:A11 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的费用报销明细表 -->
+    <excel name="importExpenseReimbursementDetail" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="费用报销明细表", HEADER=true,
+                MAPPING={"部门":"dept","报销人":"applicant","费用类型":"expenseType","申请日期":"applyDate","金额":"amount"}
+        ]]>
+    </excel>
+
+</excels>

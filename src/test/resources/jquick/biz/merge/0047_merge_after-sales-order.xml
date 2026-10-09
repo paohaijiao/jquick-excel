@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 47：售后服务工单台账（其他拓展类，🟡 少量 Java 预处理） ====================
+  业务：按服务工程师归集售后工单，逐行算「服务费 = 服务时长 × 上门费单价」，
+        每位工程师后跟一行服务费小计，末尾一行给出全部工单合计；工程师列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按服务工程师分组、插入小计 / 合计占位行、确定合并范围」，
+        逐行乘法与小计 / 合计由 FORMULAS 计算，样式与 MERGE 合并范围由模板声明。
+
+  Java 侧给出的分组布局：
+      第1行   表头
+      第2..3行 刘工（2 单）
+      第4行   刘工 小计
+      第5..7行 陈工（3 单）
+      第8行   陈工 小计
+      第9行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0047AfterSalesOrderService">
+
+    <!-- 导出：售后服务工单台账 -->
+    <excel name="exportAfterSalesOrder" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="售后服务工单台账", HEADER=true,
+                MAPPING={"a":"服务工程师","b":"工单号","c":"客户","d":"服务时长(h)","e":"上门费单价","f":"服务费","g":"满意度"},
+                FORMAT={"d":"#,##0.0","e":"#,##0.00","f":"#,##0.00","g":"0"},
+                FORMULAS={
+                    F2:'D2*E2',F3:'D3*E3',F4:'SUM(F2:F3)',
+                    F5:'D5*E5',F6:'D6*E6',F7:'D7*E7',F8:'SUM(F5:F7)',
+                    F9:'F4+F8'
+                },
+                STYLE={
+                    ROW 4:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 9:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A3 WITH MERGE_WITH_FIRST,
+                    RANGE A5:A7 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的售后服务工单台账 -->
+    <excel name="importAfterSalesOrder" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="售后服务工单台账", HEADER=true,
+                MAPPING={"服务工程师":"engineer","工单号":"orderNo","客户":"customer","服务时长(h)":"workHours","上门费单价":"serviceRate","服务费":"serviceFee","满意度":"satisfaction"}
+        ]]>
+    </excel>
+
+</excels>

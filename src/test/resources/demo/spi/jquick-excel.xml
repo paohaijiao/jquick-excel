@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  spi 子包：TRANSFORM 中调用「SPI 注册的函数」。
+  自定义 Provider（本工程 test 目录）：
+      maskname(x)  姓名脱敏，张三 -> 张*
+      grade(x)     分数转等级，95 -> A
+  内置 Provider（来自 jquick-transform-function 依赖）：
+      add(a,b)     求和
+      trim(x)      去首尾空格
+  注册文件：src/test/resources/META-INF/services/com.github.paohaijiao.function.core.JQuickMethodFunctionProvider
+  注意：applyTransform 会用函数名 toLowerCase() 查表，故 Provider 注册名需全小写才能命中 SPI 分支。
+-->
+<excels namespace="com.github.paohaijiao.demo.spi.SpiService">
+
+    <!-- 导入：姓名走自定义 SPI 函数 maskname 脱敏 -->
+    <excel name="importSpiTransform" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET=1, HEADER=true,
+                MAPPING={"姓名":"name","班级":"className"},
+                TRANSFORM={"name":maskname(${name})}
+        ]]>
+    </excel>
+
+    <!-- 导出：自定义 SPI（maskname/grade）+ 内置 SPI（add/trim）混合使用 -->
+    <excel name="exportSpiTransform" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="SPI转换", HEADER=true,
+                MAPPING={"a":"姓名","b":"分数","c":"年龄","d":"备注"},
+                TRANSFORM={"a":maskname(${a}),"b":grade(${b}),"c":add(${c},1),"d":trim(${d})}
+        ]]>
+    </excel>
+
+</excels>

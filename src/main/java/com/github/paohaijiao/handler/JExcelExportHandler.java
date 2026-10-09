@@ -430,7 +430,7 @@ public class JExcelExportHandler extends JExcelCommonHandler {
                 JMergeValueType value = (JMergeValueType) cellStyle.getValue();
                 HashMap<String, Object> merge = new HashMap<>();
                 CellRangeAddress mergedRegion = CellRangeAddress.valueOf(cell);
-                merge.put("firstRow", mergedRegion.getFirstColumn());
+                merge.put("firstRow", mergedRegion.getFirstRow());
                 merge.put("lastRow", mergedRegion.getLastRow());
                 merge.put("firstCol", mergedRegion.getFirstColumn());
                 merge.put("lastCol", mergedRegion.getLastColumn());

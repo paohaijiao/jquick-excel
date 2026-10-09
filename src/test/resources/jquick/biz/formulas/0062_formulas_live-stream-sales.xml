@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 62：直播带货销售明细（其他拓展类，🟢 纯 XML） ====================
+  业务：按直播场次登记带货商品，逐行算「销售额 = 销售数量 × 单价」与「佣金 = 销售额 × 佣金比例」，
+        末尾一行汇总销售额与佣金。
+
+  🟢 标记含义：逐行乘法与合计全部写在 XML 中 ——
+        FORMULAS 用 D*E 求销售额、F*G 求佣金、SUM 求合计，
+        STYLE 给合计行高亮，Java 只负责构造直播销售数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 条带货明细
+      第7行     销售额与佣金合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0062LiveStreamSalesService">
+
+    <!-- 导出：直播带货销售明细 -->
+    <excel name="exportLiveStreamSales" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="直播带货销售明细", HEADER=true,
+                MAPPING={"a":"场次","b":"主播","c":"商品名称","d":"销售数量","e":"单价","f":"销售额","g":"佣金比例","h":"佣金"},
+                FORMAT={"d":"#,##0","e":"#,##0.00","f":"#,##0.00","g":"0.00%","h":"#,##0.00"},
+                FORMULAS={
+                    F2:'D2*E2',H2:'F2*G2',
+                    F3:'D3*E3',H3:'F3*G3',
+                    F4:'D4*E4',H4:'F4*G4',
+                    F5:'D5*E5',H5:'F5*G5',
+                    F6:'D6*E6',H6:'F6*G6',
+                    F7:'SUM(F2:F6)',H7:'SUM(H2:H6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的直播带货销售明细 -->
+    <excel name="importLiveStreamSales" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="直播带货销售明细", HEADER=true,
+                MAPPING={"场次":"session","主播":"anchor","商品名称":"productName","销售数量":"quantity","单价":"unitPrice","销售额":"salesAmount","佣金比例":"commissionRate","佣金":"commission"}
+        ]]>
+    </excel>
+
+</excels>

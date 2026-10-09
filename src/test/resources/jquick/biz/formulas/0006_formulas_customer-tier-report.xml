@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ======================== 场景 6：客户分层报表（🟢 纯 XML） ========================
+  业务：A/B/C 分层客户的年度成交额与贡献占比，末尾一行合计。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：成交额千分位两位小数，贡献占比百分比
+    FORMULAS：逐行贡献占比 = 本行成交额 / 全部成交额；合计行 SUM 汇总
+    STYLE   ：合计行加粗 + 浅黄高亮
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0006CustomerTierReportService">
+
+    <!-- 导出：客户分层报表 -->
+    <excel name="exportCustomerTier" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户分层报表", HEADER=true,
+                MAPPING={"a":"客户编码","b":"客户名称","c":"客户等级","d":"年度成交额","e":"贡献占比"},
+                FORMAT={"d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    E2:'D2/SUM(D2:D6)',E3:'D3/SUM(D2:D6)',E4:'D4/SUM(D2:D6)',
+                    E5:'D5/SUM(D2:D6)',E6:'D6/SUM(D2:D6)',
+                    D7:'SUM(D2:D6)',E7:'SUM(E2:E6)'
+                },
+                STYLE={ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的客户分层报表 -->
+    <excel name="importCustomerTier" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户分层报表", HEADER=true,
+                MAPPING={"客户编码":"code","客户名称":"name","客户等级":"tier","年度成交额":"amount","贡献占比":"ratio"}
+        ]]>
+    </excel>
+
+</excels>

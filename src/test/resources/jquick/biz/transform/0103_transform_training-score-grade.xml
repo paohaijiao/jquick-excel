@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 103：培训考核成绩等级表（🟢 纯 XML + TRANSFORM SPI 函数） ==================
+  业务：培训考核中分数换算为等级（>=90 A、>=80 B、>=60 C、其余 D），并规范化考核日期。
+
+  本场景转换逻辑全部写在 XML（🟢 无 Java 计算）：
+    * TRANSFORM：等级走自定义 SPI 函数 grade（分数 -> A/B/C/D）
+    * FORMAT   ：考核日期 yyyy-MM-dd
+    * 导入侧   ：考核日期 dateFormat 归一为 yyyy-MM-dd 文本
+
+  grade 由 src/test/resources/META-INF/services 下注册的自定义 Provider 提供（与 maskname 同一注册表）。
+-->
+<excels namespace="com.github.paohaijiao.biz.transform.Transform0103TrainingScoreGradeService">
+
+    <!-- 导出：分数 -> 等级 -->
+    <excel name="exportTrainingScoreGrade" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="培训考核成绩", HEADER=true,
+                MAPPING={"a":"学号","b":"姓名","c":"等级","d":"考核日期","e":"班级"},
+                FORMAT={"d":"yyyy-MM-dd"},
+                TRANSFORM={"c":grade(${c})}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：考核日期归一为 yyyy-MM-dd -->
+    <excel name="importTrainingScoreGrade" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="培训考核成绩", HEADER=true,
+                MAPPING={"学号":"studentNo","姓名":"studentName","等级":"gradeLevel","考核日期":"examDate","班级":"className"},
+                TRANSFORM={"examDate":dateFormat(${examDate},'yyyy-MM-dd')}
+        ]]>
+    </excel>
+
+</excels>

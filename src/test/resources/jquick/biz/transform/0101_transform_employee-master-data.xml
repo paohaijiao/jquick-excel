@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 101：员工主数据码值转换表（🟢 纯 XML + TRANSFORM 字典） ==================
+  业务：员工主数据里性别 / 部门 / 状态以内部码值存储，导出时按字典转成中文；带 yyyy-MM-dd 日期格式化。
+
+  本场景转换逻辑全部写在 XML（🟢 无 Java 计算）：
+    * TRANSFORM：性别 / 部门 / 状态经 trans(${dict}, ...) 正查为中文
+    * FORMAT   ：入参日期 yyyy-MM-dd，年假整数
+    * 导入侧   ：仅对日期做 dateFormat 归一，其余字段按表头直接映射
+
+  字典经 JContext 以 ${dict} 注入；字典键跨字段唯一（1/2=性别，RD/MK/FN=部门，A/B=状态），故三个字段共用一个字典。
+-->
+<excels namespace="com.github.paohaijiao.biz.transform.Transform0101EmployeeMasterDataService">
+
+    <!-- 导出：内部码值 -> 中文 -->
+    <excel name="exportEmployeeMasterData" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工主数据", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"性别","d":"部门","e":"入职日期","f":"状态","g":"年假"},
+                FORMAT={"e":"yyyy-MM-dd","g":"0"},
+                TRANSFORM={"c":trans(${dict},${c}),"d":trans(${dict},${d}),"f":trans(${dict},${f})}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：日期归一，其余字段按表头映射 -->
+    <excel name="importEmployeeMasterData" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工主数据", HEADER=true,
+                MAPPING={"工号":"employeeNo","姓名":"name","性别":"sex","部门":"dept","入职日期":"hireDate","状态":"status","年假":"leaveDays"},
+                TRANSFORM={"hireDate":dateFormat(${hireDate},'yyyy-MM-dd')}
+        ]]>
+    </excel>
+
+</excels>

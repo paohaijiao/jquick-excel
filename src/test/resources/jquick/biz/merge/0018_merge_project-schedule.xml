@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 18：项目进度计划排期表（计划排期类，🟡 Java 预处理） ====================
+  业务：项目按阶段分组排期，逐行算「工期 = 结束日期 - 开始日期」天，每阶段后跟一行工期小计，
+        末尾一行给出总工期与整体平均完成率；阶段名称列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按阶段分组、插入小计 / 合计占位行、确定合并范围」，
+              工期与完成率统计由 XML 的 FORMULAS 计算，样式与合并由模板声明。
+
+  Java 侧给出的分组布局：
+      第1行    表头
+      第2..3行  需求分析（2 项任务）   第4行  阶段小计
+      第5..6行  系统设计（2 项任务）   第7行  阶段小计
+      第8..10行 开发实现（3 项任务）   第11行 阶段小计
+      第12行   合计
+  合并范围：需求分析 A2:A3、系统设计 A5:A6、开发实现 A8:A10（MERGE_WITH_FIRST 保留首值）。
+  小计行只汇总工期（F 列），完成率（G 列）留空，故合计行 G12 用 AVERAGE(G2:G10) 时
+  会自动忽略空白小计行、只对 7 条任务求平均。
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0018ProjectScheduleService">
+
+    <!-- 导出：项目进度计划排期表 -->
+    <excel name="exportProjectSchedule" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="项目进度计划排期表", HEADER=true,
+                MAPPING={"a":"阶段","b":"任务名称","c":"负责人","d":"开始日期","e":"结束日期","f":"工期(天)","g":"完成率"},
+                FORMAT={"d":"yyyy-MM-dd","e":"yyyy-MM-dd","f":"0","g":"0%"},
+                FORMULAS={
+                    F2:'E2-D2',F3:'E3-D3',F4:'SUM(F2:F3)',
+                    F5:'E5-D5',F6:'E6-D6',F7:'SUM(F5:F6)',
+                    F8:'E8-D8',F9:'E9-D9',F10:'E10-D10',F11:'SUM(F8:F10)',
+                    F12:'F4+F7+F11',G12:'AVERAGE(G2:G10)'
+                },
+                STYLE={
+                    ROW 4:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 11:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 12:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A3 WITH MERGE_WITH_FIRST,
+                    RANGE A5:A6 WITH MERGE_WITH_FIRST,
+                    RANGE A8:A10 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的项目进度计划排期表 -->
+    <excel name="importProjectSchedule" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="项目进度计划排期表", HEADER=true,
+                MAPPING={"阶段":"phase","任务名称":"task","负责人":"owner","开始日期":"startDate","结束日期":"endDate","工期(天)":"duration","完成率":"progress"}
+        ]]>
+    </excel>
+
+</excels>

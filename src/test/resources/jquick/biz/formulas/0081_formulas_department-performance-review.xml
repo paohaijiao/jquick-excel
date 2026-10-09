@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 81：部门季度绩效考核汇总表（绩效考核类，🟢 纯 XML） ====================
+  业务：逐部门登记目标完成分 / 工作质量分 / 团队协作分，按权重算「综合得分 = 完成分×0.5 + 质量分×0.3 + 协作分×0.2」，
+        末尾一行给出各项平均分与平均综合得分；综合得分最低的部门标红。
+
+  🟢 标记含义：逐行加权得分与平均分全部写在 XML 中 ——
+        FORMULAS 用三项加权算式求综合得分、AVERAGE 求各列平均分，
+        STYLE 给合计行高亮、给最低综合得分部门标红，Java 只负责构造考核数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个部门（第 3 个「生产部」综合得分最低，Excel 第 4 行）
+      第7行     平均分
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0081DepartmentPerformanceReviewService">
+
+    <!-- 导出：部门季度绩效考核汇总表 -->
+    <excel name="exportDepartmentPerformanceReview" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="部门季度绩效考核汇总表", HEADER=true,
+                MAPPING={"a":"部门","b":"考核负责人","c":"目标完成分","d":"工作质量分","e":"团队协作分","f":"综合得分","g":"考核等级"},
+                FORMAT={"c":"0.00","d":"0.00","e":"0.00","f":"0.00"},
+                FORMULAS={
+                    F2:'C2*0.5+D2*0.3+E2*0.2',F3:'C3*0.5+D3*0.3+E3*0.2',
+                    F4:'C4*0.5+D4*0.3+E4*0.2',F5:'C5*0.5+D5*0.3+E5*0.2',
+                    F6:'C6*0.5+D6*0.3+E6*0.2',
+                    C7:'AVERAGE(C2:C6)',D7:'AVERAGE(D2:D6)',E7:'AVERAGE(E2:E6)',F7:'AVERAGE(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的部门季度绩效考核汇总表 -->
+    <excel name="importDepartmentPerformanceReview" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="部门季度绩效考核汇总表", HEADER=true,
+                MAPPING={"部门":"department","考核负责人":"reviewer","目标完成分":"goalScore","工作质量分":"qualityScore","团队协作分":"teamScore","综合得分":"totalScore","考核等级":"grade"}
+        ]]>
+    </excel>
+
+</excels>

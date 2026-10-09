@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 69：研发项目绩效考核评分表（绩效考核类，🟢 纯 XML） ==================
+  业务：按研发项目登记「进度达成 / 质量 / 成本控制」三项得分，逐行算加权综合得分
+        （进度 × 0.4 + 质量 × 0.35 + 成本 × 0.25），末尾一行给出平均综合得分；
+        综合得分最低（低于 75 分）的项目标红。
+
+  🟢 标记含义：加权算式与平均全部写在 XML 中 ——
+        FORMULAS 用 C*0.4+D*0.35+E*0.25 求综合得分、AVERAGE 求均分，
+        STYLE 给均分行高亮、给低分项目标红，Java 只负责构造评分数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个项目的评分（第 3 个项目低分，Excel 第 4 行）
+      第7行     平均综合得分
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0069RdProjectPerformanceService">
+
+    <!-- 导出：研发项目绩效考核评分表 -->
+    <excel name="exportRdProjectPerformance" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="研发项目绩效考核评分表", HEADER=true,
+                MAPPING={"a":"项目名称","b":"负责人","c":"进度达成","d":"质量得分","e":"成本控制得分","f":"综合得分","g":"评级"},
+                FORMAT={"c":"#,##0.0","d":"#,##0.0","e":"#,##0.0","f":"#,##0.00"},
+                FORMULAS={
+                    F2:'C2*0.4+D2*0.35+E2*0.25',F3:'C3*0.4+D3*0.35+E3*0.25',
+                    F4:'C4*0.4+D4*0.35+E4*0.25',F5:'C5*0.4+D5*0.35+E5*0.25',
+                    F6:'C6*0.4+D6*0.35+E6*0.25',
+                    F7:'AVERAGE(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的绩效考核评分表 -->
+    <excel name="importRdProjectPerformance" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="研发项目绩效考核评分表", HEADER=true,
+                MAPPING={"项目名称":"projectName","负责人":"owner","进度达成":"scheduleScore","质量得分":"qualityScore","成本控制得分":"costScore","综合得分":"totalScore","评级":"rating"}
+        ]]>
+    </excel>
+
+</excels>

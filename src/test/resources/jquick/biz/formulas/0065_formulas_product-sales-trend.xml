@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 65：产品销售月度趋势表（自助报表类，🟢 纯 XML） ==================
+  业务：按月份登记单一产品的销售数量与单价，逐行算「销售额 = 数量 × 单价」，
+        并逐月算「环比增长率 = (本期销售额 - 上期销售额) / 上期销售额」，末尾一行汇总数量与销售额。
+
+  🟢 标记含义：逐行乘法、环比与合计全部写在 XML 中 ——
+        FORMULAS 用 B*C 求销售额、(Dn-Dm)/Dm 求环比、SUM 求合计，
+        STYLE 给合计行高亮，Java 只负责构造月度趋势数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个月度明细（首月无环比，E2 留空）
+      第7行     数量与销售额合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0065ProductSalesTrendService">
+
+    <!-- 导出：产品销售月度趋势表 -->
+    <excel name="exportProductSalesTrend" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="产品销售月度趋势表", HEADER=true,
+                MAPPING={"a":"月份","b":"销售数量","c":"单价","d":"销售额","e":"环比增长率"},
+                FORMAT={"b":"#,##0","c":"#,##0.00","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    D2:'B2*C2',D3:'B3*C3',D4:'B4*C4',D5:'B5*C5',D6:'B6*C6',
+                    E3:'(D3-D2)/D2',E4:'(D4-D3)/D3',E5:'(D5-D4)/D4',E6:'(D6-D5)/D5',
+                    B7:'SUM(B2:B6)',D7:'SUM(D2:D6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的月度趋势表 -->
+    <excel name="importProductSalesTrend" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="产品销售月度趋势表", HEADER=true,
+                MAPPING={"月份":"month","销售数量":"quantity","单价":"unitPrice","销售额":"salesAmount","环比增长率":"growthRate"}
+        ]]>
+    </excel>
+
+</excels>

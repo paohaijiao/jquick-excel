@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 56：采购入库单（单据套打类，🟢 纯 XML） ====================
+  业务：仓库按采购到货登记入库明细，逐行算「入库金额 = 入库数量 × 采购单价」，
+        末尾一行汇总入库数量与入库金额。
+
+  🟢 标记含义：逐行乘法与合计、样式全部写在 XML 中 ——
+        FORMULAS 用 C*D 求入库金额、SUM 求合计，STYLE 给合计行高亮，
+        Java 只负责构造入库明细数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 条入库明细
+      第7行     入库数量与入库金额合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0056PurchaseInboundService">
+
+    <!-- 导出：采购入库单 -->
+    <excel name="exportPurchaseInbound" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="采购入库单", HEADER=true,
+                MAPPING={"a":"物料编码","b":"物料名称","c":"入库数量","d":"采购单价","e":"入库金额","f":"供应商"},
+                FORMAT={"c":"#,##0","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={
+                    E2:'C2*D2',E3:'C3*D3',E4:'C4*D4',E5:'C5*D5',E6:'C6*D6',
+                    C7:'SUM(C2:C6)',E7:'SUM(E2:E6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的采购入库单 -->
+    <excel name="importPurchaseInbound" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="采购入库单", HEADER=true,
+                MAPPING={"物料编码":"materialCode","物料名称":"materialName","入库数量":"quantity","采购单价":"unitPrice","入库金额":"amount","供应商":"supplier"}
+        ]]>
+    </excel>
+
+</excels>

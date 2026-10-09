@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 29：供应商供货台账（其他拓展类，🟡 Java 预处理） ====================
+  业务：按供应商归集采购供货明细，逐行算「供货金额 = 供货数量 × 单价」，
+        每个供应商后跟一行金额小计，末尾一行合计；供应商名称列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按供应商分组、插入小计 / 合计占位行、确定合并范围」，
+              供货金额与小计由 XML 的 FORMULAS 计算，样式与合并由模板声明。
+
+  Java 侧给出的分组布局：
+      第1行     表头
+      第2..3行   华新电子（2 单）   第4行  华新电子小计
+      第5..7行   恒通材料（3 单）   第8行  恒通材料小计
+      第9..10行  佳美包装（2 单）   第11行 佳美包装小计
+      第12行    合计
+  合并范围由布局推导：华新电子 A2:A3、恒通材料 A5:A7、佳美包装 A9:A10（MERGE_WITH_FIRST 保留首值）。
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0029SupplierDeliveryLedgerService">
+
+    <!-- 导出：供应商供货台账 -->
+    <excel name="exportSupplierDelivery" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="供应商供货台账", HEADER=true,
+                MAPPING={"a":"供应商","b":"采购单号","c":"物料名称","d":"供货数量","e":"单价","f":"供货金额","g":"到货状态"},
+                FORMAT={"d":"#,##0","e":"#,##0.00","f":"#,##0.00"},
+                FORMULAS={
+                    F2:'D2*E2',F3:'D3*E3',
+                    F4:'SUM(F2:F3)',
+                    F5:'D5*E5',F6:'D6*E6',F7:'D7*E7',
+                    F8:'SUM(F5:F7)',
+                    F9:'D9*E9',F10:'D10*E10',
+                    F11:'SUM(F9:F10)',
+                    F12:'F4+F8+F11'
+                },
+                STYLE={
+                    ROW 4:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 11:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 12:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A3 WITH MERGE_WITH_FIRST,
+                    RANGE A5:A7 WITH MERGE_WITH_FIRST,
+                    RANGE A9:A10 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的供应商供货台账 -->
+    <excel name="importSupplierDelivery" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="供应商供货台账", HEADER=true,
+                MAPPING={"供应商":"supplier","采购单号":"poNo","物料名称":"materialName","供货数量":"supplyQty","单价":"unitPrice","供货金额":"supplyAmount","到货状态":"arrivalStatus"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 52：客户拜访记录台账（其他拓展类，🟢 纯 XML） ====================
+  业务：登记销售人员的客户拜访记录，含拜访日期、客户、拜访人、方式、时长、等级与跟进状态；
+        末尾一行汇总拜访总时长，「待跟进」状态的客户标红。
+
+  🟢 标记含义：汇总、样式与标红全部写在 XML 中 ——
+        FORMULAS 用 SUM 求拜访总时长，STYLE 给合计行高亮、给待跟进状态标红，
+        Java 只负责构造拜访记录数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 条拜访记录
+      第8行     拜访总时长
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0052CustomerVisitRecordService">
+
+    <!-- 导出：客户拜访记录台账 -->
+    <excel name="exportCustomerVisitRecord" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户拜访记录台账", HEADER=true,
+                MAPPING={"a":"拜访日期","b":"客户名称","c":"拜访人","d":"拜访方式","e":"拜访时长(h)","f":"客户等级","g":"跟进状态"},
+                FORMAT={"a":"yyyy-MM-dd","e":"#,##0.0"},
+                FORMULAS={
+                    E8:'SUM(E2:E7)'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    G5:{color:red,bold:true},
+                    G7:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的客户拜访记录台账 -->
+    <excel name="importCustomerVisitRecord" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户拜访记录台账", HEADER=true,
+                MAPPING={"拜访日期":"visitDate","客户名称":"customer","拜访人":"visitor","拜访方式":"visitType","拜访时长(h)":"visitHours","客户等级":"customerLevel","跟进状态":"followStatus"}
+        ]]>
+    </excel>
+
+</excels>

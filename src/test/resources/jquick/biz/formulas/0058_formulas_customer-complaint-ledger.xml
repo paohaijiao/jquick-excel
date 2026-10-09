@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 58：客户投诉处理台账（其他拓展类，🟢 纯 XML） ====================
+  业务：登记客户投诉单，含受理日期、处理时限、实际处理天数与是否超期；
+        末尾一行给出平均处理天数，超期投诉的处理天数标红。
+
+  🟢 标记含义：汇总、样式与标红全部写在 XML 中 ——
+        FORMULAS 用 AVERAGE 求平均处理天数，STYLE 给合计行高亮、给超期处理天数标红，
+        Java 只负责构造投诉记录数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 条投诉记录
+      第8行     平均处理天数
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0058CustomerComplaintLedgerService">
+
+    <!-- 导出：客户投诉处理台账 -->
+    <excel name="exportCustomerComplaintLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户投诉处理台账", HEADER=true,
+                MAPPING={"a":"投诉单号","b":"客户","c":"投诉类型","d":"受理日期","e":"处理时限(天)","f":"实际处理天数","g":"是否超期"},
+                FORMAT={"d":"yyyy-MM-dd","e":"0","f":"0.0"},
+                FORMULAS={
+                    F8:'AVERAGE(F2:F7)'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F4:{color:red,bold:true},
+                    F7:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的客户投诉处理台账 -->
+    <excel name="importCustomerComplaintLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户投诉处理台账", HEADER=true,
+                MAPPING={"投诉单号":"complaintNo","客户":"customer","投诉类型":"complaintType","受理日期":"acceptDate","处理时限(天)":"timeLimit","实际处理天数":"actualDays","是否超期":"overdue"}
+        ]]>
+    </excel>
+
+</excels>

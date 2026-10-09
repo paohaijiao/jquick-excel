@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 70：季度销售目标达成对比表（数据对比差异类，🟢 纯 XML） ==================
+  业务：按区域登记季度销售目标与实际销售额，逐行算「目标差额 = 实际 - 目标」与
+        「达成率 = 实际 / 目标」，末尾一行给出全区域汇总；未达标（达成率低于 100%）的区域标红。
+
+  🟢 标记含义：逐行减法、除法与合计全部写在 XML 中 ——
+        FORMULAS 用 C-B 求差额、C/B 求达成率、SUM 求合计，
+        STYLE 给合计行高亮、给未达标区域标红，Java 只负责构造目标与实际数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个区域的达成情况（第 3 个区域未达标，Excel 第 4 行）
+      第7行     全区域汇总
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0070QuarterlySalesAchievementService">
+
+    <!-- 导出：季度销售目标达成对比表 -->
+    <excel name="exportQuarterlySalesAchievement" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="季度销售目标达成对比表", HEADER=true,
+                MAPPING={"a":"区域","b":"季度目标","c":"实际销售","d":"目标差额","e":"达成率","f":"评级"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    D2:'C2-B2',E2:'C2/B2', D3:'C3-B3',E3:'C3/B3',
+                    D4:'C4-B4',E4:'C4/B4', D5:'C5-B5',E5:'C5/B5',
+                    D6:'C6-B6',E6:'C6/B6',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'C7-B7',E7:'C7/B7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的达成对比表 -->
+    <excel name="importQuarterlySalesAchievement" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="季度销售目标达成对比表", HEADER=true,
+                MAPPING={"区域":"region","季度目标":"target","实际销售":"actual","目标差额":"difference","达成率":"achievementRate","评级":"rating"}
+        ]]>
+    </excel>
+
+</excels>

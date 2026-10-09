@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 108：广告投产分析（🟢 纯 XML + SCATTER 散点图） ==================
+  业务：各门店广告投入与销售额，行末算投产比（销售额 / 广告投入），末行汇总；配散点图看投放与产出的关系。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：金额千分位 2 位小数、投产比 2 位小数
+    * FORMULAS：行末投产比 C/B、末行汇总与整体投产比
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * GRAPH   ：散点图（SCATTER），图表数据落在独立的「广告投产散点图」sheet
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0108AdSpendSalesService">
+
+    <!-- 导出：广告投产分析 -->
+    <excel name="exportAdSpendSales" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="广告投产分析", HEADER=true,
+                MAPPING={"a":"门店","b":"广告投入","c":"销售额","d":"投产比"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"0.00"},
+                FORMULAS={
+                    D2:'C2/B2',D3:'C3/B3',D4:'C4/B4',D5:'C5/B5',
+                    B6:'SUM(B2:B5)',C6:'SUM(C2:C5)',D6:'C6/B6'
+                },
+                STYLE={ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=SCATTER, TITLE="广告投产散点图", CATEGORY_AXIS=门店, VALUE_AXIS=销售额,
+                       CATEGORIES=["门店A","门店B","门店C","门店D"],
+                       SERIES=[
+                           {NAME=销售额, DATA=[300000,440000,720000,810000]}
+                       ]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的广告投产分析 -->
+    <excel name="importAdSpendSales" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="广告投产分析", HEADER=true,
+                MAPPING={"门店":"store","广告投入":"adSpend","销售额":"sales","投产比":"roi"}
+        ]]>
+    </excel>
+
+</excels>

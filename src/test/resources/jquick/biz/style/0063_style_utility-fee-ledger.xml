@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 63：物业水电费收缴台账（费用票据类，🟢 纯 XML） ====================
+  业务：按房号登记物业费 / 水费 / 电费应收与已收金额，逐行算「欠缴金额 = 应收 - 已收」，
+        末尾一行汇总应收、已收与欠缴；欠缴户整行金额标红。
+
+  🟢 标记含义：逐行减法与合计全部写在 XML 中 ——
+        FORMULAS 用 D-E 求欠缴金额、SUM 求三项合计，
+        STYLE 给合计行高亮、给欠缴户标红，Java 只负责构造收缴数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 条收缴明细（第 4 条「B-0904 赵敏」为欠缴户）
+      第7行     应收 / 已收 / 欠缴合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0063UtilityFeeLedgerService">
+
+    <!-- 导出：物业水电费收缴台账 -->
+    <excel name="exportUtilityFeeLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="物业水电费收缴台账", HEADER=true,
+                MAPPING={"a":"房号","b":"户主","c":"费用类型","d":"应收金额","e":"已收金额","f":"欠缴金额","g":"缴费状态","h":"缴费日期"},
+                FORMAT={"d":"#,##0.00","e":"#,##0.00","f":"#,##0.00","h":"yyyy-MM-dd"},
+                FORMULAS={
+                    F2:'D2-E2',F3:'D3-E3',F4:'D4-E4',F5:'D5-E5',F6:'D6-E6',
+                    D7:'SUM(D2:D6)',E7:'SUM(E2:E6)',F7:'SUM(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F5:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的收缴台账 -->
+    <excel name="importUtilityFeeLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="物业水电费收缴台账", HEADER=true,
+                MAPPING={"房号":"roomNo","户主":"owner","费用类型":"feeType","应收金额":"receivable","已收金额":"received","欠缴金额":"unpaid","缴费状态":"payStatus","缴费日期":"payDate"}
+        ]]>
+    </excel>
+
+</excels>

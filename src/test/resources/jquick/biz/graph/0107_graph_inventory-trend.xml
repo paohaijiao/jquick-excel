@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 107：库存量趋势（🟢 纯 XML + AREA3D 三维面积图） ==================
+  业务：按月登记期初 / 入库 / 出库，滚动计算期末（期末 = 期初 + 入库 - 出库），末行汇总；配三维面积图看趋势。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：数量千分位整数
+    * FORMULAS：行内期末滚动计算、末行入库 / 出库汇总（期末取最后一行）
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * GRAPH   ：三维面积图（AREA3D），图表数据落在独立的「库存量趋势图」sheet
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0107InventoryTrendService">
+
+    <!-- 导出：库存量趋势 -->
+    <excel name="exportInventoryTrend" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="库存量趋势", HEADER=true,
+                MAPPING={"a":"月份","b":"期初","c":"入库","d":"出库","e":"期末"},
+                FORMAT={"b":"#,##0","c":"#,##0","d":"#,##0","e":"#,##0"},
+                FORMULAS={
+                    E2:'B2+C2-D2',E3:'E2+C3-D3',E4:'E3+C4-D4',E5:'E4+C5-D5',
+                    C6:'SUM(C2:C5)',D6:'SUM(D2:D5)',E6:'E5'
+                },
+                STYLE={ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=AREA3D, TITLE="库存量趋势图", CATEGORY_AXIS=月份, VALUE_AXIS=库存,
+                       CATEGORIES=["1月","2月","3月","4月"],
+                       SERIES=[
+                           {NAME=期末, DATA=[4800,5200,4600,5100]}
+                       ]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的库存量趋势 -->
+    <excel name="importInventoryTrend" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="库存量趋势", HEADER=true,
+                MAPPING={"月份":"month","期初":"opening","入库":"inbound","出库":"outbound","期末":"closing"}
+        ]]>
+    </excel>
+
+</excels>

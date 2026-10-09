@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 106：部门费用对比（🟢 纯 XML + BAR3D 三维条形图） ==================
+  业务：各部门预算与实际费用对照，行末算差异（实际 - 预算），末行汇总；配三维条形图对比预实。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：金额千分位 2 位小数
+    * FORMULAS：行末差异 C-B、末行预实汇总与差异
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * GRAPH   ：三维条形图（BAR3D），图表数据落在独立的「部门费用对比图」sheet
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0106DepartmentCostCompareService">
+
+    <!-- 导出：部门费用对比 -->
+    <excel name="exportDepartmentCostCompare" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="部门费用对比", HEADER=true,
+                MAPPING={"a":"部门","b":"预算","c":"实际","d":"差异"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00"},
+                FORMULAS={
+                    D2:'C2-B2',D3:'C3-B3',D4:'C4-B4',D5:'C5-B5',
+                    B6:'SUM(B2:B5)',C6:'SUM(C2:C5)',D6:'C6-B6'
+                },
+                STYLE={ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=BAR3D, TITLE="部门费用对比图", CATEGORY_AXIS=部门, VALUE_AXIS=金额,
+                       CATEGORIES=["销售部","研发部","客服部","运营部"],
+                       SERIES=[
+                           {NAME=预算, DATA=[120000,180000,90000,150000]},
+                           {NAME=实际, DATA=[135000,165000,105000,142000]}
+                       ]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的部门费用对比 -->
+    <excel name="importDepartmentCostCompare" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="部门费用对比", HEADER=true,
+                MAPPING={"部门":"department","预算":"budget","实际":"actual","差异":"variance"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 53：招标比价定标记录（数据对比差异类，🟢 纯 XML） ====================
+  业务：多家投标单位比价，按「技术得分 × 70% + 业绩得分 × 30%」算综合评分，
+        末尾一行给出平均报价与平均综合评分；报价最高的投标单位标红。
+
+  🟢 标记含义：综合评分、汇总、样式与标红全部写在 XML 中 ——
+        FORMULAS 用带权重算式求综合评分、AVERAGE 求两列均值，
+        STYLE 给均值行高亮、给最高报价标红，Java 只负责构造投标数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 家投标单位
+      第7行     平均报价与平均综合评分
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0053BidComparisonRecordService">
+
+    <!-- 导出：招标比价定标记录 -->
+    <excel name="exportBidComparisonRecord" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="招标比价定标记录", HEADER=true,
+                MAPPING={"a":"投标单位","b":"商务报价","c":"技术得分","d":"业绩得分","e":"综合评分","f":"定标结果"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.0","d":"#,##0.0","e":"#,##0.00"},
+                FORMULAS={
+                    E2:'C2*0.7+D2*0.3',E3:'C3*0.7+D3*0.3',E4:'C4*0.7+D4*0.3',
+                    E5:'C5*0.7+D5*0.3',E6:'C6*0.7+D6*0.3',
+                    B7:'AVERAGE(B2:B6)',E7:'AVERAGE(E2:E6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    B4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的招标比价定标记录 -->
+    <excel name="importBidComparisonRecord" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="招标比价定标记录", HEADER=true,
+                MAPPING={"投标单位":"bidder","商务报价":"quote","技术得分":"techScore","业绩得分":"perfScore","综合评分":"totalScore","定标结果":"result"}
+        ]]>
+    </excel>
+
+</excels>

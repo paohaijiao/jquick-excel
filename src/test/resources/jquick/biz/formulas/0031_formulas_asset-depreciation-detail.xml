@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 31：固定资产折旧明细表（台账汇总类，🟢 纯 XML） ====================
+  业务：按直线法计算固定资产年折旧额与月折旧额，逐行算
+        「年折旧额 = 原值 × (1 - 残值率) / 使用年限」与「月折旧额 = 年折旧额 / 12」，
+        末尾一行汇总原值、年折旧与月折旧。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：金额千分位两位小数，残值率百分比
+    FORMULAS：逐行带括号的乘除复合算式；合计行 SUM 汇总
+    STYLE   ：合计行加粗 + 浅黄高亮
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..7行 6 项固定资产（年 / 月折旧额留空由 FORMULAS 计算）
+      第8行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0031AssetDepreciationDetailService">
+
+    <!-- 导出：固定资产折旧明细表 -->
+    <excel name="exportAssetDepreciation" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="固定资产折旧明细表", HEADER=true,
+                MAPPING={"a":"资产编号","b":"资产名称","c":"原值","d":"残值率","e":"使用年限","f":"年折旧额","g":"月折旧额"},
+                FORMAT={"c":"#,##0.00","d":"0%","e":"0","f":"#,##0.00","g":"#,##0.00"},
+                FORMULAS={
+                    F2:'C2*(1-D2)/E2',G2:'F2/12',
+                    F3:'C3*(1-D3)/E3',G3:'F3/12',
+                    F4:'C4*(1-D4)/E4',G4:'F4/12',
+                    F5:'C5*(1-D5)/E5',G5:'F5/12',
+                    F6:'C6*(1-D6)/E6',G6:'F6/12',
+                    F7:'C7*(1-D7)/E7',G7:'F7/12',
+                    C8:'SUM(C2:C7)',F8:'SUM(F2:F7)',G8:'SUM(G2:G7)'
+                },
+                STYLE={ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的固定资产折旧明细表 -->
+    <excel name="importAssetDepreciation" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="固定资产折旧明细表", HEADER=true,
+                MAPPING={"资产编号":"assetNo","资产名称":"assetName","原值":"originalValue","残值率":"residualRate","使用年限":"usefulLife","年折旧额":"annualDepreciation","月折旧额":"monthlyDepreciation"}
+        ]]>
+    </excel>
+
+</excels>

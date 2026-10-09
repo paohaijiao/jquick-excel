@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ============================ 场景 1：销售日报 / 周报 / 月报（🟢 纯 XML） ============================
+  业务：某日/某周的销售明细，逐行「数量 × 单价 = 金额」，末尾一行「合计」。
+
+  本场景全部统计逻辑写在 XML（🟢 无 Java 聚合计算）：
+    * FORMAT  ：金额千分位保留 2 位、日期 yyyy-MM-dd、数量取整
+    * FORMULAS：逐行金额 = 数量*单价（自定义表达式）；合计行用 SUM 汇总
+    * STYLE   ：合计行加粗 + 浅黄高亮
+  表头样式（深蓝底 + 白色粗体 + 全边框）与隔行浅灰斑马纹由框架默认数据/表头样式提供，
+  无需额外配置；Java 只负责构造模拟数据。
+
+  说明：合计行以「模拟数据行 + 合计文字」占位，其数值列由 FORMULAS 计算，
+        因此统计口径仍完全由模板决定。
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0001SalesDailyReportService">
+
+    <!-- 导出：销售日报 -->
+    <excel name="exportSalesDailyReport" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="销售日报", HEADER=true,
+                MAPPING={"a":"日期","b":"商品","c":"数量","d":"单价","e":"金额"},
+                FORMAT={"a":"yyyy-MM-dd","c":"0","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={E2:'C2*D2',E3:'C3*D3',E4:'C4*D4',C5:'SUM(C2:C4)',E5:'SUM(E2:E4)'},
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的 Excel，按表头映射回字段 -->
+    <excel name="importSalesDailyReport" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="销售日报", HEADER=true,
+                MAPPING={"日期":"date","商品":"product","数量":"qty","单价":"price","金额":"amount"}
+        ]]>
+    </excel>
+
+</excels>

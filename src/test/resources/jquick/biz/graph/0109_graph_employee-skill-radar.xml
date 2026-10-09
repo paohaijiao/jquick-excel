@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 109：员工能力评估（🟢 纯 XML + RADAR 雷达图） ==================
+  业务：三位员工在技术 / 沟通 / 协作 / 执行四个维度的评分，末行算各人平均分；配雷达图看能力画像。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：评分 2 位小数
+    * FORMULAS：末行 AVERAGE 计算各人平均分
+    * STYLE   ：平均行加粗 + 浅黄高亮
+    * GRAPH   ：雷达图（RADAR），图表数据落在独立的「员工能力雷达图」sheet
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0109EmployeeSkillRadarService">
+
+    <!-- 导出：员工能力评估 -->
+    <excel name="exportEmployeeSkillRadar" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工能力评估", HEADER=true,
+                MAPPING={"a":"维度","b":"张三","c":"李四","d":"王五"},
+                FORMAT={"b":"0.00","c":"0.00","d":"0.00"},
+                FORMULAS={
+                    B6:'AVERAGE(B2:B5)',C6:'AVERAGE(C2:C5)',D6:'AVERAGE(D2:D5)'
+                },
+                STYLE={ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=RADAR, TITLE="员工能力雷达图", CATEGORY_AXIS=维度, VALUE_AXIS=分数,
+                       CATEGORIES=["技术","沟通","协作","执行"],
+                       SERIES=[
+                           {NAME=张三, DATA=[85,70,90,80]},
+                           {NAME=李四, DATA=[75,90,80,85]},
+                           {NAME=王五, DATA=[90,80,85,88]}
+                       ]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的员工能力评估 -->
+    <excel name="importEmployeeSkillRadar" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工能力评估", HEADER=true,
+                MAPPING={"维度":"dimension","张三":"zhangsan","李四":"lisi","王五":"wangwu"}
+        ]]>
+    </excel>
+
+</excels>

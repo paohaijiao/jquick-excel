@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 23：票据登记台账（费用票据类，🟢 纯 XML） ====================
+  业务：企业持有的应收 / 应付票据登记，逐行算「票据期限 = 到期日期 - 出票日期」天，末尾一行汇总票面金额。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：出票 / 到期日期 yyyy-MM-dd，票面金额千分位两位小数，期限取整
+    FORMULAS：日期单元格直接相减得天数；合计行 SUM 汇总票面金额
+    STYLE   ：合计行加粗 + 浅黄高亮
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..6行 5 张票据（期限留空由 FORMULAS 计算）
+      第7行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0023BillRegisterLedgerService">
+
+    <!-- 导出：票据登记台账 -->
+    <excel name="exportBillRegister" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="票据登记台账", HEADER=true,
+                MAPPING={"a":"票据号码","b":"出票日期","c":"到期日期","d":"票面金额","e":"票据期限(天)","f":"票据类型"},
+                FORMAT={"b":"yyyy-MM-dd","c":"yyyy-MM-dd","d":"#,##0.00","e":"0"},
+                FORMULAS={
+                    E2:'C2-B2',E3:'C3-B3',E4:'C4-B4',E5:'C5-B5',E6:'C6-B6',
+                    D7:'SUM(D2:D6)'
+                },
+                STYLE={ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的票据登记台账 -->
+    <excel name="importBillRegister" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="票据登记台账", HEADER=true,
+                MAPPING={"票据号码":"billNo","出票日期":"issueDate","到期日期":"dueDate","票面金额":"faceValue","票据期限(天)":"termDays","票据类型":"billType"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 90：销售退货分析表（其他拓展类，🟢 纯 XML） ====================
+  业务：按产品登记销售数量与退货数量，逐行算「退货金额 = 退货数量 × 单价」
+        「退货率 = 退货数量 / 销售数量」，末尾一行汇总销量、退货量与退货金额；
+        退货率最高的产品标红。
+
+  🟢 标记含义：逐行金额 / 退货率与合计全部写在 XML 中 ——
+        FORMULAS 用 C*D 求退货金额、C/B 求退货率、SUM 求各列合计、C8/B8 求整体退货率，
+        STYLE 给合计行高亮、给退货率最高的产品标红，Java 只负责构造数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 款产品的退货明细（第 3 款 C型水泵退货率最高，Excel 第 4 行）
+      第8行     各列合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0090SalesReturnAnalysisService">
+
+    <!-- 导出：销售退货分析表 -->
+    <excel name="exportSalesReturnAnalysis" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="销售退货分析表", HEADER=true,
+                MAPPING={"a":"产品名称","b":"销售数量","c":"退货数量","d":"单价","e":"退货金额","f":"退货率","g":"处理方式"},
+                FORMAT={"b":"#,##0","c":"#,##0","d":"#,##0.00","e":"#,##0.00","f":"0.00%"},
+                FORMULAS={
+                    E2:'C2*D2',F2:'C2/B2', E3:'C3*D3',F3:'C3/B3', E4:'C4*D4',F4:'C4/B4',
+                    E5:'C5*D5',F5:'C5/B5', E6:'C6*D6',F6:'C6/B6', E7:'C7*D7',F7:'C7/B7',
+                    B8:'SUM(B2:B7)',C8:'SUM(C2:C7)',E8:'SUM(E2:E7)',F8:'C8/B8'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的销售退货分析表 -->
+    <excel name="importSalesReturnAnalysis" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="销售退货分析表", HEADER=true,
+                MAPPING={"产品名称":"productName","销售数量":"salesQuantity","退货数量":"returnQuantity","单价":"unitPrice","退货金额":"returnAmount","退货率":"returnRate","处理方式":"handleType"}
+        ]]>
+    </excel>
+
+</excels>

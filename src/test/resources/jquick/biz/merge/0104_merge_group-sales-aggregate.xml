@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 104：分组销售聚合（大区切片 + 季度矩阵，🟡 Java 预处理） ====================
+  业务：按大区切片列出各门店一至四季度销售额，大区名称列纵向合并成一个区块，
+        视觉上把同区门店归为一个分组；四个季度列以千分位整数展示。
+
+  🟡 标记含义：Java 只负责「按大区排序分组、确定合并范围」，
+              数值格式化与纵向合并均由模板声明，无任何 Java 侧聚合计算。
+
+  Java 侧给出的行布局（6 条明细，无小计 / 合计行）：
+      第1行   表头
+      第2..3行 华东（上海店 / 杭州店）
+      第4..5行 华南（广州店 / 深圳店）
+      第6..7行 华北（北京店 / 天津店）
+  合并范围由布局推导：华东 A2:A3、华南 A4:A5、华北 A6:A7（MERGE_WITH_FIRST 保留首值）。
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0104GroupSalesAggregateService">
+
+    <!-- 导出：分组销售聚合（大区 / 门店 / 四个季度） -->
+    <excel name="exportGroupSalesAggregate" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="分组销售聚合", HEADER=true,
+                MAPPING={"a":"大区","b":"门店","c":"一季度","d":"二季度","e":"三季度","f":"四季度"},
+                FORMAT={"c":"#,##0","d":"#,##0","e":"#,##0","f":"#,##0"},
+                STYLE={
+                    ROW 1:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:center,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A3 WITH MERGE_WITH_FIRST,
+                    RANGE A4:A5 WITH MERGE_WITH_FIRST,
+                    RANGE A6:A7 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的分组销售聚合 -->
+    <excel name="importGroupSalesAggregate" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="分组销售聚合", HEADER=true,
+                MAPPING={"大区":"region","门店":"store","一季度":"q1","二季度":"q2","三季度":"q3","四季度":"q4"}
+        ]]>
+    </excel>
+
+</excels>

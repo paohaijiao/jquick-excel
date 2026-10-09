@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 28：库存库龄分析表（库存盘点类，🟢 纯 XML） ====================
+  业务：把库存按库龄区间分层，统计各区间物料种类数、库存金额与金额占比，末尾一行汇总；
+        库龄最长的区间单元格标红，提示呆滞库存风险。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：种类数取整，库存金额千分位两位小数，占比百分比两位小数
+    FORMULAS：逐行占比 = 本区间金额 / 库存金额合计；合计行 SUM 汇总，占比合计为 1
+    STYLE   ：合计行加粗高亮；呆滞区间（180 天以上）单元格 font color:red + bold
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..5行 四个库龄区间（第 5 行 180 天以上为呆滞，C5 / D5 标红）
+      第6行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0028InventoryAgingAnalysisService">
+
+    <!-- 导出：库存库龄分析表 -->
+    <excel name="exportInventoryAging" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="库存库龄分析表", HEADER=true,
+                MAPPING={"a":"库龄区间","b":"物料种类数","c":"库存金额","d":"金额占比","e":"风险等级"},
+                FORMAT={"b":"0","c":"#,##0.00","d":"0.00%"},
+                FORMULAS={
+                    D2:'C2/C6',D3:'C3/C6',D4:'C4/C6',D5:'C5/C6',
+                    B6:'SUM(B2:B5)',C6:'SUM(C2:C5)',D6:'SUM(D2:D5)'
+                },
+                STYLE={
+                    ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    C5:{color:red,bold:true},
+                    D5:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的库存库龄分析表 -->
+    <excel name="importInventoryAging" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="库存库龄分析表", HEADER=true,
+                MAPPING={"库龄区间":"agingBucket","物料种类数":"skuCount","库存金额":"stockAmount","金额占比":"amountRatio","风险等级":"riskLevel"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 87：生产排产计划表（计划排期类，🟢 纯 XML） ====================
+  业务：逐产线登记计划产量与日产能，算「需求天数 = 计划产量 / 日产能」「计划投入工时 = 需求天数 × 8」，
+        末尾一行汇总计划产量与投入工时；排期最长的产品标红。
+
+  🟢 标记含义：逐行需求天数、投入工时与合计全部写在 XML 中 ——
+        FORMULAS 用 C/D 求需求天数、E*8 求投入工时、SUM 求合计，
+        STYLE 给合计行高亮、给排期最长的产品标红，Java 只负责构造排产数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个排产任务（第 3 个「二号线 C产品」排期最长，Excel 第 4 行）
+      第7行     合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0087ProductionSchedulingPlanService">
+
+    <!-- 导出：生产排产计划表 -->
+    <excel name="exportProductionSchedulingPlan" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="生产排产计划表", HEADER=true,
+                MAPPING={"a":"产线","b":"产品名称","c":"计划产量","d":"日产能","e":"需求天数","f":"计划投入工时","g":"排产状态"},
+                FORMAT={"c":"#,##0","d":"#,##0","e":"0.0","f":"#,##0"},
+                FORMULAS={
+                    E2:'C2/D2',F2:'E2*8',E3:'C3/D3',F3:'E3*8',E4:'C4/D4',F4:'E4*8',
+                    E5:'C5/D5',F5:'E5*8',E6:'C6/D6',F6:'E6*8',
+                    C7:'SUM(C2:C6)',E7:'SUM(E2:E6)',F7:'SUM(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的生产排产计划表 -->
+    <excel name="importProductionSchedulingPlan" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="生产排产计划表", HEADER=true,
+                MAPPING={"产线":"productionLine","产品名称":"productName","计划产量":"plannedOutput","日产能":"dailyCapacity","需求天数":"requiredDays","计划投入工时":"plannedHours","排产状态":"scheduleStatus"}
+        ]]>
+    </excel>
+
+</excels>

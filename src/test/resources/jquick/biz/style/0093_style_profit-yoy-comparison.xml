@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 93：利润同比对比分析表（数据对比差异类，🟢 纯 XML） ====================
+  业务：按利润表项目登记本期与上期金额，逐行算「同比增长额 = 本期 - 上期」
+        「同比增长率 = 同比增长额 / 上期金额」，末尾一行汇总两期金额并给出整体增长；
+        增长率最低的费用项目标红。
+
+  🟢 标记含义：逐行差额 / 增长率与合计全部写在 XML 中 ——
+        FORMULAS 用 B-C 求增长额、(B-C)/C 求增长率、SUM 求两期合计、B7-C7 与 D7/C7 求整体口径，
+        STYLE 给合计行高亮、给增长率最低项标红，Java 只负责构造数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个利润表项目（第 5 项财务费用增长率为负，Excel 第 6 行）
+      第7行     两期合计与整体增长
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0093ProfitYoyComparisonService">
+
+    <!-- 导出：利润同比对比分析表 -->
+    <excel name="exportProfitYoyComparison" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="利润同比对比分析表", HEADER=true,
+                MAPPING={"a":"项目","b":"本期金额","c":"上期金额","d":"同比增长额","e":"同比增长率"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    D2:'B2-C2',E2:'D2/C2', D3:'B3-C3',E3:'D3/C3', D4:'B4-C4',E4:'D4/C4',
+                    D5:'B5-C5',E5:'D5/C5', D6:'B6-C6',E6:'D6/C6',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'B7-C7',E7:'D7/C7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E6:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的利润同比对比分析表 -->
+    <excel name="importProfitYoyComparison" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="利润同比对比分析表", HEADER=true,
+                MAPPING={"项目":"itemName","本期金额":"currentAmount","上期金额":"previousAmount","同比增长额":"growthAmount","同比增长率":"growthRate"}
+        ]]>
+    </excel>
+
+</excels>

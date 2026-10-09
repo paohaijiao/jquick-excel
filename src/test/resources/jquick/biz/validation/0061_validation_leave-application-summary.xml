@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 61：员工请假申请汇总表（数据校验填报类，🟢 纯 XML + 导入校验） ====================
+  业务：汇总各员工的请假申请（工号 / 姓名 / 部门 / 请假类型 / 起止日期 / 请假天数 / 审批状态），
+        末尾一行汇总请假总天数；导入时对填报内容做规则校验。
+
+  导出侧（🟢）：请假总天数由 FORMULAS 的 SUM 完成，合计行高亮由 STYLE 完成。
+  导入侧（VALIDATION）：工号长度、姓名长度、部门 / 请假类型字典、请假天数数值范围。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 条请假申请
+      第8行     请假总天数
+-->
+<excels namespace="com.github.paohaijiao.biz.validation.Validation0061LeaveApplicationSummaryService">
+
+    <!-- 导出：员工请假申请汇总表 -->
+    <excel name="exportLeaveApplicationSummary" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工请假申请汇总表", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"部门","d":"请假类型","e":"开始日期","f":"结束日期","g":"请假天数","h":"审批状态"},
+                FORMAT={"e":"yyyy-MM-dd","f":"yyyy-MM-dd","g":"0"},
+                FORMULAS={
+                    G8:'SUM(G2:G7)'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取填报的请假申请并逐项校验（校验不通过时抛出异常，异常信息即规则 msg） -->
+    <excel name="importLeaveApplicationSummary" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工请假申请汇总表", HEADER=true,
+                MAPPING={"工号":"employeeNo","姓名":"name","部门":"department","请假类型":"leaveType","开始日期":"startDate","结束日期":"endDate","请假天数":"leaveDays","审批状态":"approvalStatus"},
+                VALIDATION={
+                    A2:A7:{min_length{required:true,msg:'工号至少4位',map:{minLength:4}}},
+                    B2:B7:{min_length{required:true,msg:'姓名至少2个字',map:{minLength:2}}},
+                    C2:C7:{dict{required:true,msg:'部门必须在字典内',map:{'研发部':'研发部','市场部':'市场部','生产部':'生产部','财务部':'财务部'}}},
+                    D2:D7:{dict{required:true,msg:'请假类型必须在字典内',map:{'年假':'年假','事假':'事假','病假':'病假','调休':'调休'}}},
+                    G2:G7:{integer{required:true,msg:'请假天数必须是整数'}},
+                    G2:G7:{min_value{required:true,msg:'请假天数不能小于1',map:{minValue:1}}},
+                    G2:G7:{max_value{required:true,msg:'请假天数不能超过30',map:{maxValue:30}}}
+                }
+        ]]>
+    </excel>
+
+</excels>

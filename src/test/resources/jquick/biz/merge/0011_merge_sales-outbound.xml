@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 11：销售出库单套打（🟢 纯 XML） ==================
+  业务：一张出库单下列多行商品明细，「数量 × 单价 = 金额」，末尾一行合计；
+        合计行的「合计」标签横向合并前两列，右侧给出数量合计与金额合计。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：数量取整、单价 / 金额千分位 2 位小数
+    * FORMULAS：逐行金额 = 数量*单价；合计行 SUM 汇总数量与金额
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * MERGE   ：合计行 A5:B5 横向合并（注意 MERGE 后是冒号 ':'）
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0011SalesOutboundService">
+
+    <!-- 导出：销售出库单套打 -->
+    <excel name="exportSalesOutbound" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="销售出库单", HEADER=true,
+                MAPPING={"a":"出库单号","b":"商品","c":"数量","d":"单价","e":"金额"},
+                FORMAT={"c":"0","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={E2:'C2*D2',E3:'C3*D3',E4:'C4*D4',C5:'SUM(C2:C4)',E5:'SUM(E2:E4)'},
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                MERGE:{RANGE A5:B5 WITH MERGE_WITH_FIRST}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的销售出库单 -->
+    <excel name="importSalesOutbound" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="销售出库单", HEADER=true,
+                MAPPING={"出库单号":"orderNo","商品":"goods","数量":"qty","单价":"price","金额":"amount"}
+        ]]>
+    </excel>
+
+</excels>

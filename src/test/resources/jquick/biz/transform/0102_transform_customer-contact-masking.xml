@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 102：客户联系人脱敏台账（🟢 纯 XML + TRANSFORM SPI 函数） ==================
+  业务：客户台账导出时对联系人姓名脱敏（保留首字），客户等级按字典由编码转 v1/v2/v3。
+
+  本场景转换逻辑全部写在 XML（🟢 无 Java 计算）：
+    * TRANSFORM：联系人走自定义 SPI 函数 maskname（张三 -> 张*），客户等级走 trans(${dict}, ...)
+    * FORMAT   ：年金额千分位 2 位小数、签约日期 yyyy-MM-dd
+    * 导入侧   ：按表头直接映射（脱敏与等级转义已在导出阶段完成）
+
+  maskname 由 src/test/resources/META-INF/services 下注册的自定义 Provider 提供。
+-->
+<excels namespace="com.github.paohaijiao.biz.transform.Transform0102CustomerContactMaskingService">
+
+    <!-- 导出：联系人脱敏 + 客户等级码值转义 -->
+    <excel name="exportCustomerContactMasking" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户联系人脱敏台账", HEADER=true,
+                MAPPING={"a":"客户编码","b":"客户名称","c":"联系人","d":"电话","e":"客户等级","f":"年金额","g":"签约日期"},
+                FORMAT={"f":"#,##0.00","g":"yyyy-MM-dd"},
+                TRANSFORM={"c":maskname(${c}),"e":trans(${dict},${e})}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取脱敏后的客户台账 -->
+    <excel name="importCustomerContactMasking" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户联系人脱敏台账", HEADER=true,
+                MAPPING={"客户编码":"customerNo","客户名称":"customerName","联系人":"contact","电话":"phone","客户等级":"level","年金额":"annualAmount","签约日期":"signDate"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 10：采购订单套打（🟢 纯 XML） ==================
+  业务：采购订单明细，「数量 × 单价 = 金额」，再按税率算「含税金额」，末尾一行合计，
+        单据底部一行制单 / 审核签字说明（由 FOOTER 生成）。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：数量取整、金额 / 含税金额千分位 2 位小数、税率百分比 0.00%
+    * FORMULAS：逐行金额 = 数量*单价；含税金额 = 金额*(1+税率)；合计行 SUM 汇总
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * FOOTER  ：单据底部签字说明（固定文本，框架会写到「最后一行」）
+
+  ⚠ FOOTER 的落点约定：框架把 FOOTER 文本写到数据区最后一行（覆盖该行），
+    因此数据里必须预留一行「尾部占位行」承接页脚，否则会覆盖掉合计行。
+    本场景的 Java 数据即在合计行之后追加了一行全空占位行。
+-->
+<excels namespace="com.github.paohaijiao.biz.footer.Footer0010PurchaseOrderService">
+
+    <!-- 导出：采购订单套打 -->
+    <excel name="exportPurchaseOrder" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="采购订单", HEADER=true,
+                MAPPING={"a":"物料编码","b":"物料名称","c":"数量","d":"单价","e":"金额","f":"税率","g":"含税金额"},
+                FORMAT={"c":"0","d":"#,##0.00","e":"#,##0.00","f":"0.00%","g":"#,##0.00"},
+                FORMULAS={
+                    E2:'C2*D2',G2:'E2*(1+F2)',
+                    E3:'C3*D3',G3:'E3*(1+F3)',
+                    E4:'C4*D4',G4:'E4*(1+F4)',
+                    C5:'SUM(C2:C4)',E5:'SUM(E2:E4)',G5:'SUM(G2:G4)'
+                },
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                FOOTER="制单人：__________    审核人：__________    日期：__________"
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的采购订单（最后一行是 FOOTER 签字说明） -->
+    <excel name="importPurchaseOrder" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="采购订单", HEADER=true,
+                MAPPING={"物料编码":"code","物料名称":"name","数量":"qty","单价":"price","金额":"amount","税率":"taxRate","含税金额":"amountWithTax"}
+        ]]>
+    </excel>
+
+</excels>

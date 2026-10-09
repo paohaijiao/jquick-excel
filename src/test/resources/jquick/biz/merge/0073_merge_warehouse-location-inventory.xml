@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 73：仓库库位库存明细表（库存盘点类，🟡 少量 Java 预处理） ==================
+  业务：按仓库归集各库位的库存数量与单位成本，逐行算「库存金额 = 数量 × 单位成本」，
+        每个仓库后跟一行小计，末尾一行给出全部仓库合计；仓库名称列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按仓库分组、插入小计 / 合计占位行、确定合并范围」，
+        逐行金额与小计 / 合计由 XML 的 FORMULAS 计算，样式与 MERGE 合并范围由模板声明。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..4行  一号仓 3 个库位 → 第5行小计
+      第6..7行  二号仓 2 个库位 → 第8行小计
+      第9行     全部仓库合计
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0073WarehouseLocationInventoryService">
+
+    <!-- 导出：仓库库位库存明细表 -->
+    <excel name="exportWarehouseLocationInventory" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="仓库库位库存明细表", HEADER=true,
+                MAPPING={"a":"仓库","b":"库位","c":"物料名称","d":"库存数量","e":"单位成本","f":"库存金额"},
+                FORMAT={"d":"#,##0","e":"#,##0.00","f":"#,##0.00"},
+                FORMULAS={
+                    F2:'D2*E2',F3:'D3*E3',F4:'D4*E4',
+                    D5:'SUM(D2:D4)',F5:'SUM(F2:F4)',
+                    F6:'D6*E6',F7:'D7*E7',
+                    D8:'SUM(D6:D7)',F8:'SUM(F6:F7)',
+                    D9:'D5+D8',F9:'F5+F8'
+                },
+                STYLE={
+                    ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 9:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A4 WITH MERGE_WITH_FIRST,
+                    RANGE A6:A7 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的库存明细表 -->
+    <excel name="importWarehouseLocationInventory" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="仓库库位库存明细表", HEADER=true,
+                MAPPING={"仓库":"warehouse","库位":"location","物料名称":"materialName","库存数量":"stockQty","单位成本":"unitCost","库存金额":"stockAmount"}
+        ]]>
+    </excel>
+
+</excels>

@@ -133,7 +133,11 @@ public class JMergeUtil {
         } else {
             cell.setCellValue(object.toString());
         }
-        cell.setCellStyle(JCellStyleCache.getMergeCenterStyle(sheet.getWorkbook()));
+        // 保留单元格原有样式（加粗/填充/边框等），仅叠加合并区首格所需的居中，避免合并冲掉模板里已声明的样式
+        CellStyle mergedStyle = JCellStyleCache.cloneStyle(workbook, cell.getCellStyle());
+        mergedStyle.setAlignment(HorizontalAlignment.CENTER);
+        mergedStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cell.setCellStyle(mergedStyle);
     }
 
     public List<List<Object>> getRangeValues(Sheet sheet, CellRangeAddress range) {

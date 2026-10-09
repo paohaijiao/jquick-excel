@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 19：预算与实际差异分析（数据对比差异类，🟢 纯 XML） ====================
+  业务：按费用科目对比预算与实际，逐行算「差异 = 实际 - 预算」与「差异率 = 差异 / 预算」，
+        末尾一行合计；结论为「超支」的科目结论单元格标红提示。
+
+  🟢 全部统计与样式在 XML：
+    FORMAT  ：金额千分位两位小数，差异率两位小数百分比
+    FORMULAS：逐行差异（相减）、差异率（相除）；合计行用 SUM 汇总预算与实际，差异与差异率引用合计单元格
+    STYLE   ：合计行加粗浅黄高亮；超支科目（市场推广 / 差旅费用 / 招待费用）结论单元格标红加粗
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0019BudgetVarianceService">
+
+    <!-- 导出：预算与实际差异分析 -->
+    <excel name="exportBudgetVariance" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="预算实际差异分析", HEADER=true,
+                MAPPING={"a":"费用科目","b":"预算金额","c":"实际金额","d":"差异","e":"差异率","f":"结论"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    D2:'C2-B2',D3:'C3-B3',D4:'C4-B4',D5:'C5-B5',D6:'C6-B6',D7:'C7-B7',
+                    E2:'D2/B2',E3:'D3/B3',E4:'D4/B4',E5:'D5/B5',E6:'D6/B6',E7:'D7/B7',
+                    B8:'SUM(B2:B7)',C8:'SUM(C2:C7)',D8:'C8-B8',E8:'D8/B8'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F3:{color:red,bold:true},
+                    F5:{color:red,bold:true},
+                    F7:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的预算与实际差异分析 -->
+    <excel name="importBudgetVariance" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="预算实际差异分析", HEADER=true,
+                MAPPING={"费用科目":"subject","预算金额":"budget","实际金额":"actual","差异":"variance","差异率":"varianceRate","结论":"conclusion"}
+        ]]>
+    </excel>
+
+</excels>

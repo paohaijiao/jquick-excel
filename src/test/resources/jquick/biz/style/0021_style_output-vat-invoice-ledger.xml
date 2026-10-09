@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 21：销项发票台账（费用票据类，🟢 纯 XML） ====================
+  业务：对外开具的销项增值税发票登记，逐行算「税额 = 不含税金额 × 税率」与「价税合计 = 不含税金额 + 税额」，
+        末尾一行汇总；作废发票的开票状态单元格标红，提示不可计入当期销项。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：开票日期 yyyy-MM-dd，金额千分位两位小数，税率百分比
+    FORMULAS：逐行乘法（税额）与加法（价税合计）；合计行 SUM 汇总
+    STYLE   ：合计行加粗高亮；异常开票状态单元格 font color:red + bold
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..6行 5 张销项发票（第 6 行「东尚科技」作废，H6 标红）
+      第7行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0021OutputVatInvoiceLedgerService">
+
+    <!-- 导出：销项发票台账 -->
+    <excel name="exportOutputVatInvoice" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="销项发票台账", HEADER=true,
+                MAPPING={"a":"发票号码","b":"开票日期","c":"客户名称","d":"不含税金额","e":"税率","f":"税额","g":"价税合计","h":"开票状态"},
+                FORMAT={"b":"yyyy-MM-dd","d":"#,##0.00","e":"0%","f":"#,##0.00","g":"#,##0.00"},
+                FORMULAS={
+                    F2:'D2*E2',G2:'D2+F2',
+                    F3:'D3*E3',G3:'D3+F3',
+                    F4:'D4*E4',G4:'D4+F4',
+                    F5:'D5*E5',G5:'D5+F5',
+                    F6:'D6*E6',G6:'D6+F6',
+                    D7:'SUM(D2:D6)',F7:'SUM(F2:F6)',G7:'D7+F7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    H6:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的销项发票台账 -->
+    <excel name="importOutputVatInvoice" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="销项发票台账", HEADER=true,
+                MAPPING={"发票号码":"invoiceNo","开票日期":"invoiceDate","客户名称":"customer","不含税金额":"amount","税率":"taxRate","税额":"taxAmount","价税合计":"totalAmount","开票状态":"status"}
+        ]]>
+    </excel>
+
+</excels>

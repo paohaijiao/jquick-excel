@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 105：产品季度销量对比（🟢 纯 XML + COLUMN 柱形图） ==================
+  业务：四个产品的一至四季度销量，行末计算全年合计，末行按季度汇总；配柱形图对比各产品分季走势。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：销量千分位整数
+    * FORMULAS：行末全年合计 SUM、末行分季度汇总 SUM
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * GRAPH   ：柱形图（COLUMN），图表数据落在独立的「产品季度销量图」sheet
+
+  说明：GRAPH 要求 XSSF，与 FORMULAS / STYLE 兼容（同属需随机行访问的场景，流式导出自动降级）。
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0105ProductQuarterlySalesService">
+
+    <!-- 导出：产品季度销量对比 -->
+    <excel name="exportProductQuarterlySales" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="产品季度销量", HEADER=true,
+                MAPPING={"a":"产品","b":"一季度","c":"二季度","d":"三季度","e":"四季度","f":"全年"},
+                FORMAT={"b":"#,##0","c":"#,##0","d":"#,##0","e":"#,##0","f":"#,##0"},
+                FORMULAS={
+                    F2:'SUM(B2:E2)',F3:'SUM(B3:E3)',F4:'SUM(B4:E4)',F5:'SUM(B5:E5)',
+                    B6:'SUM(B2:B5)',C6:'SUM(C2:C5)',D6:'SUM(D2:D5)',E6:'SUM(E2:E5)',F6:'SUM(F2:F5)'
+                },
+                STYLE={ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=COLUMN, TITLE="产品季度销量图", CATEGORY_AXIS=产品, VALUE_AXIS=销量,
+                       CATEGORIES=["产品A","产品B","产品C","产品D"],
+                       SERIES=[
+                           {NAME=一季度, DATA=[120,200,150,180]},
+                           {NAME=二季度, DATA=[180,210,190,160]},
+                           {NAME=三季度, DATA=[150,220,170,200]},
+                           {NAME=四季度, DATA=[200,240,210,190]}
+                       ]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的产品季度销量 -->
+    <excel name="importProductQuarterlySales" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="产品季度销量", HEADER=true,
+                MAPPING={"产品":"product","一季度":"q1","二季度":"q2","三季度":"q3","四季度":"q4","全年":"total"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 30：差旅费报销明细单（费用票据类，🟢 纯 XML） ====================
+  业务：员工出差后按行程登记交通费、住宿费与补贴，逐行算「小计 = 交通费 + 住宿费 + 补贴」，
+        末尾一行汇总各费用项与报销总额。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：出发 / 返回日期 yyyy-MM-dd，各费用项千分位两位小数
+    FORMULAS：逐行三列相加得小计；合计行分别 SUM 三个费用项与小计
+    STYLE   ：合计行加粗 + 浅黄高亮
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..6行 5 段出差行程（小计留空由 FORMULAS 计算）
+      第7行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0030TravelExpenseDetailService">
+
+    <!-- 导出：差旅费报销明细单 -->
+    <excel name="exportTravelExpense" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="差旅费用报销明细", HEADER=true,
+                MAPPING={"a":"出差人","b":"出差事由","c":"出发日期","d":"返回日期","e":"交通费","f":"住宿费","g":"补贴","h":"小计"},
+                FORMAT={"c":"yyyy-MM-dd","d":"yyyy-MM-dd","e":"#,##0.00","f":"#,##0.00","g":"#,##0.00","h":"#,##0.00"},
+                FORMULAS={
+                    H2:'E2+F2+G2',H3:'E3+F3+G3',H4:'E4+F4+G4',H5:'E5+F5+G5',H6:'E6+F6+G6',
+                    E7:'SUM(E2:E6)',F7:'SUM(F2:F6)',G7:'SUM(G2:G6)',H7:'SUM(H2:H6)'
+                },
+                STYLE={ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的差旅费报销明细单 -->
+    <excel name="importTravelExpense" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="差旅费用报销明细", HEADER=true,
+                MAPPING={"出差人":"traveler","出差事由":"reason","出发日期":"startDate","返回日期":"endDate","交通费":"transportFee","住宿费":"hotelFee","补贴":"allowance","小计":"subtotal"}
+        ]]>
+    </excel>
+
+</excels>

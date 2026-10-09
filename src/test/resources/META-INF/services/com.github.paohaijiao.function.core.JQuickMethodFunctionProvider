@@ -1,0 +1,4 @@
+# 自定义 SPI 函数 Provider（每行一个全限定类名）
+# 与 jquick-transform-function 内置的 Provider 文件会在 classpath 上自动合并
+com.github.paohaijiao.demo.spi.JQuickMaskNameFunctionProvider
+com.github.paohaijiao.demo.spi.JQuickGradeFunctionProvider

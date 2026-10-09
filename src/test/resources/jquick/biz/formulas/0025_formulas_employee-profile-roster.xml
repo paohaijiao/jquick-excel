@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 25：员工档案名册（档案名册类，🟢 纯 XML） ====================
+  业务：人事部门维护的员工档案名册，登记工号、姓名、部门、职位、入职日期与薪酬标准，
+        逐行算「年薪 = 月薪 × 12」，末尾一行汇总月薪与年薪总额。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：入职日期 yyyy-MM-dd，薪酬千分位两位小数
+    FORMULAS：逐行乘法（年薪）；合计行 SUM 汇总月薪与年薪
+    STYLE   ：合计行加粗 + 浅黄高亮
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..7行 6 名员工（年薪留空由 FORMULAS 计算）
+      第8行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0025EmployeeProfileRosterService">
+
+    <!-- 导出：员工档案名册 -->
+    <excel name="exportEmployeeProfile" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工档案名册", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"部门","d":"职位","e":"入职日期","f":"月薪","g":"年薪"},
+                FORMAT={"e":"yyyy-MM-dd","f":"#,##0.00","g":"#,##0.00"},
+                FORMULAS={
+                    G2:'F2*12',G3:'F3*12',G4:'F4*12',G5:'F5*12',G6:'F6*12',G7:'F7*12',
+                    F8:'SUM(F2:F7)',G8:'SUM(G2:G7)'
+                },
+                STYLE={ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的员工档案名册 -->
+    <excel name="importEmployeeProfile" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工档案名册", HEADER=true,
+                MAPPING={"工号":"empNo","姓名":"name","部门":"dept","职位":"position","入职日期":"hireDate","月薪":"monthlySalary","年薪":"annualSalary"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 83：设备点检记录填报表（数据校验填报类，🟢 纯 XML + 导入校验） ====================
+  业务：逐台设备登记点检人与运行参数，末尾一行汇总总运行时长；
+        导入侧对填报内容做规则校验（编号 / 名称长度、运行时长整数与取值范围、温度上限、结论字典）。
+
+  🟢 标记含义：合计写在 XML 的 FORMULAS 里；导入校验写在 IMPORT 的 VALIDATION 里，
+        Java 只负责构造填报数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 台设备的点检记录
+      第8行     运行时长合计
+
+  注意：区间目标（如 D2:D7）取「格式化后的字符串」，故运行时长列 FORMAT 用 "0"，
+        温度列用 "0.0"，校验规则才能读到干净的数值文本。
+-->
+<excels namespace="com.github.paohaijiao.biz.validation.Validation0054EquipmentInspectionRecordService">
+
+    <!-- 导出：设备点检记录填报表 -->
+    <excel name="exportEquipmentInspectionRecord" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="设备点检记录填报表", HEADER=true,
+                MAPPING={"a":"设备编号","b":"设备名称","c":"点检人","d":"运行时长","e":"温度","f":"点检结论","g":"备注"},
+                FORMAT={"d":"0","e":"0.0"},
+                FORMULAS={
+                    D8:'SUM(D2:D7)'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取并校验设备点检记录填报表 -->
+    <excel name="importEquipmentInspectionRecord" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="设备点检记录填报表", HEADER=true,
+                MAPPING={"设备编号":"equipmentCode","设备名称":"equipmentName","点检人":"inspector","运行时长":"runningHours","温度":"temperature","点检结论":"inspectionResult","备注":"remark"},
+                VALIDATION={
+                    A2:A7:{min_length{required:true,msg:'设备编号至少3位',map:{minLength:3}}},
+                    B2:B7:{min_length{required:true,msg:'设备名称至少2个字',map:{minLength:2}}},
+                    D2:D7:{integer{required:true,msg:'运行时长必须是整数'}},
+                    D2:D7:{min_value{required:true,msg:'运行时长不能小于1',map:{minValue:1}}},
+                    D2:D7:{max_value{required:true,msg:'运行时长不能超过24',map:{maxValue:24}}},
+                    E2:E7:{max_value{required:true,msg:'温度不能超过85',map:{maxValue:85}}},
+                    F2:F7:{dict{required:true,msg:'点检结论必须在字典内',map:{'正常':'正常','异常':'异常'}}}
+                }
+        ]]>
+    </excel>
+
+</excels>

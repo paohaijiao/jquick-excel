@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 40：销售提成计算表（绩效考核类，🟢 纯 XML） ====================
+  业务：按销售员核算目标达成情况，逐行算「达成率 = 实际销售额 / 销售目标」与
+        「提成金额 = 实际销售额 × 提成比例」，未达成目标的销售员达成率标红；
+        末尾一行汇总目标、实际销售额与提成金额，并给出整体达成率。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：金额千分位两位小数，达成率 / 提成比例百分比两位小数
+    FORMULAS：逐行除法求达成率、乘法求提成；合计行 SUM 金额后相除求整体达成率
+    STYLE   ：合计行加粗 + 浅黄高亮；未达成销售员的达成率标红
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行    表头
+      第2..6行 5 名销售员（达成率、提成金额留空由 FORMULAS 计算，其中一名未达成）
+      第7行    合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0040SalesCommissionService">
+
+    <!-- 导出：销售提成计算表 -->
+    <excel name="exportSalesCommission" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="销售提成计算表", HEADER=true,
+                MAPPING={"a":"销售员","b":"销售区域","c":"销售目标","d":"实际销售额","e":"达成率","f":"提成比例","g":"提成金额"},
+                FORMAT={"c":"#,##0.00","d":"#,##0.00","e":"0.00%","f":"0.00%","g":"#,##0.00"},
+                FORMULAS={
+                    E2:'D2/C2',G2:'D2*F2',
+                    E3:'D3/C3',G3:'D3*F3',
+                    E4:'D4/C4',G4:'D4*F4',
+                    E5:'D5/C5',G5:'D5*F5',
+                    E6:'D6/C6',G6:'D6*F6',
+                    C7:'SUM(C2:C6)',D7:'SUM(D2:D6)',E7:'D7/C7',G7:'SUM(G2:G6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E3:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的销售提成计算表 -->
+    <excel name="importSalesCommission" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="销售提成计算表", HEADER=true,
+                MAPPING={"销售员":"salesman","销售区域":"region","销售目标":"target","实际销售额":"actualSales","达成率":"achieveRate","提成比例":"commissionRate","提成金额":"commissionAmount"}
+        ]]>
+    </excel>
+
+</excels>

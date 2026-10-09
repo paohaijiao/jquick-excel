@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 95：产品毛利贡献分析表（其他拓展类，🟢 纯 XML） ====================
+  业务：按产品登记销售额与成本，逐行算「毛利 = 销售额 - 成本」「毛利率 = 毛利 / 销售额」
+        「贡献占比 = 毛利 / 毛利合计」，末尾一行汇总销售额、成本与毛利；毛利率最低的产品标红。
+
+  🟢 标记含义：逐行毛利 / 毛利率 / 贡献占比与合计全部写在 XML 中 ——
+        FORMULAS 用 B-C 求毛利、D/B 求毛利率、D/D7 求贡献占比、SUM 求各列合计，
+        STYLE 给合计行高亮、给毛利率最低的产品标红，Java 只负责构造数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 款产品的毛利明细（第 3 款 C产品毛利率最低，Excel 第 4 行）
+      第7行     各列合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0095ProductMarginAnalysisService">
+
+    <!-- 导出：产品毛利贡献分析表 -->
+    <excel name="exportProductMarginAnalysis" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="产品毛利贡献分析表", HEADER=true,
+                MAPPING={"a":"产品名称","b":"销售额","c":"成本","d":"毛利","e":"毛利率","f":"贡献占比"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0.00%","f":"0.00%"},
+                FORMULAS={
+                    D2:'B2-C2',E2:'D2/B2',F2:'D2/D7',
+                    D3:'B3-C3',E3:'D3/B3',F3:'D3/D7',
+                    D4:'B4-C4',E4:'D4/B4',F4:'D4/D7',
+                    D5:'B5-C5',E5:'D5/B5',F5:'D5/D7',
+                    D6:'B6-C6',E6:'D6/B6',F6:'D6/D7',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'B7-C7',E7:'D7/B7',F7:'SUM(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的产品毛利贡献分析表 -->
+    <excel name="importProductMarginAnalysis" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="产品毛利贡献分析表", HEADER=true,
+                MAPPING={"产品名称":"productName","销售额":"salesAmount","成本":"costAmount","毛利":"grossProfit","毛利率":"grossMargin","贡献占比":"contributionRatio"}
+        ]]>
+    </excel>
+
+</excels>

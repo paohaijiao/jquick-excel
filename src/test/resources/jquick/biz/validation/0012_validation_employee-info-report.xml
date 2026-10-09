@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 12：员工信息填报表（🟡 少量 Java 预处理 + 导入校验） ==================
+  业务：员工填报信息表（工号 / 姓名 / 部门 / 年龄 / 入职日期 / 月薪 / 邮箱 / 手机号），
+        末行给出平均年龄与月薪合计；导入时对填报内容做规则校验。
+
+  🟡 标记含义：Java 只负责「构造填报数据 + 追加统计占位行」，
+              统计（平均年龄 AVERAGE / 薪资合计 SUM）仍由 XML 的 FORMULAS 计算。
+
+  导出侧（FORMAT / FORMULAS / STYLE）：
+    * FORMAT  ：年龄取整、入职日期 yyyy-MM-dd、月薪千分位 2 位小数
+    * FORMULAS：统计行 D5=AVERAGE 平均年龄、F5=SUM 薪资合计
+               （Excel 的 COUNT 只统计数值单元格，对文本列会得 0，故人数统计不在此演示）
+    * STYLE   ：统计行加粗 + 浅黄高亮
+
+  导入侧（VALIDATION，规则块三段式 target:{rule{required,msg,map}}）：
+    * 文本列（工号 / 姓名）用长度校验；部门用字典校验；邮箱 / 手机号用格式校验
+    * 数值列（年龄）用法：范围校验。注意：区间 target（如 D2:D4）取的是**格式化后的字符串**，
+      所以年龄列的 FORMAT 设为 "0"，格式化结果为 "26" 才能通过 integer 规则；
+      若用 COL 目标则会读到表头文本并失败，故此处一律用 A2:A4 这类「仅数据区」的区间。
+-->
+<excels namespace="com.github.paohaijiao.biz.validation.Validation0012EmployeeInfoReportService">
+
+    <!-- 导出：员工信息填报表 -->
+    <excel name="exportEmployeeInfo" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工信息填报表", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"部门","d":"年龄","e":"入职日期","f":"月薪","g":"邮箱","h":"手机号"},
+                FORMAT={"d":"0","e":"yyyy-MM-dd","f":"#,##0.00"},
+                FORMULAS={D5:'AVERAGE(D2:D4)',F5:'SUM(F2:F4)'},
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取填报结果并逐项校验（校验不通过时抛出异常，异常信息即规则 msg） -->
+    <excel name="importEmployeeInfo" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工信息填报表", HEADER=true,
+                MAPPING={"工号":"code","姓名":"name","部门":"dept","年龄":"age","入职日期":"hireDate","月薪":"salary","邮箱":"email","手机号":"phone"},
+                VALIDATION={
+                    COL A:{max_length{required:true,msg:'工号最长10位',map:{maxLength:10}}},
+                    A2:A4:{min_length{required:true,msg:'工号至少4位',map:{minLength:4}}},
+                    B2:B4:{min_length{required:true,msg:'姓名至少2个字',map:{minLength:2}}},
+                    C2:C4:{dict{required:true,msg:'部门必须在字典内（研发部/市场部/财务部）',map:{'研发部':'研发部','市场部':'市场部','财务部':'财务部'}}},
+                    D2:D4:{integer{required:true,msg:'年龄必须是整数'}},
+                    D2:D4:{min_value{required:true,msg:'年龄不能小于18',map:{minValue:18}}},
+                    D2:D4:{max_value{required:true,msg:'年龄不能超过60',map:{maxValue:60}}},
+                    G2:G4:{email{required:true,msg:'邮箱格式无效'}},
+                    H2:H4:{mobile{required:true,msg:'手机号格式无效'}},
+                    H2:H4:{regex{required:true,msg:'手机号必须是11位且以1[3-9]开头',map:{pattern:'^1[3-9][0-9]{9}$'}}}
+                }
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 35：库存预警报表（库存盘点类，🟢 纯 XML） ====================
+  业务：按物料比对当前库存与安全库存，逐行算「库存差额 = 当前库存 - 安全库存」，
+        差额为负即触达预警线；末尾一行汇总当前库存、安全库存与总差额。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：数量千分位整数
+    FORMULAS：逐行相减求差额；合计行分别 SUM 当前库存与安全库存，再相减得总差额
+    STYLE   ：合计行加粗 + 浅黄高亮；低于安全库存的行在差额列标红
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行    表头
+      第2..6行 5 项物料（差额留空由 FORMULAS 计算，其中两项低于安全库存）
+      第7行    合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0035InventoryAlertReportService">
+
+    <!-- 导出：库存预警报表 -->
+    <excel name="exportInventoryAlert" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="库存预警报表", HEADER=true,
+                MAPPING={"a":"物料编码","b":"物料名称","c":"所属仓库","d":"当前库存","e":"安全库存","f":"库存差额","g":"预警状态"},
+                FORMAT={"d":"#,##0","e":"#,##0","f":"#,##0"},
+                FORMULAS={
+                    F2:'D2-E2',F3:'D3-E3',F4:'D4-E4',F5:'D5-E5',F6:'D6-E6',
+                    D7:'SUM(D2:D6)',E7:'SUM(E2:E6)',F7:'D7-E7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F3:{color:red,bold:true},
+                    F5:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的库存预警报表 -->
+    <excel name="importInventoryAlert" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="库存预警报表", HEADER=true,
+                MAPPING={"物料编码":"materialCode","物料名称":"materialName","所属仓库":"warehouse","当前库存":"currentStock","安全库存":"safetyStock","库存差额":"stockDiff","预警状态":"alertStatus"}
+        ]]>
+    </excel>
+
+</excels>

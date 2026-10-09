@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ============== 场景 67：客户档案信息补录填报表（数据校验填报类，🟢 纯 XML + 导入校验） ==============
+  业务：汇总补录的客户档案（编号 / 名称 / 类型 / 信用等级 / 联系人 / 电话 / 年采购额 / 状态），
+        末尾一行汇总年采购额；导入时对填报内容做规则校验。
+
+  🟢 标记含义：导出侧统计与样式全部在 XML（FORMULAS 求采购额合计、STYLE 高亮合计行），
+        Java 只负责构造补录数据；导入侧的 VALIDATION 规则块负责校验。
+
+  ⚠ 数值列（年采购额 G 列）的 FORMAT 必须设为 "0"：区间目标（如 G2:G7）取的是**格式化后的字符串**，
+    格式化为 "3500000" 才能通过 integer 规则；若写成 "#,##0.00" 会得到 "3,500,000.00" 而校验失败。
+-->
+<excels namespace="com.github.paohaijiao.biz.validation.Validation0067CustomerProfileFilingService">
+
+    <!-- 导出：客户档案信息补录填报表 -->
+    <excel name="exportCustomerProfileFiling" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户档案信息补录填报表", HEADER=true,
+                MAPPING={"a":"客户编号","b":"客户名称","c":"客户类型","d":"信用等级","e":"联系人","f":"联系电话","g":"年采购额","h":"建档状态"},
+                FORMAT={"g":"0"},
+                FORMULAS={G8:'SUM(G2:G7)'},
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取补录结果并逐项校验（校验不通过时抛出异常，异常信息即规则 msg） -->
+    <excel name="importCustomerProfileFiling" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户档案信息补录填报表", HEADER=true,
+                MAPPING={"客户编号":"customerNo","客户名称":"customerName","客户类型":"customerType","信用等级":"creditLevel","联系人":"contact","联系电话":"phone","年采购额":"annualAmount","建档状态":"filingStatus"},
+                VALIDATION={
+                    A2:A7:{min_length{required:true,msg:'客户编号至少4位',map:{minLength:4}}},
+                    B2:B7:{min_length{required:true,msg:'客户名称至少2个字',map:{minLength:2}}},
+                    C2:C7:{dict{required:true,msg:'客户类型必须是（企业客户/个人客户）',map:{'企业客户':'企业客户','个人客户':'个人客户'}}},
+                    D2:D7:{dict{required:true,msg:'信用等级必须在（AAA/AA/A/B）内',map:{'AAA':'AAA','AA':'AA','A':'A','B':'B'}}},
+                    F2:F7:{mobile{required:true,msg:'联系电话格式无效'}},
+                    G2:G7:{integer{required:true,msg:'年采购额必须是整数'}},
+                    G2:G7:{min_value{required:true,msg:'年采购额不能为负数',map:{minValue:0}}}
+                }
+        ]]>
+    </excel>
+
+</excels>

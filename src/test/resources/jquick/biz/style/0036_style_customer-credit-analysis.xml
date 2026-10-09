@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 36：客户信用额度分析表（其他拓展类，🟢 纯 XML） ====================
+  业务：按客户核算信用额度使用情况，逐行算「可用额度 = 信用额度 - 已用额度」与
+        「额度使用率 = 已用额度 / 信用额度」，超出额度的客户使用率标红预警；
+        末尾一行汇总三列金额并给出整体使用率。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：金额千分位两位小数，使用率百分比两位小数
+    FORMULAS：逐行减法求可用额度、除法求使用率；合计行 SUM 两列金额后相减再求整体使用率
+    STYLE   ：合计行加粗 + 浅黄高亮；超额客户的额度使用率标红
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行    表头
+      第2..6行 5 个客户（可用额度、使用率留空由 FORMULAS 计算，其中一个超额）
+      第7行    合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0036CustomerCreditAnalysisService">
+
+    <!-- 导出：客户信用额度分析表 -->
+    <excel name="exportCustomerCredit" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户信用额度分析", HEADER=true,
+                MAPPING={"a":"客户名称","b":"信用额度","c":"已用额度","d":"可用额度","e":"额度使用率","f":"信用状态"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    D2:'B2-C2',E2:'C2/B2',
+                    D3:'B3-C3',E3:'C3/B3',
+                    D4:'B4-C4',E4:'C4/B4',
+                    D5:'B5-C5',E5:'C5/B5',
+                    D6:'B6-C6',E6:'C6/B6',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'B7-C7',E7:'C7/B7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的客户信用额度分析表 -->
+    <excel name="importCustomerCredit" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户信用额度分析", HEADER=true,
+                MAPPING={"客户名称":"customer","信用额度":"creditLimit","已用额度":"usedCredit","可用额度":"availableCredit","额度使用率":"usageRate","信用状态":"creditStatus"}
+        ]]>
+    </excel>
+
+</excels>

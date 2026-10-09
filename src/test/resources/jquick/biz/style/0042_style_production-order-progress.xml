@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 42：生产工单进度看板（计划排期类，🟢 纯 XML） ====================
+  业务：按生产工单跟踪计划数量与完成数量，逐行算「完成率 = 完成数量 / 计划数量」，
+        逾期未完成的工单完成率标红；末尾一行汇总计划数量、完成数量与整体完成率。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：数量千分位整数，完成率百分比两位小数，交期 yyyy-MM-dd
+    FORMULAS：逐行除法求完成率；合计行 SUM 数量后相除求整体完成率
+    STYLE   ：合计行加粗 + 浅黄高亮；逾期工单的完成率标红
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行    表头
+      第2..6行 5 张工单（完成率留空由 FORMULAS 计算，其中一张逾期）
+      第7行    合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0042ProductionOrderProgressService">
+
+    <!-- 导出：生产工单进度看板 -->
+    <excel name="exportProductionOrder" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="生产工单进度看板", HEADER=true,
+                MAPPING={"a":"工单号","b":"产品名称","c":"计划数量","d":"完成数量","e":"完成率","f":"交期","g":"进度状态"},
+                FORMAT={"c":"#,##0","d":"#,##0","e":"0.00%","f":"yyyy-MM-dd"},
+                FORMULAS={
+                    E2:'D2/C2',
+                    E3:'D3/C3',
+                    E4:'D4/C4',
+                    E5:'D5/C5',
+                    E6:'D6/C6',
+                    C7:'SUM(C2:C6)',D7:'SUM(D2:D6)',E7:'D7/C7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    E5:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的生产工单进度看板 -->
+    <excel name="importProductionOrder" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="生产工单进度看板", HEADER=true,
+                MAPPING={"工单号":"orderNo","产品名称":"product","计划数量":"planQty","完成数量":"doneQty","完成率":"doneRate","交期":"dueDate","进度状态":"progressStatus"}
+        ]]>
+    </excel>
+
+</excels>

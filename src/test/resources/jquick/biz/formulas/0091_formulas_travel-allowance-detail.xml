@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 91：差旅补贴发放明细表（费用票据类，🟢 纯 XML） ====================
+  业务：按出差记录登记天数与日补贴标准，逐行算「补贴合计 = 出差天数 × 日补贴标准 + 交通补贴」，
+        末尾一行汇总天数、交通补贴与补贴合计。
+
+  🟢 标记含义：逐行补贴与合计全部写在 XML 中 ——
+        FORMULAS 用 D*E+F 求补贴合计、SUM 求各列合计，
+        STYLE 给合计行高亮，Java 只负责构造差旅数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 条出差补贴明细
+      第8行     各列合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0091TravelAllowanceDetailService">
+
+    <!-- 导出：差旅补贴发放明细表 -->
+    <excel name="exportTravelAllowanceDetail" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="差旅补贴发放明细表", HEADER=true,
+                MAPPING={"a":"姓名","b":"部门","c":"出差地点","d":"出差天数","e":"日补贴标准","f":"交通补贴","g":"补贴合计"},
+                FORMAT={"d":"0","e":"#,##0.00","f":"#,##0.00","g":"#,##0.00"},
+                FORMULAS={
+                    G2:'D2*E2+F2',G3:'D3*E3+F3',G4:'D4*E4+F4',
+                    G5:'D5*E5+F5',G6:'D6*E6+F6',G7:'D7*E7+F7',
+                    D8:'SUM(D2:D7)',F8:'SUM(F2:F7)',G8:'SUM(G2:G7)'
+                },
+                STYLE={ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的差旅补贴发放明细表 -->
+    <excel name="importTravelAllowanceDetail" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="差旅补贴发放明细表", HEADER=true,
+                MAPPING={"姓名":"employeeName","部门":"department","出差地点":"destination","出差天数":"travelDays","日补贴标准":"dailyAllowance","交通补贴":"transportAllowance","补贴合计":"totalAllowance"}
+        ]]>
+    </excel>
+
+</excels>

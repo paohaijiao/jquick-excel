@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 33：员工月度考勤统计表（人事考勤类，🟢 纯 XML） ====================
+  业务：按月统计员工考勤，逐行算「请假天数 = 应出勤 - 实出勤」与「出勤率 = 实出勤 / 应出勤」，
+        末尾一行汇总应出勤、实出勤、请假天数、加班时数并给出整体出勤率。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：天数取整，出勤率百分比两位小数
+    FORMULAS：逐行减法与除法；合计行 SUM 汇总，整体出勤率由两个合计相除得出
+    STYLE   ：合计行加粗 + 浅黄高亮
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..6行 5 名员工（请假天数、出勤率留空由 FORMULAS 计算）
+      第7行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0033AttendanceMonthlyStatService">
+
+    <!-- 导出：员工月度考勤统计表 -->
+    <excel name="exportAttendanceMonthly" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工月度考勤统计表", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"部门","d":"应出勤天数","e":"实出勤天数","f":"请假天数","g":"出勤率","h":"加班时数"},
+                FORMAT={"d":"0","e":"0","f":"0","g":"0.00%","h":"0"},
+                FORMULAS={
+                    F2:'D2-E2',G2:'E2/D2',
+                    F3:'D3-E3',G3:'E3/D3',
+                    F4:'D4-E4',G4:'E4/D4',
+                    F5:'D5-E5',G5:'E5/D5',
+                    F6:'D6-E6',G6:'E6/D6',
+                    D7:'SUM(D2:D6)',E7:'SUM(E2:E6)',F7:'SUM(F2:F6)',G7:'E7/D7',H7:'SUM(H2:H6)'
+                },
+                STYLE={ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的员工月度考勤统计表 -->
+    <excel name="importAttendanceMonthly" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工月度考勤统计表", HEADER=true,
+                MAPPING={"工号":"empNo","姓名":"name","部门":"dept","应出勤天数":"shouldDays","实出勤天数":"actualDays","请假天数":"leaveDays","出勤率":"attendanceRate","加班时数":"overtimeHours"}
+        ]]>
+    </excel>
+
+</excels>

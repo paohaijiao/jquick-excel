@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 68：合同履行台账（台账汇总类，🟡 少量 Java 预处理） ====================
+  业务：按合同类型归集各合同金额与已履行金额，逐行算「履行率 = 已履行 / 合同金额」，
+        每类合同后跟一行小计，末尾一行给出全部合同合计；合同类型列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按合同类型分组、插入小计 / 合计占位行、确定合并范围」，
+        逐行履行率与小计 / 合计由 XML 的 FORMULAS 计算，样式与 MERGE 合并范围由模板声明。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..4行  采购合同 3 条 → 第5行小计
+      第6..7行  销售合同 2 条 → 第8行小计
+      第9行     全部合同合计
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0068ContractPerformanceLedgerService">
+
+    <!-- 导出：合同履行台账 -->
+    <excel name="exportContractPerformanceLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="合同履行台账", HEADER=true,
+                MAPPING={"a":"合同类型","b":"合同编号","c":"签约对方","d":"合同金额","e":"已履行金额","f":"履行率"},
+                FORMAT={"d":"#,##0.00","e":"#,##0.00","f":"0.00%"},
+                FORMULAS={
+                    F2:'E2/D2',F3:'E3/D3',F4:'E4/D4',
+                    D5:'SUM(D2:D4)',E5:'SUM(E2:E4)',F5:'E5/D5',
+                    F6:'E6/D6',F7:'E7/D7',
+                    D8:'SUM(D6:D7)',E8:'SUM(E6:E7)',F8:'E8/D8',
+                    D9:'D5+D8',E9:'E5+E8',F9:'E9/D9'
+                },
+                STYLE={
+                    ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 9:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A4 WITH MERGE_WITH_FIRST,
+                    RANGE A6:A7 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的合同履行台账 -->
+    <excel name="importContractPerformanceLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="合同履行台账", HEADER=true,
+                MAPPING={"合同类型":"contractType","合同编号":"contractNo","签约对方":"counterparty","合同金额":"contractAmount","已履行金额":"performedAmount","履行率":"performanceRate"}
+        ]]>
+    </excel>
+
+</excels>

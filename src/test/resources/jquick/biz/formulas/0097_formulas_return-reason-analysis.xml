@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 97：客户退货原因分析表（质检缺陷类，🟢 纯 XML） ====================
+  业务：按退货原因登记退货数量与退货金额，逐行算「数量占比 = 该项退货数量 / 退货数量合计」，
+        末尾一行汇总退货数量、金额与占比；占比最高的原因标红。
+
+  🟢 标记含义：逐行占比与合计全部写在 XML 中 ——
+        FORMULAS 用 B/B7 求数量占比、SUM 求各列合计，STYLE 给合计行高亮、给占比最高的原因标红，
+        Java 只负责构造退货原因数据。占比公式直接引用「合计单元格」，无需 Java 预计算。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 类退货原因（第 3 类「尺寸不符」占比最高，Excel 第 4 行）
+      第7行     各列合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0097ReturnReasonAnalysisService">
+
+    <!-- 导出：客户退货原因分析表 -->
+    <excel name="exportReturnReasonAnalysis" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="客户退货原因分析表", HEADER=true,
+                MAPPING={"a":"退货原因","b":"退货数量","c":"退货金额","d":"数量占比","e":"责任部门"},
+                FORMAT={"b":"#,##0","c":"#,##0.00","d":"0.00%"},
+                FORMULAS={
+                    D2:'B2/B7',D3:'B3/B7',D4:'B4/B7',D5:'B5/B7',D6:'B6/B7',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'SUM(D2:D6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    D4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的客户退货原因分析表 -->
+    <excel name="importReturnReasonAnalysis" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="客户退货原因分析表", HEADER=true,
+                MAPPING={"退货原因":"returnReason","退货数量":"returnQuantity","退货金额":"returnAmount","数量占比":"quantityRatio","责任部门":"responsibleDepartment"}
+        ]]>
+    </excel>
+
+</excels>

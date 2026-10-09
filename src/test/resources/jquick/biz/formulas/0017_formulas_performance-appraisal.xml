@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 17：员工绩效考核评分表（绩效考核类，🟢 纯 XML） ====================
+  业务：按员工录入业绩分 / 能力分 / 态度分，按权重算「综合得分 = 业绩*0.5 + 能力*0.3 + 态度*0.2」，
+        末尾一行给出各维度平均分；综合得分偏低、等级为「待改进」的员工标红提示。
+
+  🟢 全部统计与样式在 XML：
+    FORMAT  ：单项得分保留 1 位小数，综合得分两位小数
+    FORMULAS：逐行加权自定义表达式；平均行用 AVERAGE 汇总各维度
+    STYLE   ：平均行加粗浅黄高亮；待改进员工（第6行）等级单元格字体标红加粗
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0017PerformanceAppraisalService">
+
+    <!-- 导出：员工绩效考核评分表 -->
+    <excel name="exportPerformanceAppraisal" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工绩效考核评分表", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"部门","d":"业绩分","e":"能力分","f":"态度分","g":"综合得分","h":"绩效等级"},
+                FORMAT={"d":"0.0","e":"0.0","f":"0.0","g":"#,##0.00"},
+                FORMULAS={
+                    G2:'D2*0.5+E2*0.3+F2*0.2',
+                    G3:'D3*0.5+E3*0.3+F3*0.2',
+                    G4:'D4*0.5+E4*0.3+F4*0.2',
+                    G5:'D5*0.5+E5*0.3+F5*0.2',
+                    G6:'D6*0.5+E6*0.3+F6*0.2',
+                    D7:'AVERAGE(D2:D6)',E7:'AVERAGE(E2:E6)',F7:'AVERAGE(F2:F6)',G7:'AVERAGE(G2:G6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    H6:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的员工绩效考核评分表 -->
+    <excel name="importPerformanceAppraisal" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工绩效考核评分表", HEADER=true,
+                MAPPING={"工号":"code","姓名":"name","部门":"dept","业绩分":"performance","能力分":"ability","态度分":"attitude","综合得分":"total","绩效等级":"grade"}
+        ]]>
+    </excel>
+
+</excels>

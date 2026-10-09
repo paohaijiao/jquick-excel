@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 86：固定资产折旧台账（台账汇总类，🟡 少量 Java 预处理） ====================
+  业务：按「资产类别 → 资产名称」两级归集固定资产，逐行算「原值 = 数量 × 单价」「净值 = 原值 - 已提折旧」；
+        每个资产类别后跟一行小计，末尾一行给出全部类别合计；资产类别列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按资产类别分组、插入小计 / 合计占位行、确定合并范围」，
+        逐行原值 / 净值与小计 / 合计由 FORMULAS 计算，样式与 MERGE 合并范围由模板声明。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..4行 电子设备（3 项）
+      第5行   电子设备 小计
+      第6..7行 办公家具（2 项）
+      第8行   办公家具 小计
+      第9行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0015FixedAssetLedgerService">
+
+    <!-- 导出：固定资产折旧台账 -->
+    <excel name="exportFixedAssetLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="固定资产折旧台账", HEADER=true,
+                MAPPING={"a":"资产类别","b":"资产名称","c":"数量","d":"单价","e":"原值","f":"已提折旧","g":"净值"},
+                FORMAT={"c":"0","d":"#,##0.00","e":"#,##0.00","f":"#,##0.00","g":"#,##0.00"},
+                FORMULAS={
+                    E2:'C2*D2',G2:'E2-F2',E3:'C3*D3',G3:'E3-F3',E4:'C4*D4',G4:'E4-F4',
+                    C5:'SUM(C2:C4)',E5:'SUM(E2:E4)',F5:'SUM(F2:F4)',G5:'E5-F5',
+                    E6:'C6*D6',G6:'E6-F6',E7:'C7*D7',G7:'E7-F7',
+                    C8:'SUM(C6:C7)',E8:'SUM(E6:E7)',F8:'SUM(F6:F7)',G8:'E8-F8',
+                    C9:'C5+C8',E9:'E5+E8',F9:'F5+F8',G9:'E9-F9'
+                },
+                STYLE={
+                    ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 9:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A4 WITH MERGE_WITH_FIRST,
+                    RANGE A6:A7 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的固定资产折旧台账 -->
+    <excel name="importFixedAssetLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="固定资产折旧台账", HEADER=true,
+                MAPPING={"资产类别":"assetCategory","资产名称":"assetName","数量":"quantity","单价":"unitPrice","原值":"originalValue","已提折旧":"accumulatedDepreciation","净值":"netValue"}
+        ]]>
+    </excel>
+
+</excels>

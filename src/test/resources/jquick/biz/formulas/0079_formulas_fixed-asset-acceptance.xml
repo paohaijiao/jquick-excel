@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 79：固定资产验收单（单据套打类，🟢 纯 XML） ====================
+  业务：逐项登记验收资产的规格、数量与单价，算「金额 = 数量 × 单价」，
+        末尾一行汇总验收总数量与总金额。
+
+  🟢 标记含义：逐行金额与合计全部写在 XML 中 ——
+        FORMULAS 用 C*D 求金额、SUM 求数量与金额合计，STYLE 给合计行加粗高亮，
+        Java 只负责构造验收明细。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 项验收资产
+      第7行     验收合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0079FixedAssetAcceptanceService">
+
+    <!-- 导出：固定资产验收单 -->
+    <excel name="exportFixedAssetAcceptance" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="固定资产验收单", HEADER=true,
+                MAPPING={"a":"资产名称","b":"规格型号","c":"数量","d":"单价","e":"金额","f":"使用部门","g":"存放地点"},
+                FORMAT={"c":"0","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={
+                    E2:'C2*D2',E3:'C3*D3',E4:'C4*D4',E5:'C5*D5',E6:'C6*D6',
+                    C7:'SUM(C2:C6)',E7:'SUM(E2:E6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的固定资产验收单 -->
+    <excel name="importFixedAssetAcceptance" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="固定资产验收单", HEADER=true,
+                MAPPING={"资产名称":"assetName","规格型号":"specification","数量":"quantity","单价":"unitPrice","金额":"amount","使用部门":"useDepartment","存放地点":"location"}
+        ]]>
+    </excel>
+
+</excels>

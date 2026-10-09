@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 51：项目成本归集台账（台账汇总类，🟡 少量 Java 预处理） ====================
+  业务：按项目归集各成本科目的发生额，每个项目后跟一行成本小计，末尾一行给出全部项目合计；
+        项目名称列纵向合并成一个区块。
+
+  🟡 标记含义：Java 只负责「按项目分组、插入小计 / 合计占位行、确定合并范围」，
+        小计与合计由 FORMULAS 计算，样式与 MERGE 合并范围由模板声明。
+
+  Java 侧给出的行布局：
+      第1行   表头
+      第2..4行 智能仓储系统（3 个成本科目）
+      第5行   智能仓储系统 小计
+      第6..7行 产线改造（2 个成本科目）
+      第8行   产线改造 小计
+      第9行   合计
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0051ProjectCostLedgerService">
+
+    <!-- 导出：项目成本归集台账 -->
+    <excel name="exportProjectCostLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="项目成本归集台账", HEADER=true,
+                MAPPING={"a":"项目","b":"成本科目","c":"发生月份","d":"成本金额"},
+                FORMAT={"d":"#,##0.00"},
+                FORMULAS={
+                    D5:'SUM(D2:D4)',
+                    D8:'SUM(D6:D7)',
+                    D9:'D5+D8'
+                },
+                STYLE={
+                    ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    ROW 9:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                },
+                MERGE:{
+                    RANGE A2:A4 WITH MERGE_WITH_FIRST,
+                    RANGE A6:A7 WITH MERGE_WITH_FIRST
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的项目成本归集台账 -->
+    <excel name="importProjectCostLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="项目成本归集台账", HEADER=true,
+                MAPPING={"项目":"project","成本科目":"subject","发生月份":"month","成本金额":"cost"}
+        ]]>
+    </excel>
+
+</excels>

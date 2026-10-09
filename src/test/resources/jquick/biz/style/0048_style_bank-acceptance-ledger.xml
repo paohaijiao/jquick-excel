@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 48：银行承兑汇票台账（台账汇总类，🟢 纯 XML） ====================
+  业务：登记持票企业名下的银承汇票，记录汇票号、出票人、承兑银行、票面金额、出票日、
+        到期日、剩余天数与票据状态；末尾一行给出票面金额合计；已逾期汇票的剩余天数标红。
+
+  🟢 标记含义：台账的金额汇总、样式与标红全部写在 XML 中 ——
+        FORMULAS 用 SUM 求票面金额合计，STYLE 给合计行高亮、给逾期行的剩余天数标红，
+        Java 只负责提供原始台账数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 张汇票明细
+      第7行     票面金额合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0048BankAcceptanceLedgerService">
+
+    <!-- 导出：银行承兑汇票台账 -->
+    <excel name="exportBankAcceptanceLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="银行承兑汇票台账", HEADER=true,
+                MAPPING={"a":"汇票号","b":"出票人","c":"承兑银行","d":"票面金额","e":"出票日","f":"到期日","g":"剩余天数","h":"票据状态"},
+                FORMAT={"d":"#,##0.00","e":"yyyy-MM-dd","f":"yyyy-MM-dd","g":"0"},
+                FORMULAS={
+                    D7:'SUM(D2:D6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    G4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的银行承兑汇票台账 -->
+    <excel name="importBankAcceptanceLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="银行承兑汇票台账", HEADER=true,
+                MAPPING={"汇票号":"billNo","出票人":"drawer","承兑银行":"acceptorBank","票面金额":"faceAmount","出票日":"issueDate","到期日":"maturityDate","剩余天数":"remainingDays","票据状态":"billStatus"}
+        ]]>
+    </excel>
+
+</excels>

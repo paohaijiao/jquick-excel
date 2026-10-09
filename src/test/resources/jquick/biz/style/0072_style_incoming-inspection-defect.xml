@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 72：来料检验不合格记录表（质检缺陷类，🟢 纯 XML） ==================
+  业务：按来料批次登记送检数量与不合格数量，逐行算「不合格率 = 不合格数量 / 送检数量」，
+        末尾一行给出汇总数量与整体不合格率；不合格率超标的批次标红。
+
+  🟢 标记含义：逐行除法与合计全部写在 XML 中 ——
+        FORMULAS 用 E/D 求不合格率、SUM 求数量合计、E8/D8 求整体不合格率，
+        STYLE 给合计行高亮、给超标批次标红，Java 只负责构造检验记录数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 个来料批次（第 3 个批次超标，Excel 第 4 行）
+      第8行     送检 / 不合格 数量合计与整体不合格率
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0072IncomingInspectionDefectService">
+
+    <!-- 导出：来料检验不合格记录表 -->
+    <excel name="exportIncomingInspectionDefect" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="来料检验不合格记录表", HEADER=true,
+                MAPPING={"a":"批次号","b":"物料名称","c":"供应商","d":"送检数量","e":"不合格数量","f":"不合格率","g":"处理方式"},
+                FORMAT={"d":"#,##0","e":"#,##0","f":"0.00%"},
+                FORMULAS={
+                    F2:'E2/D2',F3:'E3/D3',F4:'E4/D4',F5:'E5/D5',F6:'E6/D6',F7:'E7/D7',
+                    D8:'SUM(D2:D7)',E8:'SUM(E2:E7)',F8:'E8/D8'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    F4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的来料检验记录 -->
+    <excel name="importIncomingInspectionDefect" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="来料检验不合格记录表", HEADER=true,
+                MAPPING={"批次号":"batchNo","物料名称":"materialName","供应商":"supplier","送检数量":"inspectionQty","不合格数量":"defectQty","不合格率":"defectRate","处理方式":"disposal"}
+        ]]>
+    </excel>
+
+</excels>

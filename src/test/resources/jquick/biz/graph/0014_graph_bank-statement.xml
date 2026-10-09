@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ================== 场景 14：银行流水对账单（🟢 纯 XML + 折线图） ==================
+  业务：账户流水按交易顺序逐笔登记「借方（支出）/ 贷方（收入）」，并实时滚动计算余额
+        （余额 = 上一行余额 + 本行贷方 - 本行借方），末尾一行合计；右侧附余额趋势折线图。
+
+  本场景统计逻辑全部写在 XML（🟢 无 Java 计算）：
+    * FORMAT  ：交易日期 yyyy-MM-dd，金额三列千分位 2 位小数
+    * FORMULAS：行内滚动余额（引用上一行）、合计行 SUM 汇总借贷方
+    * STYLE   ：合计行加粗 + 浅黄高亮
+    * GRAPH   ：折线图（余额趋势），图表数据落在独立的「余额趋势」sheet
+
+  说明：余额滚动公式引用上一行（如 E3='E2+D3-C3'），需框架写完整表后回写，属 XSSF 场景；
+        GRAPH 同样要求 XSSF，二者兼容。
+-->
+<excels namespace="com.github.paohaijiao.biz.graph.Graph0014BankStatementService">
+
+    <!-- 导出：银行流水对账单 -->
+    <excel name="exportBankStatement" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="银行流水对账单", HEADER=true,
+                MAPPING={"a":"交易日期","b":"摘要","c":"借方","d":"贷方","e":"余额"},
+                FORMAT={"a":"yyyy-MM-dd","c":"#,##0.00","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={
+                    E2:'D2-C2',E3:'E2+D3-C3',E4:'E3+D4-C4',E5:'E4+D5-C5',
+                    C6:'SUM(C2:C5)',D6:'SUM(D2:D5)',E6:'D6-C6'
+                },
+                STYLE={ROW 6:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}},
+                GRAPH={TYPE=LINE, TITLE="余额趋势", CATEGORY_AXIS=笔次, VALUE_AXIS=余额,
+                       CATEGORIES=["第1笔","第2笔","第3笔","第4笔"],
+                       SERIES=[{NAME=余额, DATA=[50000,30000,65000,20000]}]}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的银行流水对账单 -->
+    <excel name="importBankStatement" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="银行流水对账单", HEADER=true,
+                MAPPING={"交易日期":"tradeDate","摘要":"summary","借方":"debit","贷方":"credit","余额":"balance"}
+        ]]>
+    </excel>
+
+</excels>

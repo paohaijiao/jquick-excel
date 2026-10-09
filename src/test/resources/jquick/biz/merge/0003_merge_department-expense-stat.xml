@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 3：部门费用统计表（🟡 Java 仅做分组 + 插小计行） ====================
+  业务：各部门费用明细，每个部门后跟一行「小计」，末尾一行「合计」。
+
+  🟡 标记含义：Java 负责「按部门分组、插入小计/合计占位行」，不做任何金额求和；
+              小计与合计的金额仍由 XML 的 FORMULAS 计算，样式与格式同样交给模板。
+  Java 侧确定的分组布局（每部门 3 条明细 + 1 行小计）：
+      第1行 表头
+      第2..4行 研发部明细      第5行 研发部小计
+      第6..8行 市场部明细      第9行 市场部小计
+      第10..12行 财务部明细    第13行 财务部小计
+      第14行 合计
+  说明：小计行的小计金额在 C 列用 SUM 汇总；合计行 = 三个小计之和（C5+C9+C13）。
+-->
+<excels namespace="com.github.paohaijiao.biz.merge.Merge0003DepartmentExpenseStatService">
+
+    <!-- 导出：部门费用统计表 -->
+    <excel name="exportDepartmentExpense" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="部门费用统计", HEADER=true,
+                MAPPING={"a":"部门","b":"费用类型","c":"金额"},
+                FORMAT={"c":"#,##0.00"},
+                FORMULAS={C5:'SUM(C2:C4)',C9:'SUM(C6:C8)',C13:'SUM(C10:C12)',C14:'C5+C9+C13'},
+                STYLE={
+                    ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right},
+                    ROW 9:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right},
+                    ROW 13:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right},
+                    ROW 14:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的 Excel -->
+    <excel name="importDepartmentExpense" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="部门费用统计", HEADER=true,
+                MAPPING={"部门":"dept","费用类型":"item","金额":"amount"}
+        ]]>
+    </excel>
+
+</excels>

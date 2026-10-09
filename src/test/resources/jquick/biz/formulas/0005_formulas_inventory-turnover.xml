@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ========================= 场景 5：库存周转报表（🟢 纯 XML） =========================
+  业务：物料入库次数、出库次数、期末库存、库龄，逐行算「周转率 = 出库次数 / 期末库存」。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：次数/库存/库龄取整，周转率两位小数
+    FORMULAS：逐行周转率（自定义表达式）；合计行用 SUM 汇总次数与库存、用 AVERAGE 求平均库龄
+    STYLE   ：合计行加粗 + 浅黄高亮
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0005InventoryTurnoverService">
+
+    <!-- 导出：库存周转报表 -->
+    <excel name="exportInventoryTurnover" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="库存周转报表", HEADER=true,
+                MAPPING={"a":"物料编码","b":"物料名称","c":"入库次数","d":"出库次数","e":"期末库存","f":"库龄(天)","g":"周转率(次)"},
+                FORMAT={"c":"0","d":"0","e":"0","f":"0","g":"0.00"},
+                FORMULAS={G2:'D2/E2',G3:'D3/E3',G4:'D4/E4',C5:'SUM(C2:C4)',D5:'SUM(D2:D4)',E5:'SUM(E2:E4)',F5:'AVERAGE(F2:F4)',G5:'D5/E5'},
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的 Excel -->
+    <excel name="importInventoryTurnover" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="库存周转报表", HEADER=true,
+                MAPPING={"物料编码":"code","物料名称":"name","入库次数":"inCount","出库次数":"outCount","期末库存":"stock","库龄(天)":"ageDays","周转率(次)":"turnover"}
+        ]]>
+    </excel>
+
+</excels>

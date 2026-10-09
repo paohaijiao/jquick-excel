@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ========================= 场景 4：现金流量表导出（🟢 纯 XML） =========================
+  业务：按经营/投资/筹资三类活动的现金流入、流出，逐行算「净额 = 流入 - 流出」，末尾合计。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：流入/流出/净额 千分位两位小数
+    FORMULAS：净额 = 流入 - 流出（自定义表达式）；合计行用 SUM 汇总流入、流出，净额再相减
+    STYLE   ：合计行加粗 + 浅黄高亮
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0004CashFlowStatementService">
+
+    <!-- 导出：现金流量表 -->
+    <excel name="exportCashFlow" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="现金流量表", HEADER=true,
+                MAPPING={"a":"项目","b":"类别","c":"流入","d":"流出","e":"净额"},
+                FORMAT={"c":"#,##0.00","d":"#,##0.00","e":"#,##0.00"},
+                FORMULAS={E2:'C2-D2',E3:'C3-D3',E4:'C4-D4',C5:'SUM(C2:C4)',D5:'SUM(D2:D4)',E5:'C5-D5'},
+                STYLE={ROW 5:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的 Excel -->
+    <excel name="importCashFlow" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="现金流量表", HEADER=true,
+                MAPPING={"项目":"item","类别":"category","流入":"inflow","流出":"outflow","净额":"net"}
+        ]]>
+    </excel>
+
+</excels>

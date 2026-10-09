@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 89：材料领用单套打（单据套打类，🟢 纯 XML） ====================
+  业务：逐项登记领用材料的规格、数量与单价，算「金额 = 领用数量 × 单价」，
+        末尾一行汇总领用总数量与总金额。
+
+  🟢 标记含义：逐行金额与合计全部写在 XML 中 ——
+        FORMULAS 用 C*E 求金额、SUM 求数量与金额合计，STYLE 给合计行加粗高亮，
+        Java 只负责构造领用明细。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 项领用材料
+      第8行     领用合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0050MaterialRequisitionService">
+
+    <!-- 导出：材料领用单 -->
+    <excel name="exportMaterialRequisition" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="材料领用单", HEADER=true,
+                MAPPING={"a":"材料名称","b":"规格型号","c":"领用数量","d":"计量单位","e":"单价","f":"金额","g":"用途"},
+                FORMAT={"c":"0","e":"#,##0.00","f":"#,##0.00"},
+                FORMULAS={
+                    F2:'C2*E2',F3:'C3*E3',F4:'C4*E4',F5:'C5*E5',F6:'C6*E6',F7:'C7*E7',
+                    C8:'SUM(C2:C7)',F8:'SUM(F2:F7)'
+                },
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的材料领用单 -->
+    <excel name="importMaterialRequisition" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="材料领用单", HEADER=true,
+                MAPPING={"材料名称":"materialName","规格型号":"specification","领用数量":"requisitionQuantity","计量单位":"unit","单价":"unitPrice","金额":"amount","用途":"purpose"}
+        ]]>
+    </excel>
+
+</excels>

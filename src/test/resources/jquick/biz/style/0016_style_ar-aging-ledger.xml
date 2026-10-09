@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 16：应收账款账龄台账（台账汇总类，🟢 纯 XML） ====================
+  业务：按客户登记应收、已收、未收余额与账龄天数，逐行算「未收余额 = 应收 - 已收」，
+        并给出各客户未收占比；末尾一行合计；账龄超长的异常单元格标红提示催收。
+
+  🟢 全部统计与样式在 XML：
+    FORMAT  ：金额千分位两位小数，账龄取整，未收占比两位小数百分比
+    FORMULAS：逐行未收余额（相减）、占比 = 单行未收 / 未收合计（D7）；合计行用 SUM 汇总
+    STYLE   ：合计行加粗浅黄高亮；账龄与未收余额异常的客户（第6行）字体标红加粗
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0016ArAgingLedgerService">
+
+    <!-- 导出：应收账款账龄台账 -->
+    <excel name="exportArAgingLedger" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="应收账款账龄台账", HEADER=true,
+                MAPPING={"a":"客户名称","b":"应收金额","c":"已收金额","d":"未收余额","e":"账龄(天)","f":"未收占比"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0","f":"0.00%"},
+                FORMULAS={
+                    D2:'B2-C2',D3:'B3-C3',D4:'B4-C4',D5:'B5-C5',D6:'B6-C6',
+                    F2:'D2/D7',F3:'D3/D7',F4:'D4/D7',F5:'D5/D7',F6:'D6/D7',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'SUM(D2:D6)',F7:'SUM(F2:F6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    D6:{color:red,bold:true},
+                    E6:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的应收账款账龄台账 -->
+    <excel name="importArAgingLedger" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="应收账款账龄台账", HEADER=true,
+                MAPPING={"客户名称":"customer","应收金额":"receivable","已收金额":"received","未收余额":"unpaid","账龄(天)":"agingDays","未收占比":"unpaidRate"}
+        ]]>
+    </excel>
+
+</excels>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 71：供应商档案名册（档案名册类，🟢 纯 XML） ====================
+  业务：登记合格供应商档案（编码 / 名称 / 类别 / 合作年限 / 联系人 / 电话 / 年供货额 / 评级），
+        末尾一行汇总年供货额。
+
+  🟢 标记含义：合计与样式全部写在 XML 中 ——
+        FORMULAS 用 SUM 求年供货额合计，STYLE 给合计行高亮，Java 只负责构造供应商档案数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..7行  6 家供应商档案
+      第8行     年供货额合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0071SupplierProfileRosterService">
+
+    <!-- 导出：供应商档案名册 -->
+    <excel name="exportSupplierProfileRoster" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="供应商档案名册", HEADER=true,
+                MAPPING={"a":"供应商编码","b":"供应商名称","c":"供应类别","d":"合作年限","e":"联系人","f":"联系电话","g":"年供货额","h":"评级"},
+                FORMAT={"d":"0","g":"#,##0.00"},
+                FORMULAS={G8:'SUM(G2:G7)'},
+                STYLE={
+                    ROW 8:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的供应商档案名册 -->
+    <excel name="importSupplierProfileRoster" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="供应商档案名册", HEADER=true,
+                MAPPING={"供应商编码":"supplierNo","供应商名称":"supplierName","供应类别":"category","合作年限":"cooperationYears","联系人":"contact","联系电话":"phone","年供货额":"annualAmount","评级":"rating"}
+        ]]>
+    </excel>
+
+</excels>

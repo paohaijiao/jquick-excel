@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 85：月度费用预算执行偏差对比表（数据对比差异类，🟢 纯 XML） ====================
+  业务：逐费用项目对比预算与实际支出，算「偏差金额 = 预算 - 实际」与「偏差率 = 偏差 / 预算」，
+        末尾一行汇总预算、实际与总偏差；超支最大的项目标红。
+
+  🟢 标记含义：逐行偏差与偏差率、合计全部写在 XML 中 ——
+        FORMULAS 用 B-C 求偏差、D/B 求偏差率、SUM 求合计、合计行再相减，
+        STYLE 给合计行高亮、给超支最大的项目标红，Java 只负责构造费用数据。
+
+  Java 侧给出的行布局：
+      第1行     表头
+      第2..6行  5 个费用项目（第 2 个「差旅费」超支最大，Excel 第 3 行）
+      第7行     合计
+-->
+<excels namespace="com.github.paohaijiao.biz.style.Style0085ExpenseBudgetVarianceService">
+
+    <!-- 导出：月度费用预算执行偏差对比表 -->
+    <excel name="exportExpenseBudgetVariance" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="月度费用预算执行偏差对比表", HEADER=true,
+                MAPPING={"a":"费用项目","b":"预算金额","c":"实际支出","d":"偏差金额","e":"偏差率","f":"控制结论"},
+                FORMAT={"b":"#,##0.00","c":"#,##0.00","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    D2:'B2-C2',E2:'D2/B2',D3:'B3-C3',E3:'D3/B3',D4:'B4-C4',E4:'D4/B4',
+                    D5:'B5-C5',E5:'D5/B5',D6:'B6-C6',E6:'D6/B6',
+                    B7:'SUM(B2:B6)',C7:'SUM(C2:C6)',D7:'B7-C7',E7:'D7/B7'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    D3:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的月度费用预算执行偏差对比表 -->
+    <excel name="importExpenseBudgetVariance" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="月度费用预算执行偏差对比表", HEADER=true,
+                MAPPING={"费用项目":"expenseItem","预算金额":"budgetAmount","实际支出":"actualAmount","偏差金额":"varianceAmount","偏差率":"varianceRate","控制结论":"controlConclusion"}
+        ]]>
+    </excel>
+
+</excels>

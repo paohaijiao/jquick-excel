@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ==================== 场景 43：员工培训档案登记（档案名册类，🟢 纯 XML） ====================
+  业务：登记员工培训档案，逐行记录课程、培训日期、学时与考核成绩，
+        考核不及格（成绩低于 60）的记录标红；末尾一行汇总总学时与平均成绩。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：培训日期 yyyy-MM-dd，学时与成绩整数
+    FORMULAS：合计行 SUM 学时、AVERAGE 平均成绩
+    STYLE   ：合计行加粗 + 浅黄高亮；不及格记录的考核成绩标红
+  表头深蓝底白字加粗、隔行浅灰斑马纹由框架默认样式提供；Java 只构造模拟数据。
+
+  Java 侧给出的行布局：
+      第1行    表头
+      第2..6行 5 条培训记录（其中一条考核不及格）
+      第7行    合计
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0043TrainingRecordService">
+
+    <!-- 导出：员工培训档案登记 -->
+    <excel name="exportTrainingRecord" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="员工培训档案登记", HEADER=true,
+                MAPPING={"a":"工号","b":"姓名","c":"部门","d":"培训课程","e":"培训日期","f":"学时","g":"考核成绩","h":"是否通过"},
+                FORMAT={"e":"yyyy-MM-dd","f":"0","g":"0"},
+                FORMULAS={
+                    F7:'SUM(F2:F6)',G7:'AVERAGE(G2:G6)'
+                },
+                STYLE={
+                    ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center},
+                    G4:{color:red,bold:true}
+                }
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的员工培训档案登记 -->
+    <excel name="importTrainingRecord" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="员工培训档案登记", HEADER=true,
+                MAPPING={"工号":"empNo","姓名":"name","部门":"dept","培训课程":"course","培训日期":"trainDate","学时":"hours","考核成绩":"score","是否通过":"passed"}
+        ]]>
+    </excel>
+
+</excels>

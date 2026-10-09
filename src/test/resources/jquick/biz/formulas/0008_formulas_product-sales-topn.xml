@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE excels PUBLIC "-//PAOHAIJIAO//DTD API EXCEL 1.0//EN"
+        "classpath:paohaijiao/dtd/Jquick-excel.dtd">
+<!--
+  ======================== 场景 8：产品销量 Top N 排行（🟢 纯 XML） ========================
+  业务：销量前 N 名的产品排行，逐行给出销售占比，末尾一行合计。
+
+  🟢 全部统计逻辑在 XML：
+    FORMAT  ：销量千分位整数，销售额千分位两位小数，占比百分比
+    FORMULAS：逐行销售占比 = 本行销售额 / 全部销售额；合计行 SUM 汇总销量 / 销售额 / 占比
+    STYLE   ：合计行加粗 + 浅黄高亮
+  排名列为 Java 构造的静态序号（非聚合）；表头与斑马纹由框架默认样式提供。
+-->
+<excels namespace="com.github.paohaijiao.biz.formulas.Formulas0008ProductSalesTopNService">
+
+    <!-- 导出：产品销量 Top N 排行 -->
+    <excel name="exportProductSalesTopN" returnClass="void">
+        <![CDATA[
+            EXPORT WITH SHEET="产品销量TopN", HEADER=true,
+                MAPPING={"a":"排名","b":"产品名称","c":"销量(件)","d":"销售额(元)","e":"销售占比"},
+                FORMAT={"c":"#,##0","d":"#,##0.00","e":"0.00%"},
+                FORMULAS={
+                    E2:'D2/SUM(D2:D6)',E3:'D3/SUM(D2:D6)',E4:'D4/SUM(D2:D6)',
+                    E5:'D5/SUM(D2:D6)',E6:'D6/SUM(D2:D6)',
+                    C7:'SUM(C2:C6)',D7:'SUM(D2:D6)',E7:'SUM(E2:E6)'
+                },
+                STYLE={ROW 7:{bold:true,fillPattern:solid_foreground,fillForegroundColor:lightYellow,alignment:right,verticalAlignment:center}}
+        ]]>
+    </excel>
+
+    <!-- 导入解析：读取导出的产品销量排行 -->
+    <excel name="importProductSalesTopN" returnClass="java.util.List">
+        <![CDATA[
+            IMPORT WITH SHEET="产品销量TopN", HEADER=true,
+                MAPPING={"排名":"rank","产品名称":"name","销量(件)":"qty","销售额(元)":"amount","销售占比":"ratio"}
+        ]]>
+    </excel>
+
+</excels>
