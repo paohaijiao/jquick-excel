@@ -2,6 +2,10 @@
   <img src="src/main/resources/static/jquick-logo.svg" width="180" alt="JQuick-Excel 徽标" />
 </p>
 
+<p align="center">
+  <img src="docs/jquick-excel-banner.gif" width="720" alt="JQuick-Excel 演示横幅 — 模板套打、合并单元格、图片插入、大数据导出" />
+</p>
+
 <h1 align="center">JQuick-Excel</h1>
 
 <p align="center">

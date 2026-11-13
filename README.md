@@ -2,6 +2,10 @@
   <img src="src/main/resources/static/jquick-logo.svg" width="180" alt="JQuick-Excel logo" />
 </p>
 
+<p align="center">
+  <img src="docs/jquick-excel-banner.gif" width="720" alt="JQuick-Excel banner — template fill, merged cells, image insert, big data export" />
+</p>
+
 <h1 align="center">JQuick-Excel</h1>
 
 <p align="center">
